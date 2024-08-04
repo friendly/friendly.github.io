@@ -1,0 +1,177 @@
+---
+title: "R packages"
+output:
+  github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r packages}
+pkgs <- c("heplots", "candisc", "mvinfluence", "genridge", "VisCollin",
+          "matlib", "gellipsoid", "twoway",
+          "vcdExtra", "nestedLogit",  # "vcd",
+          "HistData", "Guerry", "Lahman" )
+
+desc <- function(package) {
+  packageDescription(package)$Description
+}
+```
+
+
+This page provides overview descriptions of my R packages and those I have contributed to.
+The hex icons link to the GitHub repositories. Links to the package **Documentation** are
+also provided.
+
+Topics: [Multivariate linear models](#MLM) || [Categorical data analysis](#CDA) || [Data](#DATA)
+
+## Multivariate linear models {#MLM}
+
+### [heplots](https://github.com/friendly/heplots)
+
+
+[<img src='https://raw.githubusercontent.com/friendly/heplots/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/heplots)
+
+```{r heplots-desc, results='asis'}
+cat(desc("heplots"))
+```
+**Documentation**: [friendly.github.io/heplots](http://friendly.github.io/heplots/)
+
+### [candisc](https://github.com/friendly/candisc)
+
+[<img src='https://raw.githubusercontent.com/friendly/candisc/master/candisc-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/candisc)
+
+```{r candisc-desc, results='asis'}
+cat(desc("candisc"))
+```
+**Documentation**: [friendly.github.io/candisc](https://friendly.github.io/candisc/)
+
+### [VisCollin](https://friendly.github.io/VisCollin)
+
+[<img src='https://raw.githubusercontent.com/friendly/VisCollin/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/VisCollin)
+
+```{r VisCollin-desc, results='asis'}
+cat(desc("VisCollin"))
+```
+**Documentation**: [friendly.github.io/VisCollin](https://friendly.github.io/VisCollin)
+
+### [genridge](https://github.com/friendly/genridge)
+
+[<img src='https://raw.githubusercontent.com/friendly/genridge/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/genridge)
+
+```{r genridge-desc, results='asis'}
+cat(desc("genridge"))
+```
+**Documentation**: [friendly.github.io/genridge](https://friendly.github.io/genridge/)
+
+
+### [mvinfluence](https://github.com/friendly/mvinfluence)
+
+[<img src='https://raw.githubusercontent.com/friendly/mvinfluence/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/mvinfluence)
+
+```{r mvinfluence-desc, results='asis'}
+cat(desc("mvinfluence"))
+```
+**Documentation**: [friendly.github.io/mvinfluence](https://friendly.github.io/mvinfluence/)
+
+### [matlib](https://github.com/friendly/matlib)
+
+[<img src='https://raw.githubusercontent.com/friendly/matlib/master/matlib-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/matlib)
+
+
+```{r matlib-desc, results='asis'}
+cat(desc("matlib"))
+```
+**Documentation**: [friendly.github.io/matlib](https://friendly.github.io/matlib/)
+
+
+### [gellipsoid](https://github.com/friendly/gellipsoid)
+
+[<img src='https://raw.githubusercontent.com/friendly/gellipsoid/master/man/figures/gellipsoid-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/gellipsoid)
+
+```{r gellipsoid-desc, results='asis'}
+cat(desc("gellipsoid"))
+```
+<br/>
+<p></p>
+
+### [two way](https://github.com/friendly/twoway)
+
+[<img src='https://raw.githubusercontent.com/friendly/twoway/master/twoway-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/twoway)
+```{r twoway-desc, results='asis'}
+cat(desc("twoway"))
+```
+**Documentation**: [rdrr.io/cran/twoway/](https://rdrr.io/cran/twoway/)
+
+### [ggbiplot](https://github.com/friendly/ggbiplot)
+
+[<img src='https://raw.githubusercontent.com/friendly/ggbiplot/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/ggbiplot)
+```{r ggbiplot-desc, results='asis'}
+cat(desc("ggbiplot"))
+```
+**Documentation**: [friendly.github.io/ggbiplot](http://friendly.github.io/ggbiplot/)
+
+## Categorical data analysis {#CDA}
+
+### [vcdExtra](https://github.com/friendly/vcdExtra)
+
+[<img src='https://raw.githubusercontent.com/friendly/vcdExtra/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/vcdExtra)
+```{r vcdExtra-desc, results='asis'}
+cat(desc("vcdExtra"))
+```
+**Documentation**: [friendly.github.io/vcdExtra](http://friendly.github.io/vcdExtra/)
+
+### [nestedLogit](https://github.com/friendly/nestedLogit)
+
+[<img src='https://raw.githubusercontent.com/friendly/nestedLogit/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/nestedLogit)
+```{r nestedLogit-desc, results='asis'}
+cat(desc("nestedLogit"))
+```
+**Documentation**: [friendly.github.io/nestedLogit](https://friendly.github.io/nestedLogit/)
+
+## Data {#DATA}
+
+### [HistData](https://github.com/friendly/HistData)
+
+[<img src='https://raw.githubusercontent.com/friendly/HistData/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/HistData)
+```{r HistData-desc, results='asis'}
+cat(desc("HistData"))
+```
+**Documentation**: [friendly.github.io/HistData/](https://friendly.github.io/HistData/)
+
+
+### [Guerry](https://github.com/friendly/Guerry)
+
+[<img src='https://raw.githubusercontent.com/friendly/Guerry/master/man/figures/Guerry-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/Guerry)
+```{r Guerry-desc, results='asis'}
+cat(desc("Guerry"))
+```
+**Documentation**: [rdrr.io/cran/Guerry/](https://rdrr.io/cran/Guerry/)
+
+### [WordPools](https://github.com/friendly/WordPools)
+
+[<img src='https://raw.githubusercontent.com/friendly/WordPools/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/WordPools)
+```{r WordPools-desc, results='asis'}
+cat(desc("WordPools"))
+```
+**Documentation**: [friendly.github.io/WordPools/](https://friendly.github.io/WordPools/)
+
+
+### [Lahman](https://github.com/cdalzell/Lahman)
+
+[<img src='https://raw.githubusercontent.com/cdalzell/Lahman/master/man/figures/Lahman_hex.png' height='120' align='left' style="padding:'20px'">](https://github.com/cdalzell/Lahman)
+```{r Lahman-desc, results='asis'}
+cat(desc("Lahman"))
+```
+**Documentation**: [rdrr.io/cran/Lahman/](https://rdrr.io/cran/Lahman/)
+
+### [statquotes](https://github.com/friendly/statquotes)
+
+[<img src='https://raw.githubusercontent.com/friendly/statquotes/master/man/figures/statquotes-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/statquotes)
+```{r statquotes-desc, results='asis'}
+cat(desc("statquotes"))
+```
+**Documentation**: [rdrr.io/cran/statquotes/](https://rdrr.io/cran/statquotes/)
+
+
