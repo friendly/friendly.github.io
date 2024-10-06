@@ -86,7 +86,7 @@ detect influential observations are provided. **Documentation**:
 
 ### [matlib](https://github.com/friendly/matlib)
 
-[<img src='https://raw.githubusercontent.com/friendly/matlib/master/matlib-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/matlib)
+[<img src='https://raw.githubusercontent.com/friendly/matlib/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/matlib)
 
 A collection of matrix functions for teaching and learning matrix linear
 algebra as used in multivariate statistical methods. These functions are
@@ -206,8 +206,8 @@ given ranges. **Documentation**:
 [<img src='https://raw.githubusercontent.com/cdalzell/Lahman/master/man/figures/Lahman_hex.png' height='120' align='left' style="padding:'20px'">](https://github.com/cdalzell/Lahman)
 Provides the tables from the ‘Sean Lahman Baseball Database’ as a set of
 R data.frames. It uses the data on pitching, hitting and fielding
-performance and other tables from 1871 through 2022, as recorded in the
-2023 version of the database. Documentation examples show how many
+performance and other tables from 1871 through 2023, as recorded in the
+2024 version of the database. Documentation examples show how many
 baseball questions can be investigated. **Documentation**:
 [rdrr.io/cran/Lahman/](https://rdrr.io/cran/Lahman/)
 
