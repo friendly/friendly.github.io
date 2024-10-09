@@ -7,6 +7,7 @@ pkgs <- c("heplots", "candisc", "mvinfluence", "genridge", "VisCollin",
           "HistData", "Guerry", "Lahman" )
 
 
+
 # load my packages
 sapply(pkgs, function(x)require(x, character.only = T))
 
