@@ -19,6 +19,9 @@ desc <- function(package) {
 }
 ```
 
+<!-- ![]("images/hexsession-mypkgs.jpg") -->
+
+<img src="images/hexsession-mypkgs.jpg">
 
 This page provides overview descriptions of my R packages and those I have contributed to.
 The hex icons link to the GitHub repositories. Links to the package **Documentation** are

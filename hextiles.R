@@ -11,6 +11,8 @@ pkgs <- c("heplots", "candisc", "mvinfluence", "genridge", "VisCollin",
 # load my packages
 sapply(pkgs, function(x)require(x, character.only = T))
 
+sessionInfo()
+
 # remove unwanted
 #pacman::p_unload(unwanted)
 # "broom", "car", "carData": cant detach
