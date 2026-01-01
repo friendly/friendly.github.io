@@ -1,5 +1,11 @@
-R packages
-================
+---
+title: "R packages"
+layout: default
+output:
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+---
 
 <!-- ![]("images/hexsession-mypkgs.jpg") -->
 
@@ -22,9 +28,11 @@ Provides HE plot and other functions for visualizing hypothesis tests in
 multivariate linear models. HE plots represent
 sums-of-squares-and-products matrices for linear hypotheses and for
 error using ellipses (in two dimensions) and ellipsoids (in three
-dimensions). The related ‘candisc’ package provides visualizations in a
-reduced-rank canonical discriminant space when there are more than a few
-response variables. **Documentation**:
+dimensions). It also provides other tools for analysis and graphical
+display of the models such as robust methods and homogeneity of variance
+covariance matrices. The related ‘candisc’ package provides
+visualizations in a reduced-rank canonical discriminant space when there
+are more than a few response variables. **Documentation**:
 [friendly.github.io/heplots](http://friendly.github.io/heplots/)
 
 ### [candisc](https://github.com/friendly/candisc)
@@ -43,6 +51,7 @@ scores and vectors for each term. The graphic functions provide low-rank
 (1D, 2D, 3D) visualizations of terms in an ‘mlm’ via the ‘plot.candisc’
 and ‘heplot.candisc’ methods. Related plots are now provided for
 canonical correlation analysis when all predictors are quantitative.
+Methods for linear discriminant analysis are now included.
 **Documentation**:
 [friendly.github.io/candisc](https://friendly.github.io/candisc/)
 
@@ -211,8 +220,8 @@ given ranges. **Documentation**:
 [<img src='https://raw.githubusercontent.com/cdalzell/Lahman/master/man/figures/Lahman_hex.png' height='120' align='left' style="padding:'20px'">](https://github.com/cdalzell/Lahman)
 Provides the tables from the ‘Sean Lahman Baseball Database’ as a set of
 R data.frames. It uses the data on pitching, hitting and fielding
-performance and other tables from 1871 through 2023, as recorded in the
-2024 version of the database. Documentation examples show how many
+performance and other tables from 1871 through 2024, as recorded in the
+2025 version of the database. Documentation examples show how many
 baseball questions can be investigated. **Documentation**:
 [rdrr.io/cran/Lahman/](https://rdrr.io/cran/Lahman/)
 

@@ -1,7 +1,10 @@
 ---
 title: "R packages"
+layout: default
 output:
-  github_document
+  md_document:
+    variant: gfm
+    preserve_yaml: true
 ---
 
 ```{r setup, include=FALSE}
