@@ -1,0 +1,64 @@
+---
+title: "Other Software"
+---
+
+::: {.column-page}
+
+In addition to R packages, I have developed extensive collections of software for statistical graphics and data analysis.
+
+## SAS Macros
+
+::: {.callout-note}
+## Maintenance Status
+These macros are **no longer actively maintained** but remain available as a historical resource and for those still using SAS.
+:::
+
+I have developed an extensive collection of SAS macros for statistical graphics and data analysis. These macros cover a wide range of statistical methods with an emphasis on graphical display.
+
+### Categories
+
+- **Graphical methods**: Scatterplot matrices, enhanced plots, diagnostic displays
+- **Multivariate methods**: Correspondence analysis, canonical correlation, discriminant analysis
+- **Categorical data**: Mosaic displays, odds ratio plots, loglinear models
+- **Regression diagnostics**: Influence plots, partial regression plots
+- **Statistical graphics**: Quantile plots, rootograms, and more
+
+### Resources
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+::: {.card}
+::: {.card-body}
+
+**Documentation**
+
+Comprehensive documentation for each macro with examples and usage notes.
+
+[Browse documentation →](https://www.datavis.ca/sasmac/){.btn .btn-outline-primary}
+
+:::
+:::
+:::
+
+::: {.g-col-12 .g-col-md-6}
+::: {.card}
+::: {.card-body}
+
+**Source Code**
+
+All macro source code is freely available on GitHub.
+
+[View on GitHub →](https://github.com/friendly/SAS-macros/){.btn .btn-outline-primary}
+
+:::
+:::
+:::
+
+:::
+
+## Other Tools
+
+Additional software tools and utilities are available through my GitHub repositories at [github.com/friendly](https://github.com/friendly).
+
+:::

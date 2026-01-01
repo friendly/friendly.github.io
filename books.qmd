@@ -1,0 +1,49 @@
+---
+title: "Books"
+---
+
+::: {.column-page}
+
+I have authored and co-authored several books on data visualization and statistical methods in R. These books emphasize graphical understanding of statistical concepts and practical implementation.
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+::: {.card .h-100}
+::: {.card-body}
+
+### Visualizing Multivariate Data and Models in R
+
+A comprehensive guide to understanding multivariate linear models through visualization. Covers HE plots, canonical discriminant analysis, and other graphical methods for multivariate data.
+
+**Status**: Available online
+
+[Read online →](https://friendly.github.io/Vis-MLM-book/){.btn .btn-primary}
+
+:::
+:::
+:::
+
+::: {.g-col-12 .g-col-md-6}
+::: {.card .h-100}
+::: {.card-body}
+
+### Discrete Data Analysis with R
+
+Co-authored with David Meyer, this book provides a modern approach to categorical data analysis using R. Emphasizes visualization methods for understanding discrete data structures and models.
+
+**Publisher**: CRC Press
+
+[Book website →](http://ddar.datavis.ca/pages/home){.btn .btn-primary}
+
+:::
+:::
+:::
+
+:::
+
+## Additional Resources
+
+For more information about my books and related materials, visit my [books page at datavis.ca](https://www.datavis.ca/books/).
+
+:::

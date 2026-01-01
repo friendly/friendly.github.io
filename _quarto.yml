@@ -1,0 +1,42 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Michael Friendly"
+  description: "Data Visualization Research, R Packages, and Teaching"
+  favicon: images/hexsession-mypkgs.jpg
+
+  navbar:
+    background: primary
+    search: false
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "R Packages"
+        href: packages.qmd
+      - text: "Books"
+        href: books.qmd
+      - text: "Courses"
+        href: courses.qmd
+      - text: "Software"
+        href: software.qmd
+    right:
+      - icon: github
+        href: https://github.com/friendly
+        aria-label: GitHub
+
+  page-footer:
+    left: "Copyright 2024, Michael Friendly"
+    right:
+      - text: "datavis.ca"
+        href: https://datavis.ca/
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    css: styles.css
+    toc: false
+    page-layout: full
