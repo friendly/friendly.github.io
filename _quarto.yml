@@ -1,6 +1,14 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "!index.Rmd"
+    - "!packages.Rmd"
+    - "!dev/*"
+    - "!*.md"
+    - "!README*"
+    - "!QUARTO*"
 
 website:
   title: "Michael Friendly"
