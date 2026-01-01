@@ -8,6 +8,7 @@ either https://friendly.github.io (easy?) or a netlify account which I don't hav
 **Note**: The current version on https://github.com/friendly/friendly.github.io seems to be set up for
 GitHub deployment: https://github.com/friendly/friendly.github.io/settings/pages
 however, the link https://friendly.github.io/ gives a 404 error.
+The current file, `index.Rmd` compiled to `index.md`, was just an initial stab at this, just listing my R packages.
 
 My previous main website is https://datavis.ca/. This has a nice page design, but is largely done in PHP,
 from a local server, and using source control via https://github.com/friendly/datavis. However,
@@ -16,6 +17,7 @@ my deployment is broken, because of problems with authentication to the host ser
 I would like a visually attractive page design, perhaps with graphic "cards" for items
 rather than itemized lists. I'm not sure what technology to use, but I'm thinking of
 using [Quarto](https://quarto.org/).
+
 
 I would also like to write occasional blog posts. I'm not sure whether this could or should
 be done from this repo, or whether it should be done in a separate repo this is linked here.
