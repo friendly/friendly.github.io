@@ -19,9 +19,6 @@ desc <- function(package) {
 }
 ```
 
-<!-- ![]("images/hexsession-mypkgs.jpg") -->
-
-<img src="images/hexsession-mypkgs.jpg">
 
 This page provides overview descriptions of my R packages and those I have contributed to.
 The hex icons link to the GitHub repositories. Links to the package **Documentation** are
@@ -29,7 +26,7 @@ also provided.
 
 Topics: [Multivariate linear models](#MLM) || [Categorical data analysis](#CDA) || [Data](#DATA)
 
-## Multivariate linear models {#MLM}
+## ✨ Multivariate linear models {#MLM}
 
 ### [heplots](https://github.com/friendly/heplots)
 
@@ -43,7 +40,7 @@ cat(desc("heplots"))
 
 ### [candisc](https://github.com/friendly/candisc)
 
-[<img src='https://raw.githubusercontent.com/friendly/candisc/master/candisc-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/candisc)
+[<img src='https://raw.githubusercontent.com/friendly/candisc/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/candisc)
 
 ```{r candisc-desc, results='asis'}
 cat(desc("candisc"))
@@ -91,11 +88,13 @@ cat(desc("matlib"))
 
 ### [gellipsoid](https://github.com/friendly/gellipsoid)
 
-[<img src='https://raw.githubusercontent.com/friendly/gellipsoid/master/man/figures/gellipsoid-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/gellipsoid)
+[<img src='https://raw.githubusercontent.com/friendly/gellipsoid/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/gellipsoid)
 
 ```{r gellipsoid-desc, results='asis'}
 cat(desc("gellipsoid"))
 ```
+**Documentation**: [friendly.github.io/gellipsoid](https://friendly.github.io/gellipsoid/)
+
 <br/>
 <p></p>
 
@@ -105,7 +104,7 @@ cat(desc("gellipsoid"))
 ```{r twoway-desc, results='asis'}
 cat(desc("twoway"))
 ```
-**Documentation**: [rdrr.io/cran/twoway/](https://rdrr.io/cran/twoway/)
+**Documentation**: [friendly.github.io/twoway](https://friendly.github.io/twoway)
 
 ### [ggbiplot](https://github.com/friendly/ggbiplot)
 
@@ -115,7 +114,7 @@ cat(desc("ggbiplot"))
 ```
 **Documentation**: [friendly.github.io/ggbiplot](http://friendly.github.io/ggbiplot/)
 
-## Categorical data analysis {#CDA}
+## ✨ Categorical data analysis {#CDA}
 
 ### [vcdExtra](https://github.com/friendly/vcdExtra)
 
@@ -133,7 +132,7 @@ cat(desc("nestedLogit"))
 ```
 **Documentation**: [friendly.github.io/nestedLogit](https://friendly.github.io/nestedLogit/)
 
-## Data {#DATA}
+## 🗃️  Data {#DATA}
 
 ### [HistData](https://github.com/friendly/HistData)
 
@@ -150,7 +149,7 @@ cat(desc("HistData"))
 ```{r Guerry-desc, results='asis'}
 cat(desc("Guerry"))
 ```
-**Documentation**: [rdrr.io/cran/Guerry/](https://rdrr.io/cran/Guerry/)
+**Documentation**: [https://friendly.github.io/Guerry](https://friendly.github.io/Guerry)
 
 ### [WordPools](https://github.com/friendly/WordPools)
 
@@ -163,18 +162,26 @@ cat(desc("WordPools"))
 
 ### [Lahman](https://github.com/cdalzell/Lahman)
 
-[<img src='https://raw.githubusercontent.com/cdalzell/Lahman/master/man/figures/Lahman_hex.png' height='120' align='left' style="padding:'20px'">](https://github.com/cdalzell/Lahman)
+[<img src='https://raw.githubusercontent.com/cdalzell/Lahman/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/cdalzell/Lahman)
 ```{r Lahman-desc, results='asis'}
 cat(desc("Lahman"))
 ```
-**Documentation**: [rdrr.io/cran/Lahman/](https://rdrr.io/cran/Lahman/)
+**Documentation**: [cdalzell.github.io/Lahman](https://cdalzell.github.io/Lahman)
 
 ### [statquotes](https://github.com/friendly/statquotes)
 
-[<img src='https://raw.githubusercontent.com/friendly/statquotes/master/man/figures/statquotes-logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/statquotes)
+[<img src='https://raw.githubusercontent.com/friendly/statquotes/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/statquotes)
 ```{r statquotes-desc, results='asis'}
 cat(desc("statquotes"))
 ```
-**Documentation**: [rdrr.io/cran/statquotes/](https://rdrr.io/cran/statquotes/)
+**Documentation**: [https://friendly.github.io/statquotes/](https://friendly.github.io/statquotes/)
+
+### [ggCheysson](https://github.com/friendly/ggCheysson)
+
+[<img src='https://raw.githubusercontent.com/friendly/ggCheysson/master/man/figures/logo.png' height='120' align='left' style="padding:'20px'">](https://github.com/friendly/ggCheysson)
+```{r ggCheysson-desc, results='asis'}
+cat(desc("ggCheysson"))
+```
+**Documentation**: [https://friendly.github.io/ggCheysson/](https://friendly.github.io/ggCheysson/)
 
 
