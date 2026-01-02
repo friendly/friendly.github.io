@@ -1,12 +1,18 @@
 ---
-title: "Welcome"
+title: "Welcome to My Site"
 ---
 
 ::: {.column-page}
 
-## About
+## About me
 
-I'm a Professor of Psychology at York University, specializing in **data visualization** and **statistical methods**. My research focuses on graphical methods for understanding multivariate data and models and visualization for categorical data.
+::: {.profile-section}
+<img src="images/MF-Gemeni-crop.png" class="profile-photo" alt="Michael Friendly">
+
+<div class="profile-text">
+I'm a Professor of Psychology at York University, specializing in **data visualization** and **statistical methods**. My research focuses on graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization.
+</div>
+:::
 
 <img src="images/hexsession-mypkgs.jpg" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">
 

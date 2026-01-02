@@ -4,7 +4,7 @@ title: "Other Software"
 
 ::: {.column-page}
 
-In addition to R packages, I have developed extensive collections of software for statistical graphics and data analysis.
+In addition to R packages, in an earlier life, I developed extensive collections of SAS software for statistical graphics and data analysis.
 
 ## SAS Macros
 
