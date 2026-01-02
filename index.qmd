@@ -6,7 +6,7 @@ title: "Welcome"
 
 ## About
 
-I'm a Professor Emeritus of Psychology at York University, specializing in **data visualization** and **statistical methods**. My research focuses on graphical methods for understanding multivariate data and models.
+I'm a Professor of Psychology at York University, specializing in **data visualization** and **statistical methods**. My research focuses on graphical methods for understanding multivariate data and models and visualization for categorical data.
 
 <img src="images/hexsession-mypkgs.jpg" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">
 
