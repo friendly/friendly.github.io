@@ -43,11 +43,35 @@ A comprehensive guide to understanding multivariate linear models through visual
 
 ### Discrete Data Analysis with R
 
-Co-authored with David Meyer, this book provides an accessible introduction to the major methods of categorical data analysis for data exploration, statistical testing and visualization. As opposed to more theoretical books, the goal here is to help the reader to translate theory into practical application, by providing skills and software tools for carrying out these methods. 
+Co-authored with David Meyer, this book provides an accessible introduction to the major methods of categorical data analysis for data exploration, statistical testing and visualization. As opposed to more theoretical books, the goal here is to help the reader to translate theory into practical application, by providing skills and software tools for carrying out these methods.
 
 **Publication information**: Michael Friendly and David Meyer, [Discrete Data Analysis with R: Visualization and Modeling Techniques for Categorical and Count Data]( https://www.crcpress.com/9781498725835 ), 2016, Chapman and Hall/CRC, ISBN 9781498725835.
 
 [Book website →](http://ddar.datavis.ca/pages/home){.btn .btn-primary}
+
+</div>
+:::
+
+:::
+:::
+:::
+
+::: {.g-col-12 .g-col-md-6}
+::: {.card .h-100}
+::: {.card-body}
+
+::: {.book-card-content}
+<img src="images/FriendlyWainer-cover.jpg" class="book-cover" alt="A History of Data Visualization and Graphic Communication book cover">
+
+<div class="book-text">
+
+### A History of Data Visualization & Graphic Communication
+
+Co-authored with Howard Wainer, this book provides a comprehensive historical account of data visualization. It addresses three central questions: How did graphic representations of numerical data originate and why? What innovations led to the common graphs and diagrams we use today? How have graphical inventions contributed to understanding phenomena and communicating findings?
+
+**Publication information**: Michael Friendly and Howard Wainer, [A History of Data Visualization & Graphic Communication](https://www.hup.harvard.edu/catalog.php?isbn=9780674975231), 2021, Harvard University Press, ISBN 978-0674975231.
+
+[Companion website →](https://friendly.github.io/HistDataVis/){.btn .btn-primary}
 
 </div>
 :::
