@@ -11,6 +11,12 @@ echo "Rendering Quarto site..."
 quarto render || echo "Render completed with warnings (this is normal)"
 
 echo ""
+echo "Copying images to docs folder..."
+mkdir -p docs/images
+cp -r images/* docs/images/ 2>/dev/null || true
+
+echo ""
 echo "Rendering complete! The site is in docs/"
+echo "Images copied successfully."
 echo "Note: You may see errors about .quarto/_freeze - these can be ignored."
 echo "The HTML files are generated correctly despite the errors."

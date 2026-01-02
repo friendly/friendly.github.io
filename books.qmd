@@ -21,7 +21,7 @@ I have authored and co-authored several books on data visualization and statisti
 
 A comprehensive guide to understanding multivariate linear models through visualization. Covers HE plots, canonical discriminant analysis, and other graphical methods for multivariate data.
 
-**Status**: Available online
+**Status**: Under review. To be published by CRC Press, 2026. Available online
 
 [Read online →](https://friendly.github.io/Vis-MLM-book/){.btn .btn-primary}
 
@@ -43,9 +43,9 @@ A comprehensive guide to understanding multivariate linear models through visual
 
 ### Discrete Data Analysis with R
 
-Co-authored with David Meyer, this book provides a modern approach to categorical data analysis using R. Emphasizes visualization methods for understanding discrete data structures and models.
+Co-authored with David Meyer, this book provides an accessible introduction to the major methods of categorical data analysis for data exploration, statistical testing and visualization. As opposed to more theoretical books, the goal here is to help the reader to translate theory into practical application, by providing skills and software tools for carrying out these methods. 
 
-**Publisher**: CRC Press
+**Publication information**: Michael Friendly and David Meyer, [Discrete Data Analysis with R: Visualization and Modeling Techniques for Categorical and Count Data]( https://www.crcpress.com/9781498725835 ), 2016, Chapman and Hall/CRC, ISBN 9781498725835.
 
 [Book website →](http://ddar.datavis.ca/pages/home){.btn .btn-primary}
 
