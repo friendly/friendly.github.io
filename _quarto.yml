@@ -9,6 +9,8 @@ project:
     - "!*.md"
     - "!README*"
     - "!QUARTO*"
+execute:
+  freeze: false
 
 website:
   title: "Michael Friendly"

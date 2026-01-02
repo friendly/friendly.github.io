@@ -4,7 +4,7 @@
     "href": "software.html",
     "title": "Other Software",
     "section": "",
-    "text": "In addition to R packages, I have developed extensive collections of software for statistical graphics and data analysis.\n\n\n\n\n\n\n\n\nMaintenance Status\n\n\n\nThese macros are no longer actively maintained but remain available as a historical resource and for those still using SAS.\n\n\nI have developed an extensive collection of SAS macros for statistical graphics and data analysis. These macros cover a wide range of statistical methods with an emphasis on graphical display.\n\n\n\nGraphical methods: Scatterplot matrices, enhanced plots, diagnostic displays\nMultivariate methods: Correspondence analysis, canonical correlation, discriminant analysis\nCategorical data: Mosaic displays, odds ratio plots, loglinear models\nRegression diagnostics: Influence plots, partial regression plots\nStatistical graphics: Quantile plots, rootograms, and more\n\n\n\n\n\n\n\n\nDocumentation\nComprehensive documentation for each macro with examples and usage notes.\nBrowse documentation →\n\n\n\n\n\n\nSource Code\nAll macro source code is freely available on GitHub.\nView on GitHub →\n\n\n\n\n\n\n\n\nAdditional software tools and utilities are available through my GitHub repositories at github.com/friendly."
+    "text": "In addition to R packages, in an earlier life, I developed extensive collections of SAS software for statistical graphics and data analysis.\n\n\n\n\n\n\n\n\nMaintenance Status\n\n\n\nThese macros are no longer actively maintained but remain available as a historical resource and for those still using SAS.\n\n\nI have developed an extensive collection of SAS macros for statistical graphics and data analysis. These macros cover a wide range of statistical methods with an emphasis on graphical display.\n\n\n\nGraphical methods: Scatterplot matrices, enhanced plots, diagnostic displays\nMultivariate methods: Correspondence analysis, canonical correlation, discriminant analysis\nCategorical data: Mosaic displays, odds ratio plots, loglinear models\nRegression diagnostics: Influence plots, partial regression plots\nStatistical graphics: Quantile plots, rootograms, and more\n\n\n\n\n\n\n\n\nDocumentation\nComprehensive documentation for each macro with examples and usage notes.\nBrowse documentation →\n\n\n\n\n\n\nSource Code\nAll macro source code is freely available on GitHub.\nView on GitHub →\n\n\n\n\n\n\n\n\nAdditional software tools and utilities are available through my GitHub repositories at github.com/friendly."
   },
   {
     "objectID": "software.html#sas-macros",
@@ -23,35 +23,35 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Welcome",
+    "title": "Welcome to My Site",
     "section": "",
-    "text": "I’m a Professor of Psychology at York University, specializing in data visualization and statistical methods. My research focuses on graphical methods for understanding multivariate data and models and visualization for categorical data.\n\n\n\n\n\n\n\nI maintain over 15 R packages for multivariate analysis, categorical data analysis, and historical datasets. These packages emphasize visualization and understanding of statistical methods.\nExplore packages →\n\n\n\nAuthor of several books on data visualization and statistical methods in R, including works on visualizing multivariate models and discrete data analysis.\nView books →\n\n\n\nTeaching materials for graduate courses in Psychology of Data Visualization and Categorical Data Analysis, with extensive online resources.\nSee courses →\n\n\n\nExtensive collection of SAS macros for statistical graphics and analysis, developed over many years and freely available on GitHub.\nBrowse software →\n\n\n\n\n\nMy current work emphasizes the use of visualization to understand statistical models and data structure, with particular focus on:\n\nHE plots for multivariate linear models\nVisualization of categorical data analysis\nHistorical datasets in statistics\nTeaching statistical graphics\n\n\n\n\n\nWebsite: datavis.ca\nGitHub: github.com/friendly\nEmail: friendly@yorku.ca"
+    "text": "I’m a Professor of Psychology at York University, specializing in data visualization and statistical methods. My research focuses on graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization.\n\n\n\n\n\n\n\nI maintain over 15 R packages for multivariate analysis, categorical data analysis, and historical datasets. These packages emphasize visualization and understanding of statistical methods.\nExplore packages →\n\n\n\nAuthor of several books on data visualization and statistical methods in R, including works on visualizing multivariate models and discrete data analysis.\nView books →\n\n\n\nTeaching materials for graduate courses in Psychology of Data Visualization and Categorical Data Analysis, with extensive online resources.\nSee courses →\n\n\n\nExtensive collection of SAS macros for statistical graphics and analysis, developed over many years and freely available on GitHub.\nBrowse software →\n\n\n\n\n\nMy current work emphasizes the use of visualization to understand statistical models and data structure, with particular focus on:\n\nHE plots for multivariate linear models\nVisualization of categorical data analysis\nHistorical datasets in statistics\nTeaching statistical graphics\n\n\n\n\n\nWebsite: datavis.ca\nGitHub: github.com/friendly\nEmail: friendly@yorku.ca"
   },
   {
-    "objectID": "index.html#about",
-    "href": "index.html#about",
-    "title": "Welcome",
+    "objectID": "index.html#about-me",
+    "href": "index.html#about-me",
+    "title": "Welcome to My Site",
     "section": "",
-    "text": "I’m a Professor of Psychology at York University, specializing in data visualization and statistical methods. My research focuses on graphical methods for understanding multivariate data and models and visualization for categorical data."
+    "text": "I’m a Professor of Psychology at York University, specializing in data visualization and statistical methods. My research focuses on graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization."
   },
   {
     "objectID": "index.html#highlights",
     "href": "index.html#highlights",
-    "title": "Welcome",
+    "title": "Welcome to My Site",
     "section": "",
     "text": "I maintain over 15 R packages for multivariate analysis, categorical data analysis, and historical datasets. These packages emphasize visualization and understanding of statistical methods.\nExplore packages →\n\n\n\nAuthor of several books on data visualization and statistical methods in R, including works on visualizing multivariate models and discrete data analysis.\nView books →\n\n\n\nTeaching materials for graduate courses in Psychology of Data Visualization and Categorical Data Analysis, with extensive online resources.\nSee courses →\n\n\n\nExtensive collection of SAS macros for statistical graphics and analysis, developed over many years and freely available on GitHub.\nBrowse software →"
   },
   {
     "objectID": "index.html#recent-work",
     "href": "index.html#recent-work",
-    "title": "Welcome",
+    "title": "Welcome to My Site",
     "section": "",
     "text": "My current work emphasizes the use of visualization to understand statistical models and data structure, with particular focus on:\n\nHE plots for multivariate linear models\nVisualization of categorical data analysis\nHistorical datasets in statistics\nTeaching statistical graphics"
   },
   {
     "objectID": "index.html#contact-links",
     "href": "index.html#contact-links",
-    "title": "Welcome",
+    "title": "Welcome to My Site",
     "section": "",
     "text": "Website: datavis.ca\nGitHub: github.com/friendly\nEmail: friendly@yorku.ca"
   },
@@ -60,7 +60,7 @@
     "href": "books.html",
     "title": "Books",
     "section": "",
-    "text": "I have authored and co-authored several books on data visualization and statistical methods in R. These books emphasize graphical understanding of statistical concepts and practical implementation.\n\n\n\n\n\nA comprehensive guide to understanding multivariate linear models through visualization. Covers HE plots, canonical discriminant analysis, and other graphical methods for multivariate data.\nStatus: Available online\nRead online →\n\n\n\n\n\n\n\nCo-authored with David Meyer, this book provides a modern approach to categorical data analysis using R. Emphasizes visualization methods for understanding discrete data structures and models.\nPublisher: CRC Press\nBook website →\n\n\n\n\n\n\nFor more information about my books and related materials, visit my books page at datavis.ca."
+    "text": "I have authored and co-authored several books on data visualization and statistical methods in R. These books emphasize graphical understanding of statistical concepts and practical implementation.\n\n\n\n\n\n\n\n\nA comprehensive guide to understanding multivariate linear models through visualization. Covers HE plots, canonical discriminant analysis, and other graphical methods for multivariate data.\nStatus: Available online\nRead online →\n\n\n\n\n\n\n\n\n\n\n\n\nCo-authored with David Meyer, this book provides a modern approach to categorical data analysis using R. Emphasizes visualization methods for understanding discrete data structures and models.\nPublisher: CRC Press\nBook website →\n\n\n\n\n\n\n\n\nFor more information about my books and related materials, visit my books page at datavis.ca."
   },
   {
     "objectID": "books.html#additional-resources",

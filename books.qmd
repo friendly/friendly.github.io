@@ -12,6 +12,11 @@ I have authored and co-authored several books on data visualization and statisti
 ::: {.card .h-100}
 ::: {.card-body}
 
+::: {.book-card-content}
+<img src="images/VisMLM-cover.jpg" class="book-cover" alt="Visualizing Multivariate Data and Models in R book cover">
+
+<div class="book-text">
+
 ### Visualizing Multivariate Data and Models in R
 
 A comprehensive guide to understanding multivariate linear models through visualization. Covers HE plots, canonical discriminant analysis, and other graphical methods for multivariate data.
@@ -19,6 +24,9 @@ A comprehensive guide to understanding multivariate linear models through visual
 **Status**: Available online
 
 [Read online →](https://friendly.github.io/Vis-MLM-book/){.btn .btn-primary}
+
+</div>
+:::
 
 :::
 :::
@@ -28,6 +36,11 @@ A comprehensive guide to understanding multivariate linear models through visual
 ::: {.card .h-100}
 ::: {.card-body}
 
+::: {.book-card-content}
+<img src="images/DDAR-cover.png" class="book-cover" alt="Discrete Data Analysis with R book cover">
+
+<div class="book-text">
+
 ### Discrete Data Analysis with R
 
 Co-authored with David Meyer, this book provides a modern approach to categorical data analysis using R. Emphasizes visualization methods for understanding discrete data structures and models.
@@ -35,6 +48,9 @@ Co-authored with David Meyer, this book provides a modern approach to categorica
 **Publisher**: CRC Press
 
 [Book website →](http://ddar.datavis.ca/pages/home){.btn .btn-primary}
+
+</div>
+:::
 
 :::
 :::

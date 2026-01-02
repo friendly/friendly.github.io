@@ -57,3 +57,39 @@ h2 {
   border-top: 1px solid rgba(0,0,0,.1);
   padding-top: 1rem;
 }
+
+/* Book cover styling */
+.book-card-content {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.book-cover {
+  width: 20%;
+  min-width: 80px;
+  max-width: 150px;
+  height: auto;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.book-text {
+  flex: 1;
+}
+
+/* Responsive: stack on very small screens */
+@media (max-width: 576px) {
+  .book-card-content {
+    flex-direction: column;
+  }
+
+  .book-cover {
+    width: 40%;
+    max-width: 120px;
+    align-self: center;
+    margin-bottom: 1rem;
+  }
+}
