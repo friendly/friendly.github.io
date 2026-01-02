@@ -63,6 +63,7 @@ My current work emphasizes the use of visualization to understand statistical mo
 
 - **Website**: [datavis.ca](https://datavis.ca/)
 - **GitHub**: [github.com/friendly](https://github.com/friendly)
-- **Email**: friendly@yorku.ca
+- **BlueSky**: [https://bsky.app/profile/datavisfriendly.bsky.social](https://bsky.app/profile/datavisfriendly.bsky.social)
+- **Email**: friendly AT yorku DOT ca
 
 :::
