@@ -60,39 +60,85 @@ h2 {
   padding-top: 1rem;
 }
 
-/* Book cover styling */
+/* Book card styling */
+.book-card {
+  margin-bottom: 2rem;
+}
+
 .book-card-content {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   align-items: flex-start;
 }
 
-.book-cover {
+.book-cover-large {
   width: 20%;
-  min-width: 80px;
-  max-width: 150px;
+  min-width: 120px;
+  max-width: 200px;
   height: auto;
   object-fit: cover;
   flex-shrink: 0;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,.15);
 }
 
 .book-text {
   flex: 1;
 }
 
-/* Responsive: stack on very small screens */
-@media (max-width: 576px) {
+/* Responsive: stack on smaller screens */
+@media (max-width: 768px) {
   .book-card-content {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
-  .book-cover {
-    width: 40%;
-    max-width: 120px;
-    align-self: center;
-    margin-bottom: 1rem;
+  .book-cover-large {
+    width: 50%;
+    max-width: 180px;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Course card styling */
+.course-card {
+  margin-bottom: 2rem;
+}
+
+.course-card-content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.course-icon {
+  width: 20%;
+  min-width: 120px;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,.15);
+}
+
+.course-text {
+  flex: 1;
+}
+
+/* Responsive: stack on smaller screens */
+@media (max-width: 768px) {
+  .course-card-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .course-icon {
+    width: 50%;
+    max-width: 180px;
+    margin-bottom: 1.5rem;
   }
 }
 

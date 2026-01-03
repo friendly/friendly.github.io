@@ -6,7 +6,8 @@
       "Bash(git add:*)",
       "WebFetch(domain:www.datavis.ca)",
       "Bash(perl -i -pe:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:friendly.apps01.yorku.ca)"
     ]
   }
 }

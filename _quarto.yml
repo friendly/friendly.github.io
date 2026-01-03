@@ -32,13 +32,13 @@ website:
         href: books.qmd
       - text: "Courses"
         href: courses.qmd
-      - text: "Software"
+      - text: "Other Software"
         href: software.qmd
     right:
       - icon: github
         href: https://github.com/friendly
         aria-label: GitHub
-      - icon: bluesky
+      - icon: images/bluesky-logo.png
         href: https://bsky.app/profile/datavisfriendly.bsky.social
         aria-label: BlueSky
 

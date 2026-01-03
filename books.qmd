@@ -6,14 +6,11 @@ title: "Books"
 
 I have authored and co-authored several books on data visualization and statistical methods in R. These books emphasize graphical understanding of statistical concepts and practical implementation.
 
-::: {.grid}
-
-::: {.g-col-12 .g-col-md-6}
-::: {.card .h-100}
+::: {.card .book-card}
 ::: {.card-body}
 
 ::: {.book-card-content}
-<img src="images/VisMLM-cover.jpg" class="book-cover" alt="Visualizing Multivariate Data and Models in R book cover">
+<img src="images/VisMLM-cover.jpg" class="book-cover-large" alt="Visualizing Multivariate Data and Models in R book cover">
 
 <div class="book-text">
 
@@ -30,14 +27,12 @@ A comprehensive guide to understanding multivariate linear models through visual
 
 :::
 :::
-:::
 
-::: {.g-col-12 .g-col-md-6}
-::: {.card .h-100}
+::: {.card .book-card}
 ::: {.card-body}
 
 ::: {.book-card-content}
-<img src="images/DDAR-cover.png" class="book-cover" alt="Discrete Data Analysis with R book cover">
+<img src="images/DDAR-cover.png" class="book-cover-large" alt="Discrete Data Analysis with R book cover">
 
 <div class="book-text">
 
@@ -54,14 +49,12 @@ Co-authored with David Meyer, this book provides an accessible introduction to t
 
 :::
 :::
-:::
 
-::: {.g-col-12 .g-col-md-6}
-::: {.card .h-100}
+::: {.card .book-card}
 ::: {.card-body}
 
 ::: {.book-card-content}
-<img src="images/FriendlyWainer-cover.jpg" class="book-cover" alt="A History of Data Visualization and Graphic Communication book cover">
+<img src="images/FriendlyWainer-cover.jpg" class="book-cover-large" alt="A History of Data Visualization and Graphic Communication book cover">
 
 <div class="book-text">
 
@@ -77,9 +70,6 @@ Co-authored with Howard Wainer, this book provides a comprehensive historical ac
 :::
 
 :::
-:::
-:::
-
 :::
 
 ## Additional Resources

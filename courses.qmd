@@ -8,13 +8,13 @@ I teach graduate courses in psychology and statistics at York University, with e
 
 ## Current Courses
 
-::: {.grid}
-
-::: {.g-col-12 .g-col-md-6}
-::: {.card .h-100}
+::: {.card .course-card}
 ::: {.card-body}
 
-<div>
+::: {.course-card-content}
+<img src="images/psy6135-trans.png" class="course-icon" alt="PSY 6135 course icon">
+
+<div class="course-text">
 
 ### PSY 6135: Psychology of Data Visualization
 
@@ -26,14 +26,17 @@ A graduate seminar exploring the cognitive and perceptual foundations of data vi
 
 </div>
 :::
+
 :::
 :::
 
-::: {.g-col-12 .g-col-md-6}
-::: {.card .h-100}
+::: {.card .course-card}
 ::: {.card-body}
 
-<div>
+::: {.course-card-content}
+<img src="images/psy6136-highres.png" class="course-icon" alt="PSY 6136 course icon">
+
+<div class="course-text">
 
 ### PSY 6136: Categorical Data Analysis
 
@@ -45,9 +48,39 @@ A graduate course on methods for analyzing categorical and discrete data. Topics
 
 </div>
 :::
+
 :::
 :::
 
+## Older Courses
+
+::: {.card .course-card}
+::: {.card-body}
+
+::: {.course-card-content}
+<img src="images/psy6140.png" class="course-icon" alt="PSY 6140 course icon">
+
+<div class="course-text">
+
+### PSY 6140: Multivariate Data Analysis
+
+Psychology 6140 is designed to provide an integrated, in depth, but applied approach to multivariate data analysis and linear statistical models in behavioural science research. There is a strong emphasis on using graphical methods to understand your data.
+
+**Statistical topics covered include:**
+Regression analysis,
+Univariate and multivariate ANOVA and ANCOVA,
+Discriminant analysis,
+Logistic regression,
+Canonical correlation analysis,
+Principal components, factor analysis, LISREL models (CFA, SEMs),
+Cluster analysis and Multidimensional Scaling
+
+[Course website →](http://friendly.apps01.yorku.ca/psy6140/){.btn .btn-primary}
+
+</div>
+:::
+
+:::
 :::
 
 ## Short Courses & Workshops
