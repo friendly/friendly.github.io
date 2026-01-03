@@ -38,6 +38,9 @@ website:
       - icon: github
         href: https://github.com/friendly
         aria-label: GitHub
+      - icon: bluesky
+        href: https://bsky.app/profile/datavisfriendly.bsky.social
+        aria-label: BlueSky
 
   page-footer:
     left: "Copyright 2024, Michael Friendly"
