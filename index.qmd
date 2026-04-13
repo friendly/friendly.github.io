@@ -1,5 +1,13 @@
 ---
 title: "Welcome to My Site"
+description: "Michael Friendly - Professor of Psychology at York University, specializing in data visualization and statistical methods. R package author and data visualization researcher."
+image: "images/MF-face.png"
+twitter-card:
+  image: "images/MF-face.png"
+open-graph:
+  title: "Michael Friendly - Data Visualization & Statistical Methods"
+  description: "Professor of Psychology at York University, specializing in data visualization and statistical methods. R package author and data visualization researcher."
+  image: "images/MF-face.png"
 ---
 
 ::: {.column-page}
@@ -7,7 +15,7 @@ title: "Welcome to My Site"
 ## About me
 
 ::: {.profile-section}
-<img src="images/MF-Gemeni-crop.png" class="profile-photo" alt="Michael Friendly">
+<img src="images/MF-face.png" class="profile-photo" alt="Michael Friendly">
 
 <div class="profile-text">
 I'm a Professor of Psychology at York University, specializing in **data visualization** and **statistical methods**. My research focuses on development of graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization, captured in my [Milestones Project](http://datavis.ca/milestones/) and historical [research papers](https://www.datavis.ca/papers/#history).

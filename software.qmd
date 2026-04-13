@@ -1,5 +1,13 @@
 ---
 title: "Other Software"
+description: "SAS macros and other statistical software by Michael Friendly. Extensive collection of SAS macros for statistical graphics, multivariate methods, and categorical data analysis."
+image: "images/hexsession-mypkgs.jpg"
+twitter-card:
+  image: "images/hexsession-mypkgs.jpg"
+open-graph:
+  title: "SAS Macros and Software by Michael Friendly"
+  description: "Extensive collection of SAS macros for statistical graphics, multivariate methods, and categorical data analysis."
+  image: "images/hexsession-mypkgs.jpg"
 ---
 
 ::: {.column-page}

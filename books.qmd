@@ -1,5 +1,13 @@
 ---
 title: "Books"
+description: "Books by Michael Friendly on data visualization and statistical methods, including 'A History of Data Visualization', 'Discrete Data Analysis with R', and 'Visualizing Multivariate Data and Models in R'."
+image: "images/FriendlyWainer-cover.jpg"
+twitter-card:
+  image: "images/FriendlyWainer-cover.jpg"
+open-graph:
+  title: "Books by Michael Friendly"
+  description: "Books on data visualization and statistical methods, including 'A History of Data Visualization', 'Discrete Data Analysis with R', and 'Visualizing Multivariate Data and Models in R'."
+  image: "images/FriendlyWainer-cover.jpg"
 ---
 
 ::: {.column-page}

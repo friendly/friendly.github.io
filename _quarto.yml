@@ -9,6 +9,7 @@ project:
     - "!*.md"
     - "!README*"
     - "!QUARTO*"
+    - "!*-old.qmd"
   resources:
     - "images/"
 
@@ -18,7 +19,7 @@ execute:
 website:
   title: "Michael Friendly"
   description: "Data Visualization Research, R Packages, and Teaching"
-  favicon: images/hexsession-mypkgs.jpg
+  favicon: images/MF-face.png
 
   navbar:
     background: primary
@@ -38,12 +39,12 @@ website:
       - icon: github
         href: https://github.com/friendly
         aria-label: GitHub
-      - icon: bluesky
+      - text: <img src="images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;">
         href: https://bsky.app/profile/datavisfriendly.bsky.social
         aria-label: BlueSky
 
   page-footer:
-    left: "Copyright 2024, Michael Friendly"
+    left: "Copyright 2025, Michael Friendly"
     right:
       - text: "friendly.github.io/"
         href: https://friendly.github.io/

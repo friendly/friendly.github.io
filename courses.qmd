@@ -1,5 +1,13 @@
 ---
 title: "Courses"
+description: "Graduate courses by Michael Friendly at York University: Psychology of Data Visualization (PSY 6135), Categorical Data Analysis (PSY 6136), and Multivariate Data Analysis. Comprehensive online materials available."
+image: "images/psy6135-trans.png"
+twitter-card:
+  image: "images/psy6135-trans.png"
+open-graph:
+  title: "Graduate Courses by Michael Friendly"
+  description: "Psychology of Data Visualization (PSY 6135), Categorical Data Analysis (PSY 6136), and Multivariate Data Analysis at York University. Comprehensive online materials available."
+  image: "images/psy6135-trans.png"
 ---
 
 ::: {.column-page}
