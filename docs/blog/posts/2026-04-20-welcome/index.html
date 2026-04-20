@@ -300,7 +300,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="https://bsky.app/profile/datavisfriendly.bsky.social"> 
-<span class="menu-text"><img src="images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
+<span class="menu-text"><img src="../../../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -476,7 +476,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/friendly\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

@@ -11,7 +11,9 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:datavis.ca)",
       "WebFetch(domain:cran.r-project.org)",
-      "WebFetch(domain:friendly.github.io)"
+      "WebFetch(domain:friendly.github.io)",
+      "Read(//c/R/Projects/Vis-MLM-book/issues/**)",
+      "Read(//c/R/Projects/Vis-MLM-book/blogs/**)"
     ]
   }
 }

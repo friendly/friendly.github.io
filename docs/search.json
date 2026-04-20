@@ -70,13 +70,6 @@
     "text": "For more information about my books and related materials, visit my books page at datavis.ca."
   },
   {
-    "objectID": "blog/index.html",
-    "href": "blog/index.html",
-    "title": "Datavis Musings",
-    "section": "",
-    "text": "Thoughts on data visualization, statistical graphics, R programming, and the history of data visualization.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome to Datavis Musings\n\n\n\nannouncement\n\n\n\nIntroducing my new blog on data visualization, statistical graphics, and R programming\n\n\n\n\n\nApr 20, 2026\n\n\nMichael Friendly\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "blog/posts/2026-04-20-welcome/index.html",
     "href": "blog/posts/2026-04-20-welcome/index.html",
     "title": "Welcome to Datavis Musings",
@@ -103,6 +96,55 @@
     "title": "Welcome to Datavis Musings",
     "section": "Stay Connected",
     "text": "Stay Connected\nYou can follow along via:\n\n\n BlueSky\n GitHub\n\nStay tuned for more!"
+  },
+  {
+    "objectID": "blog/index.html",
+    "href": "blog/index.html",
+    "title": "Datavis Musings",
+    "section": "",
+    "text": "Thoughts on data visualization, statistical graphics, R programming, and the history of data visualization.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome to Datavis Musings\n\n\n\nannouncement\n\n\n\nIntroducing my new blog on data visualization, statistical graphics, and R programming\n\n\n\n\n\nApr 20, 2026\n\n\nMichael Friendly\n\n\n\n\n\n\n\n\n\n\n\n\nThe Making of Vis-MLM\n\n\n\nquarto\n\nbooks\n\nannouncement\n\n\n\nA behind-the-scenes series on writing a technical book with Quarto: choices, surprises, and some hard-won solutions\n\n\n\n\n\nApr 21, 2026\n\n\nMichael Friendly\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blog/posts/2026-04-21-making-vis-mlm/index.html",
+    "href": "blog/posts/2026-04-21-making-vis-mlm/index.html",
+    "title": "The Making of Vis-MLM",
+    "section": "",
+    "text": "🧊 I’ve been writing Visualizing Multivariate Data and Models in R (CRC Press / Chapman & Hall, in preparation) for several years now. The book uses Quarto to produce both a print-quality PDF and a free online HTML version from a single source. That promise: write once, render to multiple formats is so attractive! In practice, it turned out to be less simple than advertised.\nThis post introduces a series, The Making of Vis-MLM, on the technical challenges of writing a complex book in Quarto, what I’ve learned, and how I solved (or am still solving) them. I hope it’s useful to others attempting something similar.\nThis is just an outline of topics I’ve been working on. I’ll write up some of these, when I get a Round Tuit."
+  },
+  {
+    "objectID": "blog/posts/2026-04-21-making-vis-mlm/index.html#the-choice-of-quarto",
+    "href": "blog/posts/2026-04-21-making-vis-mlm/index.html#the-choice-of-quarto",
+    "title": "The Making of Vis-MLM",
+    "section": "The choice of Quarto",
+    "text": "The choice of Quarto\nMy previous book, Discrete Data Analysis with R, was written in .Rnw — LaTeX with embedded R code chunks processed by knitr. The pipeline was transparent:\n.Rnw → knitr → .tex → LaTeX → BibTeX → LaTeX → PDF\nEvery step was explicit. You could run them individually, inspect intermediate files, and control every detail of layout and typography. I was able to design custom visual chapter headers, part-page spreads with color schemes, and a comprehensive dual-index (Subject + Author) using standard LaTeX packages. It’s the book I’m most proud of.\nWith Quarto, the pipeline becomes:\n.qmd → knitr → pandoc → .tex → XeLaTeX → makeindex → PDF\n              ↓\n             HTML\nPandoc acts as an opaque intermediary between your Markdown source and the LaTeX that XeLaTeX compiles. That extra layer is what buys you the HTML output — but it also means that things which were trivial in .Rnw become genuinely difficult.\nI chose Quarto because I wanted the online version to be a first-class citizen, not an afterthought. The trade-off turned out to be steeper than I expected."
+  },
+  {
+    "objectID": "blog/posts/2026-04-21-making-vis-mlm/index.html#the-fundamental-tension",
+    "href": "blog/posts/2026-04-21-making-vis-mlm/index.html#the-fundamental-tension",
+    "title": "The Making of Vis-MLM",
+    "section": "The fundamental tension",
+    "text": "The fundamental tension\nIn .Rnw, you control the LaTeX. You write \\index{}, \\pkg{}, \\href{}, and \\footnote{} directly, and you get exactly what you wrote. Custom macros (\\pkg{}, \\dataset{}, \\func{}) can do indexing, citation, and formatting in a single call — reliably, everywhere in the document.\nIn Quarto, you write Markdown and inline R expressions that generate LaTeX strings, which pandoc then processes. You don’t control the .tex file; Quarto does. If your generated LaTeX has a newline in the wrong place, or pandoc’s % comment-suppression fires near a \\footnote{}, or a Lua filter runs during the PDF build when it shouldn’t — you get errors that span three tool layers and take days to diagnose.\nThe series covers where this tension surfaced in practice, and what I did about it."
+  },
+  {
+    "objectID": "blog/posts/2026-04-21-making-vis-mlm/index.html#posts-in-this-series",
+    "href": "blog/posts/2026-04-21-making-vis-mlm/index.html#posts-in-this-series",
+    "title": "The Making of Vis-MLM",
+    "section": "Posts in this series",
+    "text": "Posts in this series\nThe topics below are drawn from the working notes in my book repository. As I write them up, these will become links to full posts.\nSetting up and getting started\n\nStarting from the CRC bare-bones Quarto template: What it provides, what it doesn’t, and what I had to figure out on my own\nQuarto is not LaTeX, however hard it tries: A broad comparison of the .Rnw and Quarto workflows; what I gained and lost\nGetting HELP: Notes on where I asked questions and how this went: Stack Overflow (knitr, ggplot2), TeX Stack Exchange, Quarto Dev discussion, ggplot extenders club, Claude.\nYou can’t keep your Quarto project on Dropbox: File locking, sync interference, and why git is now my only sync mechanism\n\nIndexing\n\nCreating book indexes in Quarto: R helper functions, LaTeX macros, and the underscore problem (already written — link coming soon)\nThe author index disaster: Five things that break simultaneously when you move from BibTeX to pandoc citeproc, and how I worked around each one\n\nThe build pipeline\n\nTwo weeks in Quarto/Pandoc/LaTeX hell — tracking down Extra }, or forgotten \\endgroup across three tool layers\nThe mysterious freeze cache — how Quarto’s execution cache can silently hold stale output, and why changing common.R doesn’t always change your PDF\nBuild workflow fragility — why there’s no Makefile, why the PDF must be closed before every build, and the index.pdf vs Vis-MLM.pdf naming confusion\n\nWriting for two formats\n\nConditional content: HTML vs PDF — using ::: {.content-visible when-format=\"html\"} for animated graphics, tabsets, and things print can’t do\nLinks become dead text in print — how [text](url) renders in HTML but needs to become a footnote in the PDF, and the search for a systematic solution\nFormatting R package, dataset, and function names — replacing the single .Rnw \\pkg{} macro with an R function that handles HTML color, PDF typeface, indexing, and first-use citation\n\nLayout and typography\n\nFigure sizing for two formats — what looks right in HTML often needs different dimensions in the PDF, and strategies for managing this across 15 chapters\nColor in figure captions and text — colorize(), conditional HTML/PDF output, and why this is harder than it looks"
+  },
+  {
+    "objectID": "blog/posts/2026-04-21-making-vis-mlm/index.html#things-quarto-does-well",
+    "href": "blog/posts/2026-04-21-making-vis-mlm/index.html#things-quarto-does-well",
+    "title": "The Making of Vis-MLM",
+    "section": "Things Quarto does well",
+    "text": "Things Quarto does well\nIn fairness: Quarto’s HTML output is excellent. Equations, code folding, callout blocks, tabsets, and cross-references work beautifully with minimal configuration. Publishing to GitHub Pages from docs/ is nearly effortless. Single-source dual-output, when it works, is genuinely valuable — most of the book’s content works for both formats without any conditional blocks.\nThe problems arise at the edges: complex indexing, fine typography, external LaTeX tools, and the Windows build environment. The edges happen to be where a serious print book lives."
+  },
+  {
+    "objectID": "blog/posts/2026-04-21-making-vis-mlm/index.html#following-along",
+    "href": "blog/posts/2026-04-21-making-vis-mlm/index.html#following-along",
+    "title": "The Making of Vis-MLM",
+    "section": "Following along",
+    "text": "Following along\nThe online version of the book is at https://friendly.github.io/Vis-MLM-book/. If you’re writing a technical book in Quarto — especially one targeting both print and HTML — I hope this series saves you some of the time I’ve spent in the weeds."
   },
   {
     "objectID": "courses.html",

@@ -6,9 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="SAS macros and other statistical software by Michael Friendly. Extensive collection of SAS macros for statistical graphics, multivariate methods, and categorical data analysis.">
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-04-21">
+<meta name="description" content="A behind-the-scenes series on writing a technical book with Quarto: choices, surprises, and some hard-won solutions">
 
-<title>Other Software – Michael Friendly</title>
+<title>The Making of Vis-MLM – Michael Friendly</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,28 +29,28 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/MF-face.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/MF-face.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -78,15 +80,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="SAS Macros and Software by Michael Friendly">
-<meta property="og:description" content="Extensive collection of SAS macros for statistical graphics, multivariate methods, and categorical data analysis.">
-<meta property="og:image" content="https://friendly.github.io/images/hexsession-mypkgs.jpg">
-<meta property="og:site_name" content="Michael Friendly">
-<meta name="twitter:title" content="Other Software – Michael Friendly">
-<meta name="twitter:description" content="SAS macros and other statistical software by Michael Friendly. Extensive collection of SAS macros for statistical graphics, multivariate methods, and categorical data analysis.">
-<meta name="twitter:image" content="https://friendly.github.io/images/hexsession-mypkgs.jpg">
-<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -258,7 +252,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Michael Friendly</span>
     </a>
   </div>
@@ -268,32 +262,32 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> <i class="bi bi-house" role="img">
+    <a class="nav-link" href="../../../index.html"> <i class="bi bi-house" role="img">
 </i> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./packages.html"> <i class="bi bi-box-seam" role="img">
+    <a class="nav-link" href="../../../packages.html"> <i class="bi bi-box-seam" role="img">
 </i> 
 <span class="menu-text">R Packages</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./books.html"> <i class="bi bi-book" role="img">
+    <a class="nav-link" href="../../../books.html"> <i class="bi bi-book" role="img">
 </i> 
 <span class="menu-text">Books</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./courses.html"> <i class="bi bi-mortarboard" role="img">
+    <a class="nav-link" href="../../../courses.html"> <i class="bi bi-mortarboard" role="img">
 </i> 
 <span class="menu-text">Courses</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./software.html" aria-current="page"> <i class="bi bi-code-slash" role="img">
+    <a class="nav-link" href="../../../software.html"> <i class="bi bi-code-slash" role="img">
 </i> 
 <span class="menu-text">Other Software</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog/index.html"> <i class="bi bi-pencil" role="img">
+    <a class="nav-link" href="../../../blog/index.html"> <i class="bi bi-pencil" role="img">
 </i> 
 <span class="menu-text">Blog</span></a>
   </li>  
@@ -306,7 +300,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="https://bsky.app/profile/datavisfriendly.bsky.social"> 
-<span class="menu-text"><img src="./images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
+<span class="menu-text"><img src="../../../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -322,24 +316,41 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content page-columns page-full column-body" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Other Software</h1>
-</div>
+<h1 class="title">The Making of Vis-MLM</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">quarto</div>
+    <div class="quarto-category">books</div>
+    <div class="quarto-category">announcement</div>
+  </div>
+  </div>
 
 <div>
   <div class="description">
-    SAS macros and other statistical software by Michael Friendly. Extensive collection of SAS macros for statistical graphics, multivariate methods, and categorical data analysis.
+    A behind-the-scenes series on writing a technical book with Quarto: choices, surprises, and some hard-won solutions
   </div>
 </div>
 
 
-<div class="quarto-title-meta column-body">
+<div class="quarto-title-meta column-page">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 21, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -349,65 +360,72 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="column-page">
-<p>In addition to R packages, in an earlier life, I developed extensive collections of SAS software for statistical graphics and data analysis.</p>
-<section id="sas-macros" class="level2">
-<h2 class="anchored" data-anchor-id="sas-macros">SAS Macros</h2>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Maintenance Status
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>These macros are <strong>no longer actively maintained</strong> but remain available as a historical resource and for those still using SAS.</p>
-</div>
-</div>
-<p>I have developed an extensive collection of SAS macros for statistical graphics and data analysis. These macros cover a wide range of statistical methods with an emphasis on graphical display.</p>
-<section id="categories" class="level3">
-<h3 class="anchored" data-anchor-id="categories">Categories</h3>
+<p><a href="https://github.com/friendly/Vis-MLM-book"> <img src="images/Vis-MLM-cover.jpg" class="right" width="28%" alt="Vis-MLM book cover"> </a></p>
+<p>🧊 I’ve been writing <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> (CRC Press / Chapman &amp; Hall, in preparation) for several years now. The book uses <a href="https://quarto.org/">Quarto</a> to produce both a print-quality PDF and a free online HTML version from a single source. That promise: <strong>write once, render to multiple formats</strong> is so attractive! In practice, it turned out to be less simple than advertised.</p>
+<p>This post introduces a series, <strong>The Making of Vis-MLM</strong>, on the technical challenges of writing a complex book in Quarto, what I’ve learned, and how I solved (or am still solving) them. I hope it’s useful to others attempting something similar.</p>
+<p>This is just an outline of topics I’ve been working on. I’ll write up some of these, when I get a Round Tuit.</p>
+<section id="the-choice-of-quarto" class="level2">
+<h2 class="anchored" data-anchor-id="the-choice-of-quarto">The choice of Quarto</h2>
+<p>My previous book, <a href="https://www.taylorfrancis.com/books/mono/10.1201/b19022/discrete-data-analysis-michael-friendly-david-meyer"><em>Discrete Data Analysis with R</em></a>, was written in <code>.Rnw</code> — LaTeX with embedded R code chunks processed by knitr. The pipeline was transparent:</p>
+<pre><code>.Rnw → knitr → .tex → LaTeX → BibTeX → LaTeX → PDF</code></pre>
+<p>Every step was explicit. You could run them individually, inspect intermediate files, and control every detail of layout and typography. I was able to design custom visual chapter headers, part-page spreads with color schemes, and a comprehensive dual-index (Subject + Author) using standard LaTeX packages. It’s the book I’m most proud of.</p>
+<p>With Quarto, the pipeline becomes:</p>
+<pre><code>.qmd → knitr → pandoc → .tex → XeLaTeX → makeindex → PDF
+              ↓
+             HTML</code></pre>
+<p>Pandoc acts as an opaque intermediary between your Markdown source and the LaTeX that XeLaTeX compiles. That extra layer is what buys you the HTML output — but it also means that things which were trivial in <code>.Rnw</code> become genuinely difficult.</p>
+<p>I chose Quarto because I wanted the online version to be a first-class citizen, not an afterthought. The trade-off turned out to be steeper than I expected.</p>
+</section>
+<section id="the-fundamental-tension" class="level2">
+<h2 class="anchored" data-anchor-id="the-fundamental-tension">The fundamental tension</h2>
+<p>In <code>.Rnw</code>, <strong>you control the LaTeX</strong>. You write <code>\index{}</code>, <code>\pkg{}</code>, <code>\href{}</code>, and <code>\footnote{}</code> directly, and you get exactly what you wrote. Custom macros (<code>\pkg{}</code>, <code>\dataset{}</code>, <code>\func{}</code>) can do indexing, citation, and formatting in a single call — reliably, everywhere in the document.</p>
+<p>In Quarto, you write Markdown and inline R expressions that <em>generate</em> LaTeX strings, which pandoc then processes. You don’t control the <code>.tex</code> file; Quarto does. If your generated LaTeX has a newline in the wrong place, or pandoc’s <code>%</code> comment-suppression fires near a <code>\footnote{}</code>, or a Lua filter runs during the PDF build when it shouldn’t — you get errors that span three tool layers and take days to diagnose.</p>
+<p>The series covers where this tension surfaced in practice, and what I did about it.</p>
+</section>
+<section id="posts-in-this-series" class="level2">
+<h2 class="anchored" data-anchor-id="posts-in-this-series">Posts in this series</h2>
+<p>The topics below are drawn from the working notes in my book repository. As I write them up, these will become links to full posts.</p>
+<p><strong>Setting up and getting started</strong></p>
 <ul>
-<li><strong>Graphical methods</strong>: Scatterplot matrices, enhanced plots, diagnostic displays</li>
-<li><strong>Multivariate methods</strong>: Correspondence analysis, canonical correlation, discriminant analysis</li>
-<li><strong>Categorical data</strong>: Mosaic displays, odds ratio plots, loglinear models</li>
-<li><strong>Regression diagnostics</strong>: Influence plots, partial regression plots</li>
-<li><strong>Statistical graphics</strong>: Quantile plots, rootograms, and more</li>
+<li><p><em>Starting from the CRC bare-bones Quarto template</em>: What it provides, what it doesn’t, and what I had to figure out on my own</p></li>
+<li><p><em>Quarto is not LaTeX, however hard it tries</em>: A broad comparison of the <code>.Rnw</code> and Quarto workflows; what I gained and lost</p></li>
+<li><p><em>Getting HELP</em>: Notes on where I asked questions and how this went: Stack Overflow (<code>knitr</code>, <code>ggplot2</code>), TeX Stack Exchange, Quarto Dev discussion, ggplot extenders club, Claude.</p></li>
+<li><p><em>You can’t keep your Quarto project on Dropbox</em>: File locking, sync interference, and why git is now my only sync mechanism</p></li>
+</ul>
+<p><strong>Indexing</strong></p>
+<ul>
+<li><p><em>Creating book indexes in Quarto</em>: R helper functions, LaTeX macros, and the underscore problem (already written — link coming soon)</p></li>
+<li><p><em>The author index disaster</em>: Five things that break simultaneously when you move from BibTeX to pandoc citeproc, and how I worked around each one</p></li>
+</ul>
+<p><strong>The build pipeline</strong></p>
+<ul>
+<li><p><em>Two weeks in Quarto/Pandoc/LaTeX hell</em> — tracking down <code>Extra }, or forgotten \endgroup</code> across three tool layers</p></li>
+<li><p><em>The mysterious freeze cache</em> — how Quarto’s execution cache can silently hold stale output, and why changing <code>common.R</code> doesn’t always change your PDF</p></li>
+<li><p><em>Build workflow fragility</em> — why there’s no Makefile, why the PDF must be closed before every build, and the <code>index.pdf</code> vs <code>Vis-MLM.pdf</code> naming confusion</p></li>
+</ul>
+<p><strong>Writing for two formats</strong></p>
+<ul>
+<li><p><em>Conditional content: HTML vs PDF</em> — using <code>::: {.content-visible when-format="html"}</code> for animated graphics, tabsets, and things print can’t do</p></li>
+<li><p><em>Links become dead text in print</em> — how <code>[text](url)</code> renders in HTML but needs to become a footnote in the PDF, and the search for a systematic solution</p></li>
+<li><p><em>Formatting R package, dataset, and function names</em> — replacing the single <code>.Rnw</code> <code>\pkg{}</code> macro with an R function that handles HTML color, PDF typeface, indexing, and first-use citation</p></li>
+</ul>
+<p><strong>Layout and typography</strong></p>
+<ul>
+<li><p><em>Figure sizing for two formats</em> — what looks right in HTML often needs different dimensions in the PDF, and strategies for managing this across 15 chapters</p></li>
+<li><p><em>Color in figure captions and text</em> — <code>colorize()</code>, conditional HTML/PDF output, and why this is harder than it looks</p></li>
 </ul>
 </section>
-<section id="resources" class="level3">
-<h3 class="anchored" data-anchor-id="resources">Resources</h3>
-<div class="grid">
-<div class="g-col-12 g-col-md-6">
-<div class="card">
-<div class="card-body">
-<p><strong>Documentation</strong></p>
-<p>Comprehensive documentation for each macro with examples and usage notes.</p>
-<p><a href="https://www.datavis.ca/sasmac/" class="btn btn-outline-primary">Browse documentation →</a></p>
-</div>
-</div>
-</div>
-<div class="g-col-12 g-col-md-6">
-<div class="card">
-<div class="card-body">
-<p><strong>Source Code</strong></p>
-<p>All macro source code is freely available on GitHub.</p>
-<p><a href="https://github.com/friendly/SAS-macros/" class="btn btn-outline-primary">View on GitHub →</a></p>
-</div>
-</div>
-</div>
-</div>
+<section id="things-quarto-does-well" class="level2">
+<h2 class="anchored" data-anchor-id="things-quarto-does-well">Things Quarto does well</h2>
+<p>In fairness: Quarto’s HTML output is excellent. Equations, code folding, callout blocks, tabsets, and cross-references work beautifully with minimal configuration. Publishing to GitHub Pages from <code>docs/</code> is nearly effortless. Single-source dual-output, when it works, is genuinely valuable — most of the book’s content works for both formats without any conditional blocks.</p>
+<p>The problems arise at the edges: complex indexing, fine typography, external LaTeX tools, and the Windows build environment. The edges happen to be where a serious print book lives.</p>
 </section>
-</section>
-<section id="other-tools" class="level2">
-<h2 class="anchored" data-anchor-id="other-tools">Other Tools</h2>
-<p>Additional software tools and utilities are available through my GitHub repositories at <a href="https://github.com/friendly">github.com/friendly</a>.</p>
-</section>
-</div>
+<section id="following-along" class="level2">
+<h2 class="anchored" data-anchor-id="following-along">Following along</h2>
+<p>The online version of the book is at <a href="https://friendly.github.io/Vis-MLM-book/" class="uri">https://friendly.github.io/Vis-MLM-book/</a>. If you’re writing a technical book in Quarto — especially one targeting both print and HTML — I hope this series saves you some of the time I’ve spent in the weeds.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
