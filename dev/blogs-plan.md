@@ -326,6 +326,27 @@ You can follow along via:
 Stay tuned for more!
 ```
 
+## Suggested Categories
+
+Categories appear as filterable tags on the blog listing page. Keep them lowercase with hyphens.
+Use 1–3 per post; prefer existing categories over creating new ones.
+
+| Category | Use for |
+|---|---|
+| `announcement` | Site news, new features, welcome posts |
+| `R` | General R programming tips and tricks |
+| `packages` | R package releases, updates, worked examples |
+| `ggplot2` | ggplot2-specific techniques and extensions |
+| `data-visualization` | Visualization techniques, principles, design |
+| `statistical-graphics` | More formal or technical graphical methods |
+| `history` | History of data visualization and statistics |
+| `teaching` | Courses, pedagogy, student work |
+| `categorical-data` | Categorical data analysis topics |
+| `multivariate` | Multivariate data, models, and graphics |
+| `quarto` | Quarto tips, book writing, reproducible docs |
+| `talks` | Conference presentations and slides |
+| `papers` | Publications, preprints, research highlights |
+
 ## Implementation Checklist
 
 - [ ] Decide on integrated vs. separate blog

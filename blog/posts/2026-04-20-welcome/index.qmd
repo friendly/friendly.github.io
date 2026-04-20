@@ -1,0 +1,41 @@
+---
+title: "Welcome to Datavis Musings"
+description: "Introducing my new blog on data visualization, statistical graphics, and R programming"
+author: "Michael Friendly"
+date: "2026-04-20"
+categories: [announcement]
+---
+
+I'm excited to launch this blog as a space to share thoughts on data visualization,
+statistical graphics, R programming, and the history of visual thinking.
+I've been wanting to do this for a while, but finally got A Round Tuit.
+
+<img src="images/RoundTuit.avif" width="30%" class="center" >
+
+## What to Expect
+
+From time to time, I'll be writing about:
+
+- <i class="bi bi-box-seam"></i> **R packages** — new releases, tips, and worked examples from my packages
+- <i class="bi bi-bar-chart-line"></i> **Data visualization** — interesting visualizations, graphical methods, and design principles
+- <i class="bi bi-hourglass-split"></i> **History of data visualization** — the people, ideas, and graphics that shaped the field
+- <i class="bi bi-mortarboard"></i> **Teaching** — experiences, course materials, and pedagogical reflections
+- <i class="bi bi-file-earmark-slides"></i> **Talks and papers** — highlights from conference presentations and recent publications
+
+## What I'm working on now
+
+<i class="bi bi-mortarboard"></i> My graduate course in [Categorical Data Analysis](https://friendly.github.io/psy6136/) is now complete for 2026. Students are
+working on their final projects, and I post a few things here that deserve a wider audience, and to honor their great work.
+
+🧊 I've now turned my attention back to my book, [Visualizing Multivariate Data and Models in R](https://friendly.github.io/Vis-MLM-book/).
+I'll write about some of the challenges and opportunities of writing this using [Quarto](https://quarto.org/)
+
+## Stay Connected
+
+You can follow along via:
+
+<!-- - <i class="bi bi-rss"></i> RSS feed (see the link at the bottom of the [Blog](/blog/) page) -->
+- <i class="bi bi-bluesky"></i> [BlueSky](https://bsky.app/profile/datavisfriendly.bsky.social)
+- <i class="bi bi-github"></i> [GitHub](https://github.com/friendly)
+
+Stay tuned for more!

@@ -3,6 +3,7 @@ project:
   output-dir: docs
   render:
     - "*.qmd"
+    - "blog/**/*.qmd"
     - "!index.Rmd"
     - "!packages.Rmd"
     - "!dev/*"
@@ -26,15 +27,23 @@ website:
     search: false
     left:
       - text: "Home"
+        icon: house
         href: index.qmd
       - text: "R Packages"
+        icon: box-seam
         href: packages.qmd
       - text: "Books"
+        icon: book
         href: books.qmd
       - text: "Courses"
+        icon: mortarboard
         href: courses.qmd
       - text: "Other Software"
+        icon: code-slash
         href: software.qmd
+      - text: "Blog"
+        icon: pencil
+        href: blog/index.qmd
     right:
       - icon: github
         href: https://github.com/friendly

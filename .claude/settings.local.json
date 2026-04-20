@@ -8,7 +8,7 @@
       "Bash(perl -i -pe:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:friendly.apps01.yorku.ca)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:datavis.ca)",
       "WebFetch(domain:cran.r-project.org)",
       "WebFetch(domain:friendly.github.io)"
