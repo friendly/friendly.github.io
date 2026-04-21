@@ -1,0 +1,14 @@
+---
+title: "Why Documentation Matters"
+description: ""
+author: "Michael Friendly"
+date: ""
+categories: []
+draft: true
+---
+
+## Notes / ideas
+
+## Images
+
+## Draft
