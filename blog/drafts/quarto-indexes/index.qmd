@@ -1,22 +1,29 @@
 ---
 title: "Creating Book Indexes in Quarto"
-subtitle: "R helper functions, LaTeX macros, and the underscore problem"
+description: "R helper functions, LaTeX macros, and the underscore problem"
 author: "Michael Friendly"
-date: "2026-04-07"
+date: "2026-04-23"
+categories: [quarto, latex, indexing, books]
+image: "../assets/images/pdflatex-diagram.png"
 format:
   html:
     toc: true
     toc-depth: 3
 ---
 
-A good index is essential for a printed textbook or technical book because it transforms a linear text into an efficient research tool,
-allowing you to find specific information without flipping through pages to find what you're looking for.
-While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book's usability, credibility, and long-term value. In a book using R a good index helps you find the use of functions, packages and datasets used as examples.
-In a book illustrating statistical models or data visualization methods, a high-quality index helps you find the concepts or methods discussed,
-particularly when they are spread across multiple chapters. Conversely, lack of a good index can make a printed book frustrating to use
+```{r include=FALSE}
+library(colorize)
+```
+
+A good index is essential for a printed textbook or scholarly book: it transforms your linear text into an efficient research tool, allowing your readers to find specific information without flipping through pages to find what you're looking for.
+While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book's usability, credibility, and long-term value. 
+
+* In a book using R, a good index helps readers find the use of functions, packages and datasets used as examples.
+* In a book illustrating statistical models or data visualization methods, a high-quality index helps them find the concepts or methods discussed, particularly when they are spread across multiple chapters. 
+* Conversely, lack of a good index can make a printed book frustrating to use
 when you want to find out how to do some particular thing or how some method should be understood.[^bookdown]
 
-[^bookdown]: I don't want to shame anyone, but a few books in the CRC Press R Series produced with early `bookdown` stand out for their
+[^bookdown]: I don't want to shame anyone, but a few books in the CRC Press _R Series_ produced with early `bookdown` stand out for their
 spectacularly poor indexes, sometimes just one page, making them nearly useless for reference purposes.
 
 Modern writing tools like Rmarkdown, Pandoc and Quarto open new vistas in book writing and publishing.
@@ -27,7 +34,7 @@ for indexing. In a traditional LaTeX workflow (`.Rnw` files) you pepper your sou
 `\index{entry}` commands by hand and get PDF output.
 In Quarto, you write in a Quarto-flavored Markdown, R code chunks, processed by `knitr`
 produce output text and graphics inline. 
-But the same source must serve both an HTML website and
+But the same source must serve _both_ an HTML website and
 a print-ready PDF. This post describes how I handled indexing for
 *Visualizing Multivariate Data and Models in R*
 (CRC Press / Chapman & Hall, in preparation).
@@ -35,8 +42,16 @@ a print-ready PDF. This post describes how I handled indexing for
 ## The basic problem
 
 For PDF output, LaTeX's `\index{entry}` command is the standard mechanism. It
-writes entries to a `.idx` file, which `makeindex` sorts and formats into the
-final `.ind` file that LaTeX typesets as the back-of-book index.
+writes index entries to a `.idx` file as they appear in your document with the page number where it occurred.
+A related program, `makeindex`, sorts and formats these into the final `.ind` file that LaTeX typesets as the back-of-book index in response to a `\printindex` command.
+
+The `\index{}` macro is very flexible: it [provides all the features](https://en.wikibooks.org/wiki/LaTeX/Indexing) you
+need for a professional index: subentries (`\index{datasets!Prestige}), cross-references (`\index{PCA|see {principal components analyisis}}`), controlling sorting order vs. visual appearance (`\index{F@$\vec{F}$}`), ...
+
+The cycle of editing, running R code (using `knitr`), compiling to LaTeX, generating a bibliography and an index
+was straightforward.
+
+<img src=../assets/images/pdflatex-diagram.png width="40%">
 
 For HTML output there is no logical equivalent of an index, because it doesn't
 have "pages" that can be referred to. Instead, for book projects, Quarto provides a Search facility; useful,
@@ -51,10 +66,12 @@ wrap index calls in a conditional block:
 :::
 ````
 
+Actually, this is usually not a problem: `pandoc` silently ignores (most) LaTeX code in your input
+when the output is not for a PDF build.
 
 But this is cumbersome when you want to index *every mention* of an R package,
 dataset, or function — which might appear dozens of times in inline code like
-`` `ggplot2` ``. You want indexing to happen automatically at the point of use,
+`` `ggplot2` ``. You want indexing to happen _automatically_ at the point of use,
 without cluttering the prose with conditional blocks.
 
 ## R helper functions for inline use
@@ -64,7 +81,8 @@ The solution I adopted is a set of R helper functions — `pkg()`, `package()`,
 every chapter. 
 
 These are used as inline R expressions in the text; they format names appropriately for
-each output format *and* emit `\index{}` entries for PDF. They do not generate the
+each output format (e.g., perhaps **bold** for HTML and using `\texttt{}` for the PDF).
+but they also  emit `\index{}` entries for PDF. They do not generate the
 `\index{}` entries directly. Rather, they rely on LaTeX macros (described below)
 to ensure consistency of the index entries and allow for generating
 more than one index entry for a package or dataset.
@@ -107,6 +125,9 @@ For PDF this expands to something like:
 \textcolor{brown}{\texttt{\textbf{ggplot2}}}
 \ixp{ggplot2}
 ```
+
+The LaTeX macro `\ixp{}` (described below) does the heavy lifting of formatting the package name
+as an index entry.
 
 For HTML it produces `**ggplot2**` in brown (via a CSS span), with no LaTeX
 leaking through.
