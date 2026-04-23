@@ -12,6 +12,7 @@ format:
 ---
 
 ```{r include=FALSE}
+source("indexing.R")
 library(colorize)
 ```
 
