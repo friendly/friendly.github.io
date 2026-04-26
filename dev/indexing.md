@@ -16,11 +16,26 @@ Part of the *Making of Vis-MLM* series. Covers:
 - Avoiding duplicate index entries via macro routing
 
 YAML header uses `description:` (not `subtitle:`), `categories: [quarto, latex, indexing, books]`,
-and `image: "../assets/images/pdflatex-diagram.png"`.
+and `image: "../../assets/images/pdflatex-diagram.png"`.
 
-The `../assets/images/` relative path works unchanged whether the post is under
-`blog/drafts/quarto-indexes/` or `blog/posts/YYYY-MM-DD-quarto-indexes/` — both
-sit at the same depth below `blog/`.
+### Image paths in blog posts
+
+Two contexts, two rules:
+
+**YAML `image:` field** (listing thumbnail) — Quarto must physically locate the file
+to copy it to `docs/`, so a relative path is required:
+```yaml
+image: "../../assets/images/pdflatex-diagram.png"
+```
+This works unchanged whether the post is under `blog/drafts/slug/` or
+`blog/posts/YYYY-MM-DD-slug/` — both sit at the same depth below `blog/`.
+
+**`<img src=...>` in content** — use a site-root-relative path with a leading `/`;
+Quarto websites resolve `/` from the project root, matching `here::here()` for R:
+```html
+<img src="/blog/assets/images/pdflatex-diagram.png" width="40%">
+```
+This works from any post at any depth, and is stable across draft→publish moves.
 
 ## indexing.R
 

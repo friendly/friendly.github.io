@@ -9,3 +9,4 @@
 *.utf8.md
 
 **/*.quarto_ipynb
+.positai

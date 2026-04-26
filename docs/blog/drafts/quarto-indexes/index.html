@@ -427,19 +427,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A good index is essential for a printed textbook or scholarly book: it transforms your linear text into an efficient research tool, allowing your readers to find specific information without flipping through pages to find what you’re looking for. While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book’s usability, credibility, and long-term value.</p>
+<p>A good index is essential for a printed textbook or scholarly book: it transforms your linear text into a usable research tool, allowing your readers to find specific information without flipping through pages to find what you’re looking for. While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book’s usability, credibility, and long-term value.</p>
 <ul>
 <li>In a book using R, a good index helps readers find the use of functions, packages and datasets used as examples.</li>
 <li>In a book illustrating statistical models or data visualization methods, a high-quality index helps them find the concepts or methods discussed, particularly when they are spread across multiple chapters.</li>
 <li>Conversely, lack of a good index can make a printed book frustrating to use when you want to find out how to do some particular thing or how some method should be understood.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 </ul>
-<p>Modern writing tools like Rmarkdown, Pandoc and Quarto open new vistas in book writing and publishing. From a single source of text files, you can produce output in HTML, PDF, eBook and other formats now widely used. However, writing a book with Quarto for dual HTML/PDF output creates interesting challenges for indexing. In a traditional LaTeX workflow (<code>.Rnw</code> files) you pepper your source with <code>\index{entry}</code> commands by hand and get PDF output. In Quarto, you write in a Quarto-flavored Markdown, R code chunks, processed by <code>knitr</code> produce output text and graphics inline. But the same source must serve <em>both</em> an HTML website and a print-ready PDF. This post describes how I handled indexing for <em>Visualizing Multivariate Data and Models in R</em> (CRC Press / Chapman &amp; Hall, in preparation).</p>
+<p>Modern writing tools like Rmarkdown, Pandoc and Quarto open new vistas in book writing and publishing. From a single source of text files, you can produce output in HTML, PDF, eBook and other formats now widely used. However, writing a book with Quarto for dual HTML/PDF output creates interesting challenges for indexing. In a traditional LaTeX workflow (<code>.Rnw</code> files) you pepper your source with <code>\index{entry}</code> commands by hand and get PDF output. In Quarto, you write in a Quarto-flavored Markdown, R code chunks, processed by <code>knitr</code> produce output text and graphics inline. But the same source must serve <em>both</em> an HTML website and a print-ready PDF. This post describes how I handled indexing for <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> (CRC Press / Chapman &amp; Hall, in preparation).</p>
 <section id="the-basic-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-basic-problem">The basic problem</h2>
 <p>For PDF output, LaTeX’s <code>\index{entry}</code> command is the standard mechanism. It writes index entries to a <code>.idx</code> file as they appear in your document with the page number where it occurred. A related program, <code>makeindex</code>, sorts and formats these into the final <code>.ind</code> file that LaTeX typesets as the back-of-book index in response to a <code>\printindex</code> command.</p>
-<p>The <code>\index{}</code> macro is very flexible: it <a href="https://en.wikibooks.org/wiki/LaTeX/Indexing">provides all the features</a> you need for a professional index: subentries (<code>\index{datasets!Prestige}), cross-references (</code><code>), controlling sorting order vs. visual appearance (</code>`), …</p>
+<p>The <code>\index{}</code> macro is very flexible: it <a href="https://en.wikibooks.org/wiki/LaTeX/Indexing">provides all the features</a> you need for a professional index: subentries (<code>\index{datasets!Prestige})</code>, cross-references (<code>\index{PCA|see {principal components analyisis}}</code>), controlling sorting order vs.&nbsp;visual appearance (<code>\index{F@$\vec{F}$}</code>), …</p>
 <p>The cycle of editing, running R code (using <code>knitr</code>), compiling to LaTeX, generating a bibliography and an index was straightforward.</p>
-<p><img src="../assets/images/pdflatex-diagram.png" width="40%"></p>
+<p><img src="../../../blog/assets/images/pdflatex-diagram.png" width="40%"></p>
 <p>For HTML output there is no logical equivalent of an index, because it doesn’t have “pages” that can be referred to. Instead, for book projects, Quarto provides a Search facility; useful, but not as much as a well-crafted index could do. But what happens with those <code>\index{}</code> commands? In Quarto one solution is straightforward for <em>any text</em> you want to appear only in the PDF version: wrap index calls in a conditional block:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="pdf"}</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>\index{some term}</span>
@@ -449,8 +449,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="r-helper-functions-for-inline-use" class="level2">
 <h2 class="anchored" data-anchor-id="r-helper-functions-for-inline-use">R helper functions for inline use</h2>
-<p>The solution I adopted is a set of R helper functions — <code>pkg()</code>, <code>package()</code>, <code>dataset()</code>, and <code>func()</code> — defined in <code>R/common.R</code> and sourced at the top of every chapter.</p>
-<p>These are used as inline R expressions in the text; they format names appropriately for each output format (e.g., perhaps <strong>bold</strong> for HTML and using <code>\texttt{}</code> for the PDF). but they also emit <code>\index{}</code> entries for PDF. They do not generate the <code>\index{}</code> entries directly. Rather, they rely on LaTeX macros (described below) to ensure consistency of the index entries and allow for generating more than one index entry for a package or dataset.</p>
+<p>The solution I adopted is a set of R helper functions — <code>pkg()</code>, <code>package()</code>, <code>dataset()</code>, and <code>func()</code> — defined in <code>R/common.R</code> and sourced at the top of every chapter. For convenience, these functions are <a href="indexing.R">available here</a>.</p>
+<p>These are used as inline R expressions in the text; they format names appropriately for each output format (e.g., perhaps <code>r</code>colorize(“<strong>bold</strong>”, “brown”)<code>for HTML and using</code><code>for the PDF). But they also  emit</code><code>entries for PDF. They _do not_ generate the</code>` entries directly. Rather, they rely on LaTeX macros (described below) to ensure consistency of the index entries and allow for generating more than one index entry for a package or dataset.</p>
 <section id="pkg-r-packages" class="level3">
 <h3 class="anchored" data-anchor-id="pkg-r-packages"><code>pkg()</code> — R packages</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pkg <span class="ot">&lt;-</span> <span class="cf">function</span>(package, <span class="at">cite =</span> <span class="cn">FALSE</span>) {</span>
@@ -480,10 +480,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="package-citations" class="level3">
 <h3 class="anchored" data-anchor-id="package-citations">Package citations</h3>
-<p>The argument <code>cite = TRUE</code> also generates a citation to the package, with a citation key of the form <code>@R-package</code>. The file <code>R/common.R</code> includes code to collect the names of packages loaded via <code>library()</code> calls in the current chapter and write these to a file <code>packages.bib</code> after the last chapter.</p>
+<p>The argument <code>cite = TRUE</code> also generates a citation to the package, with a citation key of the form <code>@R-package</code>. The file <code>R/common.R</code> includes code to collect the names of <em>all packages</em> loaded via <code>library()</code> calls in the current chapter and write these to a file <code>packages.bib</code> after the last chapter.</p>
 </section>
 <section id="dataset-named-datasets" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-named-datasets"><code>dataset()</code> — named datasets</h3>
+<p>Datasets can me named in the text using either the form <code>datasetname</code> or <code>pkg::datasetname</code>; the package name can also be given using the <code>package</code> argument. The <code>dataset()</code> function parses this and creates appropriate index entries.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="cf">function</span>(name, <span class="at">package =</span> <span class="cn">NULL</span>) {</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  dname <span class="ot">&lt;-</span> name</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dpkg  <span class="ot">&lt;-</span> package</span>
@@ -503,7 +504,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Usage:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>The <span class="in">`Prestige`</span> dataset records occupational prestige</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>scores for 102 Canadian occupations.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>scores for 102 Canadian occupations. The <span class="in">`dplyr::startwars`</span> dataset</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>contains information on 87 characters from Starwars.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>pkg::name</code> shorthand is also supported:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">`carData::Prestige`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Both expand to the same PDF output: <code>\texttt{Prestige}</code> followed by index entries via <code>\ixd{Prestige}</code> and <code>\ixp{carData}</code>.</p>
@@ -524,10 +526,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  ref</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The helper <code>escape()</code> converts <code>_</code> to <code>\_</code>:</p>
+<p>The helper <code>escape()</code> converts <code>_</code> to <code>\_</code>, because a bare <code>_</code> is interpreted in LaTeX as a subscript.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>escape <span class="ot">&lt;-</span> <span class="cf">function</span>(name) <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">_"</span>, name, <span class="at">fixed =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Usage:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`lm()`</span> to fit a linear model.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`lm()`</span> to fit a linear model and <span class="in">`stat_ellipse()`</span> to add a data ellipse to a scatterplot.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="latex-macros" class="level2">
@@ -576,7 +578,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-underscore-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-underscore-problem">The underscore problem</h2>
-<p>R function names commonly contain underscores: <code>stat_ellipse()</code>, <code>geom_point()</code>, <code>coord_flip()</code>. In LaTeX, <code>_</code> outside math mode raises an error (it is the subscript character). Inside <code>\texttt{}</code> it is tolerated in some contexts, but inside <code>\index{}</code> entries — which are written to an external <code>.idx</code> file and later read back during <code>\ind</code> generation — it causes problems.</p>
+<p>R function names commonly contain underscores: <code>stat_ellipse()</code>, <code>geom_point()</code>, <code>coord_flip()</code>. In LaTeX, <code>_</code> outside math mode raises an error (it is the subscript character). Inside <code>\texttt{}</code> it is tolerated in some contexts, but inside <code>\index{}</code> entries — which are written to an external <code>.idx</code> file and later read back during <code>\ind</code> generation — it causes problems. (How to fix this was asked on <a href="https://tex.stackexchange.com/questions/752292/how-to-escape-underscore-in-index-entries">TeX Stackexchange</a>, but without success.)</p>
 <p>The difficulty comes in two places:</p>
 <section id="display-text-in-index" class="level3">
 <h3 class="anchored" data-anchor-id="display-text-in-index">1. Display text in <code>\index{}</code></h3>

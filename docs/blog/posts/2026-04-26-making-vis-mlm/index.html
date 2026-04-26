@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael Friendly">
-<meta name="dcterms.date" content="2026-04-21">
+<meta name="dcterms.date" content="2026-04-26">
 <meta name="description" content="A behind-the-scenes series on writing a technical book with Quarto: choices, surprises, and some hard-won solutions">
 
 <title>The Making of Vis-MLM – Michael Friendly</title>
@@ -323,9 +323,9 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title">
 <h1 class="title">The Making of Vis-MLM</h1>
   <div class="quarto-categories">
+    <div class="quarto-category">Vis-MLM</div>
     <div class="quarto-category">quarto</div>
     <div class="quarto-category">books</div>
-    <div class="quarto-category">announcement</div>
   </div>
   </div>
 
@@ -348,7 +348,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 21, 2026</p>
+      <p class="date">April 26, 2026</p>
     </div>
   </div>
   
@@ -360,27 +360,38 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://github.com/friendly/Vis-MLM-book"> <img src="images/Vis-MLM-cover.jpg" class="right" width="28%" alt="Vis-MLM book cover"> </a></p>
-<p>🧊 I’ve been writing <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> (CRC Press / Chapman &amp; Hall, in preparation) for several years now. The book uses <a href="https://quarto.org/">Quarto</a> to produce both a print-quality PDF and a free online HTML version from a single source. That promise: <strong>write once, render to multiple formats</strong> is so attractive! In practice, it turned out to be less simple than advertised.</p>
-<p>This post introduces a series, <strong>The Making of Vis-MLM</strong>, on the technical challenges of writing a complex book in Quarto, what I’ve learned, and how I solved (or am still solving) them. I hope it’s useful to others attempting something similar.</p>
-<p>This is just an outline of topics I’ve been working on. I’ll write up some of these, when I get a Round Tuit.</p>
+<p>🧊 I’ve been writing <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> (CRC Press / Chapman &amp; Hall, in preparation) for several years now. I’m now making a (hopefully final) pass on editing. The book uses <a href="https://quarto.org/">Quarto</a> to produce both a print-quality PDF and a free online HTML version from a single source.</p>
+<p>That promise: <strong>write once, render to multiple formats</strong> is so attractive! In practice, it turned out to be less simple than advertised, when you go beyond the basics and want to introduce features of page or book design or have content (like animated graphics) that could occur in an online version, but not in a print copy.</p>
+<p>This post introduces a series, <strong>The Making of Vis-MLM</strong>, on the technical challenges of writing a complex book in Quarto: what I’ve learned, and how I solved (or am still solving) them. I hope it’s useful to others attempting something similar. It will serve an outline of topics and technical issues I’ve been working on. I’ll write up some of these, when I get a Round Tuit.</p>
 <section id="the-choice-of-quarto" class="level2">
 <h2 class="anchored" data-anchor-id="the-choice-of-quarto">The choice of Quarto</h2>
 <p>My previous book, <a href="https://www.taylorfrancis.com/books/mono/10.1201/b19022/discrete-data-analysis-michael-friendly-david-meyer"><em>Discrete Data Analysis with R</em></a>, was written in <code>.Rnw</code> — LaTeX with embedded R code chunks processed by knitr. The pipeline was transparent:</p>
 <pre><code>.Rnw → knitr → .tex → LaTeX → BibTeX → LaTeX → PDF</code></pre>
-<p>Every step was explicit. You could run them individually, inspect intermediate files, and control every detail of layout and typography. I was able to design custom visual chapter headers, part-page spreads with color schemes, and a comprehensive dual-index (Subject + Author) using standard LaTeX packages. It’s the book I’m most proud of.</p>
+<p>Every step was explicit. I could run them individually, inspect intermediate files, and control every detail of layout and typography. I was able to design custom visual chapter headers, part-page spreads with color schemes, and a comprehensive dual-index (Subject + Author) using standard LaTeX packages. It’s the book I’m most proud of.</p>
+<p>On the other hand, to provide something online, I had to create a <a href="http://ddar.datavis.ca/">companion website</a>, showing some figures, R code, and other resources.</p>
 <p>With Quarto, the pipeline becomes:</p>
 <pre><code>.qmd → knitr → pandoc → .tex → XeLaTeX → makeindex → PDF
               ↓
              HTML</code></pre>
-<p>Pandoc acts as an opaque intermediary between your Markdown source and the LaTeX that XeLaTeX compiles. That extra layer is what buys you the HTML output — but it also means that things which were trivial in <code>.Rnw</code> become genuinely difficult.</p>
-<p>I chose Quarto because I wanted the online version to be a first-class citizen, not an afterthought. The trade-off turned out to be steeper than I expected.</p>
-</section>
-<section id="the-fundamental-tension" class="level2">
-<h2 class="anchored" data-anchor-id="the-fundamental-tension">The fundamental tension</h2>
-<p>In <code>.Rnw</code>, <strong>you control the LaTeX</strong>. You write <code>\index{}</code>, <code>\pkg{}</code>, <code>\href{}</code>, and <code>\footnote{}</code> directly, and you get exactly what you wrote. Custom macros (<code>\pkg{}</code>, <code>\dataset{}</code>, <code>\func{}</code>) can do indexing, citation, and formatting in a single call — reliably, everywhere in the document.</p>
-<p>In Quarto, you write Markdown and inline R expressions that <em>generate</em> LaTeX strings, which pandoc then processes. You don’t control the <code>.tex</code> file; Quarto does. If your generated LaTeX has a newline in the wrong place, or pandoc’s <code>%</code> comment-suppression fires near a <code>\footnote{}</code>, or a Lua filter runs during the PDF build when it shouldn’t — you get errors that span three tool layers and take days to diagnose.</p>
-<p>The series covers where this tension surfaced in practice, and what I did about it.</p>
+<p>Pandoc acts as an opaque intermediary between your Markdown source and the LaTeX that XeLaTeX compiles. That extra layer is what buys you the HTML output— but it also means that things which were trivial in <code>.Rnw</code> become genuinely difficult.</p>
+<p>I chose Quarto because I wanted the online version to be a first-class citizen, not an afterthought. The trade-off turned out to be steeper than I expected. The series covers issues where this tension arose in practice, and what I did about it.</p>
+<!--
+## The fundamental tension
+
+In `.Rnw`, **you control the LaTeX**. You write `\index{}`, `\pkg{}`, `\href{}`,
+and `\footnote{}` directly, and you get exactly what you wrote.
+Custom macros (`\pkg{}`, `\dataset{}`, `\func{}`) can do indexing, citation, and formatting
+in a single call — reliably, everywhere in the document.
+
+In Quarto, you write Markdown and inline R expressions that *generate* LaTeX strings,
+which pandoc then processes. You don't control the `.tex` file; Quarto does.
+If your generated LaTeX has a newline in the wrong place,
+or pandoc's `%` comment-suppression fires near a `\footnote{}`,
+or a Lua filter runs during the PDF build when it shouldn't —
+you get errors that span three tool layers and take days to diagnose.
+
+The series covers where this tension arose in practice, and what I did about it.
+-->
 </section>
 <section id="posts-in-this-series" class="level2">
 <h2 class="anchored" data-anchor-id="posts-in-this-series">Posts in this series</h2>
