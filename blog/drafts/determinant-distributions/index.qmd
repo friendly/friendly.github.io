@@ -1,0 +1,220 @@
+---
+title: "Distribution of Determinants of 3×3 Matrices from {1,2,...,9}"
+description: "An exact combinatorial result and Monte Carlo approximation for determinants of all permutation matrices of the digits 1–9"
+author: "Michael Friendly"
+date: "2026-05-01"
+categories: [R, combinatorics, linear algebra, simulation]
+image: "determinant_distribution_comparison.png"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: show
+execute:
+  echo: true
+  message: false
+  warning: false
+knitr:
+  opts_chunk:
+    fig-width: 10
+    fig-height: 6
+    fig-align: center
+---
+
+## Introduction
+
+From the time, long ago, I first studied linear algebra, I've always had a fascination with the idea of the determinant
+of a square matrix, $\text{det}(\mathbf{A}) \equiv | \mathbf{A} |$. ...
+
+<!-- TODO: expand history
+  - Origins trace to Leibniz (1693) and Seki Takakazu (Japan, ~1683); the term "determinant" was
+    coined by Cauchy in 1812, who also standardized notation. Good starting points:
+    [MacTutor: Matrices and Determinants](https://mathshistory.st-andrews.ac.uk/HistTopics/Matrices_and_determinants/)
+    (covers Chinese origins ~200 BC through Cayley 1858);
+    [Oliver Knill's historical notes](https://people.math.harvard.edu/~knill/history/matrix/)
+    on when matrix multiplication was actually invented.
+-->
+
+<!-- TODO: expand uses
+  - $|\det(\mathbf{A})|$ is the volume-scaling factor of the linear transformation $\mathbf{A}$:
+    it equals the volume of the parallelepiped spanned by the rows (or columns).
+    $\det(\mathbf{A}) = 0$ iff $\mathbf{A}$ is singular; sign encodes orientation (reflection vs. rotation).
+    Also appears in change-of-variables for multivariate integrals ($|J|$), eigenvalue products, and
+    multivariate normal density ($|\boldsymbol{\Sigma}|^{1/2}$).
+    See: [Math Insight: Geometric properties](https://mathinsight.org/determinant_geometric_properties);
+    [Georgia Tech ILA: Determinants and Volumes](https://textbooks.math.gatech.edu/ila/determinants-volumes.html).
+-->
+
+This post explores an interesting combinatorial and statistical problem: What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once?
+
+We answer this question in two ways:
+
+1. **Exact solution**: Calculate the determinant for all 9! = 362,880 permutations
+2. **Permutation distribution**: Generate a large number of random permutations and approximate the distribution
+
+## Setup
+
+```{r libraries}
+library(ggplot2)
+library(dplyr)
+
+# Function to compute determinant from a vector of 9 numbers
+det_from_vec <- function(v) {
+  M <- matrix(v, nrow = 3, ncol = 3, byrow = TRUE)
+  det(M)
+}
+```
+
+## Exact Solution: All 9! Permutations
+
+Computing exact distribution using all 362,880 permutations of the digits 1-9.
+
+```{r exact-solution}
+library(arrangements)
+
+# If arrangements package is not available, use base R
+if (!requireNamespace("arrangements", quietly = TRUE)) {
+  if (requireNamespace("gtools", quietly = TRUE)) {
+    all_perms <- gtools::permutations(9, 9, 1:9)
+    determinants_exact <- apply(all_perms, 1, det_from_vec)
+  } else {
+    cat("For exact solution, install 'arrangements' or 'gtools' package\n")
+    determinants_exact <- NULL
+  }
+} else {
+  all_perms <- arrangements::permutations(1:9, k = 9)
+  determinants_exact <- apply(all_perms, 1, det_from_vec)
+}
+```
+
+## Random Permutation Distribution
+
+Generating a Monte Carlo approximation with a large random sample of permutations.
+
+```{r random-permutations}
+B <- 100000
+set.seed(42)
+
+determinants_random <- replicate(B, {
+  v <- sample(1:9, 9, replace = FALSE)
+  det_from_vec(v)
+})
+```
+
+## Summary Statistics
+
+### Exact Solution
+
+```{r summary-exact}
+if (!is.null(determinants_exact)) {
+  cat("EXACT SOLUTION (all 9! permutations):\n")
+  cat(sprintf("  Total permutations: %d\n", length(determinants_exact)))
+  cat(sprintf("  Range: [%.1f, %.1f]\n",
+              min(determinants_exact), max(determinants_exact)))
+  cat(sprintf("  Mean: %.2f\n", mean(determinants_exact)))
+  cat(sprintf("  Median: %.2f\n", median(determinants_exact)))
+  cat(sprintf("  SD: %.2f\n", sd(determinants_exact)))
+  cat(sprintf("  Unique values: %d\n", length(unique(determinants_exact))))
+  n_zero <- sum(determinants_exact == 0)
+  cat(sprintf("  Zero determinants: %d (%.2f%%)\n",
+              n_zero, 100 * n_zero / length(determinants_exact)))
+}
+```
+
+### Random Permutation Sample
+
+```{r summary-random}
+cat("RANDOM PERMUTATION SAMPLE (B =", B, "):\n")
+cat(sprintf("  Range: [%.1f, %.1f]\n",
+            min(determinants_random), max(determinants_random)))
+cat(sprintf("  Mean: %.2f\n", mean(determinants_random)))
+cat(sprintf("  Median: %.2f\n", median(determinants_random)))
+cat(sprintf("  SD: %.2f\n", sd(determinants_random)))
+cat(sprintf("  Unique values: %d\n", length(unique(determinants_random))))
+```
+
+## Visualizations
+
+### Comparison of Both Methods
+
+```{r plot-comparison}
+if (!is.null(determinants_exact)) {
+  df_combined <- rbind(
+    data.frame(determinant = determinants_exact,
+               method = "Exact (all 9! permutations)"),
+    data.frame(determinant = determinants_random,
+               method = paste0("Random sample (B = ", format(B, big.mark = ","), ")"))
+  )
+
+  ggplot(df_combined, aes(x = determinant, fill = method)) +
+    geom_histogram(aes(y = after_stat(density)),
+                   bins = 100, alpha = 0.6, position = "identity") +
+    geom_density(aes(color = method), linewidth = 1, fill = NA) +
+    scale_fill_manual(values = c("#3498db", "#e74c3c")) +
+    scale_color_manual(values = c("#2c3e50", "#c0392b")) +
+    labs(
+      title = "Distribution of Determinants of 3×3 Matrices from {1,2,...,9}",
+      subtitle = "Each matrix uses digits 1-9 exactly once",
+      x = "Determinant", y = "Density", fill = "Method", color = "Method"
+    ) +
+    theme_minimal(base_size = 12) +
+    theme(legend.position = "bottom",
+          plot.title = element_text(face = "bold", size = 14),
+          panel.grid.minor = element_blank())
+}
+```
+
+### Exact Distribution (Detailed View)
+
+```{r plot-exact}
+if (!is.null(determinants_exact)) {
+  ggplot(data.frame(determinant = determinants_exact), aes(x = determinant)) +
+    geom_histogram(aes(y = after_stat(density)),
+                   bins = 120, fill = "#3498db", alpha = 0.7) +
+    geom_density(color = "#2c3e50", linewidth = 1.2) +
+    labs(
+      title = "Exact Distribution: All 362,880 Permutations",
+      subtitle = "Determinants of 3×3 matrices using digits 1-9 once each",
+      x = "Determinant", y = "Density"
+    ) +
+    theme_minimal(base_size = 12) +
+    theme(plot.title = element_text(face = "bold", size = 14),
+          panel.grid.minor = element_blank())
+}
+```
+
+## Additional Analysis
+
+### Quartiles
+
+```{r quartiles}
+if (!is.null(determinants_exact)) {
+  cat("Quartiles (exact):\n")
+  print(quantile(determinants_exact, probs = c(0, 0.25, 0.5, 0.75, 1)))
+}
+```
+
+### Most Common Values
+
+```{r frequency-table}
+if (!is.null(determinants_exact)) {
+  cat("Top 10 most frequent determinant values:\n")
+  freq_table <- sort(table(determinants_exact), decreasing = TRUE)
+  print(head(freq_table, 10))
+}
+```
+
+### Symmetry
+
+```{r symmetry}
+if (!is.null(determinants_exact)) {
+  if (requireNamespace("moments", quietly = TRUE)) {
+    cat(sprintf("Skewness: %.3f\n", moments::skewness(determinants_exact)))
+    cat("  (0 = symmetric, >0 = right-skewed, <0 = left-skewed)\n")
+  }
+}
+```
+
+## Conclusions
+
+This analysis reveals the distribution of determinants when all possible 3×3 matrices are formed from the digits 1-9, each used exactly once. The Monte Carlo approximation with random permutations closely matches the exact distribution, validating the sampling approach for similar problems where exact enumeration might be computationally prohibitive.

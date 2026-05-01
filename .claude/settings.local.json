@@ -13,7 +13,13 @@
       "WebFetch(domain:cran.r-project.org)",
       "WebFetch(domain:friendly.github.io)",
       "Read(//c/R/Projects/Vis-MLM-book/issues/**)",
-      "Read(//c/R/Projects/Vis-MLM-book/blogs/**)"
+      "Read(//c/R/Projects/Vis-MLM-book/blogs/**)",
+      "WebSearch",
+      "WebFetch(domain:en.wikipedia.org)",
+      "WebFetch(domain:mathshistory.st-andrews.ac.uk)",
+      "WebFetch(domain:mathinsight.org)",
+      "WebFetch(domain:textbooks.math.gatech.edu)",
+      "WebFetch(domain:people.math.harvard.edu)"
     ]
   }
 }
