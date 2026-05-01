@@ -10,24 +10,31 @@ aliases:
   - /blog/posts/2026-04-26-making-vis-mlm/
 ---
 
+<a href="https://friendly.github.io/Vis-MLM-book/"><img src="images/cover-peng.jpg" width=160 align="right"></a>
 🧊 I've been writing [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
 (CRC Press / Chapman & Hall, in preparation) for several years now. I'm now making a (hopefully final) pass on editing.
 The book uses [Quarto](https://quarto.org/) to produce both a print-quality PDF and a free
-online HTML version from a single source.
+online HTML version from a single source. My skills as graphic book designer are limited, but I'm somewhat of
+a perfectionist, and I want both versions to be visually appealing as well as useful to convey the ideas
+of visual thinking for multivariate models and techniques for understanding those in insightful graphic displays.
 
-That promise: **write once, render to multiple formats** is so attractive! In practice, it
+That Quarto promise: **write once, render to multiple formats** is so attractive! Exactly what I wanted.
+
+In practice, it
 turned out to be less simple than advertised, when you go beyond the basics and want to introduce features of
-page or book design or have content (like animated graphics) that could occur in an online version,
+page or book design or have content (like animated graphics or tabset displays) that can occur in an online version,
 but not in a print copy.
 
 This post introduces a series, **The Making of Vis-MLM**, on the technical challenges of
 writing a complex book in Quarto: what I've learned, and how I solved (or am still solving) them.
+It is a thoroughly "Down in the Weeds; TL;DR; Book-geek" view of this writing process.
 I hope it's useful to others attempting something similar.
 It will serve an outline of topics and technical issues I've been working on. I'll write up some of these, when I get a
 Round Tuit.
 
 ## The choice of Quarto
 
+<a href="https://www.taylorfrancis.com/books/mono/10.1201/b19022/discrete-data-analysis-michael-friendly-david-meyer"><img src = "/images/DDAR-cover.png" width=160 align="right"></a>
 My previous book, [*Discrete Data Analysis with R*](https://www.taylorfrancis.com/books/mono/10.1201/b19022/discrete-data-analysis-michael-friendly-david-meyer),
 was written in `.Rnw` — LaTeX with embedded R code chunks processed by knitr.
 The pipeline was transparent:
@@ -36,17 +43,23 @@ The pipeline was transparent:
 .Rnw → knitr → .tex → LaTeX → BibTeX → LaTeX → PDF
 ```
 
+<img src="images/DDAR-vtoc.png" width=160 align="right">
 Every step was explicit. I could run them individually, inspect intermediate files,
 and control every detail of layout and typography.
 I was able to design custom visual chapter headers, part-page spreads with color schemes,
 and a comprehensive dual-index (Subject + Author) using standard LaTeX packages.
-It's the book I'm most proud of. 
+It's the book I'm most proud of. I could also easily use [Tikz](https://tikz.net/) to create
+_visual_ tables of contents for the whole book, chapters within each part, and the sections in a chapter.
 
 On the other hand, to provide something online,
 I had to create a [companion website](http://ddar.datavis.ca/), showing some figures,
-R code, and other resources.
+R code, and other resources. I also prepared an Instructor's Solution Manual for exercises in the book,
+but that was another afterthought. Yet, the framework of the DDAR GitHub repo made this easier to work on
+with my co-author.
 
-With Quarto, the pipeline becomes:
+### What's differfent with Quarto?
+
+With Quarto, the pipeline becomes something like:
 
 ```
 .qmd → knitr → pandoc → .tex → XeLaTeX → makeindex → PDF
@@ -56,35 +69,18 @@ With Quarto, the pipeline becomes:
 
 Pandoc acts as an opaque intermediary between your Markdown source and the LaTeX
 that XeLaTeX compiles. That extra layer is what buys you the HTML output--- but
-it also means that things which were trivial in `.Rnw` become genuinely difficult.
+it also means that some things which were trivial in `.Rnw` can become genuinely difficult.
 
 I chose Quarto because I wanted the online version to be a first-class citizen,
-not an afterthought.
+not an afterthought as with DDAR.
 The trade-off turned out to be steeper than I expected.
 The series covers issues where this tension arose in practice, and what I did about it.
 
-<!--
-## The fundamental tension
-
-In `.Rnw`, **you control the LaTeX**. You write `\index{}`, `\pkg{}`, `\href{}`,
-and `\footnote{}` directly, and you get exactly what you wrote.
-Custom macros (`\pkg{}`, `\dataset{}`, `\func{}`) can do indexing, citation, and formatting
-in a single call — reliably, everywhere in the document.
-
-In Quarto, you write Markdown and inline R expressions that *generate* LaTeX strings,
-which pandoc then processes. You don't control the `.tex` file; Quarto does.
-If your generated LaTeX has a newline in the wrong place,
-or pandoc's `%` comment-suppression fires near a `\footnote{}`,
-or a Lua filter runs during the PDF build when it shouldn't —
-you get errors that span three tool layers and take days to diagnose.
-
-The series covers where this tension arose in practice, and what I did about it.
--->
 
 ## Posts in this series
 
 The topics below are drawn from the working notes in my book repository.
-As I write them up, these will become links to full posts.
+As I write them up, they will become links to full posts.
 
 **Setting up and getting started**
 
@@ -108,7 +104,7 @@ As I write them up, these will become links to full posts.
   
 
 - *The author index disaster*:
-  Five things that break simultaneously when you move from BibTeX to pandoc citeproc,
+  Five things that break simultaneously when you move from BibTeX to pandoc citeproc to create an author index,
   and how I worked around each one
 
 **The build pipeline**
@@ -149,12 +145,15 @@ As I write them up, these will become links to full posts.
 
 ## Things Quarto does well
 
-In fairness: Quarto's HTML output is excellent.
-Equations, code folding, callout blocks, tabsets, and cross-references work beautifully
+In fairness: Quarto's HTML output is excellent (and PDF output is pretty decent, when properly configured in your `_quarto.yml` file):
+
+* Equations, code folding, callout blocks, tabsets, and cross-references work beautifully
 with minimal configuration.
-Publishing to GitHub Pages from `docs/` is nearly effortless.
-Single-source dual-output, when it works, is genuinely valuable —
-most of the book's content works for both formats without any conditional blocks.
+
+* Publishing to GitHub Pages (or elsewhere) from `docs/` is nearly effortless.
+Single-source, dual-output, when it works, is genuinely valuable.
+Most of the book's content works for both formats without any conditional blocks,
+but conditional blocks allow for differences between the two.
 
 The problems arise at the edges: complex indexing, fine typography, external LaTeX tools,
 and the Windows build environment. The edges happen to be where a serious print book lives.
