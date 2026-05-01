@@ -16,7 +16,7 @@ source("indexing.R")
 library(colorize)
 ```
 
-A good index is essential for a printed textbook or scholarly book: it transforms your linear text into an efficient research tool, allowing your readers to find specific information without flipping through pages to find what you're looking for.
+A good index is essential for a printed textbook or scholarly book: it transforms your linear text into a usable research tool, allowing your readers to find specific information without flipping through pages to find what you're looking for.
 While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book's usability, credibility, and long-term value. 
 
 * In a book using R, a good index helps readers find the use of functions, packages and datasets used as examples.
@@ -37,7 +37,7 @@ In Quarto, you write in a Quarto-flavored Markdown, R code chunks, processed by 
 produce output text and graphics inline. 
 But the same source must serve _both_ an HTML website and
 a print-ready PDF. This post describes how I handled indexing for
-*Visualizing Multivariate Data and Models in R*
+[*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
 (CRC Press / Chapman & Hall, in preparation).
 
 ## The basic problem
@@ -47,12 +47,12 @@ writes index entries to a `.idx` file as they appear in your document with the p
 A related program, `makeindex`, sorts and formats these into the final `.ind` file that LaTeX typesets as the back-of-book index in response to a `\printindex` command.
 
 The `\index{}` macro is very flexible: it [provides all the features](https://en.wikibooks.org/wiki/LaTeX/Indexing) you
-need for a professional index: subentries (`\index{datasets!Prestige}), cross-references (`\index{PCA|see {principal components analyisis}}`), controlling sorting order vs. visual appearance (`\index{F@$\vec{F}$}`), ...
+need for a professional index: subentries (`\index{datasets!Prestige})`, cross-references (`\index{PCA|see {principal components analyisis}}`), controlling sorting order vs. visual appearance (`\index{F@$\vec{F}$}`), ...
 
 The cycle of editing, running R code (using `knitr`), compiling to LaTeX, generating a bibliography and an index
 was straightforward.
 
-<img src=../assets/images/pdflatex-diagram.png width="40%">
+<img src="/blog/assets/images/pdflatex-diagram.png" width="40%">
 
 For HTML output there is no logical equivalent of an index, because it doesn't
 have "pages" that can be referred to. Instead, for book projects, Quarto provides a Search facility; useful,
@@ -79,11 +79,11 @@ without cluttering the prose with conditional blocks.
 
 The solution I adopted is a set of R helper functions — `pkg()`, `package()`,
 `dataset()`, and `func()` — defined in `R/common.R` and sourced at the top of
-every chapter. 
+every chapter. For convenience, these functions are [available here](indexing.R).
 
 These are used as inline R expressions in the text; they format names appropriately for
-each output format (e.g., perhaps **bold** for HTML and using `\texttt{}` for the PDF).
-but they also  emit `\index{}` entries for PDF. They do not generate the
+each output format (e.g., perhaps `r `colorize("**bold**", "brown")` for HTML and using `\texttt{}` for the PDF).
+But they also  emit `\index{}` entries for PDF. They _do not_ generate the
 `\index{}` entries directly. Rather, they rely on LaTeX macros (described below)
 to ensure consistency of the index entries and allow for generating
 more than one index entry for a package or dataset.
@@ -140,11 +140,15 @@ useful for sentences like "the `r package("car")` provides..." where you want
 ### Package citations
 
 The argument `cite = TRUE` also generates a citation to the package, with a citation key of the form `@R-package`.
-The file `R/common.R` includes code to collect the names of packages loaded via `library()` calls in the current 
+The file `R/common.R` includes code to collect the names of _all packages_ loaded via `library()` calls in the current 
 chapter and write these to a file `packages.bib` after the last chapter.
 
 
 ### `dataset()` — named datasets
+
+Datasets can me named in the text using either the form `datasetname` or `pkg::datasetname`;
+the package name can also be given using the `package` argument.
+The `dataset()` function parses this and creates appropriate index entries.
 
 ```r
 dataset <- function(name, package = NULL) {
@@ -170,7 +174,8 @@ Usage:
 
 ```markdown
 The `r dataset("Prestige", "carData")` dataset records occupational prestige
-scores for 102 Canadian occupations.
+scores for 102 Canadian occupations. The `r dataset("dplyr::startwars")` dataset
+contains information on `r nrow(dplyr::starwars)` characters from Starwars.
 ```
 
 The `pkg::name` shorthand is also supported:
@@ -201,7 +206,7 @@ func <- function(name, package = NULL) {
 }
 ```
 
-The helper `escape()` converts `_` to `\_`:
+The helper `escape()` converts `_` to `\_`, because a bare `_` is interpreted in LaTeX as a subscript.
 
 ```r
 escape <- function(name) gsub("_", "\\_", name, fixed = TRUE)
@@ -210,7 +215,7 @@ escape <- function(name) gsub("_", "\\_", name, fixed = TRUE)
 Usage:
 
 ```markdown
-Use `r func("lm()")` to fit a linear model.
+Use `r func("lm()")` to fit a linear model and `r func("stat_ellipse()")` to add a data ellipse to a scatterplot.
 ```
 
 ## LaTeX macros
@@ -294,6 +299,8 @@ R function names commonly contain underscores: `stat_ellipse()`,
 (it is the subscript character). Inside `\texttt{}` it is tolerated in some
 contexts, but inside `\index{}` entries — which are written to an external `.idx`
 file and later read back during `\ind` generation — it causes problems.
+(How to fix this was asked on [TeX Stackexchange](https://tex.stackexchange.com/questions/752292/how-to-escape-underscore-in-index-entries), 
+but without success.)
 
 The difficulty comes in two places:
 
