@@ -50,9 +50,11 @@ The `\index{}` macro is very flexible: it [provides all the features](https://en
 need for a professional index: subentries (`\index{datasets!Prestige}), cross-references (`\index{PCA|see {principal components analyisis}}`), controlling sorting order vs. visual appearance (`\index{F@$\vec{F}$}`), ...
 
 The cycle of editing, running R code (using `knitr`), compiling to LaTeX, generating a bibliography and an index
-was straightforward.
+was straightforward.[^image]
 
-<img src=../assets/images/pdflatex-diagram.png width="40%">
+[^image]: Image from [TeXStackExchange](https://tex.stackexchange.com/questions/433191/simplest-way-to-create-a-ring-diagram-in-tikz-with-multiple-connected-rings) using the `smartdiagram` LaTeX package.
+
+<img src="/blog/assets/images/pdflatex-diagram.png" width="40%">
 
 For HTML output there is no logical equivalent of an index, because it doesn't
 have "pages" that can be referred to. Instead, for book projects, Quarto provides a Search facility; useful,
