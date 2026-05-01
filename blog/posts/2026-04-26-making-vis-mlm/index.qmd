@@ -2,28 +2,26 @@
 title: "The Making of Vis-MLM"
 description: "A behind-the-scenes series on writing a technical book with Quarto: choices, surprises, and some hard-won solutions"
 author: "Michael Friendly"
-date: "2026-04-21"
-categories: [quarto, books, announcement]
-image: "images/Vis-MLM-cover.jpg"
+date: "2026-04-26"
+draft: false
+categories: [Vis-MLM, quarto, books]
+image: "images/cover-peng.jpg"
 ---
 
-<a href="https://github.com/friendly/Vis-MLM-book">
-<img src="images/Vis-MLM-cover.jpg" class="right" width="28%"
-     alt="Vis-MLM book cover">
-</a>
-
 🧊 I've been writing [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
-(CRC Press / Chapman & Hall, in preparation) for several years now.
+(CRC Press / Chapman & Hall, in preparation) for several years now. I'm now making a (hopefully final) pass on editing.
 The book uses [Quarto](https://quarto.org/) to produce both a print-quality PDF and a free
 online HTML version from a single source.
+
 That promise: **write once, render to multiple formats** is so attractive! In practice, it
-turned out to be less simple than advertised.
+turned out to be less simple than advertised, when you go beyond the basics and want to introduce features of
+page or book design or have content (like animated graphics) that could occur in an online version,
+but not in a print copy.
 
 This post introduces a series, **The Making of Vis-MLM**, on the technical challenges of
-writing a complex book in Quarto, what I've learned, and how I solved (or am still solving) them.
+writing a complex book in Quarto: what I've learned, and how I solved (or am still solving) them.
 I hope it's useful to others attempting something similar.
-
-This is just an outline of topics I've been working on. I'll write up some of these, when I get a
+It will serve an outline of topics and technical issues I've been working on. I'll write up some of these, when I get a
 Round Tuit.
 
 ## The choice of Quarto
@@ -36,11 +34,15 @@ The pipeline was transparent:
 .Rnw → knitr → .tex → LaTeX → BibTeX → LaTeX → PDF
 ```
 
-Every step was explicit. You could run them individually, inspect intermediate files,
+Every step was explicit. I could run them individually, inspect intermediate files,
 and control every detail of layout and typography.
 I was able to design custom visual chapter headers, part-page spreads with color schemes,
 and a comprehensive dual-index (Subject + Author) using standard LaTeX packages.
-It's the book I'm most proud of.
+It's the book I'm most proud of. 
+
+On the other hand, to provide something online,
+I had to create a [companion website](http://ddar.datavis.ca/), showing some figures,
+R code, and other resources.
 
 With Quarto, the pipeline becomes:
 
@@ -51,13 +53,15 @@ With Quarto, the pipeline becomes:
 ```
 
 Pandoc acts as an opaque intermediary between your Markdown source and the LaTeX
-that XeLaTeX compiles. That extra layer is what buys you the HTML output — but
+that XeLaTeX compiles. That extra layer is what buys you the HTML output--- but
 it also means that things which were trivial in `.Rnw` become genuinely difficult.
 
 I chose Quarto because I wanted the online version to be a first-class citizen,
 not an afterthought.
 The trade-off turned out to be steeper than I expected.
+The series covers issues where this tension arose in practice, and what I did about it.
 
+<!--
 ## The fundamental tension
 
 In `.Rnw`, **you control the LaTeX**. You write `\index{}`, `\pkg{}`, `\href{}`,
@@ -72,7 +76,8 @@ or pandoc's `%` comment-suppression fires near a `\footnote{}`,
 or a Lua filter runs during the PDF build when it shouldn't —
 you get errors that span three tool layers and take days to diagnose.
 
-The series covers where this tension surfaced in practice, and what I did about it.
+The series covers where this tension arose in practice, and what I did about it.
+-->
 
 ## Posts in this series
 
