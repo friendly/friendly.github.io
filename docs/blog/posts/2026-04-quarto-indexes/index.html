@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael Friendly">
-<meta name="dcterms.date" content="2026-04-23">
+<meta name="dcterms.date" content="2026-04-28">
 <meta name="description" content="R helper functions, LaTeX macros, and the underscore problem">
 
 <title>Creating Book Indexes in Quarto – Michael Friendly</title>
@@ -389,6 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-title">
 <h1 class="title">Creating Book Indexes in Quarto</h1>
   <div class="quarto-categories">
+    <div class="quarto-category">Vis-MLM</div>
     <div class="quarto-category">quarto</div>
     <div class="quarto-category">latex</div>
     <div class="quarto-category">indexing</div>
@@ -415,7 +416,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 23, 2026</p>
+      <p class="date">April 28, 2026</p>
     </div>
   </div>
   
@@ -427,18 +428,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A good index is essential for a printed textbook or scholarly book: it transforms your linear text into a usable research tool, allowing your readers to find specific information without flipping through pages to find what you’re looking for. While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book’s usability, credibility, and long-term value.</p>
+<p>A good index is essential for a printed textbook or scholarly book: it transforms your linear text into a usable research tool, allowing your readers to find specific information without flipping through pages to find what they’re looking for. While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book’s usability, scholarship, and long-term value.</p>
 <ul>
 <li>In a book using R, a good index helps readers find the use of functions, packages and datasets used as examples.</li>
 <li>In a book illustrating statistical models or data visualization methods, a high-quality index helps them find the concepts or methods discussed, particularly when they are spread across multiple chapters.</li>
 <li>Conversely, lack of a good index can make a printed book frustrating to use when you want to find out how to do some particular thing or how some method should be understood.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 </ul>
 <p>Modern writing tools like Rmarkdown, Pandoc and Quarto open new vistas in book writing and publishing. From a single source of text files, you can produce output in HTML, PDF, eBook and other formats now widely used. However, writing a book with Quarto for dual HTML/PDF output creates interesting challenges for indexing. In a traditional LaTeX workflow (<code>.Rnw</code> files) you pepper your source with <code>\index{entry}</code> commands by hand and get PDF output. In Quarto, you write in a Quarto-flavored Markdown, R code chunks, processed by <code>knitr</code> produce output text and graphics inline. But the same source must serve <em>both</em> an HTML website and a print-ready PDF. This post describes how I handled indexing for <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> (CRC Press / Chapman &amp; Hall, in preparation).</p>
+<p><img src="images/vis-mlm-index.png" class="img-fluid"></p>
 <section id="the-basic-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-basic-problem">The basic problem</h2>
 <p>For PDF output, LaTeX’s <code>\index{entry}</code> command is the standard mechanism. It writes index entries to a <code>.idx</code> file as they appear in your document with the page number where it occurred. A related program, <code>makeindex</code>, sorts and formats these into the final <code>.ind</code> file that LaTeX typesets as the back-of-book index in response to a <code>\printindex</code> command.</p>
 <p>The <code>\index{}</code> macro is very flexible: it <a href="https://en.wikibooks.org/wiki/LaTeX/Indexing">provides all the features</a> you need for a professional index: subentries (<code>\index{datasets!Prestige})</code>, cross-references (<code>\index{PCA|see {principal components analyisis}}</code>), controlling sorting order vs.&nbsp;visual appearance (<code>\index{F@$\vec{F}$}</code>), …</p>
-<p>The cycle of editing, running R code (using <code>knitr</code>), compiling to LaTeX, generating a bibliography and an index was straightforward.</p>
+<p>The cycle of editing, running R code (using <code>knitr</code>), compiling to LaTeX, generating a bibliography and an index was straightforward.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p><img src="../../../blog/assets/images/pdflatex-diagram.png" width="40%"></p>
 <p>For HTML output there is no logical equivalent of an index, because it doesn’t have “pages” that can be referred to. Instead, for book projects, Quarto provides a Search facility; useful, but not as much as a well-crafted index could do. But what happens with those <code>\index{}</code> commands? In Quarto one solution is straightforward for <em>any text</em> you want to appear only in the PDF version: wrap index calls in a conditional block:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="pdf"}</span>
@@ -480,56 +482,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="package-citations" class="level3">
 <h3 class="anchored" data-anchor-id="package-citations">Package citations</h3>
-<p>The argument <code>cite = TRUE</code> also generates a citation to the package, with a citation key of the form <code>@R-package</code>. The file <code>R/common.R</code> includes code to collect the names of <em>all packages</em> loaded via <code>library()</code> calls in the current chapter and write these to a file <code>packages.bib</code> after the last chapter.</p>
+<p>The argument <code>cite = TRUE</code> also generates a citation to the package, with a citation key of the form <code>@R-package</code>. The file <code>R/common.R</code> includes code (<code>write_pkgs()</code>) to collect the names of <em>all packages</em> loaded via <code>library()</code> calls in the current chapter. These are formatted into BibTeX entries, written to a file <code>packages.bib</code> after the last chapter.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write list of packages used at end of every chapter</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: use results: "none" to hide the output</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>.pkg_file <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"bib"</span>, <span class="st">"pkgs.txt"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>base_pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"stats"</span>, <span class="st">"graphics"</span>, <span class="st">"grDevices"</span>, <span class="st">"utils"</span>, <span class="st">"datasets"</span>,  <span class="st">"methods"</span>, <span class="st">"base"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>write_pkgs <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">file=</span><span class="st">""</span>, <span class="at">quiet =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  pkgs <span class="ot">&lt;-</span> <span class="fu">.packages</span>() <span class="sc">|&gt;</span> <span class="fu">sort</span>() <span class="sc">|&gt;</span> <span class="fu">unique</span>()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  pkgs <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(pkgs, base_pkgs)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  np <span class="ot">&lt;-</span> <span class="fu">length</span>(pkgs)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>quiet) <span class="fu">cat</span>(np, <span class="st">" packages used here:</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">paste</span>(pkgs, <span class="at">collapse =</span> <span class="st">", "</span>)  )</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(np <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">cat</span>(pkgs, <span class="at">file =</span> .pkg_file, <span class="at">append=</span><span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="dataset-named-datasets" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-named-datasets"><code>dataset()</code> — named datasets</h3>
 <p>Datasets can me named in the text using either the form <code>datasetname</code> or <code>pkg::datasetname</code>; the package name can also be given using the <code>package</code> argument. The <code>dataset()</code> function parses this and creates appropriate index entries.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="cf">function</span>(name, <span class="at">package =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  dname <span class="ot">&lt;-</span> name</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dpkg  <span class="ot">&lt;-</span> package</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># handle pkg::name syntax</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (stringr<span class="sc">::</span><span class="fu">str_detect</span>(name, <span class="st">"::"</span>)) {</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    parts <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_split</span>(name, <span class="st">"::"</span>, <span class="dv">2</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    dname <span class="ot">&lt;-</span> parts[<span class="dv">2</span>]; dpkg <span class="ot">&lt;-</span> parts[<span class="dv">1</span>]</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">texttt{"</span>, name, <span class="st">"}"</span>)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ref, <span class="st">"</span><span class="sc">\n\\</span><span class="st">ixd{"</span>, dname, <span class="st">"}"</span>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(dpkg)) ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ref, <span class="st">"</span><span class="sc">\n\\</span><span class="st">ixp{"</span>, dpkg, <span class="st">"}"</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"`"</span>, name, <span class="st">"`"</span>)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  ref</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="cf">function</span>(name, <span class="at">package =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  dname <span class="ot">&lt;-</span> name</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  dpkg  <span class="ot">&lt;-</span> package</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># handle pkg::name syntax</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (stringr<span class="sc">::</span><span class="fu">str_detect</span>(name, <span class="st">"::"</span>)) {</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    parts <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_split</span>(name, <span class="st">"::"</span>, <span class="dv">2</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    dname <span class="ot">&lt;-</span> parts[<span class="dv">2</span>]; dpkg <span class="ot">&lt;-</span> parts[<span class="dv">1</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">texttt{"</span>, name, <span class="st">"}"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ref, <span class="st">"</span><span class="sc">\n\\</span><span class="st">ixd{"</span>, dname, <span class="st">"}"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(dpkg)) ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ref, <span class="st">"</span><span class="sc">\n\\</span><span class="st">ixp{"</span>, dpkg, <span class="st">"}"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"`"</span>, name, <span class="st">"`"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  ref</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Usage:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>The <span class="in">`Prestige`</span> dataset records occupational prestige</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>scores for 102 Canadian occupations. The <span class="in">`dplyr::startwars`</span> dataset</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>contains information on 87 characters from Starwars.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>The <span class="in">`Prestige`</span> dataset records occupational prestige</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>scores for 102 Canadian occupations. The <span class="in">`dplyr::startwars`</span> dataset</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>contains information on 87 characters from Starwars.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>pkg::name</code> shorthand is also supported:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">`carData::Prestige`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">`carData::Prestige`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Both expand to the same PDF output: <code>\texttt{Prestige}</code> followed by index entries via <code>\ixd{Prestige}</code> and <code>\ixp{carData}</code>.</p>
 </section>
 <section id="func-r-functions" class="level3">
 <h3 class="anchored" data-anchor-id="func-r-functions"><code>func()</code> — R functions</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>func <span class="ot">&lt;-</span> <span class="cf">function</span>(name, <span class="at">package =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  fname <span class="ot">&lt;-</span> name</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (stringr<span class="sc">::</span><span class="fu">str_detect</span>(name, <span class="st">"::"</span>)) {</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    parts <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_split</span>(name, <span class="st">"::"</span>, <span class="dv">2</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    fname <span class="ot">&lt;-</span> parts[<span class="dv">2</span>]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">texttt{"</span>, <span class="fu">escape</span>(name), <span class="st">"}"</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ref, <span class="st">"</span><span class="sc">\n\\</span><span class="st">ixfunc{"</span>, fname, <span class="st">"}{"</span>, <span class="fu">escape</span>(fname), <span class="st">"}</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"`"</span>, name, <span class="st">"`"</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  ref</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>func <span class="ot">&lt;-</span> <span class="cf">function</span>(name, <span class="at">package =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  fname <span class="ot">&lt;-</span> name</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (stringr<span class="sc">::</span><span class="fu">str_detect</span>(name, <span class="st">"::"</span>)) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    parts <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_split</span>(name, <span class="st">"::"</span>, <span class="dv">2</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    fname <span class="ot">&lt;-</span> parts[<span class="dv">2</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">texttt{"</span>, <span class="fu">escape</span>(name), <span class="st">"}"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ref, <span class="st">"</span><span class="sc">\n\\</span><span class="st">ixfunc{"</span>, fname, <span class="st">"}{"</span>, <span class="fu">escape</span>(fname), <span class="st">"}</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"`"</span>, name, <span class="st">"`"</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  ref</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The helper <code>escape()</code> converts <code>_</code> to <code>\_</code>, because a bare <code>_</code> is interpreted in LaTeX as a subscript.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>escape <span class="ot">&lt;-</span> <span class="cf">function</span>(name) <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">_"</span>, name, <span class="at">fixed =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>escape <span class="ot">&lt;-</span> <span class="cf">function</span>(name) <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">_"</span>, name, <span class="at">fixed =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Usage:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`lm()`</span> to fit a linear model and <span class="in">`stat_ellipse()`</span> to add a data ellipse to a scatterplot.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`lm()`</span> to fit a linear model and <span class="in">`stat_ellipse()`</span> to add a data ellipse to a scatterplot.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="latex-macros" class="level2">
@@ -542,10 +555,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <section id="ixp-packages" class="level3">
 <h3 class="anchored" data-anchor-id="ixp-packages"><code>\ixp</code> — packages</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixp</span>}[1]{<span class="co">%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{#1@<span class="fu">\texttt</span>{#1} package}<span class="co">%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{packages!#1@<span class="fu">\texttt</span>{#1}}<span class="co">%</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixp</span>}[1]{<span class="co">%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{#1@<span class="fu">\texttt</span>{#1} package}<span class="co">%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{packages!#1@<span class="fu">\texttt</span>{#1}}<span class="co">%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>\ixp{ggplot2}</code> produces two <code>.idx</code> entries:</p>
 <pre><code>\indexentry{ggplot2@\texttt{ggplot2} package}{42}
 \indexentry{packages!ggplot2@\texttt{ggplot2}}{42}</code></pre>
@@ -553,26 +566,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="ixd-datasets" class="level3">
 <h3 class="anchored" data-anchor-id="ixd-datasets"><code>\ixd</code> — datasets</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixd</span>}[1]{<span class="co">%</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{#1@<span class="fu">\texttt</span>{#1} data}<span class="co">%</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{datasets!#1@<span class="fu">\texttt</span>{#1}}<span class="co">%</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixd</span>}[1]{<span class="co">%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{#1@<span class="fu">\texttt</span>{#1} data}<span class="co">%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{datasets!#1@<span class="fu">\texttt</span>{#1}}<span class="co">%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exactly parallel to <code>\ixp</code>, but appending “data” to the display text and grouping under “datasets”.</p>
 </section>
 <section id="ixfunc-r-functions" class="level3">
 <h3 class="anchored" data-anchor-id="ixfunc-r-functions"><code>\ixfunc</code> — R functions</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixfunc</span>}[2]{<span class="co">%</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{#1@<span class="fu">\texttt</span>{#2}}<span class="co">%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixfunc</span>}[2]{<span class="co">%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\index</span>{#1@<span class="fu">\texttt</span>{#2}}<span class="co">%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>\ixfunc</code> takes <em>two</em> arguments — the sort key and the display text — for reasons explained in the next section. The caller includes <code>()</code> in both arguments; the macro does not add them.</p>
 </section>
 <section id="other-index-macros" class="level3">
 <h3 class="anchored" data-anchor-id="other-index-macros">Other index macros</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\IX</span>}[1]{<span class="fu">\index</span>{#1}#1}   <span class="co">% index + typeset in surrounding font</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ix</span>}[1]{<span class="fu">\index</span>{#1}}     <span class="co">% index only, no output</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixmain</span>}[1]{<span class="fu">\index</span>{#1|textbf}}  <span class="co">% bold (main) page number</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixon</span>}[1]{<span class="fu">\index</span>{#1|(}}  <span class="co">% open a page range</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixoff</span>}[1]{<span class="fu">\index</span>{#1|)}} <span class="co">% close a page range</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\IX</span>}[1]{<span class="fu">\index</span>{#1}#1}   <span class="co">% index + typeset in surrounding font</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ix</span>}[1]{<span class="fu">\index</span>{#1}}     <span class="co">% index only, no output</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixmain</span>}[1]{<span class="fu">\index</span>{#1|textbf}}  <span class="co">% bold (main) page number</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixon</span>}[1]{<span class="fu">\index</span>{#1|(}}  <span class="co">% open a page range</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ixoff</span>}[1]{<span class="fu">\index</span>{#1|)}} <span class="co">% close a page range</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>\ixon{}</code> / <code>\ixoff{}</code> are useful for marking the start and end of an extended discussion, so the index shows a range like “lm(), 87–93” rather than individual page numbers on every page of the section.</p>
 </section>
 </section>
@@ -583,10 +596,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="display-text-in-index" class="level3">
 <h3 class="anchored" data-anchor-id="display-text-in-index">1. Display text in <code>\index{}</code></h3>
 <p>The display portion of a makeindex entry (after <code>@</code>) is LaTeX source that will be <em>typeset</em> when the <code>.ind</code> file is processed. <code>_</code> must therefore be escaped as <code>\_</code>. The <code>escape()</code> helper and the two-argument <code>\ixfunc</code> macro handle this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R side: generate the macro call</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ref, <span class="st">"</span><span class="sc">\n\\</span><span class="st">ixfunc{"</span>, fname, <span class="st">"}{"</span>, <span class="fu">escape</span>(fname), <span class="st">"}</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R side: generate the macro call</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ref <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ref, <span class="st">"</span><span class="sc">\n\\</span><span class="st">ixfunc{"</span>, fname, <span class="st">"}{"</span>, <span class="fu">escape</span>(fname), <span class="st">"}</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For <code>func("stat_ellipse()")</code> this produces:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\ixfunc</span>{stat_ellipse()}{stat<span class="fu">\_</span>ellipse()}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\ixfunc</span>{stat_ellipse()}{stat<span class="fu">\_</span>ellipse()}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Which writes to <code>.idx</code>:</p>
 <pre><code>\indexentry{stat_ellipse()@\texttt{stat\_ellipse()}}{58}</code></pre>
 <p>The sort key <code>stat_ellipse()</code> uses a raw underscore (makeindex treats it as a plain character for sorting purposes). The display text <code>stat\_ellipse()</code> uses <code>\_</code> so LaTeX can typeset it safely.</p>
@@ -594,7 +607,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="texttt-in-inline-text" class="level3">
 <h3 class="anchored" data-anchor-id="texttt-in-inline-text">2. <code>\texttt{}</code> in inline text</h3>
 <p>When <code>func("stat_ellipse()")</code> formats the <em>displayed</em> name in the prose, it also needs <code>\_</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>funcname <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">texttt{"</span>, <span class="fu">escape</span>(name), <span class="st">"}"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>funcname <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">texttt{"</span>, <span class="fu">escape</span>(name), <span class="st">"}"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Without the escape, the PDF output contains <code>\texttt{stat_ellipse()}</code> and <code>_</code> triggers a LaTeX subscript warning (or error, depending on the document class and font encoding).</p>
 </section>
 <section id="why-not-use-detokenize" class="level3">
@@ -633,6 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <ol>
 <li id="fn1"><p>I don’t want to shame anyone, but a few books in the CRC Press <em>R Series</em> produced with early <code>bookdown</code> stand out for their spectacularly poor indexes, sometimes just one page, making them nearly useless for reference purposes.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Image from <a href="https://tex.stackexchange.com/questions/433191/simplest-way-to-create-a-ring-diagram-in-tikz-with-multiple-connected-rings">TeXStackExchange</a> using the <code>smartdiagram</code> LaTeX package.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

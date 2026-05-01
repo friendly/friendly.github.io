@@ -6,6 +6,8 @@ date: "2026-04-26"
 draft: false
 categories: [Vis-MLM, quarto, books]
 image: "images/cover-peng.jpg"
+aliases:
+  - /blog/posts/2026-04-26-making-vis-mlm/
 ---
 
 🧊 I've been writing [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
@@ -97,13 +99,13 @@ As I write them up, these will become links to full posts.
   TeX Stack Exchange, Quarto Dev discussion, ggplot extenders club, Claude.
 
 - *You can't keep your Quarto project on Dropbox*:
-  File locking, sync interference, and why git is now my only sync mechanism
+  File locking, sync interference, and why `git` is now my only sync mechanism
 
 **Indexing**
 
-- *Creating book indexes in Quarto*:
+- [*Creating book indexes in Quarto*](../2026-04-quarto-indexes/index.qmd)
   R helper functions, LaTeX macros, and the underscore problem
-  (already written — link coming soon)
+  
 
 - *The author index disaster*:
   Five things that break simultaneously when you move from BibTeX to pandoc citeproc,

@@ -4,6 +4,8 @@ description: "Introducing my new blog on data visualization, statistical graphic
 author: "Michael Friendly"
 date: "2026-04-20"
 categories: [announcement]
+aliases:
+  - /blog/posts/2026-04-20-welcome/
 ---
 
 I'm excited to launch this blog as a space to share thoughts on data visualization,

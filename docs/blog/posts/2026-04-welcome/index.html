@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-04-20">
+<meta name="description" content="Introducing my new blog on data visualization, statistical graphics, and R programming">
 
-<title>Datavis Musings – Michael Friendly</title>
+<title>Welcome to Datavis Musings – Michael Friendly</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,30 +29,28 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../images/MF-face.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/MF-face.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,67 +78,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -309,7 +252,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Michael Friendly</span>
     </a>
   </div>
@@ -319,32 +262,32 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> <i class="bi bi-house" role="img">
+    <a class="nav-link" href="../../../index.html"> <i class="bi bi-house" role="img">
 </i> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../packages.html"> <i class="bi bi-box-seam" role="img">
+    <a class="nav-link" href="../../../packages.html"> <i class="bi bi-box-seam" role="img">
 </i> 
 <span class="menu-text">R Packages</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../books.html"> <i class="bi bi-book" role="img">
+    <a class="nav-link" href="../../../books.html"> <i class="bi bi-book" role="img">
 </i> 
 <span class="menu-text">Books</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../courses.html"> <i class="bi bi-mortarboard" role="img">
+    <a class="nav-link" href="../../../courses.html"> <i class="bi bi-mortarboard" role="img">
 </i> 
 <span class="menu-text">Courses</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../software.html"> <i class="bi bi-code-slash" role="img">
+    <a class="nav-link" href="../../../software.html"> <i class="bi bi-code-slash" role="img">
 </i> 
 <span class="menu-text">Other Software</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../blog/index.html" aria-current="page"> <i class="bi bi-pencil" role="img">
+    <a class="nav-link" href="../../../blog/index.html"> <i class="bi bi-pencil" role="img">
 </i> 
 <span class="menu-text">Blog</span></a>
   </li>  
@@ -357,7 +300,7 @@ window.Quarto = {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="https://bsky.app/profile/datavisfriendly.bsky.social"> 
-<span class="menu-text"><img src="../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
+<span class="menu-text"><img src="../../../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -371,22 +314,41 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="YW5ub3VuY2VtZW50">announcement <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ym9va3M=">books <span class="quarto-category-count">(2)</span></div><div class="category" data-category="aW5kZXhpbmc=">indexing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bGF0ZXg=">latex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cXVhcnRv">quarto <span class="quarto-category-count">(2)</span></div><div class="category" data-category="VmlzLU1MTQ==">Vis-MLM <span class="quarto-category-count">(2)</span></div></div></div>
+    
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Datavis Musings</h1>
+<h1 class="title">Welcome to Datavis Musings</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">announcement</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Introducing my new blog on data visualization, statistical graphics, and R programming
+  </div>
 </div>
 
 
+<div class="quarto-title-meta column-page">
 
-<div class="quarto-title-meta column-page-left">
-
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 20, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -396,118 +358,38 @@ window.Quarto = {
 </header>
 
 
-<p>Thoughts on data visualization, statistical graphics, R programming, and the history of data visualization.</p>
+<p>I’m excited to launch this blog as a space to share thoughts on data visualization, statistical graphics, R programming, and the history of visual thinking. I’ve been wanting to do this for a while, but finally got A Round Tuit.</p>
+<p><img src="images/RoundTuit.avif" width="30%" class="center"></p>
+<section id="what-to-expect" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-expect">What to Expect</h2>
+<p>From time to time, I’ll be writing about:</p>
+<ul>
+<li><i class="bi bi-box-seam"></i> <strong>R packages</strong> — new releases, tips, and worked examples from my packages</li>
+<li><i class="bi bi-bar-chart-line"></i> <strong>Data visualization</strong> — interesting visualizations, graphical methods, and design principles</li>
+<li><i class="bi bi-hourglass-split"></i> <strong>History of data visualization</strong> — the people, ideas, and graphics that shaped the field</li>
+<li><i class="bi bi-mortarboard"></i> <strong>Teaching</strong> — experiences, course materials, and pedagogical reflections</li>
+<li><i class="bi bi-file-earmark-slides"></i> <strong>Talks and papers</strong> — highlights from conference presentations and recent publications</li>
+</ul>
+</section>
+<section id="what-im-working-on-now" class="level2">
+<h2 class="anchored" data-anchor-id="what-im-working-on-now">What I’m working on now</h2>
+<p><i class="bi bi-mortarboard"></i> My graduate course in <a href="https://friendly.github.io/psy6136/">Categorical Data Analysis</a> is now complete for 2026. Students are working on their final projects, and I post a few things here that deserve a wider audience, and to honor their great work.</p>
+<p>🧊 I’ve now turned my attention back to my book, <a href="https://friendly.github.io/Vis-MLM-book/">Visualizing Multivariate Data and Models in R</a>. I’ll write about some of the challenges and opportunities of writing this using <a href="https://quarto.org/">Quarto</a></p>
+</section>
+<section id="stay-connected" class="level2">
+<h2 class="anchored" data-anchor-id="stay-connected">Stay Connected</h2>
+<p>You can follow along via:</p>
+<!-- - <i class="bi bi-rss"></i> RSS feed (see the link at the bottom of the [Blog](/blog/) page) -->
+<ul>
+<li><i class="bi bi-bluesky"></i> <a href="https://bsky.app/profile/datavisfriendly.bsky.social">BlueSky</a></li>
+<li><i class="bi bi-github"></i> <a href="https://github.com/friendly">GitHub</a></li>
+</ul>
+<p>Stay tuned for more!</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="YW5ub3VuY2VtZW50" data-listing-date-sort="1776657600000" data-listing-file-modified-sort="1777644640031" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="225">
-<div class="thumbnail"><a href="../blog/posts/2026-04-welcome/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts\2026-04-welcome\images\RoundTuit.avif"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2026-04-welcome/index.html" class="no-external">Welcome to Datavis Musings</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('YW5ub3VuY2VtZW50'); return false;">announcement</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/posts/2026-04-welcome/index.html" class="no-external">
-<p>Introducing my new blog on data visualization, statistical graphics, and R programming</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2026-04-welcome/index.html" class="no-external">
-<div class="listing-date">
-Apr 20, 2026
-</div>
-<div class="listing-author">
-Michael Friendly
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="VmlzLU1MTSUyQ3F1YXJ0byUyQ2Jvb2tz" data-listing-date-sort="1777176000000" data-listing-file-modified-sort="1777647251093" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="998">
-<div class="thumbnail"><a href="../blog/posts/2026-04-making-vis-mlm/index.html" class="no-external">
-
-<img loading="lazy" src="../blog/posts/2026-04-making-vis-mlm/images/cover-peng.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2026-04-making-vis-mlm/index.html" class="no-external">The Making of Vis-MLM</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('VmlzLU1MTQ=='); return false;">Vis-MLM</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cXVhcnRv'); return false;">quarto</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ym9va3M='); return false;">books</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/posts/2026-04-making-vis-mlm/index.html" class="no-external">
-<p>A behind-the-scenes series on writing a technical book with Quarto: choices, surprises, and some hard-won solutions</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2026-04-making-vis-mlm/index.html" class="no-external">
-<div class="listing-date">
-Apr 26, 2026
-</div>
-<div class="listing-author">
-Michael Friendly
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="VmlzLU1MTSUyQ3F1YXJ0byUyQ2xhdGV4JTJDaW5kZXhpbmclMkNib29rcw==" data-listing-date-sort="1777348800000" data-listing-file-modified-sort="1777647635298" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2208">
-<div class="thumbnail"><a href="../blog/posts/2026-04-quarto-indexes/index.html" class="no-external">
-
-<img loading="lazy" src="../blog/posts/2026-04-quarto-indexes/images/vis-mlm-index.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2026-04-quarto-indexes/index.html" class="no-external">Creating Book Indexes in Quarto</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('VmlzLU1MTQ=='); return false;">Vis-MLM</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cXVhcnRv'); return false;">quarto</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bGF0ZXg='); return false;">latex</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('aW5kZXhpbmc='); return false;">indexing</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ym9va3M='); return false;">books</div>
-
-</div>
-<div class="delink listing-description"><a href="../blog/posts/2026-04-quarto-indexes/index.html" class="no-external">
-<p>R helper functions, LaTeX macros, and the underscore problem</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2026-04-quarto-indexes/index.html" class="no-external">
-<div class="listing-date">
-Apr 28, 2026
-</div>
-<div class="listing-author">
-Michael Friendly
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

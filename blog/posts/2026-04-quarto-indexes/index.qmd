@@ -2,9 +2,9 @@
 title: "Creating Book Indexes in Quarto"
 description: "R helper functions, LaTeX macros, and the underscore problem"
 author: "Michael Friendly"
-date: "2026-04-23"
-categories: [quarto, latex, indexing, books]
-image: "../assets/images/pdflatex-diagram.png"
+date: "2026-04-28"
+categories: [Vis-MLM, quarto, latex, indexing, books]
+image: "images/vis-mlm-index.png"
 format:
   html:
     toc: true
@@ -16,8 +16,8 @@ source("indexing.R")
 library(colorize)
 ```
 
-A good index is essential for a printed textbook or scholarly book: it transforms your linear text into a usable research tool, allowing your readers to find specific information without flipping through pages to find what you're looking for.
-While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book's usability, credibility, and long-term value. 
+A good index is essential for a printed textbook or scholarly book: it transforms your linear text into a usable research tool, allowing your readers to find specific information without flipping through pages to find what they're looking for.
+While a table of contents provides a general overview, a high-quality index acts as a detailed, analytical map, enhancing the book's usability, scholarship, and long-term value. 
 
 * In a book using R, a good index helps readers find the use of functions, packages and datasets used as examples.
 * In a book illustrating statistical models or data visualization methods, a high-quality index helps them find the concepts or methods discussed, particularly when they are spread across multiple chapters. 
@@ -39,6 +39,8 @@ But the same source must serve _both_ an HTML website and
 a print-ready PDF. This post describes how I handled indexing for
 [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
 (CRC Press / Chapman & Hall, in preparation).
+
+![](images/vis-mlm-index.png)
 
 ## The basic problem
 
@@ -142,8 +144,22 @@ useful for sentences like "the `r package("car")` provides..." where you want
 ### Package citations
 
 The argument `cite = TRUE` also generates a citation to the package, with a citation key of the form `@R-package`.
-The file `R/common.R` includes code to collect the names of _all packages_ loaded via `library()` calls in the current 
-chapter and write these to a file `packages.bib` after the last chapter.
+The file `R/common.R` includes code (`write_pkgs()`) to collect the names of _all packages_ loaded via `library()` calls in the current 
+chapter. These are formatted into BibTeX entries, written to a file `packages.bib` after the last chapter. 
+
+```r
+# write list of packages used at end of every chapter
+# NB: use results: "none" to hide the output
+.pkg_file <- here::here("bib", "pkgs.txt")
+base_pkgs <- c("stats", "graphics", "grDevices", "utils", "datasets",  "methods", "base")
+write_pkgs <- function(file="", quiet = FALSE) {
+  pkgs <- .packages() |> sort() |> unique()
+  pkgs <- setdiff(pkgs, base_pkgs)
+  np <- length(pkgs)
+  if (!quiet) cat(np, " packages used here:\n", paste(pkgs, collapse = ", ")  )
+  if(np > 0) cat(pkgs, file = .pkg_file, append=TRUE, sep = "\n")
+}
+```
 
 
 ### `dataset()` — named datasets
