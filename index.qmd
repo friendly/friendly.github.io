@@ -20,6 +20,11 @@ open-graph:
 <div class="profile-text">
 I'm a Professor of Psychology at York University, specializing in **data visualization** and **statistical methods**. My research focuses on development of graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization, captured in my [Milestones Project](http://datavis.ca/milestones/) and historical [research papers](https://www.datavis.ca/papers/#history).
 </div>
+
+<div class="profile-qr">
+<img src="images/friendly.github.io.qrcode.png" alt="QR code for friendly.github.io">
+<p>Scan to visit</p>
+</div>
 :::
 
 <img src="images/hexsession-mypkgs.jpg" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">

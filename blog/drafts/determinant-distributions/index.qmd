@@ -35,6 +35,11 @@ of a square matrix, $\text{det}(\mathbf{A}) \equiv | \mathbf{A} |$. ...
     on when matrix multiplication was actually invented.
 -->
 
+<!-- Math Stack Exchange posts
+Geometric interpretations of matrix inverses
+https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/1922830#1922830
+-->
+
 <!-- TODO: expand uses
   - $|\det(\mathbf{A})|$ is the volume-scaling factor of the linear transformation $\mathbf{A}$:
     it equals the volume of the parallelepiped spanned by the rows (or columns).
@@ -45,7 +50,8 @@ of a square matrix, $\text{det}(\mathbf{A}) \equiv | \mathbf{A} |$. ...
     [Georgia Tech ILA: Determinants and Volumes](https://textbooks.math.gatech.edu/ila/determinants-volumes.html).
 -->
 
-This post explores an interesting combinatorial and statistical problem: What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once?
+This post explores an interesting combinatorial and statistical problem: What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once? It arose from a simpler question
+Math StackExchange: What is the [total number 3x3 matrices using only digits 1 to 9?](https://math.stackexchange.com/questions/2339056/total-number-of-3x3-matrices-using-only-digits-1-to-9)
 
 We answer this question in two ways:
 

@@ -25,14 +25,14 @@
     "href": "index.html",
     "title": "Welcome to My Site",
     "section": "",
-    "text": "I’m a Professor of Psychology at York University, specializing in data visualization and statistical methods. My research focuses on development of graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization, captured in my Milestones Project and historical research papers.\n\n\n\n\n\n\n\n\n\nI maintain over 15 R packages for multivariate analysis, categorical data analysis, and historical datasets. These packages emphasize visualization and understanding of statistical methods.\nExplore packages →\n\n\n\nAuthor of several books on data visualization and statistical methods in R, including works on visualizing multivariate models and discrete data analysis.\nView books →\n\n\n\nTeaching materials for graduate courses in Psychology of Data Visualization and Categorical Data Analysis, with extensive online resources.\nSee courses →\n\n\n\nExtensive collection of SAS macros for statistical graphics and analysis, developed over many years and freely available on GitHub.\nBrowse software →\n\n\n\n\n\nMy current work emphasizes the use of visualization to understand statistical models and data structure, with particular focus on:\n\nHE plots for multivariate linear models\nVisualization of categorical data analysis\nHistorical datasets in statistics\nTeaching statistical graphics\n\n\n\n\n\nWebsite: datavis.ca\nGitHub: github.com/friendly\nBlueSky: https://bsky.app/profile/datavisfriendly.bsky.social\nEmail: friendly AT yorku DOT ca"
+    "text": "I’m a Professor of Psychology at York University, specializing in data visualization and statistical methods. My research focuses on development of graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization, captured in my Milestones Project and historical research papers.\n\n\n\n\nScan to visit\n\n\n\n\n\n\n\n\n\n\nI maintain over 15 R packages for multivariate analysis, categorical data analysis, and historical datasets. These packages emphasize visualization and understanding of statistical methods.\nExplore packages →\n\n\n\nAuthor of several books on data visualization and statistical methods in R, including works on visualizing multivariate models and discrete data analysis.\nView books →\n\n\n\nTeaching materials for graduate courses in Psychology of Data Visualization and Categorical Data Analysis, with extensive online resources.\nSee courses →\n\n\n\nExtensive collection of SAS macros for statistical graphics and analysis, developed over many years and freely available on GitHub.\nBrowse software →\n\n\n\n\n\nMy current work emphasizes the use of visualization to understand statistical models and data structure, with particular focus on:\n\nHE plots for multivariate linear models\nVisualization of categorical data analysis\nHistorical datasets in statistics\nTeaching statistical graphics\n\n\n\n\n\nWebsite: datavis.ca\nGitHub: github.com/friendly\nBlueSky: https://bsky.app/profile/datavisfriendly.bsky.social\nEmail: friendly AT yorku DOT ca"
   },
   {
     "objectID": "index.html#about-me",
     "href": "index.html#about-me",
     "title": "Welcome to My Site",
     "section": "",
-    "text": "I’m a Professor of Psychology at York University, specializing in data visualization and statistical methods. My research focuses on development of graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization, captured in my Milestones Project and historical research papers."
+    "text": "I’m a Professor of Psychology at York University, specializing in data visualization and statistical methods. My research focuses on development of graphical methods for understanding multivariate data and models and visualization for categorical data. Another passion is the study of the history of data visualization, captured in my Milestones Project and historical research papers.\n\n\n\n\nScan to visit"
   },
   {
     "objectID": "index.html#highlights",
@@ -250,5 +250,68 @@
     "title": "R Packages",
     "section": "",
     "text": "A collection of small data sets that are interesting and important in the history of statistics and data visualization. The goal is to make these available for both instructional use and historical research.\n\nDocs Source\n\n\n\n\n\n\n\n\n\n\n\nMaps of France in 1830, multivariate datasets from A.-M. Guerry and others. Facilitates exploration and development of statistical and graphic methods for multivariate data in a geospatial context.\n\nDocs Source\n\n\n\n\n\n\n\n\n\n\n\nGenerates random quotations from a database of quotes on topics in statistics, data visualization and science. Includes functions for searching quotes by tags or authors and creating word clouds.\n\nDocs Source\n\n\n\n\n\n\n\n\n\n\n\nProvides the tables from the ‘Sean Lahman Baseball Database’ as a set of R data.frames. It uses the data on pitching, hitting and fielding performance and other tables from 1871 through 2024.\n\nDocs Source\n\n\n\n\n\n\n\n\n\n\n\nCollects several classical word pools used most often to provide lists of words in psychological studies of learning and memory. It provides a simple function, ‘pickList’ for selecting random samples of words within given ranges.\n\nDocs Source\n\n\n\n\n\n\n\n\n\n\n\nImplements stylistic elements (fonts, hachure patterns, color palettes) used by ‘Emile Cheysson’ in the ‘Albums de Statistique Graphique’, sometimes called the pinnacle of the Golden Age of Statistical Graphics.\n\nDocs Source\n\n\n\n\n\n\nFor a complete list of all packages with full descriptions, see the GitHub packages.md file in my profile."
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html",
+    "href": "blog/drafts/determinant-distributions/index.html",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "",
+    "text": "From the time, long ago, I first studied linear algebra, I’ve always had a fascination with the idea of the determinant of a square matrix, \\(\\text{det}(\\mathbf{A}) \\equiv | \\mathbf{A} |\\). …\n\n\nThis post explores an interesting combinatorial and statistical problem: What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once?\nWe answer this question in two ways:\n\nExact solution: Calculate the determinant for all 9! = 362,880 permutations\nPermutation distribution: Generate a large number of random permutations and approximate the distribution"
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html#introduction",
+    "href": "blog/drafts/determinant-distributions/index.html#introduction",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "",
+    "text": "From the time, long ago, I first studied linear algebra, I’ve always had a fascination with the idea of the determinant of a square matrix, \\(\\text{det}(\\mathbf{A}) \\equiv | \\mathbf{A} |\\). …\n\n\nThis post explores an interesting combinatorial and statistical problem: What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once?\nWe answer this question in two ways:\n\nExact solution: Calculate the determinant for all 9! = 362,880 permutations\nPermutation distribution: Generate a large number of random permutations and approximate the distribution"
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html#setup",
+    "href": "blog/drafts/determinant-distributions/index.html#setup",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "Setup",
+    "text": "Setup\n\n\nCode\nlibrary(ggplot2)\nlibrary(dplyr)\n\n# Function to compute determinant from a vector of 9 numbers\ndet_from_vec &lt;- function(v) {\n  M &lt;- matrix(v, nrow = 3, ncol = 3, byrow = TRUE)\n  det(M)\n}"
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html#exact-solution-all-9-permutations",
+    "href": "blog/drafts/determinant-distributions/index.html#exact-solution-all-9-permutations",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "Exact Solution: All 9! Permutations",
+    "text": "Exact Solution: All 9! Permutations\nComputing exact distribution using all 362,880 permutations of the digits 1-9.\n\n\nCode\nlibrary(arrangements)\n\n# If arrangements package is not available, use base R\nif (!requireNamespace(\"arrangements\", quietly = TRUE)) {\n  if (requireNamespace(\"gtools\", quietly = TRUE)) {\n    all_perms &lt;- gtools::permutations(9, 9, 1:9)\n    determinants_exact &lt;- apply(all_perms, 1, det_from_vec)\n  } else {\n    cat(\"For exact solution, install 'arrangements' or 'gtools' package\\n\")\n    determinants_exact &lt;- NULL\n  }\n} else {\n  all_perms &lt;- arrangements::permutations(1:9, k = 9)\n  determinants_exact &lt;- apply(all_perms, 1, det_from_vec)\n}"
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html#random-permutation-distribution",
+    "href": "blog/drafts/determinant-distributions/index.html#random-permutation-distribution",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "Random Permutation Distribution",
+    "text": "Random Permutation Distribution\nGenerating a Monte Carlo approximation with a large random sample of permutations.\n\n\nCode\nB &lt;- 100000\nset.seed(42)\n\ndeterminants_random &lt;- replicate(B, {\n  v &lt;- sample(1:9, 9, replace = FALSE)\n  det_from_vec(v)\n})"
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html#summary-statistics",
+    "href": "blog/drafts/determinant-distributions/index.html#summary-statistics",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "Summary Statistics",
+    "text": "Summary Statistics\n\nExact Solution\n\n\nCode\nif (!is.null(determinants_exact)) {\n  cat(\"EXACT SOLUTION (all 9! permutations):\\n\")\n  cat(sprintf(\"  Total permutations: %d\\n\", length(determinants_exact)))\n  cat(sprintf(\"  Range: [%.1f, %.1f]\\n\",\n              min(determinants_exact), max(determinants_exact)))\n  cat(sprintf(\"  Mean: %.2f\\n\", mean(determinants_exact)))\n  cat(sprintf(\"  Median: %.2f\\n\", median(determinants_exact)))\n  cat(sprintf(\"  SD: %.2f\\n\", sd(determinants_exact)))\n  cat(sprintf(\"  Unique values: %d\\n\", length(unique(determinants_exact))))\n  n_zero &lt;- sum(determinants_exact == 0)\n  cat(sprintf(\"  Zero determinants: %d (%.2f%%)\\n\",\n              n_zero, 100 * n_zero / length(determinants_exact)))\n}\n\n\nEXACT SOLUTION (all 9! permutations):\n  Total permutations: 362880\n  Range: [-412.0, 412.0]\n  Mean: -0.00\n  Median: 0.00\n  SD: 154.85\n  Unique values: 3891\n  Zero determinants: 1488 (0.41%)\n\n\n\n\nRandom Permutation Sample\n\n\nCode\ncat(\"RANDOM PERMUTATION SAMPLE (B =\", B, \"):\\n\")\n\n\nRANDOM PERMUTATION SAMPLE (B = 1e+05 ):\n\n\nCode\ncat(sprintf(\"  Range: [%.1f, %.1f]\\n\",\n            min(determinants_random), max(determinants_random)))\n\n\n  Range: [-412.0, 412.0]\n\n\nCode\ncat(sprintf(\"  Mean: %.2f\\n\", mean(determinants_random)))\n\n\n  Mean: 0.05\n\n\nCode\ncat(sprintf(\"  Median: %.2f\\n\", median(determinants_random)))\n\n\n  Median: 0.00\n\n\nCode\ncat(sprintf(\"  SD: %.2f\\n\", sd(determinants_random)))\n\n\n  SD: 155.43\n\n\nCode\ncat(sprintf(\"  Unique values: %d\\n\", length(unique(determinants_random))))\n\n\n  Unique values: 3451"
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html#visualizations",
+    "href": "blog/drafts/determinant-distributions/index.html#visualizations",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "Visualizations",
+    "text": "Visualizations\n\nComparison of Both Methods\n\n\nCode\nif (!is.null(determinants_exact)) {\n  df_combined &lt;- rbind(\n    data.frame(determinant = determinants_exact,\n               method = \"Exact (all 9! permutations)\"),\n    data.frame(determinant = determinants_random,\n               method = paste0(\"Random sample (B = \", format(B, big.mark = \",\"), \")\"))\n  )\n\n  ggplot(df_combined, aes(x = determinant, fill = method)) +\n    geom_histogram(aes(y = after_stat(density)),\n                   bins = 100, alpha = 0.6, position = \"identity\") +\n    geom_density(aes(color = method), linewidth = 1, fill = NA) +\n    scale_fill_manual(values = c(\"#3498db\", \"#e74c3c\")) +\n    scale_color_manual(values = c(\"#2c3e50\", \"#c0392b\")) +\n    labs(\n      title = \"Distribution of Determinants of 3×3 Matrices from {1,2,...,9}\",\n      subtitle = \"Each matrix uses digits 1-9 exactly once\",\n      x = \"Determinant\", y = \"Density\", fill = \"Method\", color = \"Method\"\n    ) +\n    theme_minimal(base_size = 12) +\n    theme(legend.position = \"bottom\",\n          plot.title = element_text(face = \"bold\", size = 14),\n          panel.grid.minor = element_blank())\n}\n\n\n\n\n\n\n\n\n\n\n\nExact Distribution (Detailed View)\n\n\nCode\nif (!is.null(determinants_exact)) {\n  ggplot(data.frame(determinant = determinants_exact), aes(x = determinant)) +\n    geom_histogram(aes(y = after_stat(density)),\n                   bins = 120, fill = \"#3498db\", alpha = 0.7) +\n    geom_density(color = \"#2c3e50\", linewidth = 1.2) +\n    labs(\n      title = \"Exact Distribution: All 362,880 Permutations\",\n      subtitle = \"Determinants of 3×3 matrices using digits 1-9 once each\",\n      x = \"Determinant\", y = \"Density\"\n    ) +\n    theme_minimal(base_size = 12) +\n    theme(plot.title = element_text(face = \"bold\", size = 14),\n          panel.grid.minor = element_blank())\n}"
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html#additional-analysis",
+    "href": "blog/drafts/determinant-distributions/index.html#additional-analysis",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "Additional Analysis",
+    "text": "Additional Analysis\n\nQuartiles\n\n\nCode\nif (!is.null(determinants_exact)) {\n  cat(\"Quartiles (exact):\\n\")\n  print(quantile(determinants_exact, probs = c(0, 0.25, 0.5, 0.75, 1)))\n}\n\n\nQuartiles (exact):\n  0%  25%  50%  75% 100% \n-412 -101    0  101  412 \n\n\n\n\nMost Common Values\n\n\nCode\nif (!is.null(determinants_exact)) {\n  cat(\"Top 10 most frequent determinant values:\\n\")\n  freq_table &lt;- sort(table(determinants_exact), decreasing = TRUE)\n  print(head(freq_table, 10))\n}\n\n\nTop 10 most frequent determinant values:\ndeterminants_exact\n -45   45  -27   27  -55   55  -65  -11   11   65 \n1704 1704 1611 1611 1503 1503 1500 1500 1500 1500 \n\n\n\n\nSymmetry\n\n\nCode\nif (!is.null(determinants_exact)) {\n  if (requireNamespace(\"moments\", quietly = TRUE)) {\n    cat(sprintf(\"Skewness: %.3f\\n\", moments::skewness(determinants_exact)))\n    cat(\"  (0 = symmetric, &gt;0 = right-skewed, &lt;0 = left-skewed)\\n\")\n  }\n}\n\n\nSkewness: 0.000\n  (0 = symmetric, &gt;0 = right-skewed, &lt;0 = left-skewed)"
+  },
+  {
+    "objectID": "blog/drafts/determinant-distributions/index.html#conclusions",
+    "href": "blog/drafts/determinant-distributions/index.html#conclusions",
+    "title": "Distribution of Determinants of 3×3 Matrices from {1,2,…,9}",
+    "section": "Conclusions",
+    "text": "Conclusions\nThis analysis reveals the distribution of determinants when all possible 3×3 matrices are formed from the digits 1-9, each used exactly once. The Monte Carlo approximation with random permutations closely matches the exact distribution, validating the sampling approach for similar problems where exact enumeration might be computationally prohibitive."
   }
 ]
