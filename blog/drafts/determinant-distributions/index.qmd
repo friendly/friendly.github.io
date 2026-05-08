@@ -24,7 +24,11 @@ knitr:
 ## Introduction
 
 From the time, long ago, I first studied linear algebra, I've always had a fascination with the idea of the determinant
-of a square matrix, $\text{det}(\mathbf{A}) \equiv | \mathbf{A} |$. ...
+of a square matrix, $\text{det}(\mathbf{A}) \equiv | \mathbf{A} |$. You just take your matrix $\mathbf{A}$, which
+could be $(2 \times 2)$, or $(10 \times 10)$, or $(100 \times 100)$, ... and $| \mathbf{A} |$ turns that into a _single number_, that expresses
+many of it's properties---algebraic, geometric and statistical. 
+
+In short, the determinant $| \mathbf{A} |$ is a measure of the "size" of $\mathbf{A}$.
 
 <!-- TODO: expand history
   - Origins trace to Leibniz (1693) and Seki Takakazu (Japan, ~1683); the term "determinant" was
@@ -38,6 +42,9 @@ of a square matrix, $\text{det}(\mathbf{A}) \equiv | \mathbf{A} |$. ...
 <!-- Math Stack Exchange posts
 Geometric interpretations of matrix inverses
 https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/1922830#1922830
+
+Medium post
+https://medium.com/@tomkob99_89317/singular-values-and-determinants-explained-by-a-pile-of-unit-masses-0731c9b0d300
 -->
 
 <!-- TODO: expand uses

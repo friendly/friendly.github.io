@@ -29,4 +29,10 @@ there's a different set of task requirements:  ???
 
 * **heplots**
 
+## Working with references
+
+- Why BibTeX? 
+- Jabref vs Zotero
+- R packages
+
 ## How Could AI Help?
