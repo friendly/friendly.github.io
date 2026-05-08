@@ -403,6 +403,12 @@ window.Quarto = {
   <li><a href="#most-common-values" id="toc-most-common-values" class="nav-link" data-scroll-target="#most-common-values">Most Common Values</a></li>
   <li><a href="#symmetry" id="toc-symmetry" class="nav-link" data-scroll-target="#symmetry">Symmetry</a></li>
   </ul></li>
+  <li><a href="#why-this-shape-an-analytical-perspective" id="toc-why-this-shape-an-analytical-perspective" class="nav-link" data-scroll-target="#why-this-shape-an-analytical-perspective">Why this shape? An analytical perspective</a>
+  <ul class="collapse">
+  <li><a href="#why-symmetric" id="toc-why-symmetric" class="nav-link" data-scroll-target="#why-symmetric">Why symmetric?</a></li>
+  <li><a href="#why-tent-shaped" id="toc-why-tent-shaped" class="nav-link" data-scroll-target="#why-tent-shaped">Why tent-shaped?</a></li>
+  <li><a href="#an-exact-analytic-formula" id="toc-an-exact-analytic-formula" class="nav-link" data-scroll-target="#an-exact-analytic-formula">An exact analytic formula?</a></li>
+  </ul></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
@@ -455,7 +461,8 @@ window.Quarto = {
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>From the time, long ago, I first studied linear algebra, I’ve always had a fascination with the idea of the determinant of a square matrix, <span class="math inline">\(\text{det}(\mathbf{A}) \equiv | \mathbf{A} |\)</span>. …</p>
+<p>From the time, long ago, I first studied linear algebra, I’ve always had a fascination with the idea of the determinant of a square matrix, <span class="math inline">\(\text{det}(\mathbf{A}) \equiv | \mathbf{A} |\)</span>. You just take your matrix <span class="math inline">\(\mathbf{A}\)</span>, which could be <span class="math inline">\((2 \times 2)\)</span>, or <span class="math inline">\((10 \times 10)\)</span>, or <span class="math inline">\((100 \times 100)\)</span>, … and <span class="math inline">\(| \mathbf{A} |\)</span> turns that into a <em>single number</em>, that expresses many of it’s properties—algebraic, geometric and statistical.</p>
+<p>In short, the determinant <span class="math inline">\(| \mathbf{A} |\)</span> is a measure of the “size” of <span class="math inline">\(\mathbf{A}\)</span>.</p>
 <!-- TODO: expand history
   - Origins trace to Leibniz (1693) and Seki Takakazu (Japan, ~1683); the term "determinant" was
     coined by Cauchy in 1812, who also standardized notation. Good starting points:
@@ -463,6 +470,13 @@ window.Quarto = {
     (covers Chinese origins ~200 BC through Cayley 1858);
     [Oliver Knill's historical notes](https://people.math.harvard.edu/~knill/history/matrix/)
     on when matrix multiplication was actually invented.
+-->
+<!-- Math Stack Exchange posts
+Geometric interpretations of matrix inverses
+https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/1922830#1922830
+
+Medium post
+https://medium.com/@tomkob99_89317/singular-values-and-determinants-explained-by-a-pile-of-unit-masses-0731c9b0d300
 -->
 <!-- TODO: expand uses
   - $|\det(\mathbf{A})|$ is the volume-scaling factor of the linear transformation $\mathbf{A}$:
@@ -473,7 +487,7 @@ window.Quarto = {
     See: [Math Insight: Geometric properties](https://mathinsight.org/determinant_geometric_properties);
     [Georgia Tech ILA: Determinants and Volumes](https://textbooks.math.gatech.edu/ila/determinants-volumes.html).
 -->
-<p>This post explores an interesting combinatorial and statistical problem: What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once?</p>
+<p>This post explores an interesting combinatorial and statistical problem: What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once? It arose from a simpler question Math StackExchange: What is the <a href="https://math.stackexchange.com/questions/2339056/total-number-of-3x3-matrices-using-only-digits-1-to-9">total number 3x3 matrices using only digits 1 to 9?</a></p>
 <p>We answer this question in two ways:</p>
 <ol type="1">
 <li><strong>Exact solution</strong>: Calculate the determinant for all 9! = 362,880 permutations</li>
@@ -487,36 +501,29 @@ window.Quarto = {
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to compute determinant from a vector of 9 numbers</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>det_from_vec <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  M <span class="ot">&lt;-</span> <span class="fu">matrix</span>(v, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">det</span>(M)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrangements)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(moments)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="exact-solution-all-9-permutations" class="level2">
 <h2 class="anchored" data-anchor-id="exact-solution-all-9-permutations">Exact Solution: All 9! Permutations</h2>
+<p><span class="math inline">\(9! = 362,880\)</span> is a large number, but no so large to preclude an elegant two-line computational solution, even if it takes time and storage space.</p>
+<ul>
+<li>Use <code>arrangements::permutations()</code> to generate all of these</li>
+<li>Use <code>apply()</code> to calculate their determinants, with a helper function <code>det_from_vec()</code></li>
+</ul>
 <p>Computing exact distribution using all 362,880 permutations of the digits 1-9.</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrangements)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If arrangements package is not available, use base R</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"arrangements"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">"gtools"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    all_perms <span class="ot">&lt;-</span> gtools<span class="sc">::</span><span class="fu">permutations</span>(<span class="dv">9</span>, <span class="dv">9</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    determinants_exact <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_perms, <span class="dv">1</span>, det_from_vec)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"For exact solution, install 'arrangements' or 'gtools' package</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    determinants_exact <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  all_perms <span class="ot">&lt;-</span> arrangements<span class="sc">::</span><span class="fu">permutations</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">k =</span> <span class="dv">9</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  determinants_exact <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_perms, <span class="dv">1</span>, det_from_vec)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>det_from_vec <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  M <span class="ot">&lt;-</span> <span class="fu">matrix</span>(v, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">det</span>(M)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>all_perms <span class="ot">&lt;-</span> arrangements<span class="sc">::</span><span class="fu">permutations</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">k =</span> <span class="dv">9</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>determinants_exact <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_perms, <span class="dv">1</span>, det_from_vec)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -732,18 +739,54 @@ determinants_exact
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(determinants_exact)) {</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">"moments"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Skewness: %.3f</span><span class="sc">\n</span><span class="st">"</span>, moments<span class="sc">::</span><span class="fu">skewness</span>(determinants_exact)))</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"  (0 = symmetric, &gt;0 = right-skewed, &lt;0 = left-skewed)</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Skewness: %.3f</span><span class="sc">\n</span><span class="st">"</span>, moments<span class="sc">::</span><span class="fu">skewness</span>(determinants_exact)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Skewness: 0.000
-  (0 = symmetric, &gt;0 = right-skewed, &lt;0 = left-skewed)</code></pre>
+<pre><code>Skewness: 0.000</code></pre>
 </div>
 </div>
+</section>
+</section>
+<section id="why-this-shape-an-analytical-perspective" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-shape-an-analytical-perspective">Why this shape? An analytical perspective</h2>
+<p>The two most striking features of the distribution — perfect symmetry around zero and the tent-like (near-triangular) shape — both have mathematical explanations rooted in the structure of the determinant.</p>
+<section id="why-symmetric" class="level3">
+<h3 class="anchored" data-anchor-id="why-symmetric">Why symmetric?</h3>
+<p>For any filling of the 3×3 matrix with a permutation of <span class="math inline">\(\{1, \ldots, 9\}\)</span> that yields <span class="math inline">\(\det(\mathbf{A}) = d\)</span>, swapping any two rows produces another valid filling (still a permutation of <span class="math inline">\(\{1, \ldots, 9\}\)</span>) with <span class="math inline">\(\det = -d\)</span>. This gives an exact bijection between fillings with determinant <span class="math inline">\(d\)</span> and fillings with determinant <span class="math inline">\(-d\)</span>, so the distribution is perfectly symmetric around zero — not approximately, but exactly.</p>
+</section>
+<section id="why-tent-shaped" class="level3">
+<h3 class="anchored" data-anchor-id="why-tent-shaped">Why tent-shaped?</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants">Leibniz formula</a> expands the 3×3 determinant into exactly six signed products, three positive and three negative:</p>
+<p><span class="math display">\[
+\det(\mathbf{A}) = \underbrace{(a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32})}_{P}
+                 - \underbrace{(a_{13}a_{22}a_{31} + a_{11}a_{23}a_{32} + a_{12}a_{21}a_{33})}_{N}
+\]</span></p>
+<p>Each of <span class="math inline">\(P\)</span> and <span class="math inline">\(N\)</span> is a sum of three products, one from each row and each column — a “Latin square transversal” of the matrix. By the same even/odd permutation symmetry, <span class="math inline">\(P\)</span> and <span class="math inline">\(N\)</span> have identical marginal distributions, so <span class="math inline">\(\det = P - N\)</span> is symmetric.</p>
+<p>The <strong>shape</strong> of <span class="math inline">\(P - N\)</span> depends on how close to uniform the marginal distribution of <span class="math inline">\(P\)</span> (or <span class="math inline">\(N\)</span>) is. If <span class="math inline">\(P\)</span> were exactly uniform on some interval <span class="math inline">\([a, b]\)</span>, the difference of two independent copies would be exactly triangular (the <a href="https://en.wikipedia.org/wiki/Irwin%E2%80%93Hall_distribution">Irwin–Hall</a> <span class="math inline">\(n=2\)</span> case). <span class="math inline">\(P\)</span> and <span class="math inline">\(N\)</span> aren’t independent — they share the same nine entries — but their marginal distributions are bounded, roughly unimodal, and symmetric enough that the difference is close to triangular rather than Gaussian.</p>
+<p>The distribution never approaches Gaussian here because:</p>
+<ul>
+<li>The <strong>support is bounded</strong>: determinant values are constrained to a finite range.</li>
+<li>Only <strong>six terms</strong> contribute; the Central Limit Theorem requires many independent summands.</li>
+<li>The terms are <strong>not independent</strong>: entries of <span class="math inline">\(\mathbf{A}\)</span> are a permutation, so all nine values constrain each other.</li>
+</ul>
+<!-- TODO: expand — worth computing the marginal distribution of P (sum of even diagonal products)
+  separately and plotting it. If P is roughly uniform, that directly explains the triangular det.
+  Could also look at: what is the exact range of det? The max should be achievable analytically.
+  The arXiv paper https://arxiv.org/abs/1112.0752 (Nguyen & Vu, "Random matrices: Law of the determinant")
+  treats the log|det| CLT for iid entries — different setting but related ideas.
+  Math SE: https://math.stackexchange.com/questions/295250 has geometric interpretations.
+-->
+</section>
+<section id="an-exact-analytic-formula" class="level3">
+<h3 class="anchored" data-anchor-id="an-exact-analytic-formula">An exact analytic formula?</h3>
+<!-- TODO: is there a closed-form for the distribution?
+  The exact distribution (from all 9! permutations) is a discrete distribution on integer values.
+  An analytic formula would require counting, for each integer d, how many permutations σ of {1,...,9}
+  satisfy det(A_σ) = d. This is a combinatorial counting problem with no known simple closed form.
+  Could mention: the problem is equivalent to counting solutions to a system of Diophantine equations
+  with the constraint that the variables are a permutation of {1,...,9}.
+  Possible angle: the generating function / characteristic function of the distribution.
+-->
 </section>
 </section>
 <section id="conclusions" class="level2">

@@ -70,34 +70,28 @@ We answer this question in two ways:
 ```{r libraries}
 library(ggplot2)
 library(dplyr)
-
-# Function to compute determinant from a vector of 9 numbers
-det_from_vec <- function(v) {
-  M <- matrix(v, nrow = 3, ncol = 3, byrow = TRUE)
-  det(M)
-}
+library(arrangements)
+library(moments)
 ```
 
 ## Exact Solution: All 9! Permutations
 
+$9! = 362,880$ is a large number, but no so large to preclude an elegant two-line computational solution, even if it takes time and storage space.
+
+* Use `arrangements::permutations()` to generate all of these
+* Use `apply()` to calculate their determinants, with a helper function `det_from_vec()`
+
+
 Computing exact distribution using all 362,880 permutations of the digits 1-9.
 
 ```{r exact-solution}
-library(arrangements)
-
-# If arrangements package is not available, use base R
-if (!requireNamespace("arrangements", quietly = TRUE)) {
-  if (requireNamespace("gtools", quietly = TRUE)) {
-    all_perms <- gtools::permutations(9, 9, 1:9)
-    determinants_exact <- apply(all_perms, 1, det_from_vec)
-  } else {
-    cat("For exact solution, install 'arrangements' or 'gtools' package\n")
-    determinants_exact <- NULL
-  }
-} else {
-  all_perms <- arrangements::permutations(1:9, k = 9)
-  determinants_exact <- apply(all_perms, 1, det_from_vec)
+det_from_vec <- function(v) {
+  M <- matrix(v, nrow = 3, ncol = 3, byrow = TRUE)
+  det(M)
 }
+
+all_perms <- arrangements::permutations(1:9, k = 9)
+determinants_exact <- apply(all_perms, 1, det_from_vec)
 ```
 
 ## Random Permutation Distribution
@@ -116,34 +110,25 @@ determinants_random <- replicate(B, {
 
 ## Summary Statistics
 
-### Exact Solution
-
-```{r summary-exact}
-if (!is.null(determinants_exact)) {
-  cat("EXACT SOLUTION (all 9! permutations):\n")
-  cat(sprintf("  Total permutations: %d\n", length(determinants_exact)))
-  cat(sprintf("  Range: [%.1f, %.1f]\n",
-              min(determinants_exact), max(determinants_exact)))
-  cat(sprintf("  Mean: %.2f\n", mean(determinants_exact)))
-  cat(sprintf("  Median: %.2f\n", median(determinants_exact)))
-  cat(sprintf("  SD: %.2f\n", sd(determinants_exact)))
-  cat(sprintf("  Unique values: %d\n", length(unique(determinants_exact))))
-  n_zero <- sum(determinants_exact == 0)
-  cat(sprintf("  Zero determinants: %d (%.2f%%)\n",
-              n_zero, 100 * n_zero / length(determinants_exact)))
+```{r summary}
+det_summary <- function(x) {
+  data.frame(
+    N       = length(x),
+    Min     = min(x),
+    Max     = max(x),
+    Mean    = round(mean(x), 2),
+    Median  = median(x),
+    SD      = round(sd(x), 2),
+    Unique  = length(unique(x)),
+    `Zero %` = round(100 * mean(x == 0), 2),
+    check.names = FALSE
+  )
 }
-```
 
-### Random Permutation Sample
-
-```{r summary-random}
-cat("RANDOM PERMUTATION SAMPLE (B =", B, "):\n")
-cat(sprintf("  Range: [%.1f, %.1f]\n",
-            min(determinants_random), max(determinants_random)))
-cat(sprintf("  Mean: %.2f\n", mean(determinants_random)))
-cat(sprintf("  Median: %.2f\n", median(determinants_random)))
-cat(sprintf("  SD: %.2f\n", sd(determinants_random)))
-cat(sprintf("  Unique values: %d\n", length(unique(determinants_random))))
+rbind(
+  cbind(Method = "Exact (9! permutations)",           det_summary(determinants_exact)),
+  cbind(Method = paste0("Random sample (B = ", format(B, big.mark=","), ")"), det_summary(determinants_random))
+)
 ```
 
 ## Visualizations
@@ -151,49 +136,45 @@ cat(sprintf("  Unique values: %d\n", length(unique(determinants_random))))
 ### Comparison of Both Methods
 
 ```{r plot-comparison}
-if (!is.null(determinants_exact)) {
-  df_combined <- rbind(
-    data.frame(determinant = determinants_exact,
-               method = "Exact (all 9! permutations)"),
-    data.frame(determinant = determinants_random,
-               method = paste0("Random sample (B = ", format(B, big.mark = ","), ")"))
-  )
+df_combined <- rbind(
+  data.frame(determinant = determinants_exact,
+             method = "Exact (all 9! permutations)"),
+  data.frame(determinant = determinants_random,
+             method = paste0("Random sample (B = ", format(B, big.mark = ","), ")"))
+)
 
-  ggplot(df_combined, aes(x = determinant, fill = method)) +
-    geom_histogram(aes(y = after_stat(density)),
-                   bins = 100, alpha = 0.6, position = "identity") +
-    geom_density(aes(color = method), linewidth = 1, fill = NA) +
-    scale_fill_manual(values = c("#3498db", "#e74c3c")) +
-    scale_color_manual(values = c("#2c3e50", "#c0392b")) +
-    labs(
-      title = "Distribution of Determinants of 3×3 Matrices from {1,2,...,9}",
-      subtitle = "Each matrix uses digits 1-9 exactly once",
-      x = "Determinant", y = "Density", fill = "Method", color = "Method"
-    ) +
-    theme_minimal(base_size = 12) +
-    theme(legend.position = "bottom",
-          plot.title = element_text(face = "bold", size = 14),
-          panel.grid.minor = element_blank())
-}
+ggplot(df_combined, aes(x = determinant, fill = method)) +
+  geom_histogram(aes(y = after_stat(density)),
+                 bins = 100, alpha = 0.6, position = "identity") +
+  geom_density(aes(color = method), linewidth = 1, fill = NA) +
+  scale_fill_manual(values = c("#3498db", "#e74c3c")) +
+  scale_color_manual(values = c("#2c3e50", "#c0392b")) +
+  labs(
+    title = "Distribution of Determinants of 3×3 Matrices from {1,2,...,9}",
+    subtitle = "Each matrix uses digits 1-9 exactly once",
+    x = "Determinant", y = "Density", fill = "Method", color = "Method"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(face = "bold", size = 14),
+        panel.grid.minor = element_blank())
 ```
 
 ### Exact Distribution (Detailed View)
 
 ```{r plot-exact}
-if (!is.null(determinants_exact)) {
-  ggplot(data.frame(determinant = determinants_exact), aes(x = determinant)) +
-    geom_histogram(aes(y = after_stat(density)),
-                   bins = 120, fill = "#3498db", alpha = 0.7) +
-    geom_density(color = "#2c3e50", linewidth = 1.2) +
-    labs(
-      title = "Exact Distribution: All 362,880 Permutations",
-      subtitle = "Determinants of 3×3 matrices using digits 1-9 once each",
-      x = "Determinant", y = "Density"
-    ) +
-    theme_minimal(base_size = 12) +
-    theme(plot.title = element_text(face = "bold", size = 14),
-          panel.grid.minor = element_blank())
-}
+ggplot(data.frame(determinant = determinants_exact), aes(x = determinant)) +
+  geom_histogram(aes(y = after_stat(density)),
+                 bins = 120, fill = "#3498db", alpha = 0.7) +
+  geom_density(color = "#2c3e50", linewidth = 1.2) +
+  labs(
+    title = "Exact Distribution: All 362,880 Permutations",
+    subtitle = "Determinants of 3×3 matrices using digits 1-9 once each",
+    x = "Determinant", y = "Density"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(plot.title = element_text(face = "bold", size = 14),
+        panel.grid.minor = element_blank())
 ```
 
 ## Additional Analysis
@@ -201,32 +182,70 @@ if (!is.null(determinants_exact)) {
 ### Quartiles
 
 ```{r quartiles}
-if (!is.null(determinants_exact)) {
-  cat("Quartiles (exact):\n")
-  print(quantile(determinants_exact, probs = c(0, 0.25, 0.5, 0.75, 1)))
-}
+quantile(determinants_exact, probs = c(0, 0.25, 0.5, 0.75, 1))
 ```
 
 ### Most Common Values
 
 ```{r frequency-table}
-if (!is.null(determinants_exact)) {
-  cat("Top 10 most frequent determinant values:\n")
-  freq_table <- sort(table(determinants_exact), decreasing = TRUE)
-  print(head(freq_table, 10))
-}
+sort(table(determinants_exact), decreasing = TRUE) |> head(10)
 ```
 
 ### Symmetry
 
 ```{r symmetry}
-if (!is.null(determinants_exact)) {
-  if (requireNamespace("moments", quietly = TRUE)) {
-    cat(sprintf("Skewness: %.3f\n", moments::skewness(determinants_exact)))
-    cat("  (0 = symmetric, >0 = right-skewed, <0 = left-skewed)\n")
-  }
-}
+skewness(determinants_exact)
 ```
+
+## Why this shape? An analytical perspective
+
+The two most striking features of the distribution — perfect symmetry around zero and the tent-like (near-triangular) shape — both have mathematical explanations rooted in the structure of the determinant.
+
+### Why symmetric?
+
+For any filling of the 3×3 matrix with a permutation of $\{1, \ldots, 9\}$ that yields $\det(\mathbf{A}) = d$,
+swapping any two rows produces another valid filling (still a permutation of $\{1, \ldots, 9\}$) with $\det = -d$.
+This gives an exact bijection between fillings with determinant $d$ and fillings with determinant $-d$,
+so the distribution is perfectly symmetric around zero — not approximately, but exactly.
+
+### Why tent-shaped?
+
+The [Leibniz formula](https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants) expands the 3×3 determinant into exactly six signed products, three positive and three negative:
+
+$$
+\det(\mathbf{A}) = \underbrace{(a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32})}_{P}
+                 - \underbrace{(a_{13}a_{22}a_{31} + a_{11}a_{23}a_{32} + a_{12}a_{21}a_{33})}_{N}
+$$
+
+Each of $P$ and $N$ is a sum of three products, one from each row and each column — a "Latin square transversal" of the matrix. By the same even/odd permutation symmetry, $P$ and $N$ have identical marginal distributions, so $\det = P - N$ is symmetric.
+
+The **shape** of $P - N$ depends on how close to uniform the marginal distribution of $P$ (or $N$) is.
+If $P$ were exactly uniform on some interval $[a, b]$, the difference of two independent copies would be exactly triangular (the [Irwin–Hall](https://en.wikipedia.org/wiki/Irwin%E2%80%93Hall_distribution) $n=2$ case). $P$ and $N$ aren't independent — they share the same nine entries — but their marginal distributions are bounded, roughly unimodal, and symmetric enough that the difference is close to triangular rather than Gaussian.
+
+The distribution never approaches Gaussian here because:
+
+- The **support is bounded**: determinant values are constrained to a finite range.
+- Only **six terms** contribute; the Central Limit Theorem requires many independent summands.
+- The terms are **not independent**: entries of $\mathbf{A}$ are a permutation, so all nine values constrain each other.
+
+<!-- TODO: expand — worth computing the marginal distribution of P (sum of even diagonal products)
+  separately and plotting it. If P is roughly uniform, that directly explains the triangular det.
+  Could also look at: what is the exact range of det? The max should be achievable analytically.
+  The arXiv paper https://arxiv.org/abs/1112.0752 (Nguyen & Vu, "Random matrices: Law of the determinant")
+  treats the log|det| CLT for iid entries — different setting but related ideas.
+  Math SE: https://math.stackexchange.com/questions/295250 has geometric interpretations.
+-->
+
+### An exact analytic formula?
+
+<!-- TODO: is there a closed-form for the distribution?
+  The exact distribution (from all 9! permutations) is a discrete distribution on integer values.
+  An analytic formula would require counting, for each integer d, how many permutations σ of {1,...,9}
+  satisfy det(A_σ) = d. This is a combinatorial counting problem with no known simple closed form.
+  Could mention: the problem is equivalent to counting solutions to a system of Diophantine equations
+  with the constraint that the variables are a permutation of {1,...,9}.
+  Possible angle: the generating function / characteristic function of the distribution.
+-->
 
 ## Conclusions
 
