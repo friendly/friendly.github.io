@@ -1,11 +1,25 @@
-# How to Manage Your Chunks
+# Mind Your Chunks
+
+subtitle: The Care and Feeding of R Code Chunks
 
 OK, you've written an R-based book with extensive code examples — all analyses and figures
 are reproducible from source. But now, for publication in both online and print form, you ask:
-is it really necessary to show all that code inline?
+is it really necessary to show all that code inline? Or, you see a code blocks in the PDF that extend outside the shaded box.
+
 A reviewer of my book [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
 commented that there was too much code on display, and that the book could be shortened
-by folding or hiding some of it.
+by folding or hiding some of it. My RA, Gavin Klorfine, noticed that there were a bunch of code chunks that strayed into the margin.
+The book contains XX figures, most generated directly from R code, among ~670 chunks throughout the book.
+
+The question was:
+
+> Can I make it easier to analyse the properties of all these chunks, in a way that could make editing easier to resolve these and other issues?
+
+One solution to this class of problems, which I implemented by guiding Claude 4.6, involves simply treating your text `.qmd` files as "data",
+scanning these with RegExs to find chunks and their properties, and writing this information to a `chunks` dataset that can be used to analyze
+and fix such problems.
+
+Some aspects of this work may be useful to others, so I describe the problems and solution steps below.
 
 ## Folding code in HTML and PDF
 
@@ -173,6 +187,39 @@ for folding, join against `chunks` to confirm each has been treated and report i
 `fold_status` automatically — no manual searching through source files required.
 
 <!-- TODO: could link to the annotate-audit.R script or show a snippet -->
+
+**Finding wide code in PDF**
+
+Code lines that overflow the shaded box in a PDF book have a root cause in LaTeX geometry:
+the available width is set by `\textwidth` (determined by the document class and trim size)
+minus the padding of the code-block environment.
+For this book (`krantz2`, `letterpaper`, 10 pt, Fira Mono in a `tcolorbox`) the safe limit
+works out to roughly **65 characters** per line, well below R's default `options(width = 80)`.
+
+Two fixes operate at different levels:
+
+*LaTeX fix (automatic):* Loading `fvextra` (a fancyvrb extension) and setting
+`breaklines=true` on the `Highlighting` environment makes any line that exceeds the
+box width wrap automatically, with a small continuation symbol — no source edits required.
+Plain fancyvrb does *not* support `breaklines`; `fvextra` must be loaded first
+(after fancyvrb, which Pandoc loads in its generated preamble):
+
+```latex
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,breakanywhere=true}
+```
+
+`breaklines=true` wraps at spaces; `breakanywhere=true` additionally breaks mid-token
+for long strings or identifiers with no internal spaces.
+
+*R-side fix (targeted):* For source lines you want to reformat explicitly,
+`issues/wide-code.R` extends the chunk-scanning approach to measure line widths.
+It expands tabs with the same tabstop=4 rule that knitr uses, then flags every
+code line exceeding the limit — but only in chunks that are actually **visible in the
+PDF** (skipping `echo=knitr::is_html_output()`, `echo=FALSE`, and `#| echo: false` chunks).
+The output gives file, line number, chunk label, width, and a text snippet so each
+case can be located and fixed directly.
+
 
 ## Summing up
 
