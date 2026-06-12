@@ -2,35 +2,37 @@
 
 
 Before any serious fieldwork, the seasoned researcher prepares. In a physical science laboratory, this might mean calibrating instruments, running controls, donning protective equipment. In an experimental psych lab, it means generating your memory lists
-(using the [WordPools package]()), 
-On the beach, it means something rather better for the budding Beach Scientist
+(using the [WordPools package]()), or designing a computer-controlled experiment with [PsychoPy](https://psychopy.org/index.html).
+
+On the beach, it means something rather better for the budding Beach Scientist: it means calibrating yourself!
 
 
-## Step one: Lie Yourself Right Down.
+## THE FOUR STEPS
+
+### Step one: Lie Yourself Right Down.
 
 
 Do not just slump! Certainly do not perch anxiously on the edge of your towel. Become **Fully Horizontal**, Commit your body to the surface beneath you. Feel the small bumps in the sand redistribute themselves under your weight, but work **with** the sand, never just against it.  This is your [proprioception](https://en.wikipedia.org/wiki/Proprioception) talking directly to you. Note it.
 
 
-## Step two: Breathe ... Slowly
+### Step two: Breathe ... Slowly
 
 
 Count your breaths slowly — not to calm yourself, but to establish a baseline. One. Two. Notice that each inhale is slightly cooler than each exhale. This is thermodynamics. The air entering your lungs is ambient; the air leaving has been warmed by approximately 37°C of biological machinery. You are a heat engine. Three. Four.
 
 
-## Step three: Feel the breeze.
-
+### Step three: Feel the breeze.
 
 There is almost always a slight onshore breeze at a beach — warm land, cooler sea, air moving to equalize the pressure difference. Let it find the fine hairs on your forearm. Notice that the breeze makes you cooler not by being cold, but by accelerating the evaporation of moisture from your skin. This is convective heat loss. It is also, incidentally, why wind chill exists.
 
 
-# Step four: Open Your Eyes Briefly--- Then Close Them.
-
+### Step four: Open Your Eyes Briefly--- Then Close Them.
 
 Register the light level. Bright white through closed lids means direct sun. Orange-pink means thin cloud. Grey means the clouds have won for now. This is your irradiance reading. No instruments required.
 
 
-You are now calibrated, and ready to go on grand inner explorations
+
+**You are now calibrated**, and ready to go on grand inner explorations
 
 
 ---
