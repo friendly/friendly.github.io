@@ -10,7 +10,8 @@ title-block-banner-color: white
 ---
 
 
-![](images/LeucatePlage-map.png){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
+<!-- ![](images/LeucatePlage-map.png){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"} -->
+<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=3.02699089050293%2C42.889926775096285%2C3.0671596527099614%2C42.911932574385105&amp;layer=mapnik" style="float:right; margin-left:1.5em; margin-bottom:1em; border: 1px solid black"></iframe>
 *Dateline*: [Leucate Plage](https://www.tourisme-leucate.com/decouvrir/leucate-en-mediterranee/leucate-5-entites/leucate-plage/), along the route between Perpignan and Narbonne, backed by a parasailing cliff, with the Pyrenees and the my beloved [Canigó](https://en.wikipedia.org/wiki/Canig%C3%B3) floating on the horizon.
 
 
