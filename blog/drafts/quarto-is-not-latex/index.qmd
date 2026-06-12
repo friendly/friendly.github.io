@@ -5,6 +5,8 @@ description: "A broad comparison of writing a serious technical book in `.Rnw` v
 author: "Michael Friendly"
 date: "2026-04-26"
 draft: true
+execute:
+  eval: false
 categories: [Vis-MLM, quarto, latex, books]
 image: "images/DDAR-Ch2-header.png"
 format:

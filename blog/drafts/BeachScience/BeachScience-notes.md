@@ -30,7 +30,7 @@ The beach  scientist might be led to ask:
 
 ## Galton comes a' knocking
 
-Eating some seedless grapes, leads Breeding seedless grapes 
+Eating some seedless grapes, leads to the question of Breeding seedless grapes 
   How many generations ?
   What if done by grafting?
 
@@ -39,7 +39,7 @@ Beachy Science
 
 ## Beach Gear & Personality
 
-wow, some people just bring a towell, but others arrive with wheely carts filled with tents, tables, floating devices, ...
+wow, some people just bring a towel, but others arrive with wheely carts filled with tents, tables, floating devices, ...
 
 If you gave a large sample the "Big 5" personality inventory could you find clusters or statistical models
 to predict aspects of a "Beach Gear Index""
@@ -62,7 +62,16 @@ to predict aspects of a "Beach Gear Index""
 
 ## Archie Bunker & Meathead
 
-How do you put on shoes & sox if theres a fire?
+How do you put on shoes & sox if there's a fire?
 
   Archie: Sock, sock, shoe shoe vs
   Meathead: Sock, shoe, sock, shoe as
+
+Now, think of this as a problem in probabality
+
+## Related / Prior Art
+
+- [Beaches and Sand Science Projects | Science Buddies Blog](https://www.sciencebuddies.org/blog/beach-science-sand-experiments)
+- [Science Beach](https://beach.science/)
+- [Sandy beaches: the window to the ocean – Science in School (2026)](https://scienceinschool.org/article/2026/sandy-beaches-window-to-the-ocean/)
+- [For the love of science: A discipline of creation and curiosity – UGA Marine Extension](https://gacoast.uga.edu/studentblog/for-the-love-of-science-a-discipline-of-creation-and-curiosity/)

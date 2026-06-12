@@ -7,7 +7,7 @@ project:
     - "!index.Rmd"
     - "!packages.Rmd"
     - "!dev/*"
-    - "!blog/drafts/*"
+    - "!blog/drafts/**"
     - "!*.md"
     - "!README*"
     - "!QUARTO*"
