@@ -46,7 +46,7 @@ Where applicable, I might simulate some data and make some graphs, but that work
 
 🏖️ **Beach gear and Personality.** Some people arrive with a towel. Others roll in with wheeled carts, pop-up tents, inflatable everything, and what appears to be a portable kitchen. Is this random variation, or can the [Big Five](https://en.wikipedia.org/wiki/Big_Five_personality_traits) personality inventory predict your Beach Gear Index? I suspect it can.
 
-🌊 **Dimensions of Beachiphilia**: How many ways do you love or not love the beach? Some people plunk themselves down and read a book, while other toss a frisbee or play paddle tennis. Still others are glued to their phones or sit around and chat. If you recorded
+🌊 **Dimensions of Beachiphilia**: How many ways do you love or not love the beach? Some people plunk themselves down and read a book, while other toss a frisbee or play paddle tennis. Still others are glued to their phones or sit around and chat. If you recorded their responses to a questionnaire rating likes and dislikes about the beach, how many dimensions would you expect to find?
 
 
 These are the kinds of questions Beach Science asks. Rigorous enough to take seriously. Ridiculous enough to enjoy.
