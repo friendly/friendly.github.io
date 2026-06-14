@@ -1,12 +1,20 @@
 ---
 title: "Beach Science: A New Field is Born"
-description: "Founding a new discipline: the practice of lying on a beach towel and allowing fundamental scientific questions to bubble up from the environment around you."
+description: "The practice of lying on a beach towel and allowing fundamental scientific questions to bubble up from the sand and sea around you."
 author: "Michael Friendly"
 date: "2026-06-12"
 categories: [beach science, humor, science]
 image: "images/leucate-plage.webp"
-title-block-banner: "images/leucate-plage.webp"
+title-block-banner: "images/leucate-plage-cropped.png"
 title-block-banner-color: white
+include-in-header:
+  text: |
+    <style>
+    .quarto-title-banner {
+      min-height: 18rem;
+      background-position: center center;
+    }
+    </style>
 ---
 
 
@@ -27,12 +35,16 @@ If someone has done this before, I apologize for the overlap. If not, I'll consi
 
 ## What is Beach Science?
 
-
+![](images/BeachTowel.webp){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
 Beach Science is the practice of lying on a beach towel, eyes closed, and allowing interesting scientific questions to bubble up from the environment around you. No lab or
 lab coat required. No grant proposal to write. Just sun, curiosity, and a willingness to call horizontal contemplation "fieldwork," or "beach brainstorming."
 
 
 The questions it can generate are real questions--- ones that can touch on physics, psychology, statistics, genetics, social science or anything that piques your interest. They just happen to be inspired by the beach rather than a seminar room. Isn't that a great improvement?
+
+Carl Sagan once observed that every child starts out as a natural-born scientist, and then we beat it out of them.[^Sagan] A few make it through with their wonder intact. He credited his own survival to parents who, knowing nothing about science, encouraged it anyway. The rest of us have to find our way back--- and it turns out the beach is a surprisingly good place to start. No equipment required. No prior experience necessary. Just lie down and pay attention.
+
+[^Sagan]: Carl Sagan, _Psychology Today_, January 1996
 
 
 ## A taste of what's coming
