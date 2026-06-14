@@ -1,29 +1,48 @@
-# The Beach Scientist's Warm-Up Exercises
+---
+title: "Warm-Up Exercises for the Beach Scientist"
+description: "Before any good Beach Science can begin, the researcher must calibrate. Four exercises for becoming properly horizontal, attentive, and curious."
+author: "Michael Friendly"
+date: "2026-06-14"
+draft: true
+categories: [beach science, humor, science]
+image: "images/sunbathing-sandy-beach-cropped.png"
+title-block-banner: "images/sunbathing-sandy-beach-cropped.png"
+title-block-banner-color: white
+include-in-header:
+  text: |
+    <style>
+    .quarto-title-banner {
+      min-height: 18rem;
+      background-position: center center;
+    }
+    </style>
+---
 
 
-Before any serious fieldwork, the seasoned researcher prepares. In a physical science laboratory, this might mean calibrating instruments, running controls, donning protective equipment. In an experimental psych lab, it means generating your memory lists
-(using the [WordPools package]()), or designing a computer-controlled experiment with [PsychoPy](https://psychopy.org/index.html).
+Before any serious fieldwork, the seasoned researcher prepares. In a physical science laboratory, this might mean calibrating instruments, collecting materials, donning protective equipment. In an experimental psych lab, it means generating your memory lists
+(using the [WordPools package](https://friendly.github.io/WordPools/)), or designing a computer-controlled experiment with [PsychoPy](https://psychopy.org/index.html)
+or [PsyToolKit](https://www.psytoolkit.org/).
 
-On the beach, it means something rather better for the budding Beach Scientist: it means calibrating yourself!
+On the beach, it means something rather more enjoyable for the budding Beach Scientist: it means **calibrating yourself**!
 
 
-## THE FOUR STEPS
+## The Four Steps
 
 ### Step one: Lie Yourself Right Down.
 
 
-Do not just slump! Certainly do not perch anxiously on the edge of your towel. Become **Fully Horizontal**, Commit your body to the surface beneath you. Feel the small bumps in the sand redistribute themselves under your weight, but work **with** the sand, never just against it.  This is your [proprioception](https://en.wikipedia.org/wiki/Proprioception) talking directly to you. Note it.
+Do not just slump! Certainly do not perch anxiously on the edge of your towel. Become **Fully Horizontal**. Commit your body and mind to the surface beneath you. Feel the small bumps in the sand redistribute themselves under your weight, but work **with** the sand, never just against it.  This is your [proprioception](https://en.wikipedia.org/wiki/Proprioception) talking directly to you. Note it, but let this fade into the background.
 
 
 ### Step two: Breathe ... Slowly
 
 
-Count your breaths slowly — not to calm yourself, but to establish a baseline. One. Two. Notice that each inhale is slightly cooler than each exhale. This is thermodynamics. The air entering your lungs is ambient; the air leaving has been warmed by approximately 37°C of biological machinery. You are a heat engine. Three. Four.
+Close your eyes. Count your breaths slowly---not to calm yourself, but to establish a baseline. _One. Two._ Notice that each inhale is slightly cooler than each exhale. This is thermodynamics. The air entering your lungs is ambient; the air leaving has been warmed by approximately 37°C of biological machinery. You are a heat engine. _Three. Four. Five._ 
 
 
 ### Step three: Feel the breeze.
 
-There is almost always a slight onshore breeze at a beach — warm land, cooler sea, air moving to equalize the pressure difference. Let it find the fine hairs on your forearm. Notice that the breeze makes you cooler not by being cold, but by accelerating the evaporation of moisture from your skin. This is convective heat loss. It is also, incidentally, why wind chill exists.
+There is almost always a slight onshore breeze at a beach---warm land, cooler sea, air moving to equalize the pressure difference. Let it find the fine hairs on your forearm. Notice that the breeze makes you cooler not by being cold, but by accelerating the evaporation of moisture from your skin. This is convective heat loss. It is also, incidentally, why wind chill exists.
 
 
 ### Step four: Open Your Eyes Briefly--- Then Close Them.
@@ -32,40 +51,45 @@ Register the light level. Bright white through closed lids means direct sun. Ora
 
 
 
-**You are now calibrated**, and ready to go on grand inner explorations
+If you've done this right:
+**You are now calibrated**, and ready to go on grand inner explorations. But a few further exercises
+may help prime some hidden portion of your cognition for Amazing Beach Science.
 
 
 ---
 
 
-## INTERMEDIATE EXERCISE: INVOKE THE ANCESTORS
+## Intermediate Exercise: Invoke the Ancestors
 
 
-Your field has heroes. They did not have better brains than you — they had better questions, or the stubbornness to pursue them, or the good fortune to be lying on the right beach at the right moment. Eyes still closed, summon a few.
+Your field has heroes. They did not necessarily have better brains than you---they had better questions, or the stubbornness to pursue them, or the good fortune to be lying on the right beach at the right moment. Eyes still closed, summon a few. Here are a few of mine.
 
 
-John Snow did not have a microscope or a germ theory. He had a map, a pump handle, and the conviction that data could locate the source of a cholera outbreak before anyone understood what cholera was. He drew dots. He counted. He was right. The map is still beautiful.
+[**John Snow**](https://en.wikipedia.org/wiki/John_Snow) did not have a microscope or a germ theory. He had a map, a pump handle, and the conviction that data could locate the source of a cholera outbreak before anyone understood what cholera was. He drew dots. He counted. He was right. The map is still beautiful.
 
 
-Francis Galton — complicated man, towering scientist — sat on beaches not unlike this one and wondered about everything: the heritability of genius, the statistics of sweet peas, whether prayer works (he tested it). He invented regression, correlation, and the weather map. He could not stop asking questions. The beach would have suited him perfectly.
+[**André-Michel Guerry**](http://euclid.psych.yorku.ca/datavis/papers/guerryvie/GuerryLife2-SocSpectrum.pdf) had no computer, no census bureau, no modern notion of social science. What he had, in 1833, was a map of France and the conviction that crime, suicide, and ignorance were not random — they had geography. He placed data on maps and found patterns nobody had looked for because nobody had thought to look that way. He then discovered, to general consternation, that the most educated regions of France had the most crime. The data did not confirm what everyone already believed. That, it turns out, is rather the point.
 
 
-William Playfair had no data visualization tradition to follow because he was inventing it. The bar chart, the line graph, the pie chart — all his, conjured from scratch in the late 1700s because he thought trade statistics would be more persuasive as pictures. He was right about that too.
+[**Francis Galton**](https://en.wikipedia.org/wiki/Francis_Galton)---complicated man, towering scientist---sat on beaches not unlike this one and wondered about everything: the heritability of genius, the statistics of sweet peas, whether prayer works (he tested it). He invented regression, correlation, and the weather map. He could not stop asking questions. The beach would have suited him perfectly.
 
 
-Jacques Bertin sat in Paris and asked a question nobody had quite posed before: what are the fundamental visual properties that carry information in a graphic? His answer — position, size, shape, value, colour, orientation, texture, the seven "retinal variables" — gave data visualization its first grammar. His 1967 Semiologie Graphique is still the deepest book in the field, and most people working in data viz today are building, knowingly or not, on his foundations.
+[**William Playfair**](https://en.wikipedia.org/wiki/William_Playfair) had no data visualization tradition to follow because he was inventing it. The bar chart, the line graph, the pie chart---all his, conjured from scratch in the late 1700s because he thought trade statistics would be more persuasive as pictures. He was right about that too.
 
 
-Florence Nightingale took the same instinct into a Crimean field hospital and produced the rose diagram — a polar area chart showing that soldiers were dying not from wounds but from preventable infection. She sent it to Parliament. Things changed.
+[**Jacques Bertin**](https://en.wikipedia.org/wiki/Jacques_Bertin) sat in Paris and asked a question nobody had quite posed before: what are the fundamental visual properties that carry information in a graphic? His answer---position, size, shape, value, colour, orientation, texture, the seven "retinal variables"---gave data visualization its first grammar. His 1967 Semiologie Graphique is still the deepest book in the field, and most people working in data viz today are building, knowingly or not, on his foundations.
 
 
-Edward Tufte spent decades arguing, with exquisite patience, that chartjunk is a moral failing and that data should be allowed to speak without decoration shouting over it. He was not always right, but he was always interesting.
+[**Florence Nightingale**](https://en.wikipedia.org/wiki/Florence_Nightingale) took the same instinct into a Crimean field hospital and produced the rose diagram---a polar area chart showing that soldiers were dying not from wounds but from preventable infection. She sent it to Parliament. Things changed.
 
 
-Daniel Kahneman lay (metaphorically) on the beach of human judgment and noticed that the mind is not a rational calculator — it is a storytelling machine that occasionally does arithmetic. He and Amos Tversky mapped its biases so carefully that you now cannot read a menu, fill out a form, or watch the news without seeing their fingerprints.
+[**Edward Tufte**](https://en.wikipedia.org/wiki/Edward_Tufte) spent decades arguing, with exquisite patience, that chartjunk is a moral failing and that data should be allowed to speak without decoration shouting over it. He was not always right, but he was always interesting.
 
 
-The point of this exercise is not nostalgia. It is perspective. Each of these people started with a question that seemed almost too simple — where is the disease coming from? can numbers be pictures? why do people make predictable mistakes? — and followed it somewhere remarkable.
+[**Daniel Kahneman**](https://en.wikipedia.org/wiki/Daniel_Kahneman) lay (metaphorically) on the beach of human judgment and noticed that the mind is not a rational calculator---it is a storytelling machine that occasionally does arithmetic. He and [**Amos Tversky**](https://en.wikipedia.org/wiki/Amos_Tversky) mapped its biases so carefully that you now cannot read a menu, fill out a form, or watch the news without seeing their fingerprints.
+
+
+The point of this exercise is not nostalgia. It is perspective. Each of these people started with a question that seemed almost too simple---where is the disease coming from? can numbers be pictures? why do people make predictable mistakes?---and followed it somewhere remarkable.
 
 
 Your question is lying here with you on the sand. Give it time.
@@ -74,19 +98,19 @@ Your question is lying here with you on the sand. Give it time.
 ---
 
 
-## ADVANCED EXERCISE: INVOKE YOUR INNER CLAUDE
+## Advanced Exercise: Invoke Your Inner Claude
 
 
 The ancestors are good company, but they are unavailable for follow-up questions. For that, you need something newer.
 
 
-Close your eyes and imagine a collaborator who has read, more or less, everything — every paper, every textbook, every half-forgotten methodology appendix — and is lying here beside you on the sand, unhurried, with no agenda and no office hours. This is your inner Claude.
+Close your eyes and imagine a collaborator who has read, more or less, everything---every paper, every textbook, every half-forgotten methodology appendix---and is lying here beside you on the sand, unhurried, with no agenda and no office hours. This is your inner Claude.
 
 
 Now ask it something. Not a search query. A real question, the kind you'd ask a brilliant colleague: What do we actually know about how people perceive warmth? What would a proper study design look like? What am I missing?
 
 
-The discipline here is precision. Vague questions get vague answers, from AIs and from your own mind alike. The act of formulating a question clearly enough to ask — specific, curious, honest about what you don't know — is itself half the scientific work. Your inner Claude is waiting. It is, by nature, patient.
+The discipline here is precision. Vague questions get vague answers, from AIs and from your own mind alike. The act of formulating a question clearly enough to ask---specific, curious, honest about what you don't know---is itself half the scientific work. Your inner Claude is waiting. It is, by nature, patient.
 
 
 ---
@@ -94,16 +118,16 @@ The discipline here is precision. Vague questions get vague answers, from AIs an
 
 You are now calibrated.
 
-## ADDENDUM: LEARN TO FLOAT
+## Addendum: Learn to Float
 
 
-This one requires water — calm water, ideally the kind that barely moves, Mediterranean on a generous morning. Wade in to waist depth, then lay yourself down on the surface and let go. Arms slightly out, face to the sky. Resist nothing.
+This one requires water---calm water, ideally the kind that barely moves, Mediterranean on a generous morning. Wade in to waist depth, then lay yourself down on the surface and let go. Arms slightly out, face to the sky. Resist nothing.
 
 
-Floating is harder than it sounds for some people and effortless for others, depending on body composition and, more importantly, willingness to trust the water. The physics is straightforward — you are less dense than seawater — but the nervous system takes some convincing.
+Floating is harder than it sounds for some people and effortless for others, depending on body composition and, more importantly, willingness to trust the water. The physics is straightforward---you are less dense than seawater---but the nervous system takes some convincing.
 
 
-Once you are floating, count your breaths. Slowly. In French, if you can: un, deux, trois... French slows you down in ways English does not. By the time you reach cinquante — fifty — the cold will have become normal, the sky will have become interesting, and at least one scientific question will have floated to the surface alongside you.
+Once you are floating, count your breaths. Slowly. In French, if you can: un, deux, trois... French slows you down in ways English does not. By the time you reach cinquante---fifty---the cold will have become normal, the sky will have become interesting, and at least one scientific question will have floated to the surface alongside you.
 
 
 You are ready.
