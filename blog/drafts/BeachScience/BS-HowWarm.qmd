@@ -5,6 +5,10 @@ author: "Michael Friendly"
 date: "2026-06-15"
 draft: true
 categories: [beach science, statistics, humor]
+execute:
+  code-fold: true
+  warning: false
+  message: false
 ---
 
 
@@ -20,7 +24,7 @@ This is not a failure of communication. It is a research question.
 ## The Probability Analogy
 
 
-In the 1960s, a CIA analyst named Sherman Kent noticed that intelligence reports were full of words like probable, unlikely, almost certain — and that nobody agreed on what they meant. He asked a group of NATO officers to assign numerical probabilities to phrases like "serious possibility" and "little chance." The results were alarming. "Probable" mapped to anywhere from 55% to 90% depending on who you asked. Words that felt precise were carrying enormous hidden uncertainty.
+In the 1960s, a CIA analyst named [Sherman Kent](https://en.wikipedia.org/wiki/Sherman_Kent) noticed that intelligence reports were full of words like probable, unlikely, almost certain — and that nobody agreed on what they meant. He asked a group of NATO officers to assign numerical probabilities to phrases like "serious possibility" and "little chance." The results were alarming. "Probable" mapped to anywhere from 55% to 90% depending on who you asked. Words that felt precise were carrying enormous hidden uncertainty.
 
 
 The same problem almost certainly applies to temperature language. When your weather app says warm, when a friend describes the sea as chilly, when a wine menu mentions serving at room temperature — these words are doing quantitative work while pretending to be qualitative. Nobody has agreed on the numbers.
@@ -28,16 +32,56 @@ The same problem almost certainly applies to temperature language. When your wea
 
 Beach Science would like to fix this.
 
-<!-- Add image here of the ridgeline plots for probability -->
+```{r}
+#| label: setup
+#| echo: false
+library(tidyverse)
+library(ggridges)
 
-<!-- Study: https://waf.cs.illinois.edu/visualizations/Perception-of-Probability-Words/ Uses Boxplots -->
+probly <- read_csv("https://raw.githubusercontent.com/zonination/perceptions/master/probly.csv")
+
+prob_long <- probly |>
+  pivot_longer(everything(), names_to = "term", values_to = "probability") |>
+  filter(!is.na(probability)) |>
+  group_by(term) |>
+  mutate(med = median(probability)) |>
+  ungroup() |>
+  mutate(term = fct_reorder(term, med))
+
+term_summary <- prob_long |>
+  distinct(term, med)
+```
+
+```{r}
+#| label: fig-probwords
+#| fig-cap: "Perceived probability of estimative words (n ≈ 46). White dot = median. Data: [Zonination](https://github.com/zonination/perceptions)."
+#| fig-width: 9
+#| fig-height: 9
+ggplot(prob_long, aes(x = probability, y = term, fill = med)) +
+  geom_density_ridges(scale = 1.8, rel_min_height = 0.01,
+                      colour = "grey30", linewidth = 0.4, alpha = 0.85) +
+  geom_point(data = term_summary,
+             aes(x = med, y = term),
+             colour = "white", size = 1.8, inherit.aes = FALSE) +
+  scale_fill_gradient2(low = "#2166ac", mid = "#f7f7f7", high = "#d6604d",
+                       midpoint = 50, name = "Median\n(%)") +
+  scale_x_continuous(breaks = seq(0, 100, 10),
+                     labels = function(x) paste0(x, "%"),
+                     limits = c(0, 100)) +
+  labs(title = 'How likely is "likely"?',
+       subtitle = "Perceived probability of estimative words (n ≈ 46)\nWhite dot = median",
+       x = "Assigned probability (%)", y = NULL,
+       caption = "Data: Zonination · github.com/zonination/perceptions") +
+  theme_ridges(grid = TRUE, center_axis_labels = TRUE) +
+  theme(plot.title = element_text(face = "bold", size = 16),
+        legend.position = "none")
+```
 
 
 ---
 
 
 ## A Lexicon of Warmth
-
 
 
 Here, roughly ordered from coldest to hottest, are the terms worth studying:
@@ -74,16 +118,13 @@ The last category is the most interesting. These terms carry emotional valence a
 ## What to Measure?
 
 
-
 A proper BS study would present subjects with this list of terms — perhaps 25–30 in total — and ask them to assign a temperature in degrees Celsius to each one. Not a range. A number. The discomfort of that precision is the point.
 
 
 From a reasonable sample you'd get, for each term:
 
-  - A mean "intended temperature"
-
+- A mean "intended temperature"
 - A standard deviation (how much people disagree)
-
 - Possibly a bimodal distribution for the slippery ones — refreshing might split between people who love cold water and people who merely tolerate it
 
 
@@ -98,13 +139,9 @@ You'd also want to ask about context. "Warm" for bathwater, air temperature, and
 
 The Kent study found systematic differences by nationality and professional background. You'd expect the same here, and more:
 
-
 - Geographic origin — someone from Helsinki and someone from Lagos will not agree on mild
-
 - Age — thermoregulation changes with age; older people tend to run cooler
-
 - Sex — well documented differences in thermal comfort, still not fully explained
-
 - Recent acclimatisation — what felt cold on day one of a beach holiday feels brisk by day five
 
 
@@ -132,5 +169,4 @@ A follow-up study worth doing: present the same terms with context (the sea was 
 ---
 
 
-Postscript: I asked my companion what temperature she'd assign to "warm." She said 24°C. I said 19°C. We have been on this beach for four days. We are, apparently, still not calibrated to the same scale.
-
+*Postscript:* I asked my companion what temperature she'd assign to "warm." She said 24°C. I said 19°C. We have been on this beach for four days. We are, apparently, still not calibrated to the same scale.

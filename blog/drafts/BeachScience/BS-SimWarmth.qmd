@@ -5,6 +5,10 @@ author: "Michael Friendly"
 date: "2026-06-13"
 draft: true
 categories: [beach science, simulation, statistics]
+execute:
+  code-fold: true
+  warning: false
+  message: false
 ---
 
 One of the great advantages of Beach Science is that you can do the statistics without leaving your towel. No ethics board, no recruitment drive, no clipboards. Just a simulation that captures the essential structure of the data you would collect if you were so inclined.
@@ -26,8 +30,6 @@ Each term is assigned two numbers:
 
 ```{r}
 #| label: setup
-#| message: false
-#| warning: false
 library(tidyverse)
 library(ggridges)
 library(scales)
@@ -150,7 +152,7 @@ Statisticians call this a *prior predictive check*. Beach Scientists call it an 
 #| fig-height: 12
 ggplot(sim_data, aes(x = rating, y = term, fill = mean_temp)) +
   geom_density_ridges(scale = 1.8, rel_min_height = 0.01,
-                      colour = "white", linewidth = 0.3, alpha = 0.85) +
+                      colour = "grey30", linewidth = 0.4, alpha = 0.85) +
   geom_point(data = term_summary, aes(x = med, y = term),
              colour = "white", size = 1.8, inherit.aes = FALSE) +
   scale_fill_gradient2(low = "#2166ac", mid = "#f7f7f7", high = "#d6604d",
