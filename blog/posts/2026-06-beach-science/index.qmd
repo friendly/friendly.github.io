@@ -64,4 +64,8 @@ Where applicable, I might simulate some data and make some graphs, but that work
 These are the kinds of questions Beach Science asks. Rigorous enough to take seriously. Ridiculous enough to enjoy.
 
 
-More dispatches from the towel will follow. The next post in this series will suggest some warm-up exercises you can do to become your own beach scientist.
+## Posts in This Series
+
+- [Warm-Up Exercises for the Beach Scientist](../2026-06-beach-science-warmup/)
+- How Warm Is "Warm"? *(coming soon)*
+- The Aerodynamics of Not Losing Your Umbrella *(coming soon)*
