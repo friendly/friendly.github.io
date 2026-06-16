@@ -6,14 +6,16 @@ date: "2026-06-15"
 draft: true
 categories: [beach science, statistics, humor]
 image: "images/thermometer-readouts.webp"
-title-block-banner: "images/thermometer-readouts.webp"
+title-block-banner: "images/thermometer-readouts.png"
 title-block-banner-color: "#222222"
 include-in-header:
   text: |
     <style>
-    .quarto-title-banner {
+    .quarto-title-block .quarto-title-banner {
       min-height: 14rem;
+      background-size: contain !important;
       background-position: center center;
+      background-repeat: no-repeat;
     }
     </style>
 execute:
@@ -28,8 +30,8 @@ Standing at the water's edge this morning, I described the Mediterranean to my c
 
 
 This is not a failure of communication. It is a research question.
+See [What is ‘feels-like’temperature?](https://www.popsci.com/environment/what-is-feels-like-temperature/) for a meterologist's view.
 
-<!-- See: https://www.popsci.com/environment/what-is-feels-like-temperature/ -->
 ---
 
 
@@ -96,6 +98,7 @@ ggplot(prob_long, aes(x = probability, y = term, fill = med)) +
 ## A Lexicon of Warmth
 
 
+![](images/temperature-feelings.jpeg){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
 Here, roughly ordered from coldest to hottest, are the terms worth studying:
 
 

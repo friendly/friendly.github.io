@@ -1,0 +1,137 @@
+---
+title: "BS: Crossing the Gender Gap"
+description: "A field study, conducted from a toilet queue, of who breaks the unwritten rule and crosses to the other side."
+author: "Michael Friendly"
+date: "2026-06-17"
+draft: true
+categories: [beach science, social science, humor]
+---
+
+It is mid-afternoon at Leucate Plage, and nature has called. I make my way
+to the beach facilities — a modest block of toilets set back from the sand —
+and find what I find at every beach, in every country, without exception: a
+queue for one side and nothing for the other.
+
+I join the queue. I wait. I watch.
+
+And I notice something interesting: some people, after a moment's hesitation,
+simply cross over. They glance left, glance right, perform a small calculation
+that is equal parts urgency and social courage, and walk through the other
+door. Others — the majority — wait, shifting from foot to foot, unwilling to
+breach the convention.
+
+Who crosses? Who waits? And does it depend on who you are?
+
+Isn't this a great moment for Beach Science?
+
+---
+
+## The Asymmetry Problem
+
+First, a structural observation: the queue is almost never symmetric. Women's
+facilities consistently have longer queues than men's, at beaches, concerts,
+airports, and anywhere else humans congregate in numbers. This is not
+accidental — it is designed in, and has been for decades.
+
+The reasons are partly biological (using a toilet takes women longer on
+average), partly architectural (facilities are typically allocated equal floor
+area rather than equal throughput capacity), and partly social (women tend to
+use facilities in groups, which adds time). The result is a systematic
+inequity baked into the infrastructure, which means the crossing temptation
+is also asymmetric: women face longer queues and therefore more incentive to cross.
+
+Whether they actually do is a different question.
+
+---
+
+## Who Crosses?
+
+**Urgency** is the obvious one. There is presumably a threshold of discomfort
+beyond which social norms become negotiable. The interesting scientific
+question is not whether urgency predicts crossing — it obviously does — but
+where that threshold sits, and whether it differs by person.
+
+**Age** may be the most interesting variable. Younger people might cross more
+readily, having grown up in a culture with more fluid attitudes toward gender
+spaces. Older people might be more norm-bound — or, alternatively, more
+pragmatic. A 70-year-old who has been waiting for four minutes may have
+precisely zero patience left for social convention. The relationship with age
+is probably not linear.
+
+**Gender** shapes the social calculus differently for each side. A woman
+entering the men's side is doing something that most observers would consider
+reasonable — perhaps even sensible — given the queue differential. A man
+entering the women's side carries a heavier social cost, regardless of his
+intentions. The crossing is the same physical act with very different
+social meanings.
+
+**Social context** matters enormously. Crossing alone requires personal
+courage; crossing with a friend who says "come on, it's fine" requires
+almost none. Friends provide social permission, distributed responsibility,
+and someone to laugh with if it goes wrong. Solo travellers cross less.
+
+**Cultural background** is a significant covariate. Attitudes toward gender
+segregation in public facilities vary widely by culture, religion, and
+national context. A study at a French Mediterranean beach — where attitudes
+are generally relaxed — might look very different from the same study at a
+different kind of beach in a different kind of country.
+
+---
+
+## The Game Theory of the First Crosser
+
+Here is the dynamic that makes this genuinely interesting as a social
+phenomenon: the first person to cross bears all the social cost. Every
+subsequent crosser free-rides on the norm violation the first person already
+committed.
+
+Once one person crosses, the door is open in more than the literal sense.
+Others see that nothing terrible happened, that no one was ejected or
+publicly shamed, and their own threshold drops. You would expect cascades —
+a burst of crossings following a single pioneer — especially in queues of
+strangers who can observe each other.
+
+This is, in miniature, how social norms shift. Someone decides the convention
+is less important than the immediate reality, absorbs the initial cost, and
+in doing so changes the calculus for everyone behind them. Beach toilets as
+a model of social change. BS at its finest.
+
+---
+
+## How Would You Study This?
+
+Naturalistic observation is the method — no intervention, no survey, just
+a researcher with a notebook and a clear sightline. Record for each person:
+
+- **Perceived gender** (as presented — the observable variable)
+- **Estimated age group** (under 30 / 30–50 / 50+)
+- **Queue length on their side** at moment of arrival
+- **Queue length on opposite side**
+- **Whether they crossed** (binary outcome)
+- **Whether they were alone or in a group**
+- **Whether a crossing had occurred in the previous two minutes** (the cascade predictor)
+
+Logistic regression with crossing as the binary outcome; queue length
+differential, age group, gender, and recent cascade as predictors. An
+interaction between gender and queue length would test whether women and men
+have different crossing thresholds.
+
+The main methodological challenge is keeping a straight face while explaining
+to your companion what you are doing and why.
+
+---
+
+## A Prediction
+
+My beach observation, entirely unscientific, is that women cross more than
+men, that the over-60s cross more than anyone thinks, and that the cascade
+effect is real and fast — one crossing can empty a queue in under two minutes
+once the permission has been granted.
+
+I was not in a position to test this rigorously. I had a queue to join.
+
+---
+
+*A full study of this phenomenon would require ethics approval, a research
+assistant, and considerable patience. Or just a hot afternoon and a long
+queue, which Leucate Plage reliably provides.*
