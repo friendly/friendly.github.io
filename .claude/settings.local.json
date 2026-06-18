@@ -19,7 +19,10 @@
       "WebFetch(domain:mathshistory.st-andrews.ac.uk)",
       "WebFetch(domain:mathinsight.org)",
       "WebFetch(domain:textbooks.math.gatech.edu)",
-      "WebFetch(domain:people.math.harvard.edu)"
+      "WebFetch(domain:people.math.harvard.edu)",
+      "Bash(quarto render *)",
+      "Bash(grep -E '\\\\.html$|_files/')",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
