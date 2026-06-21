@@ -115,8 +115,9 @@ ggplot(prob_long, aes(x = probability, y = term, fill = med)) +
                       colour = "grey30", linewidth = 0.4, alpha = 0.85) +
   geom_point(data = term_summary,
              aes(x = med, y = term),
-             colour = "white", size = 1.8, inherit.aes = FALSE) +
-  scale_fill_gradient2(low = "#2166ac", mid = "#f7f7f7", high = "#d6604d",
+             shape = 21, colour = "black", fill = "white",
+             size = 2.6, stroke = 0.6, inherit.aes = FALSE) +
+  scale_fill_gradient2(low = "#2166ac", mid = "#d9d0d0", high = "#d6604d",
                        midpoint = 50, name = "Median\n(%)") +
   scale_x_continuous(breaks = seq(0, 100, 10),
                      labels = function(x) paste0(x, "%"),

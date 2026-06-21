@@ -158,9 +158,9 @@ background-size: cover;
 
 
 <!-- Image from: "C:\R\Projects\friendly.github.io\blog\drafts\BeachScience\images\thermometer-readouts.webp" -->
-<p>Standing at the water’s edge this morning, I described the Mediterranean air to my companion as “brisk”. She called it “refreshing”. A man walking past, apparently from somewhere much colder, called it “mild”. We were all describing the same air at the same moment.</p>
-<p>We all go for a plunge in the clear blue waters. Comparing our impressions, I call it “chilly”; my companion says, “cool, and refreshing”; the stranger calls it “temperate”.</p>
-<p>This is not a failure of communication. It is a BS research question.</p>
+<p>Standing at the water’s edge this morning, I described the Mediterranean air to my companion as “brisk”. She called it “refreshing”. A man walking past, perhaps from somewhere much colder, called it “mild”. We were all describing the same air at the same moment.</p>
+<p>We all go for a plunge in the clear blue waters. Comparing our impressions, I call it “chilly”; my companion says, “cool, and refreshing”; the stranger calls it “temperate”. Again: same water but different words to describe what we feel.</p>
+<p>This is not a failure of communication, or something you can just dismiss as “individual differences.” It is a BS research question.</p>
 <section id="the-meterologists-view" class="level2">
 <h2 class="anchored" data-anchor-id="the-meterologists-view">The Meterologist’s View</h2>
 <p>A meteorologist, coming from physical science, explains <a href="https://www.popsci.com/environment/what-is-feels-like-temperature/">What is ‘feels-like’ temperature?</a> in terms of <a href="https://en.wikipedia.org/wiki/Wind_chill">wind-chill</a>. This idea even gets a measure, the <strong>wind-chill factor</strong> (or “feels like” temperature). It is defined in words as:</p>
@@ -168,12 +168,12 @@ background-size: cover;
 <p>the apparent temperature felt on exposed skin caused by the combination of air temperature and wind speed. Wind strips away your body’s natural insulating layer of warm air, making the temperature feel significantly colder than the thermometer reads.</p>
 </blockquote>
 <p><img src="images/windchill3.png" class="img-fluid" style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"></p>
-<p>But that’s quite a physical mouthful. There are formulas for this, but you can understand the physics more easily from a <a href="https://en.wikipedia.org/wiki/Heat_map"><strong>heatmap</strong></a> visualization that simply uses background color for the “feels-like” value. Rick Wiklin, a long time friend, explains how to create <a href="https://blogs.sas.com/content/iml/2021/02/24/wind-chill-chart.html">The wind chill chart</a>, giving the figure at the right.</p>
+<p>But that’s quite a physical mouthful. There are formulas for this, but you can understand the physics more easily from a <a href="https://en.wikipedia.org/wiki/Heat_map"><strong>heatmap</strong></a> visualization that simply uses background color for the “feels-like” value. Rick Wiklin, a long time friend, explains how to create <a href="https://blogs.sas.com/content/iml/2021/02/24/wind-chill-chart.html">The wind chill chart</a> using SAS, giving the figure at the right.</p>
 <hr>
 </section>
 <section id="what-about-the-words" class="level2">
 <h2 class="anchored" data-anchor-id="what-about-the-words">What About the Words?</h2>
-<p>But even if you understand the physics, how can you understand the <strong>words</strong> you use to describe your feeling of warmth when you are sitting on the beach, or decide to go for a swim?</p>
+<p>But even if you understand the physics, how can you understand the <strong>words</strong> you use to describe your feeling of warmth when you are sitting on the beach, or decide to go for a swim? Perception goes beyond the physics. And there is also something interesting about the way we use discrete, qualitative words to describe what is a quantitative phenomenon.</p>
 </section>
 <section id="the-probability-analogy" class="level2">
 <h2 class="anchored" data-anchor-id="the-probability-analogy">The Probability Analogy</h2>
@@ -189,19 +189,20 @@ background-size: cover;
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">colour =</span> <span class="st">"grey30"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> term_summary,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> med, <span class="at">y =</span> term),</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">1.8</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"#2166ac"</span>, <span class="at">mid =</span> <span class="st">"#f7f7f7"</span>, <span class="at">high =</span> <span class="st">"#d6604d"</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">midpoint =</span> <span class="dv">50</span>, <span class="at">name =</span> <span class="st">"Median</span><span class="sc">\n</span><span class="st">(%)"</span>) <span class="sc">+</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>),</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'How likely is "likely"?'</span>,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Perceived probability of estimative words (n ≈ 46)</span><span class="sc">\n</span><span class="st">White dot = median"</span>,</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Assigned probability (%)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data: Zonination · github.com/zonination/perceptions"</span>) <span class="sc">+</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>(<span class="at">grid =</span> <span class="cn">TRUE</span>, <span class="at">center_axis_labels =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"white"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">2.6</span>, <span class="at">stroke =</span> <span class="fl">0.6</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"#2166ac"</span>, <span class="at">mid =</span> <span class="st">"#d9d0d0"</span>, <span class="at">high =</span> <span class="st">"#d6604d"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">midpoint =</span> <span class="dv">50</span>, <span class="at">name =</span> <span class="st">"Median</span><span class="sc">\n</span><span class="st">(%)"</span>) <span class="sc">+</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'How likely is "likely"?'</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Perceived probability of estimative words (n ≈ 46)</span><span class="sc">\n</span><span class="st">White dot = median"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Assigned probability (%)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data: Zonination · github.com/zonination/perceptions"</span>) <span class="sc">+</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>(<span class="at">grid =</span> <span class="cn">TRUE</span>, <span class="at">center_axis_labels =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-probwords" class="quarto-float quarto-figure quarto-figure-center anchored">
