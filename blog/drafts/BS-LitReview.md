@@ -9,6 +9,7 @@ Top-down or bottom up:
 - Deduction vs Induction
 - Top-down starts with the big picture, breaks it into smaller parts, ...
 Bottom-up builds up from details, trying to find a unifying whole
+- All comes down to Aristotle vs. Plato
 
 
 This distinction gives rise to two modes of conducting BS:

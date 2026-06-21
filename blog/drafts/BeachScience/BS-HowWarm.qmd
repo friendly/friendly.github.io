@@ -2,9 +2,9 @@
 title: 'BS: How Warm Is "Warm"?'
 description: "Temperature words are doing quantitative work while pretending to be qualitative. Beach Science would like to fix this."
 author: "Michael Friendly"
-date: "2026-06-15"
+date: "2026-06-21"
 draft: true
-categories: [beach science, statistics, humor]
+categories: [beach science, statistics, humor, heatmap, ridgeline plot]
 image: "images/thermometer-readouts.webp"
 title-block-banner: "images/thermometer-readouts.png"
 title-block-banner-color: "#222222"
@@ -16,38 +16,77 @@ include-in-header:
       background-size: contain !important;
       background-position: center center;
       background-repeat: no-repeat;
+      background-color: white;
     }
     </style>
+format:
+  html:
+    code-fold: true
 execute:
-  code-fold: true
   warning: false
   message: false
 ---
 
 <!-- Image from: "C:\R\Projects\friendly.github.io\blog\drafts\BeachScience\images\thermometer-readouts.webp" -->
 
-Standing at the water's edge this morning, I described the Mediterranean to my companion as brisk. She called it refreshing. A man walking past, apparently from somewhere much colder, called it lovely and warm. We were all describing the same water at the same moment.
+Standing at the water's edge this morning, I described the Mediterranean air to my companion as "brisk". She called it "refreshing". A man walking past, perhaps from somewhere much colder, called it "mild". We were all describing the same air at the same moment. 
+
+We all go for a plunge
+in the clear blue waters. Comparing our impressions, I call it "chilly"; my companion says, 
+"cool, and refreshing"; the stranger calls it "temperate". Again: same water but different
+words to describe what we feel.
 
 
-This is not a failure of communication. It is a research question.
-See [What is ‘feels-like’temperature?](https://www.popsci.com/environment/what-is-feels-like-temperature/) for a meterologist's view.
+This is not a failure of communication, or something you can just dismiss as "individual differences."
+It is a BS research question.
+
+
+## The Meterologist's View
+
+A meteorologist, coming from physical science, explains [What is ‘feels-like’ temperature?](https://www.popsci.com/environment/what-is-feels-like-temperature/) 
+in terms of [wind-chill](https://en.wikipedia.org/wiki/Wind_chill). This idea
+even gets a measure, the **wind-chill factor** (or "feels like" temperature). It is
+defined in words as: 
+
+> the apparent temperature felt on exposed skin caused by the combination of air temperature and wind speed. Wind strips away your body's natural insulating layer of warm air, making the temperature feel significantly colder than the thermometer reads.
+
+![](images/windchill3.png){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
+
+But that's quite a physical mouthful. There are formulas for this, but
+you can understand the physics more easily from a [**heatmap**](https://en.wikipedia.org/wiki/Heat_map) visualization that simply uses background color for the "feels-like" value. Rick Wiklin, a long time friend, explains 
+how to create [The wind chill chart](https://blogs.sas.com/content/iml/2021/02/24/wind-chill-chart.html) using SAS,
+giving the figure at the right.
 
 ---
+
+## What About the Words?
+
+But even if you understand the physics, how can you understand the **words** you use to describe
+your feeling of warmth when you are sitting on the beach, or decide to go for a swim?
+Perception goes beyond the physics. And there is also something interesting about the way we
+use discrete, qualitative words to describe what is a quantitative phenomenon.
+
+
 
 
 ## The Probability Analogy
 
 
-In the 1960s, a CIA analyst named [Sherman Kent](https://en.wikipedia.org/wiki/Sherman_Kent) noticed that intelligence reports were full of words like probable, unlikely, almost certain — and that nobody agreed on what they meant. He asked a group of NATO officers to assign numerical probabilities to phrases like "serious possibility" and "little chance." The results were alarming. "Probable" mapped to anywhere from 55% to 90% depending on who you asked. Words that felt precise were carrying enormous hidden uncertainty.
+In the 1960s, a CIA analyst named [Sherman Kent](https://en.wikipedia.org/wiki/Sherman_Kent) noticed that intelligence reports were full of words like "probable", "unlikely", "almost certain"--- but not everyone agreed on what they meant. He asked a group of NATO officers to assign numerical probabilities to phrases like "serious possibility" and "little chance." The results were alarming. "Probable" mapped to anywhere from 55% to 90% depending on who you asked. Words that felt precise were carrying enormous hidden uncertainty. Not very good when you're
+thinking about which foreign interests to support or the likelihood of effecting regime change,
 
 
-The same problem almost certainly applies to temperature language. When your weather app says warm, when a friend describes the sea as chilly, when a wine menu mentions serving at room temperature — these words are doing quantitative work while pretending to be qualitative. Nobody has agreed on the numbers.
+The same problem almost certainly applies to **temperature language**. When your weather app says "warm", when a friend describes the sea as "chilly", when a wine menu mentions serving at "room temperature"---these words are doing quantitative work while pretending to be qualitative. They certainly are _ordered categories_, but nobody has agreed on the numbers.
 
 
 Beach Science would like to fix this.
 
+Let's look at the methods used to understand words for probability as a model, first proposed
+in a [Reddit post by zonination](https://github.com/zonination/perceptions/blob/master/README.md), and using a [ridgeline plot](https://wilkelab.org/ggridges/) to show the distribution of the numerical values that a sample of respondents assigned to a wide range of words used to describe probability.
+
+
 ```{r}
-#| label: setup
+#| label: setupg
 #| echo: false
 library(tidyverse)
 library(ggridges)
@@ -99,7 +138,7 @@ ggplot(prob_long, aes(x = probability, y = term, fill = med)) +
 
 
 ![](images/temperature-feelings.jpeg){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
-Here, roughly ordered from coldest to hottest, are the terms worth studying:
+Here, roughly ordered from coldest to hottest, are a modest selection of terms worth studying:
 
 
 * The cold end: Freezing. Frigid. Icy. Bitter. Raw. Chilly. Cool. Fresh. Crisp.
@@ -113,7 +152,7 @@ Here, roughly ordered from coldest to hottest, are the terms worth studying:
 
 ### The Slippery Ones:
 
-- "Brisk" — means cold, said cheerfully, to imply you don't mind.
+- "Brisk" — means cold, but often said cheerfully, to imply you don't mind.
 
 - "Refreshing" — means cold, said approvingly, usually while entering water you were dreading.
 
