@@ -36,6 +36,23 @@ topics — those keep my usual register.
     the point of annoyance
   + Nominalization (verb → noun) or the reverse (noun → verb, to suggest
     action) are both fair game, used sparingly
+    
+**References**
+
+This is not academic writing, but I do want to cite sources and give links to references
+for further information.
+
+  + Use links for information about technical and other terms used in the text. Often Wikipedia is a good source.
+  Example: [wind-chill](https://en.wikipedia.org/wiki/Wind_chill) refers to ...
+  
+  + If I mention a historical person I've written about, use a link to my paper, e.g.,
+  [**André-Michel Guerry**](http://euclid.psych.yorku.ca/datavis/papers/guerryvie/GuerryLife2-SocSpectrum.pdf)
+
+For some posts, it would be useful to have an actual `## References` section at the end, or something called
+`## Further reading`
+
+**Images**
+In general, I'd prefer to have captions for figures, unless the information in the graph is sufficient.
 
 ## Series-specific notes
 

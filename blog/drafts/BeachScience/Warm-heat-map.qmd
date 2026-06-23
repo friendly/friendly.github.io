@@ -1,0 +1,102 @@
+## 🗺️ Where the Heat in "Heat Map" Came From
+
+The wind chill grid shown above is, technically, a heat map—though nothing about it is hot, which is the first small joke buried in the term. "Heat map" as a word didn't exist until the 1990s, coined by a software designer named [Cormac Kinney](https://en.wikipedia.org/wiki/Cormac_Kinney) to describe color-coded grids of financial trading data. Red for losses, green for gains, no actual thermodynamics involved.
+
+![Heat map of France from August 2025](images/heatmap-France.jpeg){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
+
+But the *idea*—take a continuous quantity, drape it over a grid or a map, and let color do the talking instead of numbers—is much older, and it is, satisfyingly, French. In 1826, a civil engineer named Charles Dupin produced a map of France shaded by region according to literacy rates: dark for the illiterate departments, light for the educated ones. It is widely credited as the first true choropleth map, the direct ancestor of every heat map since. Dupin wasn't measuring temperature either. He was measuring ignorance, and he made it visible by treating data the way a thermometer treats a fever—as something you could read off a surface at a glance.
+
+The French called this kind of cartography *carte teintée*—tinted map—and by the 1870s and 80s it had become a national obsession, particularly among the statisticians whose successors I claim, somewhat shamelessly, as ancestors of this blog. André-Michel Guerry shaded France by crime rates. Émile Cheysson shaded it by nearly everything else. None of them used the word "heat," but all of them had discovered the same trick Kinney would rediscover a century later in a Wall Street office: color is faster than numbers, and a grid is just a map that gave up on geography.
+
+So when you look at the wind chill heat map above, you are looking, distantly, at a French literacy census from the age of steam trains—translated, by way of finance, into windburn.
+
+---
+
+## 🎨 The Colormap Wars
+
+Choosing the colors for a heat map sounds like the easy part. It is not. It is, in fact, one of the more reliably bitter disputes in applied statistics, and the wind chill grid above was a small battlefield of its own before I picked a palette.
+
+For decades the default choice was the rainbow—blue through green, yellow, orange, red—sometimes called "jet," after the MATLAB colormap of the same name. It looks dramatic. It is also, perceptually, a disaster. The human eye does not register the jump from green to yellow the same way it registers the jump from blue to green; the rainbow has uneven "speed," which means a smooth underlying gradient in your data can appear to have bands, ridges, and false boundaries that exist only in the colormap, not in the world. Cardiologists reading rainbow-colored heart scans have missed real anomalies and flagged fake ones for exactly this reason. People have written grievance-length papers about it.
+
+The reform movement—viridis, magma, and their relatives, developed for Python's matplotlib and now ported everywhere including R—fixes this by being perceptually uniform: equal steps in the data produce equal-looking steps in color, in both color and grayscale, even for colorblind readers. The aesthetic cost is that viridis is, frankly, a little dour. Purple to teal to yellow-green. Nobody has ever called it dramatic.
+
+Here are all four side by side, courtesy of the **colorspace** package's `swatchplot()`:
+
+```{r}
+#| label: fig-colormaps
+#| fig-cap: "Four colormaps compared: the perceptually uneven 'jet' rainbow, R's classic heat.colors, and the perceptually uniform viridis and magma."
+#| fig-width: 7
+#| fig-height: 3.5
+library(colorspace)
+
+n <- 256
+jet     <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan",
+                               "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))(n)
+heat    <- heat.colors(n)
+viridis <- hcl.colors(n, "Viridis")
+magma   <- viridisLite::magma(n)
+
+swatchplot(
+  jet     = jet,
+  heat    = heat,
+  viridis = viridis,
+  magma   = magma
+)
+```
+
+Look closely at the jet bar: the eye snags on the blue-to-cyan and yellow-to-orange transitions, while green-to-yellow slides by almost unnoticed—the "uneven speed" the rainbow critics complain about, visible without a single data point attached to it. Viridis and magma, by contrast, change at a steady visual pace from one end to the other.
+
+Wind chill complicates things further because it's a *diverging* quantity—there's a meaningful zero, comfort on one side, danger on the other—which opens an entirely separate argument about whether the midpoint should be white, gray, or invisible, and whether red-for-cold or blue-for-cold is the more honest cruelty. I went with blue-to-red, anchored at freezing, mostly because anything else felt like editorializing about a topic the body has already settled on its own.
+
+<!--
+What is your favourite "ColorGradient" to plot heatmap or surfaces for publications? : r/Julia
+https://www.reddit.com/r/Julia/comments/p3j4uu/what_is_your_favourite_colorgradient_to_plot/
+
+Heatmap colors: ggplot
+https://share.google/dAT4VeB75qY3jfwYf
+-->
+
+---
+
+## 💻 Telling a Computer What Color You Mean
+
+Underneath any heat map is a more basic problem: how do you even tell a computer "make this slightly less alarming shade of orange"? There turn out to be several competing dialects for this, and they disagree less about color than about what a human actually cares about when picking one.
+
+Hex codes—#FF7F50, say—are the lingua franca and also faintly hostile. Six digits of base-16, no relation to anything you'd say out loud. You don't *pick* a hex code so much as submit to one that someone else already found.
+
+> Every time I type a hex code, somewhere a crayon box weeps quietly.
+
+<!-- Alternate: Every time I code a color in hex, a tiny part of my soul converts to base-16. -->
+
+RGB is the same idea in friendlier units: how much red, green, and blue light to fire. It's honest about how screens work, which is also its flaw—it describes the machine, not the color as you experience it. Turning a color "a bit lighter" in RGB means tweaking three numbers at once, none of which is labeled "lighter."
+
+HSL was built to fix that—hue, saturation, *lightness*—and for years was the standard answer to "I just want to slide one knob and make it pale." The trouble is its lightness knob lies. Pure yellow and pure blue can claim the same HSL lightness value while looking nothing alike in actual brightness to a human eye. The L doesn't track perception; it tracks a formula that resembles perception in some lighting and abandons it in others.
+
+OKLCH is the newer fix, built specifically so its lightness axis matches what a person would actually call lighter or darker, hue by hue, consistently. For a diverging scale like wind chill, where the whole point is a smooth, trustworthy gradient from danger to comfort, that's not a cosmetic upgrade—it's the difference between a gradient that reads as one continuous fact and one that quietly fibs in the yellows. Lightness, it turns out, is the one knob worth getting right; everything else is decoration.
+
+---
+
+## Further Reading
+
+**Kinney and the heat map**
+
+- Wikipedia, ["Heat map"](https://en.wikipedia.org/wiki/Heat_map) — coinage, 1991 trademark, history of shaded matrices back to Toussaint Loua (1873)
+- Wikipedia, ["Cormac Kinney"](https://en.wikipedia.org/wiki/Cormac_Kinney) — NeoVision Hypersystems, the Citibank application, trademark lapse
+
+**Dupin and the choropleth**
+
+- Wikipedia, ["Charles Dupin"](https://en.wikipedia.org/wiki/Charles_Dupin)
+- Wikipedia, ["Choropleth map"](https://en.wikipedia.org/wiki/Choropleth_map) — 1826 *Carte figurative de l'instruction populaire de la France*, the *carte teintée* tradition that followed
+- History of Information, ["The First Choroplethic Map"](https://historyofinformation.com/detail.php?id=4632)
+
+**Guerry**
+
+- Wikipedia, ["André-Michel Guerry"](https://en.wikipedia.org/wiki/André-Michel_Guerry)
+- Friendly, M. (2007), ["A.-M. Guerry's Moral Statistics of France: Challenges for Multivariable Spatial Analysis,"](https://www.datavis.ca/papers/guerry-STS241.pdf) *Statistical Science*
+- Friendly, M. (2022), ["The Life and Works of André-Michel Guerry, Revisited,"](https://www.datavis.ca/papers/guerryvie/GuerryLife2-SocSpectrum.pdf) *Sociological Spectrum*
+
+**OKLCH**
+
+- Wikipedia, ["Oklab color space"](https://en.wikipedia.org/wiki/Oklab_color_space) — Björn Ottosson's 2020 derivation
+- Evil Martians, ["OKLCH in CSS: why we moved from RGB and HSL"](https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl) — the clearest plain-language explainer of L, C, H and why the old lightness knobs lie
+- W3C, [CSS Color Module Level 4](https://www.w3.org/TR/css-color-4/) — the spec itself, oklch() section

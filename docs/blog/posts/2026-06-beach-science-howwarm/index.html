@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-06-21">
+<meta name="description" content="Temperature words are doing quantitative work while pretending to be qualitative. Beach Science and graphics would like to fix this.">
+
+<title>BS: How Warm Is “Warm”? – Michael Friendly</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/MF-face.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: #222222;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: #222222;
+background-image: url(images/thermometer-readouts.png);
+background-size: cover;
+      }
+</style>
+<style>
+.quarto-title-block .quarto-title-banner {
+  min-height: 14rem;
+  background-size: contain !important;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: white;
+}
+</style>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Michael Friendly</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> <i class="bi bi-house" role="img">
+</i> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../packages.html"> <i class="bi bi-box-seam" role="img">
+</i> 
+<span class="menu-text">R Packages</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../books.html"> <i class="bi bi-book" role="img">
+</i> 
+<span class="menu-text">Books</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../courses.html"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../software.html"> <i class="bi bi-code-slash" role="img">
+</i> 
+<span class="menu-text">Other Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> <i class="bi bi-pencil" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/friendly"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bsky.app/profile/datavisfriendly.bsky.social"> 
+<span class="menu-text"><img src="../../../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page">
+      <h1 class="title">BS: How Warm Is “Warm”?</h1>
+                  <div>
+        <div class="description">
+          Temperature words are doing quantitative work while pretending to be qualitative. Beach Science and graphics would like to fix this.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">beach science</div>
+                <div class="quarto-category">statistics</div>
+                <div class="quarto-category">humor</div>
+                <div class="quarto-category">heatmap</div>
+                <div class="quarto-category">ridgeline plot</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Michael Friendly </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 21, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+
+
+
+
+
+
+<!-- Image from: "C:\R\Projects\friendly.github.io\blog\drafts\BeachScience\images\thermometer-readouts.webp" -->
+<p>Standing at the water’s edge this morning, I described the Mediterranean air to my companion as “brisk”. She called it “refreshing”. A man walking past, perhaps from somewhere much colder, called it “mild”. We were all describing the same air at the same moment.</p>
+<p>We all go for a plunge in the clear blue waters. Comparing our impressions, I call it “chilly”; my companion says, “cool, and refreshing”; the stranger calls it “temperate”. Again: same water but different words to describe what we feel.</p>
+<p>This is not a failure of communication, or something you can just dismiss as “individual differences.” It is a BS research question.</p>
+<section id="the-meterologists-view" class="level2">
+<h2 class="anchored" data-anchor-id="the-meterologists-view">🌡️ The Meterologist’s View</h2>
+<p>A meteorologist, coming from physical science, explains <a href="https://www.popsci.com/environment/what-is-feels-like-temperature/">What is ‘feels-like’ temperature?</a> in terms of <a href="https://en.wikipedia.org/wiki/Wind_chill">wind-chill</a>. This idea even gets a measure, the <strong>wind-chill factor</strong> (or “feels like” temperature). It is defined in words as:</p>
+<blockquote class="blockquote">
+<p>the apparent temperature felt on exposed skin caused by the combination of air temperature and wind speed. Wind strips away your body’s natural insulating layer of warm air, making the temperature feel significantly colder than the thermometer reads.</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center" style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%">
+<figure class="figure">
+<p><img src="images/windchill3.png" class="img-fluid figure-img"></p>
+<figcaption>Wind chill chart showing combinations of temperature and wind, shaded by “feels like” temperature</figcaption>
+</figure>
+</div>
+<p>But that’s quite a physical mouthful. There are formulas for this, but you can understand the physics more easily from a <a href="https://en.wikipedia.org/wiki/Heat_map"><strong>heatmap</strong></a> visualization that simply uses background color for the “feels-like” value. Rick Wiklin, a long time friend, explains how to create <a href="https://blogs.sas.com/content/iml/2021/02/24/wind-chill-chart.html">The wind chill chart</a> using SAS, giving the figure at the right.</p>
+<hr>
+</section>
+<section id="what-about-the-words" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-the-words">💬 What About the Words?</h2>
+<p>But even if you understand the physics, how can you understand the <strong>words</strong> you use to describe your feeling of warmth when you are sitting on the beach, or decide to go for a swim? Perception goes beyond the physics. And there is also something interesting about the way we use discrete, qualitative words to describe what is a quantitative phenomenon.</p>
+</section>
+<section id="the-probability-analogy" class="level2">
+<h2 class="anchored" data-anchor-id="the-probability-analogy">🎲 The Probability Analogy</h2>
+<p>In the 1960s, a CIA analyst named <a href="https://en.wikipedia.org/wiki/Sherman_Kent">Sherman Kent</a> noticed that intelligence reports were full of words like “probable”, “unlikely”, “almost certain”— but not everyone agreed on what they meant. He asked a group of NATO officers to assign numerical probabilities to phrases like “serious possibility” and “little chance.” The results were alarming. “Probable” mapped to anywhere from 55% to 90% depending on who you asked. Words that felt precise were carrying enormous hidden uncertainty. Not very good when you’re thinking about which foreign interests to support or the likelihood of effecting regime change,</p>
+<p>The same problem almost certainly applies to <strong>temperature language</strong>. When your weather app says “warm”, when a friend describes the sea as “chilly”, when a wine menu mentions serving at “room temperature”—these words are doing quantitative work while pretending to be qualitative. They certainly are <em>ordered categories</em>, but nobody has agreed on the numbers.</p>
+<p>Beach Science would like to fix this.</p>
+<p>Let’s look at the methods used to understand words for probability as a model, first proposed in a <a href="https://github.com/zonination/perceptions/blob/master/README.md">Reddit post by zonination</a>, and using a <a href="https://wilkelab.org/ggridges/">ridgeline plot</a> to show the distribution of the numerical values that a sample of respondents assigned to a wide range of words used to describe probability.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(prob_long, <span class="fu">aes</span>(<span class="at">x =</span> probability, <span class="at">y =</span> term, <span class="at">fill =</span> med)) <span class="sc">+</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(<span class="at">scale =</span> <span class="fl">1.8</span>, <span class="at">rel_min_height =</span> <span class="fl">0.01</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">colour =</span> <span class="st">"grey30"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> term_summary,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> med, <span class="at">y =</span> term),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"white"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">2.6</span>, <span class="at">stroke =</span> <span class="fl">0.6</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"#2166ac"</span>, <span class="at">mid =</span> <span class="st">"#d9d0d0"</span>, <span class="at">high =</span> <span class="st">"#d6604d"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">midpoint =</span> <span class="dv">50</span>, <span class="at">name =</span> <span class="st">"Median</span><span class="sc">\n</span><span class="st">(%)"</span>) <span class="sc">+</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'How likely is "likely"?'</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Perceived probability of estimative words (n ≈ 46)</span><span class="sc">\n</span><span class="st">White dot = median"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Assigned probability (%)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data: Zonination · github.com/zonination/perceptions"</span>) <span class="sc">+</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>(<span class="at">grid =</span> <span class="cn">TRUE</span>, <span class="at">center_axis_labels =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-probwords" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-probwords-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-probwords-1.png" class="img-fluid figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-probwords-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Perceived probability of probability words (n ≈ 46). White dot = median. Data: <a href="https://github.com/zonination/perceptions">Zonination</a>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<!-- Can I connect the medians with a line?
+What about a raincloud version to show the data points?
+-->
+<p>The medians tell us the typical value assigned to the probability words and their relative spacing– fairly steady trend from “almost no chance” to “probably not”, but there is little difference between “little chance” and “improbable”, which surprised me. Similarly, “likely”, “probable”, and “we believe” are all the same, a comfort to CIA analysts.</p>
+<p>However, the shapes of these distributions tell a more interesting story. Because probability is bounded in (0, 100), as we approach 0 (“almost no chance”) the distributions become more and more positively skewed. We see a similar trend toward right skewness as probability increases toward 100.</p>
+<p>Also notice those small blips in the tails of terms like “almost no chance”, “highly unlikely”, “highly likely”. These seem almost certain outliers, most likely errors in the response or understanding the question. That is why I used the median to mark the center of each distribution.</p>
+<hr>
+</section>
+<section id="a-lexicon-of-warmth" class="level2">
+<h2 class="anchored" data-anchor-id="a-lexicon-of-warmth">📖 A Lexicon of Warmth</h2>
+<p><img src="images/temperature-feelings.jpeg" class="img-fluid" style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"> Here, roughly ordered from coldest to hottest, are a modest selection of terms worth studying:</p>
+<ul>
+<li><p>The <strong>cold</strong> end: Freezing. Frigid. Icy. Bitter. Raw. Chilly. Cool. Fresh. Crisp.</p></li>
+<li><p>The <strong>middle</strong>: Mild. Comfortable. Pleasant. Temperate. Neutral. Lukewarm. Tepid.</p></li>
+<li><p>The <strong>warm</strong> end: Warm. Balmy. Sultry. Toasty. Hot. Sweltering. Scorching. Blistering. Broiling.</p></li>
+</ul>
+<section id="the-slippery-ones" class="level3">
+<h3 class="anchored" data-anchor-id="the-slippery-ones">The Slippery Ones:</h3>
+<ul>
+<li><p>“Brisk”—means cold, but often said cheerfully, to imply you don’t mind.</p></li>
+<li><p>“Refreshing”—means cold, said approvingly, usually while entering water you were dreading.</p></li>
+<li><p>“Perfect beach weather”—means something different to everyone who says it.</p></li>
+<li><p>“Room temperature”—nominally 20°C, actually whatever the room happens to be or where you keep your thermostat set.</p></li>
+<li><p>“A bit nippy”—British for genuinely cold, deployed as understatement.</p></li>
+</ul>
+<p>This last category is the most interesting. These terms carry <em>emotional</em> valence as well as <em>thermal content</em>— they tell you not just how warm something is, but how the speaker <strong>feels</strong> about it. Separating those two things is itself a research problem.</p>
+<hr>
+</section>
+</section>
+<section id="what-to-measure" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-measure">📏 What to Measure?</h2>
+<p>A proper BS study would present subjects with this list of terms—perhaps 25–30 in total—and ask them to assign a temperature in degrees Celsius to each one. Not a range. A number. The discomfort of that precision is part of the point.</p>
+<p>From a reasonable sample you’d get, for each term:</p>
+<ul>
+<li>A mean/median “consensual temperature”</li>
+<li>A standard deviation or median absolute difference (MAD)—how much people disagree on average</li>
+<li>The shapes of the distributions would also be revealing: Possibly a bimodal distribution for the slippery ones; e.g., “refreshing” might split between people who love cold water and people who merely tolerate it.</li>
+</ul>
+<p>You’d also want to ask about or design for <strong>context</strong> of the judgement. “Warm” for bathwater, air temperature, and sea temperature are probably calibrated mentally quite differently. “Lukewarm” for coffee is not the same as “lukewarm” for political support—though it would be amusing to find out if they’re numerically similar. This last example points to the metaphorical uses of terms for “warmth.”</p>
+<section id="individual-differences" class="level3">
+<h3 class="anchored" data-anchor-id="individual-differences">Individual Differences</h3>
+<p>The Kent study found systematic differences by nationality and professional background. You’d expect the same here, and more:</p>
+<ul>
+<li>Geographic origin—someone from Helsinki and someone from Lagos will likely not agree on “mild”</li>
+<li>Age—thermoregulation changes with age; older people tend to run cooler</li>
+<li>Sex—well documented differences in thermal comfort (REF??), still not fully explored or explained</li>
+<li>Recent acclimatisation—what felt “cold” on day one of a beach holiday feels merely “brisk” by day five</li>
+</ul>
+<p>This suggests the study needs demographic covariates, and that the interesting finding might not be the mean temperatures but the variability—which terms are universally agreed upon, and which are doing completely different work for different people.</p>
+<p>My prediction: freezing and scorching will have the tightest agreement. Mild, comfortable, and fresh will be all over the place.</p>
+</section>
+<section id="how-to-study-it" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-study-it">How to Study It</h3>
+<p>An online survey would work fine—present the terms in randomised order, ask for a numeric temperature response, collect demographics. A hundred respondents would give you something interesting; 200–300 would give you something publishable.</p>
+<p>The analysis is straightforward: descriptive statistics for each term, then a plot showing the distribution of responses—a ridgeline plot or violin plot would show both the central tendency and the spread beautifully. Terms ordered by median temperature on the y-axis; spread showing disagreement. You’d see immediately which words are doing precise work and which are vessels into which people pour their own thermal experience.</p>
+<p>In the main study, the context context would be that of a day at the beach, because, after all this is Beach Science. A follow-up study worth also doing: present the same terms with varied context (the sea was “refreshing”, the coffee was “lukewarm”, a “mild” day for January) and see how much context shifts the numbers. My guess: substantially.</p>
+<hr>
+<p>Before we leave temperature behind, let’s go back to that wind chill heat map from a few sections ago. There are three things worth knowing about it that have nothing to do with thermoregulation and everything to do with how we ended up making heat maps look the way they do.</p>
+</section>
+</section>
+<section id="where-the-heat-in-heat-map-came-from" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-heat-in-heat-map-came-from">🗺️ Where the Heat in “Heat Map” Came From</h2>
+<p>The wind chill grid shown above is, technically, a heat map—though nothing about it is hot, which is the first small joke buried in the term; neither is it a map. “Heat map” as a word didn’t exist until the 1990s, coined by a software designer named <a href="https://en.wikipedia.org/wiki/Cormac_Kinney">Cormac Kinney</a> to describe color-coded grids of financial trading data. Red for losses, green for gains, no actual thermodynamics involved.</p>
+<div class="quarto-figure quarto-figure-center" style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%">
+<figure class="figure">
+<p><img src="images/heatmap-France.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Heat map of France from August 2025</figcaption>
+</figure>
+</div>
+<p>But the <em>idea</em>—take a continuous quantity, drape it over a grid or a map, and let color do the talking instead of numbers—is much older, and it is, satisfyingly, French. In 1826, a civil engineer named Charles Dupin produced a map of France shaded by region according to literacy rates: dark for the illiterate departments, light for the educated ones. It is widely credited as the first true choropleth map, the direct ancestor of every heat map since. Dupin wasn’t measuring temperature either. He was measuring ignorance, and he made it visible by treating data the way a thermometer treats a fever—as something you could read off a surface at a glance.</p>
+<p>The French called this kind of cartography <em>carte teintée</em>—tinted map—and by the 1870s and 80s it had become a national obsession, particularly among the statisticians whose successors I claim, somewhat shamelessly, as ancestors of this blog. André-Michel Guerry shaded France by crime rates. Adolph d’Angeville (1836) and Émile Cheysson shaded it by nearly everything else. None of them used the word “heat,” but all of them had discovered the same trick Kinney would rediscover a century later in a Wall Street office: color is faster than numbers, and a grid is just a map that gave up on geography.</p>
+<p>So when you look at the wind chill heat map above, you are looking, distantly, at a French literacy census from the age of steam trains—translated, by way of finance, into windburn.</p>
+<hr>
+</section>
+<section id="the-colormap-wars" class="level2">
+<h2 class="anchored" data-anchor-id="the-colormap-wars">🎨 The Colormap Wars</h2>
+<p>Choosing the colors for a heat map sounds like the easy part. It is not. It is, in fact, one of the more reliably bitter disputes in cartography and geo-science, and the wind chill grid above was a small battlefield of its own before Rick Wicklin picked a palette. He used a <a href="https://github.com/sascommunities/the-do-loop-blog/blob/master/wind-chill/windchill.sas">color gradient</a> going from dark purple through dark cyan to light orange, with a light grey in the middle.</p>
+<p>For decades the default choice was the rainbow—blue through green, yellow, orange, red—sometimes called “jet,” after the MATLAB colormap of the same name. It looks dramatic. It is also, perceptually, a disaster. The human eye does not register the jump from green to yellow the same way it registers the jump from blue to green; the rainbow has uneven “speed,” which means a smooth underlying gradient in your data can appear to have bands, ridges, and false boundaries that exist only in the colormap, not in the world. Cardiologists reading rainbow-colored heart scans have missed real anomalies and flagged fake ones for exactly this reason. People have written grievance-length papers about it.</p>
+<p>The reform movement—viridis, magma, and their relatives, developed for Python’s matplotlib and now ported everywhere including R—fixes this by being perceptually uniform: equal steps in the data are supposed to produce equal-looking steps in color, in both color and grayscale, even for colorblind readers. The aesthetic cost is that viridis is, frankly, a little dour. Purple to teal to yellow-green. Nobody has ever called it dramatic. The color gamut often leaves most of the graphic purple.</p>
+<p>Here are all four together, courtesy of the <strong>colorspace</strong> package’s <code>swatchplot()</code>:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(colorspace)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">256</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>jet     <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#00007F"</span>, <span class="st">"blue"</span>, <span class="st">"#007FFF"</span>, <span class="st">"cyan"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"#7FFF7F"</span>, <span class="st">"yellow"</span>, <span class="st">"#FF7F00"</span>, <span class="st">"red"</span>, <span class="st">"#7F0000"</span>))(n)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>heat    <span class="ot">&lt;-</span> <span class="fu">heat.colors</span>(n)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>viridis <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(n, <span class="st">"Viridis"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>magma   <span class="ot">&lt;-</span> viridisLite<span class="sc">::</span><span class="fu">magma</span>(n)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">swatchplot</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">jet     =</span> jet,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">heat    =</span> heat,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">viridis =</span> viridis,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">magma   =</span> magma</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-colormaps" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-colormaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-colormaps-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-colormaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Four colormaps compared: the perceptually uneven ‘jet’ rainbow, R’s classic heat.colors, and the perceptually uniform viridis and magma.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Look closely at the jet bar: the eye snags on the blue-to-cyan and yellow-to-orange transitions, while green-to-yellow slides by almost unnoticed—the “uneven speed” the rainbow critics complain about, visible without a single data point attached to it. Viridis and magma, by contrast, change at a steady visual pace from one end to the other.</p>
+<p>Wind chill complicates things further because it’s a <em>diverging</em> quantity—there’s a meaningful zero, comfort on one side, discomfort on the other—which opens an entirely separate argument about whether the midpoint should be white, gray, or invisible, and whether red-for-cold or blue-for-cold is the more honest cruelty. I went with blue-to-red, anchored at freezing, mostly because anything else felt like editorializing about a topic the body has already settled on its own.</p>
+<!--
+What is your favourite "ColorGradient" to plot heatmap or surfaces for publications? : r/Julia
+https://www.reddit.com/r/Julia/comments/p3j4uu/what_is_your_favourite_colorgradient_to_plot/
+
+Heatmap colors: ggplot
+https://share.google/dAT4VeB75qY3jfwYf
+-->
+<hr>
+</section>
+<section id="telling-a-computer-what-color-you-mean" class="level2">
+<h2 class="anchored" data-anchor-id="telling-a-computer-what-color-you-mean">💻 Telling a Computer What Color You Mean</h2>
+<p>Underneath any heat map is a more basic problem: how do you even tell a computer “make this slightly less alarming shade of orange”? There turn out to be several competing dialects for this, and they disagree less about color than about what a human actually cares about when picking one.</p>
+<p>Hex codes—#FF7F50, say—are the lingua franca and also faintly hostile. Six digits of base-16, no relation to anything you’d say out loud. You don’t <em>pick</em> a hex code so much as submit to one that someone else already found. You can make colors transparent by adding two more hex digits for an “alpha” channel.</p>
+<blockquote class="blockquote">
+<p>Every time I type a hex code, somewhere a crayon box weeps quietly.</p>
+</blockquote>
+<!-- Alternate: Every time I code a color in hex, a tiny part of my soul converts to base-16. -->
+<p>RGB is the same idea in friendlier units: how much red, green, and blue light to fire. It’s honest about how screens work, which is also its flaw—it describes the machine, not the color as you experience it. Turning a color “a bit lighter” in RGB means tweaking three numbers at once, none of which is labeled “lighter.”</p>
+<p>HSL was built to fix that—hue, saturation, <em>lightness</em>—and for years was the standard answer to “I just want to slide one knob and make it pale.” The trouble is its lightness knob lies. Pure yellow and pure blue can claim the same HSL lightness value while looking nothing alike in actual brightness to a human eye. The L doesn’t track perception; it tracks a formula that resembles perception in some lighting and abandons it in others.</p>
+<p>OKLCH is the newer fix, built specifically so its lightness axis matches what a person would actually call lighter or darker, hue by hue, consistently. For a diverging scale like wind chill, where the whole point is a smooth, trustworthy gradient from danger to comfort, that’s not a cosmetic upgrade—it’s the difference between a gradient that reads as one continuous fact and one that quietly fibs in the yellows. Lightness, it turns out, is the one knob worth getting right; everything else is decoration.</p>
+<hr>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">🔗 Further Reading</h2>
+<p><strong>Kinney and the heat map</strong></p>
+<ul>
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Heat_map">“Heat map”</a> — coinage, 1991 trademark, history of shaded matrices back to Toussaint Loua (1873)</li>
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Cormac_Kinney">“Cormac Kinney”</a> — NeoVision Hypersystems, the Citibank application, trademark lapse</li>
+</ul>
+<p><strong>Dupin and the choropleth</strong></p>
+<ul>
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Charles_Dupin">“Charles Dupin”</a></li>
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Choropleth_map">“Choropleth map”</a> — 1826 <em>Carte figurative de l’instruction populaire de la France</em>, the <em>carte teintée</em> tradition that followed</li>
+<li>History of Information, <a href="https://historyofinformation.com/detail.php?id=4632">“The First Choroplethic Map”</a></li>
+</ul>
+<p><strong>Guerry</strong></p>
+<ul>
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/André-Michel_Guerry">“André-Michel Guerry”</a></li>
+<li>Friendly, M. (2007), <a href="https://www.datavis.ca/papers/guerry-STS241.pdf">“A.-M. Guerry’s Moral Statistics of France: Challenges for Multivariable Spatial Analysis,”</a> <em>Statistical Science</em></li>
+<li>Friendly, M. (2022), <a href="https://www.datavis.ca/papers/guerryvie/GuerryLife2-SocSpectrum.pdf">“The Life and Works of André-Michel Guerry, Revisited,”</a> <em>Sociological Spectrum</em></li>
+</ul>
+<p><strong>Color maps</strong></p>
+<p><a href="https://www.reddit.com/r/Julia/comments/p3j4uu/what_is_your_favourite_colorgradient_to_plot/">What is your favourite “ColorGradient” to plot heatmap or surfaces for publications?</a></p>
+<p><strong>OKLCH</strong></p>
+<ul>
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Oklab_color_space">“Oklab color space”</a> — Björn Ottosson’s 2020 derivation</li>
+<li>Evil Martians, <a href="https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl">“OKLCH in CSS: why we moved from RGB and HSL”</a> — the clearest plain-language explainer of L, C, H and why the old lightness knobs lie</li>
+<li>W3C, <a href="https://www.w3.org/TR/css-color-4/">CSS Color Module Level 4</a> — the spec itself, oklch() section</li>
+</ul>
+<!--
+---
+
+*Postscript:* I asked my companion what temperature she'd assign to "warm." She said 22°C. I said 27°C. We have been on this beach for four days. We are, apparently, still not calibrated to the same scale.
+
+-->
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The original name for this collection of density plots was “joy plot”, which came from the cover image of a music album by the group Joy Division… <code>joyplot</code> package (Claus Wilke).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/friendly\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Michael Friendly</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://friendly.github.io/">
+<p>friendly.github.io/</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
