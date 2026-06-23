@@ -7,7 +7,10 @@ draft: true
 categories: [beach science, social science, humor]
 ---
 
-It is mid-afternoon at Leucate Plage, and nature has called. I make my way
+<!-- banner-image: images/Bathroom-Lines.webp -->
+
+
+It is mid-afternoon at the beach, and nature has called. I make my way
 to the beach facilities — a modest block of toilets set back from the sand —
 and find what I find at every beach, in every country, without exception: a
 queue for one side and nothing for the other.

@@ -111,4 +111,4 @@ The predictor you'd expect to matter most: insertion depth. The interaction you'
 
   Next time the wind picks up, you now have a framework. Tilt into it, go deep, weight the base, and buy a vented umbrella. Or, failing all of that, at least make sure nobody is downwind.
 
-Get Outlook for iOS
+
