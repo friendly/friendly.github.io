@@ -3,6 +3,7 @@ title: "Warm-Up Exercises for the Beach Scientist"
 description: "Before any good Beach Science can begin, the researcher must calibrate. Four exercises for becoming properly horizontal, attentive, and curious."
 author: "Michael Friendly"
 date: "2026-06-14"
+date-modified: last-modified
 categories: [beach science, humor, science]
 image: "images/sunbathing-sandy-beach-cropped.png"
 title-block-banner: "images/sunbathing-sandy-beach-cropped.png"

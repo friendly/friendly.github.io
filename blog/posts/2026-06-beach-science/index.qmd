@@ -3,6 +3,7 @@ title: "Beach Science: A New Field is Born"
 description: "The practice of lying on a beach towel and allowing fundamental scientific questions to bubble up from the sand and sea around you."
 author: "Michael Friendly"
 date: "2026-06-12"
+date-modified: last-modified
 categories: [beach science, humor, science]
 image: "images/leucate-plage.webp"
 title-block-banner: "images/leucate-plage-cropped.png"
@@ -33,7 +34,7 @@ With this post, I am hereby founding the new discipline of  **Beach Science** (B
 If someone has done this before, I apologize for the overlap. If not, I'll consider applications for graduate students who want to get in on this sand-breaking work.
 
 
-## What is Beach Science?
+## 🏖️ What is Beach Science?
 
 ![](images/BeachTowel.webp){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
 Beach Science is the practice of lying on a beach towel, eyes closed, and allowing interesting scientific questions to bubble up from the environment around you. No lab or
@@ -47,7 +48,34 @@ Carl Sagan once observed that every child starts out as a natural-born scientist
 [^Sagan]: Carl Sagan, _Psychology Today_, January 1996
 
 
-## A taste of what's coming
+## 🔬 The Methods of Beach Science
+
+> "It is by logic that we prove, but by intuition that we discover."
+> --- Henri Poincaré, *Science and Method* (1908)
+
+The posts in this series begin not with hypotheses but with *noticing* --- a shadow, a sound, a discomfort, a question that arrives unbidden while doing nothing useful. The logic, the data, the models come afterward, in service of what curiosity already suspected.
+
+This is, of course, part of an older contrast:
+
+- Aristotle vs. Plato
+- bottom-up (observation-driven) vs. top-down (theory-driven)
+- Tukey's exploratory data analysis vs. confirmatory, hypothesis-testing methods
+- the naturalist's notebook vs. the laboratory
+
+The beach is an especially good place for Aristotle. You can't bring much apparatus to the shore, but you can pay attention and develop intuitions.
+That said, once a question is in hand, there are two ways to proceed --- and it's worth being explicit about which one I'm doing.
+
+**Exploratory BS** follows the spirit of the enterprise: an observation, a half-formed hunch, a question that floats to the surface while you're counting your breaths. You follow the thread, see where it leads, build a little mental model. Only afterward do you go looking to see what others have done --- with a certain measure of delight (or chagrin) at discovering how your intuitions hold up.
+
+**Confirmatory BS** works in the opposite direction. You begin with a topic and ask: what theoretical framework exists? How have others conceptualized this, collected data, tested hypotheses? Then you can bring that structure to bear on whatever the beach throws at you.
+
+In practice, most posts here follow the EBS → CBS path. This has a pleasing consequence: when I finally consult the literature, I get to ask --- are my beach-towel intuitions on-target? Totally naïve? Perhaps occasionally novel? Not all BS ideas pan out. But the ones that do work out feel like they've earned it. And if they don't, perhaps I've learned something from the attempt.
+
+> "What we observe is not nature itself, but nature exposed to our method of questioning."
+> --- Werner Heisenberg, *Physics and Philosophy* (1958)
+
+
+## 🌅 A taste of what's coming
 
 I started making notes on this topic last year.
 Here are a few things that appeared in my consciousness while drifting.
@@ -64,7 +92,7 @@ Where applicable, I might simulate some data and make some graphs, but that work
 These are the kinds of questions Beach Science asks. Rigorous enough to take seriously. Ridiculous enough to enjoy.
 
 
-## Posts in This Series
+## 📋 Posts in This Series
 
 Unlike most other blog series, the posts here are allowed to be dynamic, rather than static. 
 I may publish something, and then revise it later as some new idea or perspective arises from the beach.
