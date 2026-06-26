@@ -89,13 +89,13 @@ HOW WOULD YOU STUDY THIS?
 A proper Beach Science investigation of umbrella stability might measure:
 
 
-- Wind speed at the moment of failure (small anemometer, or a weather station app)
+- **Wind speed** at the moment of failure (small anemometer, or a weather station app)
 
-- Insertion depth and tilt angle for each umbrella
+- Insertion **depth** and tilt **angle** for each umbrella
 
-- Sand moisture at depth (a soil moisture probe, or a wetness rating scale)
+- Sand **moisture** at depth (a soil moisture probe, or a wetness rating scale)
 
-- Canopy diameter and vent presence as umbrella characteristics
+- Canopy **diameter** and **vent** presence as umbrella characteristics
 
 - Time to failure — or, for umbrellas that don't fail, whether they survived the observation period
 
