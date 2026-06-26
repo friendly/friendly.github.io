@@ -25,11 +25,11 @@ Hey, I took two years of physics at Stuyvesant High School and two more at RPI �
 A beach umbrella in wind is, at its core, a sail on a stick jammed into sand. The forces trying to topple or launch it are well understood:
 
 
-- Drag — the wind pushes horizontally against the canopy
+- **Drag** — the wind pushes horizontally against the canopy
 
-- Lift — the curved canopy generates upward aerodynamic force, exactly like a wing (or an inverted one, depending on orientation)
+- **Lift** — the curved canopy generates upward aerodynamic force, exactly like a wing (or an inverted one, depending on orientation)
 
-- Torque — these forces combine to rotate the pole around its base, levering it out of the sand
+- **Torque** — these forces combine to rotate the pole around its base, levering it out of the sand
 
 
 The only things resisting all of this are the friction of sand gripping the pole and the weight of the umbrella itself. In dry, loose surface sand — exactly what you find at the top of a beach — that grip is approximately that of a bowl of sugar. Hence: woosh.
@@ -109,6 +109,6 @@ The predictor you'd expect to matter most: insertion depth. The interaction you'
 ---
 
 
-  Next time the wind picks up, you now have a framework. Tilt into it, go deep, weight the base, and buy a vented umbrella. Or, failing all of that, at least make sure nobody is downwind.
+Next time the wind picks up, you now have a framework. Tilt into it, go deep, weight the base, and buy a vented umbrella. Or, failing all of that, at least make sure nobody is downwind.
 
 

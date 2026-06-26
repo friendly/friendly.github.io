@@ -261,3 +261,11 @@ pool or a beach. Ethics approval should be straightforward.
 *I chose the beach. I always choose the beach. This may itself be a data
 point, though I am not sure it is a surprising one. Only the beach encourages
 BS.*
+
+## 📋 Posts in This Series
+
+- [Beach Science: A New Field is Born](../2026-06-beach-science/)
+- [Warm-Up Exercises for the Beach Scientist](../2026-06-beach-science-warmup/)
+- [How Warm Is "Warm"?](../2026-06-beach-science-howwarm/)
+- [Are You a Beach Person or a Pool Person?](../2026-06-beach-science-beachpeople/)
+- The Aerodynamics of Not Losing Your Umbrella *(coming soon)*
