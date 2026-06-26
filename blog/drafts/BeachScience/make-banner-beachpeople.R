@@ -1,7 +1,8 @@
 library(magick)
 
-beach <- image_read("images/beach.jpg")   # replace extension if needed
-pool  <- image_read("images/pool.jpg")
+setwd(here::here("blog", "drafts", "BeachScience"))
+beach <- image_read("images/LeucatePlage.jpg")   # replace extension if needed
+pool  <- image_read("images/pool-son-juanedajpeg.jpeg") |> image_orient()
 
 # Resize both to the same height, keeping aspect ratio
 target_height <- 400
