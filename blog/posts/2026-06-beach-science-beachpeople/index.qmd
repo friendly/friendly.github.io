@@ -4,7 +4,6 @@ description: "A psychometric instrument disguised as a lifestyle decision, and a
 author: "Michael Friendly"
 date: "2026-06-23"
 date-modified: last-modified
-draft: true
 categories: [beach science, personality, humor]
 image: "images/beach-pool-banner.jpg"
 title-block-banner: "images/beach-pool-banner.jpg"

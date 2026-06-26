@@ -99,4 +99,5 @@ I may publish something, and then revise it later as some new idea or perspectiv
 
 - [Warm-Up Exercises for the Beach Scientist](../2026-06-beach-science-warmup/)
 - [How Warm Is "Warm"?](../2026-06-beach-science-howwarm/)
+- [Are You a Beach Person or a Pool Person?](../2026-06-beach-science-beachpeople/)
 - The Aerodynamics of Not Losing Your Umbrella *(coming soon)*
