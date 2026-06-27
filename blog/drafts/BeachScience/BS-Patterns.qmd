@@ -2,13 +2,16 @@
 title: "Beach Patterns as a Physics Laboratory"
 description: "Sand ripples and sunlit caustics---two beautiful patterns, one deep principle"
 author: "Michael Friendly"
-date: today
+date: "2026-06-27"
 date-modified: last-modified
 draft: true
 categories: [Beach Science, Physics, Patterns]
-image: "images/Sand-Cala Biminel-Lajpeg.jpeg"
-title-block-banner: "images/Sand-Cala Biminel-Lajpeg.jpeg"
-title-block-banner-color: white
+image: "images/Sand-Cala-Biminel-La.jpeg"
+title-block-banner: "images/Sand-Cala-Biminel-La.jpeg"
+title-block-banner-color: black
+format:
+  html:
+    body-class: banner-outlined
 include-in-header:
   text: |
     <style>
@@ -33,7 +36,7 @@ The beach, it turns out, is a physics laboratory that never closes.
 
 ## 🏜️ The Desert in the Sand
 
-![Sand ripple patterns at Cala Biminel-la, Menorca](images/Sand-Cala%20Biminel-Lajpeg.jpeg){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
+![Sand ripple patterns at Cala Biminel-la, Menorca](images/Sand-Cala-Biminel-La.jpeg){style="float:right; margin-left:1.5em; margin-bottom:1em; width:45%"}
 
 The resemblance to the Sahara is not poetic licence. It is the same physics, shrunk by a factor of roughly ten thousand. I too the photo at Cala Biminel-la, in Menorca. The small card in the sand was dropped by someone. But it looks like a giant billboard!
 
@@ -41,9 +44,9 @@ Both desert dunes and beach ripples are formed by a fluid---wind---moving over a
 
 This is a lovely [self-organization](https://en.wikipedia.org/wiki/Self-organization) of nature. No blueprint, no architect. The pattern writes itself from a local rule applied a billion times: grains move until they can't, and they can't a little sooner on the sheltered side, so they pile up.
 
-What makes it a delightful BS idea is the **scale-independence**. The same asymmetric profile, the same characteristic wavelength-to-height ratio, appears in [ripples](https://en.wikipedia.org/wiki/Ripple_marks) a few centimetres across and in [dunes](https://en.wikipedia.org/wiki/Dune) up to hundreds of metres high. In the Sahara 
+What makes it a delightful BS idea is that of **scale-independence**. The same asymmetric profile, the same characteristic wavelength-to-height ratio, appears in [ripples](https://en.wikipedia.org/wiki/Ripple_marks) a few centimetres across and in [dunes](https://en.wikipedia.org/wiki/Dune) up to hundreds of metres high. In the Sahara 
 and D. H. Lawrence's Ottoman provinces of Hejaz and Syria, the desert is running the
-same software as the strip of sand between your towel and the waterline. The beach is just faster---you can watch a ripple field reorganize after a change in wind direction in minutes. The Sahara takes decades or centuries.
+same software as the strip of sand between your towel and the waterline. The beach is just faster---you can watch a ripple field of sand reorganize after a change in wind direction in minutes. The Sahara takes decades or centuries.
 
 
 ## 🌊 The Network in the Water

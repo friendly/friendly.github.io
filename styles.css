@@ -142,6 +142,17 @@ h2 {
   }
 }
 
+/* Banner title text with white outline (for dark/black text on image banners) */
+.banner-outlined .quarto-title-banner .title,
+.banner-outlined .quarto-title-banner .description,
+.banner-outlined .quarto-title-banner p {
+  text-shadow:
+    -1px -1px 0 white,
+     1px -1px 0 white,
+    -1px  1px 0 white,
+     1px  1px 0 white;
+}
+
 /* Blog post image alignment helpers */
 img.right {
   float: right;
