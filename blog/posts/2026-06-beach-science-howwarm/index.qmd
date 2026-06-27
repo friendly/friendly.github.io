@@ -17,6 +17,14 @@ include-in-header:
       background-repeat: no-repeat;
       background-color: white;
     }
+    .quarto-title-block .quarto-title-banner h1,
+    .quarto-title-block .quarto-title-banner p {
+      text-shadow:
+        -1px -1px 0 white,
+         1px -1px 0 white,
+        -1px  1px 0 white,
+         1px  1px 0 white;
+    }
     </style>
 format:
   html:
@@ -384,3 +392,4 @@ OKLCH is the newer fix, built specifically so its lightness axis matches what a 
 - [How Warm Is "Warm"?](../2026-06-beach-science-howwarm/)
 - [Are You a Beach Person or a Pool Person?](../2026-06-beach-science-beachpeople/)
 - The Aerodynamics of Not Losing Your Umbrella *(coming soon)*
+- [Beach Patterns as a Physics Laboratory](../2026-06-beach-science-patterns/)

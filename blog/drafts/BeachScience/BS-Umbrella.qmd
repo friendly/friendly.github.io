@@ -123,3 +123,4 @@ Next time the wind picks up, you now have a framework. Tilt into it, go deep, we
 - [How Warm Is "Warm"?](../../../posts/2026-06-beach-science-howwarm/)
 - [Are You a Beach Person or a Pool Person?](../../../posts/2026-06-beach-science-beachpeople/)
 - The Aerodynamics of Not Losing Your Umbrella *(this post — coming soon)*
+- [Beach Patterns as a Physics Laboratory](../../../posts/2026-06-beach-science-patterns/)

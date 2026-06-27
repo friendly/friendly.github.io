@@ -186,3 +186,4 @@ The questions of Beach Science may begin.
 - [How Warm Is "Warm"?](../2026-06-beach-science-howwarm/)
 - [Are You a Beach Person or a Pool Person?](../2026-06-beach-science-beachpeople/)
 - The Aerodynamics of Not Losing Your Umbrella *(coming soon)*
+- [Beach Patterns as a Physics Laboratory](../2026-06-beach-science-patterns/)
