@@ -24,6 +24,24 @@ topics — those keep my usual register.
   > "Life is filled with choices, some small (what to have for breakfast),
   > some quite large (what field to work in, what city to call home)"
 
+**Avoid AI writing tells** (fine in moderation; watch for overuse)
+
+These patterns are common AI defaults that make prose feel generated rather than written:
+
+* **Causal pivot** — "This isn't just X — it's Y." One per post is fine; three is a tic.
+* **Em-dash as all-purpose connector** — avoid using it as a substitute for commas,
+  periods, or semicolons throughout. Reserve for genuine asides or punchy breaks.
+* **Rule of three everywhere** — not every idea needs to be presented as a triplet
+  (problem–solution–outcome, speed–scale–security). Break the pattern occasionally.
+* **Rhetorical inflation** — framing ordinary observations as profound. "The beach
+  has no choice but to be interesting" is fine once; the same move repeated becomes
+  a tell.
+* **Bullet-point fragmentation** — don't break flowing argument into bullets just to
+  impose structure. Prose is often better.
+* **Sterile smoothness** — perfect grammatical consistency with no tonal
+  irregularities reads as machine-made. A stray informal aside, a parenthetical
+  aside that goes slightly too far, or an abrupt short sentence all help.
+
 **Sentence length & structure**
   + Mix short, punchy sentences with longer ones that carry parenthetical
     asides
