@@ -5,7 +5,7 @@ author: "Michael Friendly"
 date: "2026-06-27"
 date-modified: last-modified
 draft: true
-categories: [Beach Science, Physics, Patterns]
+categories: [beach science, physics, patterns]
 image: "images/Sand-Cala-Biminel-La.jpeg"
 title-block-banner: "images/Sand-Cala-Biminel-La.jpeg"
 title-block-banner-color: black
