@@ -61,6 +61,15 @@ The only things resisting all of this are the friction of sand gripping the pole
 
 **Choose a vented umbrella.** Many beach umbrellas now have a small vent or mesh panel at the top. This is not decorative --- it bleeds off pressure that would otherwise build under the canopy. A vented umbrella can withstand substantially higher winds than an identical unvented one. This is [Bernoulli](https://en.wikipedia.org/wiki/Bernoulli%27s_principle), quietly doing his job.
 
+| Anchor type | Best use | Performance |
+|---|---|---|
+| Screw / auger sand anchor | Most beach setups | Strong and reliable |
+| Deep hole with compacted sand | No anchor available | Moderate |
+| Sandbags / weight pockets | Extra wind stability | Strong (secondary use) |
+| Drill with sand auger | Loose sand | Very strong |
+
+: Common anchor options, from [Aosom](https://www.aosom.ca/blog-how-to-hold-down-your-beach-umbrella.html) {.striped}
+
 ---
 
 ## ☀️ The Sun vs. Wind Tradeoff
@@ -116,6 +125,8 @@ The predictor you'd expect to matter most: insertion depth. The interaction you'
 - NJ Lawyers, ["NJ Officials Call Attention to Beach Umbrella Injuries"](https://www.njlawyers.com/blog/nj-officials-call-attention-to-beach-umbrella-in) --- real incident reports that read exactly like the physics predicts
 
 **Anchoring in practice**
+
+- Aosom, ["How to Hold Down Your Beach Umbrella?"](https://www.aosom.ca/blog-how-to-hold-down-your-beach-umbrella.html) --- everything you need to know to keep your umbrella from taking flight: placement, anchoring methods, managing the wind.
 
 - *Today*, ["The best way to secure your beach umbrella so it won't go flying"](https://www.today.com/home/best-way-secure-your-beach-umbrella-so-it-won-t-t134327) --- practical consumer guide; tilt, depth, and wet-sand tips
 - *Reviewed*, ["How to secure a beach umbrella on a windy day"](https://www.reviewed.com/home-outdoors/features/how-to-secure-a-beach-umbrella) --- step-by-step with product recommendations
