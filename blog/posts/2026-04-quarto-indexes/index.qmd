@@ -3,7 +3,7 @@ title: "Creating Book Indexes in Quarto"
 description: "R helper functions, LaTeX macros, and the underscore problem"
 author: "Michael Friendly"
 date: "2026-04-28"
-date-modified: "2026-07-07"
+date-modified: today
 categories: [Vis-MLM, quarto, latex, indexing, books]
 image: "images/vis-mlm-index.png"
 format:
@@ -575,9 +575,10 @@ fingerprinting, and cross-platform PATH detection for TeX on macOS — is at:
 
 ## Assessing index quality
 
-Building an index entry by entry is a grind that takes months. At some point,
-it helps to step back and ask: *Is this any good?* A few things are worth
-checking:
+Building an index entry by entry is a grind that can take weeks or months. 
+I had the index in mind while writing, and entered a lot of index terms in
+the process. Before going into production, I will have a professional indexer look it over.
+But at this stage, it helps to step back and ask: *Is this any good?* A few things are worth checking:
 
 - **Coverage** — are all 15 chapters represented, or did some get neglected?
 - **Balance** — do some chapters have many more entries than others? If so, is
@@ -587,7 +588,10 @@ checking:
   overloaded entries that show up on every page?
 
 For a 1,000-entry index spread across 15 chapters, these questions are
-hard to answer by eyeballing the `.idx` file. The natural tool is R.
+hard to answer by eyeballing the index. For LaTeX, there's
+a nifty package, [`showidx`](https://mirror.math.princeton.edu/pub/CTAN/macros/latex/base/makeindx.pdf) that prints index entries in the margins of each page where they occur.
+
+But what about treating index entries as data? The natural tool is R.
 
 ### Building a chapter-annotated CSV
 
@@ -598,8 +602,21 @@ every build. A short R script (`issues/index-add-chapters.R`) reads both,
 joins them on page number, and writes `issues/index-terms-ch.csv` — 1,075
 rows with columns `term`, `page_num`, `chapter`, `ch_title`, and `part_label`.
 
+A few representative rows:
+
+| term | page | chapter | ch_title |
+|------|------|---------|----------|
+| Flatland | 6 | 1 | Warm-up Exercises |
+| datasets!Pollen | 9 | 1 | Warm-up Exercises |
+| packages!HistData | 9 | 1 | Warm-up Exercises |
+| principal components analysis | 120 | 5 | Dimension Reduction |
+| confidence!interval | 45 | 4 | Plots of Multivariate Data |
+| canonical!discriminant analysis | 262 | 10 | Hotelling's T² |
+
 With that CSV in hand, a second script (`issues/index-plots.R`) produces the
 visualizations below.
+
+## Visualizing an index
 
 ### Distribution across chapters
 
@@ -616,6 +633,22 @@ Linear Models) hit 8–10. Chapter 8 (*Topics in Linear Models*) is the densest 
 not surprising, given that it covers a wide range of specialized topics each of
 which warranted its own index entry. Chapter 9 (*Collinearity & Ridge
 Regression*) is notably sparse, a sign that it could use another pass.
+
+### Rug plot of indexed pages
+
+A compact way to see index coverage at a glance is a rug plot: one vertical
+tick per page that has at least one index entry, colored by book part, with
+chapter-start lines overlaid. White gaps are pages with no index entries at all.
+This nifty idea is due to Gavin Klorfine. It reminds me of a shelf in a library
+with color-coded books.
+
+![Pages with at least one index entry. Each tick = one indexed page; gaps = unindexed pages.](images/07-page-rug.png)
+
+The plot makes it easy to spot stretches of un-indexed pages — long gaps within
+a chapter suggest sections that were written but not yet indexed. It also shows
+how indexing density shifts across the book: the ticks are densest in the
+middle chapters (Parts III and IV) where statistical methods are developed in
+detail, and thinner in the introductory chapters.
 
 ### Entry categories
 

@@ -24,7 +24,8 @@
       "Bash(grep -E '\\\\.html$|_files/')",
       "Bash(git commit -m ' *)",
       "Bash(quarto --version)",
-      "PowerShell(Rename-Item *)"
+      "PowerShell(Rename-Item *)",
+      "WebFetch(domain:jolars.co)"
     ]
   }
 }

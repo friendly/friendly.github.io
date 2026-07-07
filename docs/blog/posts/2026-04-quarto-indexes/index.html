@@ -391,7 +391,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#assessing-index-quality" id="toc-assessing-index-quality" class="nav-link" data-scroll-target="#assessing-index-quality">Assessing index quality</a>
   <ul class="collapse">
   <li><a href="#building-a-chapter-annotated-csv" id="toc-building-a-chapter-annotated-csv" class="nav-link" data-scroll-target="#building-a-chapter-annotated-csv">Building a chapter-annotated CSV</a></li>
+  </ul></li>
+  <li><a href="#visualizing-an-index" id="toc-visualizing-an-index" class="nav-link" data-scroll-target="#visualizing-an-index">Visualizing an index</a>
+  <ul class="collapse">
   <li><a href="#distribution-across-chapters" id="toc-distribution-across-chapters" class="nav-link" data-scroll-target="#distribution-across-chapters">Distribution across chapters</a></li>
+  <li><a href="#rug-plot-of-indexed-pages" id="toc-rug-plot-of-indexed-pages" class="nav-link" data-scroll-target="#rug-plot-of-indexed-pages">Rug plot of indexed pages</a></li>
   <li><a href="#entry-categories" id="toc-entry-categories" class="nav-link" data-scroll-target="#entry-categories">Entry categories</a></li>
   <li><a href="#term-frequency-and-the-zipf-check" id="toc-term-frequency-and-the-zipf-check" class="nav-link" data-scroll-target="#term-frequency-and-the-zipf-check">Term frequency and the Zipf check</a></li>
   </ul></li>
@@ -741,18 +745,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="assessing-index-quality" class="level2">
 <h2 class="anchored" data-anchor-id="assessing-index-quality">Assessing index quality</h2>
-<p>Building an index entry by entry is a grind that takes months. At some point, it helps to step back and ask: <em>Is this any good?</em> A few things are worth checking:</p>
+<p>Building an index entry by entry is a grind that can take weeks or months. I had the index in mind while writing, and entered a lot of index terms in the process. Before going into production, I will have a professional indexer look it over. But at this stage, it helps to step back and ask: <em>Is this any good?</em> A few things are worth checking:</p>
 <ul>
 <li><strong>Coverage</strong> — are all 15 chapters represented, or did some get neglected?</li>
 <li><strong>Balance</strong> — do some chapters have many more entries than others? If so, is that because the chapter is long, or because it received disproportionate attention?</li>
 <li><strong>Breadth vs.&nbsp;depth</strong> — are there too many one-off terms, or a handful of overloaded entries that show up on every page?</li>
 </ul>
-<p>For a 1,000-entry index spread across 15 chapters, these questions are hard to answer by eyeballing the <code>.idx</code> file. The natural tool is R.</p>
+<p>For a 1,000-entry index spread across 15 chapters, these questions are hard to answer by eyeballing the index. For LaTeX, there’s a nifty package, <a href="https://mirror.math.princeton.edu/pub/CTAN/macros/latex/base/makeindx.pdf"><code>showidx</code></a> that prints index entries in the margins of each page where they occur.</p>
+<p>But what about treating index entries as data? The natural tool is R.</p>
 <section id="building-a-chapter-annotated-csv" class="level3">
 <h3 class="anchored" data-anchor-id="building-a-chapter-annotated-csv">Building a chapter-annotated CSV</h3>
 <p>The raw material is <code>index.idx</code>, the file <code>makeindex</code> reads — one line per entry, with the page number appended. Each chapter’s start page can be extracted from the table-of-contents file <code>index.toc</code>, which LaTeX writes on every build. A short R script (<code>issues/index-add-chapters.R</code>) reads both, joins them on page number, and writes <code>issues/index-terms-ch.csv</code> — 1,075 rows with columns <code>term</code>, <code>page_num</code>, <code>chapter</code>, <code>ch_title</code>, and <code>part_label</code>.</p>
+<p>A few representative rows:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>term</th>
+<th>page</th>
+<th>chapter</th>
+<th>ch_title</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Flatland</td>
+<td>6</td>
+<td>1</td>
+<td>Warm-up Exercises</td>
+</tr>
+<tr class="even">
+<td>datasets!Pollen</td>
+<td>9</td>
+<td>1</td>
+<td>Warm-up Exercises</td>
+</tr>
+<tr class="odd">
+<td>packages!HistData</td>
+<td>9</td>
+<td>1</td>
+<td>Warm-up Exercises</td>
+</tr>
+<tr class="even">
+<td>principal components analysis</td>
+<td>120</td>
+<td>5</td>
+<td>Dimension Reduction</td>
+</tr>
+<tr class="odd">
+<td>confidence!interval</td>
+<td>45</td>
+<td>4</td>
+<td>Plots of Multivariate Data</td>
+</tr>
+<tr class="even">
+<td>canonical!discriminant analysis</td>
+<td>262</td>
+<td>10</td>
+<td>Hotelling’s T²</td>
+</tr>
+</tbody>
+</table>
 <p>With that CSV in hand, a second script (<code>issues/index-plots.R</code>) produces the visualizations below.</p>
 </section>
+</section>
+<section id="visualizing-an-index" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-an-index">Visualizing an index</h2>
 <section id="distribution-across-chapters" class="level3">
 <h3 class="anchored" data-anchor-id="distribution-across-chapters">Distribution across chapters</h3>
 <p>The simplest question is how many entries each chapter has. Raw counts are misleading, though, because chapters vary enormously in length: the short introductory chapters have 20–30 pages while the method-heavy middle chapters run 40–60. Normalizing by chapter length gives a fairer picture.</p>
@@ -763,6 +820,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>The normalized plot reveals a real imbalance: the introductory chapters (Part I) sit at 3–5 entries per page, while several chapters in Part III (Univariate Linear Models) hit 8–10. Chapter 8 (<em>Topics in Linear Models</em>) is the densest — not surprising, given that it covers a wide range of specialized topics each of which warranted its own index entry. Chapter 9 (<em>Collinearity &amp; Ridge Regression</em>) is notably sparse, a sign that it could use another pass.</p>
+</section>
+<section id="rug-plot-of-indexed-pages" class="level3">
+<h3 class="anchored" data-anchor-id="rug-plot-of-indexed-pages">Rug plot of indexed pages</h3>
+<p>A compact way to see index coverage at a glance is a rug plot: one vertical tick per page that has at least one index entry, colored by book part, with chapter-start lines overlaid. White gaps are pages with no index entries at all. This nifty idea is due to Gavin Klorfine. It reminds me of a shelf in a library with color-coded books.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-page-rug.png" class="img-fluid figure-img"></p>
+<figcaption>Pages with at least one index entry. Each tick = one indexed page; gaps = unindexed pages.</figcaption>
+</figure>
+</div>
+<p>The plot makes it easy to spot stretches of un-indexed pages — long gaps within a chapter suggest sections that were written but not yet indexed. It also shows how indexing density shifts across the book: the ticks are densest in the middle chapters (Parts III and IV) where statistical methods are developed in detail, and thinner in the introductory chapters.</p>
 </section>
 <section id="entry-categories" class="level3">
 <h3 class="anchored" data-anchor-id="entry-categories">Entry categories</h3>
