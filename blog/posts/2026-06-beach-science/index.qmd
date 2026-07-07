@@ -8,6 +8,10 @@ categories: [beach science, humor, science]
 image: "images/leucate-plage.webp"
 title-block-banner: "images/leucate-plage-cropped.png"
 title-block-banner-color: white
+citation:
+  type: post-weblog
+  url: https://friendly.github.io/blog/posts/2026-06-beach-science/
+google-scholar: true
 include-in-header:
   text: |
     <style>
