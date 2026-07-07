@@ -376,8 +376,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#why-not-use-detokenize" id="toc-why-not-use-detokenize" class="nav-link" data-scroll-target="#why-not-use-detokenize">Why not use <code>\detokenize{}</code>?</a></li>
   <li><a href="#what-does-not-work" id="toc-what-does-not-work" class="nav-link" data-scroll-target="#what-does-not-work">What does not work</a></li>
   </ul></li>
-  <li><a href="#avoiding-duplicate-index-entries" id="toc-avoiding-duplicate-index-entries" class="nav-link" data-scroll-target="#avoiding-duplicate-index-entries">Avoiding duplicate index entries</a></li>
+  <li><a href="#avoiding-duplicate-index-entries" id="toc-avoiding-duplicate-index-entries" class="nav-link" data-scroll-target="#avoiding-duplicate-index-entries">Avoiding duplicate index entries</a>
+  <ul class="collapse">
+  <li><a href="#the-two-space-artifact" id="toc-the-two-space-artifact" class="nav-link" data-scroll-target="#the-two-space-artifact">The two-space artifact</a></li>
+  <li><a href="#the-footnote-exception" id="toc-the-footnote-exception" class="nav-link" data-scroll-target="#the-footnote-exception">The footnote exception</a></li>
+  <li><a href="#post-processing-with---fix-index" id="toc-post-processing-with---fix-index" class="nav-link" data-scroll-target="#post-processing-with---fix-index">Post-processing with <code>--fix-index</code></a></li>
+  <li><a href="#a-partial-mitigation-pandoc-macro-expansion" id="toc-a-partial-mitigation-pandoc-macro-expansion" class="nav-link" data-scroll-target="#a-partial-mitigation-pandoc-macro-expansion">A partial mitigation: pandoc macro expansion</a></li>
+  </ul></li>
   <li><a href="#lessons-learned" id="toc-lessons-learned" class="nav-link" data-scroll-target="#lessons-learned">Lessons learned</a></li>
+  <li><a href="#give-me-a-shell-script-for-this" id="toc-give-me-a-shell-script-for-this" class="nav-link" data-scroll-target="#give-me-a-shell-script-for-this">Give me a shell script for this!</a>
+  <ul class="collapse">
+  <li><a href="#the-fix_index-function" id="toc-the-fix_index-function" class="nav-link" data-scroll-target="#the-fix_index-function">The <code>fix_index()</code> function</a></li>
+  </ul></li>
+  <li><a href="#assessing-index-quality" id="toc-assessing-index-quality" class="nav-link" data-scroll-target="#assessing-index-quality">Assessing index quality</a>
+  <ul class="collapse">
+  <li><a href="#building-a-chapter-annotated-csv" id="toc-building-a-chapter-annotated-csv" class="nav-link" data-scroll-target="#building-a-chapter-annotated-csv">Building a chapter-annotated CSV</a></li>
+  <li><a href="#distribution-across-chapters" id="toc-distribution-across-chapters" class="nav-link" data-scroll-target="#distribution-across-chapters">Distribution across chapters</a></li>
+  <li><a href="#entry-categories" id="toc-entry-categories" class="nav-link" data-scroll-target="#entry-categories">Entry categories</a></li>
+  <li><a href="#term-frequency-and-the-zipf-check" id="toc-term-frequency-and-the-zipf-check" class="nav-link" data-scroll-target="#term-frequency-and-the-zipf-check">Term frequency and the Zipf check</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -420,6 +437,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">July 7, 2026</p>
+    </div>
+  </div>
     
   </div>
   
@@ -621,12 +644,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="avoiding-duplicate-index-entries" class="level2">
 <h2 class="anchored" data-anchor-id="avoiding-duplicate-index-entries">Avoiding duplicate index entries</h2>
+<section id="the-two-space-artifact" class="level3">
+<h3 class="anchored" data-anchor-id="the-two-space-artifact">The two-space artifact</h3>
 <p>A subtle source of duplicate entries is the spacing that TeX’s <code>\write</code> mechanism introduces. When TeX processes <code>\ixp{car}</code>, it expands the macro and writes the result to the <code>.idx</code> file. Because <code>\texttt</code> is a control word ending in a letter, TeX inserts a space after it:</p>
 <pre><code>\indexentry{car@\texttt  {car} package}{42}   % two spaces — from \write</code></pre>
 <p>If the same package was indexed by a direct <code>\index{car@\texttt{car} package}</code> call elsewhere (e.g., in stale generated <code>.tex</code> content), makeindex sees two <em>different</em> display texts and creates two separate entries:</p>
 <pre><code>  car package, 42         ← from \ixp{car}
   car package, 17         ← from old direct \index{}</code></pre>
 <p>The fix is to route <em>all</em> indexing through the macros (<code>\ixp</code>, <code>\ixd</code>, <code>\ixfunc</code>) — never write raw <code>\index{}</code> calls for packages, datasets, or functions. The R functions <code>pkg()</code>, <code>dataset()</code>, and <code>func()</code> do this consistently. A full Quarto re-render (to flush stale <code>.tex</code> content) ensures that old direct calls disappear.</p>
+</section>
+<section id="the-footnote-exception" class="level3">
+<h3 class="anchored" data-anchor-id="the-footnote-exception">The footnote exception</h3>
+<p>Even with perfectly consistent macro use, a subtler source of duplicates remains: index entries that occur inside <strong>footnotes</strong>. LaTeX’s deferred write mechanism (<code>\protected@write</code>) expands <code>\texttt</code> differently when writing from within a footnote context. The same two-space artifact appears:</p>
+<pre><code>\indexentry{ggplot2@\texttt  {ggplot2} package}{87}</code></pre>
+<p>This happens because footnote index entries pass through LaTeX’s <code>\@protected@testopt</code> mechanism, which adds a space token after <code>\texttt</code> during deferred expansion. <code>\DeclareRobustCommand</code> doesn’t help — on TeX Live 2026, the same path applies.</p>
+<p>The consequence: a package or dataset that is first indexed in the main text (via a pandoc-expanded macro, producing <code>\texttt{name}</code> — one space) and again inside a footnote (deferred write, producing <code>\texttt  {name}</code> — two spaces) will appear as two separate entries in the index, even though the source is identical.</p>
+</section>
+<section id="post-processing-with---fix-index" class="level3">
+<h3 class="anchored" data-anchor-id="post-processing-with---fix-index">Post-processing with <code>--fix-index</code></h3>
+<p>Since the footnote problem is deep in LaTeX internals, the practical fix is post-processing. After a full PDF build, three steps normalize the index:</p>
+<p><strong>Step 1 — Normalize <code>index.idx</code>:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i.bak</span> <span class="st">'s/\\texttt  {/\\texttt{/g'</span> <span class="dt">\</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">'s/\\emph  {/\\emph{/g'</span> <span class="dt">\</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>           index.idx</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> index.idx.bak</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>.bak</code> form of <code>-i</code> works on both GNU <code>sed</code> (Linux/Windows) and BSD <code>sed</code> (macOS); plain <code>-i</code> without an extension fails on macOS.</p>
+<p><strong>Step 2 — Re-run <code>makeindex</code>:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">makeindex</span> <span class="at">-s</span> book.ist index.idx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Step 3 — One final <code>xelatex</code> pass with <code>--no-shell-escape</code>:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xelatex</span> <span class="at">--no-shell-escape</span> <span class="at">-interaction</span><span class="op">=</span>nonstopmode <span class="at">-jobname</span><span class="op">=</span>index Vis-MLM.tex</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>--no-shell-escape</code> flag is the key insight. The <code>imakeidx</code> package uses <code>\write18</code> to auto-invoke <code>makeindex</code> during compilation and would overwrite the normalized <code>index.ind</code> before <code>\printindex</code> reads it. Disabling shell escape prevents this, so xelatex reads our hand-normalized index instead.</p>
+</section>
+<section id="a-partial-mitigation-pandoc-macro-expansion" class="level3">
+<h3 class="anchored" data-anchor-id="a-partial-mitigation-pandoc-macro-expansion">A partial mitigation: pandoc macro expansion</h3>
+<p>Pandoc’s <code>+latex_macros</code> extension (enabled by default) tracks <code>\providecommand</code> definitions it encounters and expands matching macros inline — before LaTeX ever sees them. Chapters that include a file containing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\providecommand</span>{<span class="ex">\ixp</span>}[1]{<span class="fu">\index</span>{#1@<span class="fu">\texttt</span>{#1} package}...}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>have their <code>\ixp{}</code> calls expanded by pandoc at parse time. The expanded <code>\index{...}</code> calls reach LaTeX directly with one-space <code>\texttt{name}</code>, so the deferred-write problem simply doesn’t arise for their in-text entries.</p>
+<p>This means that for most of the book, consistent macro routing <em>is</em> sufficient. The footnote path is the remaining source of two-space entries, and <code>--fix-index</code> post-processing handles it.</p>
+</section>
 </section>
 <section id="lessons-learned" class="level2">
 <h2 class="anchored" data-anchor-id="lessons-learned">Lessons learned</h2>
@@ -636,9 +691,104 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Sort key and display text must be separated for names with special characters.</strong> Underscores in function names require the two-argument <code>\ixfunc{sort}{display}</code> pattern. Any name with <code>_</code>, <code>!</code>, <code>@</code>, or <code>|</code> needs careful handling in the <code>@</code>-separated makeindex syntax.</p></li>
 <li><p><strong>Conditional format detection belongs in R, not in Quarto blocks.</strong> Using <code>knitr::is_latex_output()</code> inside the helper function means you write the call once in the prose and the output format is handled automatically. No <code>:::</code> conditional blocks needed.</p></li>
 <li><p><strong>A full re-render is necessary after changing the macro definitions.</strong> Quarto caches chapter output. If <code>preamble.tex</code> or the R helper functions change, a full rebuild ensures all chapters pick up the new behavior.</p></li>
+<li><p><strong>Footnote index entries always go through TeX’s deferred write path.</strong> Even with perfectly consistent macro use, index entries in footnotes will still produce the two-space <code>\texttt  {name}</code> artifact. The only reliable fix is post-processing: normalize <code>index.idx</code> with <code>sed</code>, re-run <code>makeindex</code>, and do a final <code>xelatex --no-shell-escape</code> pass so <code>imakeidx</code> cannot overwrite the corrected <code>index.ind</code>.</p></li>
 </ol>
+</section>
+<section id="give-me-a-shell-script-for-this" class="level2">
+<h2 class="anchored" data-anchor-id="give-me-a-shell-script-for-this">Give me a shell script for this!</h2>
+<p>The indexing pipeline described above is just one piece of building a Quarto book for dual HTML/PDF output. A complete build involves many more moving parts:</p>
+<ul>
+<li><strong>Two separate <code>quarto render</code> passes</strong> for HTML — the second resolves cross-references in <code>index.html</code> that depend on xref data built by the first</li>
+<li><strong>A separate PDF pass</strong> using a <code>--profile print</code> that excludes HTML-only appendices</li>
+<li><strong>Freeze-cache invalidation</strong> — Quarto caches knitr chunk output per chapter but does not track <code>{{&lt; include &gt;}}</code>’d files; after editing shared LaTeX macro files you must delete stale caches manually</li>
+<li><strong>Author index regeneration</strong> via a Perl <code>authorindex</code> script, with fingerprinting to detect when citations have changed</li>
+<li><strong>The <code>--fix-index</code> post-processing</strong> described above</li>
+<li><strong>PDF archiving</strong> — copying the final PDF into <code>docs/</code> so the deployed HTML site includes a downloadable PDF</li>
+</ul>
+<p>Managing all of this by hand is error-prone enough that a dedicated build script is essential. The script for this book, <code>build.sh</code>, supports:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./build.sh</span> <span class="pp">[</span><span class="ss">OPTIONS</span><span class="pp">]</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Options:</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">--pdf</span>             Build PDF only</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">--html</span>            Build HTML only</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">--all</span>             Build both formats <span class="er">(</span><span class="ex">default</span><span class="kw">;</span> <span class="ex">PDF</span> first, HTML last<span class="kw">)</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">--clean-cache</span>     Delete all tex.json freeze caches before building.</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>                    <span class="ex">REQUIRED</span> after editing any {{<span class="op">&lt;</span> include <span class="op">&gt;</span>}}<span class="st">'d file.</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="st">  --fix-index       Normalize index.idx, re-run makeindex, final xelatex pass.</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="st">                    Use whenever duplicate index entries are suspected.</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="st">  --authorindex     Re-run the authorindex Perl script after PDF build.</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="st">  --full            Equivalent to: --all --clean-cache --authorindex</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="st">  -n, --dry-run     Show what would be done without doing it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="the-fix_index-function" class="level3">
+<h3 class="anchored" data-anchor-id="the-fix_index-function">The <code>fix_index()</code> function</h3>
+<p>The heart of the duplicate-entry fix is this shell function, called after the PDF build when <code>--fix-index</code> is given:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fix_index()</span> <span class="kw">{</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Normalize index.idx — collapse two-space \texttt  { artifacts</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># -i.bak works with both GNU sed (Linux/Windows) and BSD sed (macOS)</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sed</span> <span class="at">-i.bak</span> <span class="dt">\</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">-e</span> <span class="st">'s/\\texttt  {/\\texttt{/g'</span> <span class="dt">\</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">-e</span> <span class="st">'s/\\emph  {/\\emph{/g'</span> <span class="dt">\</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    index.idx</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span> <span class="at">-f</span> index.idx.bak</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">makeindex</span> <span class="at">-s</span> latex/book.ist index.idx</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --no-shell-escape prevents imakeidx from overwriting index.ind via \write18</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">xelatex</span> <span class="at">--no-shell-escape</span> <span class="at">-interaction</span><span class="op">=</span>nonstopmode <span class="at">-jobname</span><span class="op">=</span>index Vis-MLM.tex</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The full script — with error checking, dry-run support, authorindex fingerprinting, and cross-platform PATH detection for TeX on macOS — is at: <a href="https://github.com/friendly/Vis-MLM-book/blob/master/build.sh"><code>build.sh</code> on GitHub</a></p>
+</section>
+</section>
+<section id="assessing-index-quality" class="level2">
+<h2 class="anchored" data-anchor-id="assessing-index-quality">Assessing index quality</h2>
+<p>Building an index entry by entry is a grind that takes months. At some point, it helps to step back and ask: <em>Is this any good?</em> A few things are worth checking:</p>
+<ul>
+<li><strong>Coverage</strong> — are all 15 chapters represented, or did some get neglected?</li>
+<li><strong>Balance</strong> — do some chapters have many more entries than others? If so, is that because the chapter is long, or because it received disproportionate attention?</li>
+<li><strong>Breadth vs.&nbsp;depth</strong> — are there too many one-off terms, or a handful of overloaded entries that show up on every page?</li>
+</ul>
+<p>For a 1,000-entry index spread across 15 chapters, these questions are hard to answer by eyeballing the <code>.idx</code> file. The natural tool is R.</p>
+<section id="building-a-chapter-annotated-csv" class="level3">
+<h3 class="anchored" data-anchor-id="building-a-chapter-annotated-csv">Building a chapter-annotated CSV</h3>
+<p>The raw material is <code>index.idx</code>, the file <code>makeindex</code> reads — one line per entry, with the page number appended. Each chapter’s start page can be extracted from the table-of-contents file <code>index.toc</code>, which LaTeX writes on every build. A short R script (<code>issues/index-add-chapters.R</code>) reads both, joins them on page number, and writes <code>issues/index-terms-ch.csv</code> — 1,075 rows with columns <code>term</code>, <code>page_num</code>, <code>chapter</code>, <code>ch_title</code>, and <code>part_label</code>.</p>
+<p>With that CSV in hand, a second script (<code>issues/index-plots.R</code>) produces the visualizations below.</p>
+</section>
+<section id="distribution-across-chapters" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-across-chapters">Distribution across chapters</h3>
+<p>The simplest question is how many entries each chapter has. Raw counts are misleading, though, because chapters vary enormously in length: the short introductory chapters have 20–30 pages while the method-heavy middle chapters run 40–60. Normalizing by chapter length gives a fairer picture.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01b-entries-per-chapter-normalized.png" class="img-fluid figure-img"></p>
+<figcaption>Index entries per page, by chapter. Bars are colored by book part.</figcaption>
+</figure>
+</div>
+<p>The normalized plot reveals a real imbalance: the introductory chapters (Part I) sit at 3–5 entries per page, while several chapters in Part III (Univariate Linear Models) hit 8–10. Chapter 8 (<em>Topics in Linear Models</em>) is the densest — not surprising, given that it covers a wide range of specialized topics each of which warranted its own index entry. Chapter 9 (<em>Collinearity &amp; Ridge Regression</em>) is notably sparse, a sign that it could use another pass.</p>
+</section>
+<section id="entry-categories" class="level3">
+<h3 class="anchored" data-anchor-id="entry-categories">Entry categories</h3>
+<p><code>makeindex</code> subentries — written as <code>main!sub</code> — let you group related entries under a single heading. This book uses explicit category prefixes for four structured groups: <code>packages!</code>, <code>datasets!</code>, <code>functions!</code>, and a handful of conceptual clusters like <code>canonical!</code> and <code>confidence!</code>. A category breakdown shows how the index is structured:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/04-categories.png" class="img-fluid figure-img"></p>
+<figcaption>Breakdown of index entries by category.</figcaption>
+</figure>
+</div>
+<p>The bulk of entries are standard main entries (conceptual terms, methods, authors). Packages are the next-largest group, reflecting the book’s heavy R focus. Datasets are fewer than you might expect — some datasets recur across chapters but are indexed only at first use.</p>
+</section>
+<section id="term-frequency-and-the-zipf-check" class="level3">
+<h3 class="anchored" data-anchor-id="term-frequency-and-the-zipf-check">Term frequency and the Zipf check</h3>
+<p>A healthy index follows an approximately Zipf-like rank-frequency distribution: a few high-frequency terms (appearing on many pages), many mid-range terms, and a long tail of terms that appear only once or twice. The long tail is normal and expected — it is not “clutter.”</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-zipf.png" class="img-fluid figure-img"></p>
+<figcaption>Rank-frequency (Zipf) plot of index terms. Log–log scale; fitted line shows the power-law exponent.</figcaption>
+</figure>
+</div>
+<p>The fitted exponent is around 0.7–0.8 (shallower than the canonical Zipf slope of 1.0), which is typical for curated book indexes: the very high-frequency terms are somewhat dampened because editors (and authors) deliberately split over-broad entries into subentries. Terms that deviate strongly above the line — appearing far more often than their rank would predict — are candidates for conversion to subentries.</p>
+<p>The R scripts for these plots are in <code>issues/index-plots.R</code> in the book’s <a href="https://github.com/friendly/Vis-MLM-book">GitHub repository</a>.</p>
 
 
+</section>
 </section>
 
 
