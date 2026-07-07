@@ -45,7 +45,17 @@ The questions it can generate are real questions--- ones that can touch on physi
 
 Carl Sagan once observed that every child starts out as a natural-born scientist, and then we beat it out of them.[^Sagan] A few make it through with their wonder intact. He credited his own survival to parents who, knowing nothing about science, encouraged it anyway. The rest of us have to find our way back--- and it turns out the beach is a surprisingly good place to start. No equipment required. No prior experience necessary. Just lie down and pay attention.
 
+The Nobel laureate Richard Feynman, one of the most original minds of the 20th century, captures the spirit of Beach Science in these
+memorable quotes,
+
+> “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”[^Feynman1]
+
+> “Fall in love with some activity, and do it! Nobody ever figures out what life is all about, and it doesn’t matter. Explore the world. Nearly everything is really interesting if you go into it deeply enough.”[^Feynman2]
+
+
 [^Sagan]: Carl Sagan, _Psychology Today_, January 1996
+[^Feynman1]: Richard P. Feynman, letter to J.M. Szabados, November 1965. Published in _Perfectly Reasonable Deviations from the Beaten Track: The Letters of Richard P. Feynman_ (2008).
+[^Feynman2]: Richard P. Feynman, _The Meaning of It All: Thoughts of a Citizen-Scientist_ (1998), based on his 1963 public lectures.
 
 
 ## 🔬 The Methods of Beach Science
