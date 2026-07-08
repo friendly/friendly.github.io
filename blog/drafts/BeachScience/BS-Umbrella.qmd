@@ -21,7 +21,7 @@ include-in-header:
 
 I had just settled in at Leucate Plage. Towel down, umbrella up, sunscreen applied with the methodical thoroughness of someone who has learned lessons the hard way. Kindle in hand, opening chapter.
 
-Woosh.
+**Woosh**.
 
 A gust of Mediterranean wind, entirely indifferent to my plans, plucked the umbrella cleanly from the sand and sent it cartwheeling down the beach toward the water.
 

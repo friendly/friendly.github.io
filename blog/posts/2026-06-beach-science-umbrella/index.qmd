@@ -26,7 +26,7 @@ include-in-header:
 
 I had just settled in at Leucate Plage. Towel down, umbrella up, sunscreen applied with the methodical thoroughness of someone who has learned lessons the hard way. Kindle in hand, opening chapter.
 
-Woosh.
+**Woosh**.
 
 A gust of Mediterranean wind, entirely indifferent to my plans, plucked the umbrella cleanly from the sand and sent it cartwheeling down the beach toward the water.
 
@@ -123,7 +123,7 @@ Beach umbrellas haven't fundamentally changed in 70 years. In 2015, Cyrille Jour
 
 The reason it can't blow inside out is genuine physics, not extra strength. A conventional dome umbrella is **bistable**: wind loading pushes the shell toward a second equilibrium --- inside-out --- and once pressure crosses a threshold, the structure snaps through almost instantaneously, like a tin lid that suddenly inverts with a click. A flat disk has only one stable shape, so that failure mode simply isn't available. And because the canopy pivots at a single off-center point, wind torque rotates it like a weathervane rather than fighting it --- the asymmetric leaf shape biases that rotation toward a consistent wind-aligned position, just as a weathercock's tail fin does.
 
-The umbrella that can't blow inside out isn't the stronger umbrella. It's the one that gave up having anything to blow inside out into.
+The umbrella that can't blow inside out isn't the stronger umbrella. It's the one that gave up having anything to blow inside out into. And, it folds up into a small circular bag.
 
 ---
 

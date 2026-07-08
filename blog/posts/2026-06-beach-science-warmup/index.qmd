@@ -66,6 +66,7 @@ may help prime some hidden portion of your cognition for Amazing Beach Science.
 
 Your field has heroes. They did not necessarily have better brains than you---they had better questions, or the stubbornness to pursue them, or the good fortune to be lying on the right beach at the right moment. Eyes still closed, summon a few. Here are a few of mine.
 
+![Guerry & Balbi (1829), Comparative map of crimes against persons, against property and literacy in France](images/guerry-balbi-600s.jpg){style="float:right; margin-left:1.5em; margin-bottom:1em; width:35%"}
 [**André-Michel Guerry**](http://euclid.psych.yorku.ca/datavis/papers/guerryvie/GuerryLife2-SocSpectrum.pdf) had no computer, no modern notion of social science. What he had, in 1833, was extensive
 data on crime,
 a map of France and the conviction that crime, suicide, and ignorance were not random--- they had geography, and could be shown to obey certain constancies.

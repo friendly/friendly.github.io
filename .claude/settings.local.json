@@ -25,7 +25,12 @@
       "Bash(git commit -m ' *)",
       "Bash(quarto --version)",
       "PowerShell(Rename-Item *)",
-      "WebFetch(domain:jolars.co)"
+      "WebFetch(domain:jolars.co)",
+      "WebFetch(domain:www.lensculture.com)",
+      "WebFetch(domain:www.rencontres-arles.com)",
+      "WebFetch(domain:lucelebart.org)",
+      "PowerShell(Copy-Item *)",
+      "WebFetch(domain:www.24presse.com)"
     ]
   }
 }
