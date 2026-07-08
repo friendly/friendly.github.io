@@ -8,6 +8,12 @@ categories: [beach science, physics, humor]
 image: "images/umbrellas.jpeg"
 title-block-banner: "images/umbrellas.jpeg"
 title-block-banner-color: white
+toc: true
+toc-depth: 2
+citation:
+  type: post-weblog
+  url: https://friendly.github.io/blog/posts/2026-06-beach-science-umbrella/
+google-scholar: true
 include-in-header:
   text: |
     <style>
@@ -106,6 +112,18 @@ That last variable is not entirely facetious. Umbrellas fail most dramatically t
 With a sample of beach umbrellas observed over a breezy afternoon, a [survival analysis](https://en.wikipedia.org/wiki/Survival_analysis) (time-to-event model) would be the natural framework --- the same statistical machinery used to model equipment failure, clinical outcomes, or, appropriately enough, the lifespan of sandcastles.
 
 The predictor you'd expect to matter most: insertion depth. The interaction you'd expect to be interesting: depth × wind speed. The covariate everyone would forget to measure: whether the owner was watching.
+
+---
+
+## 🍃 A Leaf That Won't Flip
+
+![The Leaf for Life beach umbrella](images/leaf-for-life.jpeg){style="float:right; margin-left:1.5em; margin-bottom:1em; width:30%"}
+
+Beach umbrellas haven't fundamentally changed in 70 years. In 2015, Cyrille Jourdain, from Perpignan, and Xavier Aubry, from Toulouse, founded [Leaf for Life](https://leafforlife.com) after the idea struck them on a beach on the Costa Brava --- just down the coast from Leucate ([press release](http://www.releasewire.com/press-releases/leaf-for-life-is-a-solar-beach-umbrella-allowing-nomad-users-to-shade-and-charge-anywhere-705568.htm)). Their answer does away with the dome entirely: a flat disk canopy with a stiff wire rim, mounted at a single off-center point on a telescoping pole, inspired by the shape of a Monstera leaf.
+
+The reason it can't blow inside out is genuine physics, not extra strength. A conventional dome umbrella is **bistable**: wind loading pushes the shell toward a second equilibrium --- inside-out --- and once pressure crosses a threshold, the structure snaps through almost instantaneously, like a tin lid that suddenly inverts with a click. A flat disk has only one stable shape, so that failure mode simply isn't available. And because the canopy pivots at a single off-center point, wind torque rotates it like a weathervane rather than fighting it --- the asymmetric leaf shape biases that rotation toward a consistent wind-aligned position, just as a weathercock's tail fin does.
+
+The umbrella that can't blow inside out isn't the stronger umbrella. It's the one that gave up having anything to blow inside out into.
 
 ---
 
