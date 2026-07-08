@@ -5,6 +5,10 @@ author: "Michael Friendly"
 date: "2026-04-28"
 date-modified: today
 categories: [Vis-MLM, quarto, latex, indexing, books]
+citation:
+  type: post-weblog
+  url: https://friendly.github.io/blog/posts/2026-04-quarto-indexes/
+google-scholar: true
 image: "images/vis-mlm-index.png"
 format:
   html:
