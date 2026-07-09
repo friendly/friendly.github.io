@@ -1,10 +1,10 @@
 ---
 title: "Distribution of Determinants of 3×3 Matrices from {1,2,...,9}"
-description: "An exact combinatorial result and Monte Carlo approximation for determinants of all permutation matrices of the digits 1–9"
+description: "Exploring an exact combinatorial result and Monte Carlo approximation for determinants of all permutation matrices of the digits 1–9"
 author: "Michael Friendly"
-date: "2026-05-01"
+date: "2026-07-09"
 categories: [R, combinatorics, linear algebra, simulation]
-image: "determinant_distribution_comparison.png"
+image: "images/determinant_distribution_comparison.png"
 format:
   html:
     toc: true
@@ -26,18 +26,12 @@ knitr:
 From the time, long ago, I first studied linear algebra, I've always had a fascination with the idea of the determinant
 of a square matrix, $\text{det}(\mathbf{A}) \equiv | \mathbf{A} |$. You just take your matrix $\mathbf{A}$, which
 could be $(2 \times 2)$, or $(10 \times 10)$, or $(100 \times 100)$, ... and $| \mathbf{A} |$ turns that into a _single number_, that expresses
-many of it's properties---algebraic, geometric and statistical. 
+many of its properties---algebraic, geometric and statistical.
 
-In short, the determinant $| \mathbf{A} |$ is a measure of the "size" of $\mathbf{A}$.
+In short, the determinant $| \mathbf{A} |$ is a measure of the "size" of $\mathbf{A}$. So, when we're talking about the covariance matrix $\mathbf{S}$ of data variables, $| \mathbf{S} |$ is a measure of total variance, taking 
+correlations into account.
 
-<!-- TODO: expand history
-  - Origins trace to Leibniz (1693) and Seki Takakazu (Japan, ~1683); the term "determinant" was
-    coined by Cauchy in 1812, who also standardized notation. Good starting points:
-    [MacTutor: Matrices and Determinants](https://mathshistory.st-andrews.ac.uk/HistTopics/Matrices_and_determinants/)
-    (covers Chinese origins ~200 BC through Cayley 1858);
-    [Oliver Knill's historical notes](https://people.math.harvard.edu/~knill/history/matrix/)
-    on when matrix multiplication was actually invented.
--->
+The concept has a surprisingly long history. Traces appear in ancient Chinese mathematics --- the *Nine Chapters on the Mathematical Art* (~200 BC) solved systems of equations using what amounts to determinant-like elimination --- and independent discoveries by Seki Takakazu in Japan (1683) and Leibniz (1693) formalized the idea in the West. The word "determinant" itself came from Cauchy in 1812, who also standardized much of the modern notation; Cayley's 1858 paper on matrix algebra finally set it in the broader context of linear transformations. For a full account, the [MacTutor history](https://mathshistory.st-andrews.ac.uk/HistTopics/Matrices_and_determinants/) is the place to start.
 
 <!-- Math Stack Exchange posts
 Geometric interpretations of matrix inverses
@@ -57,7 +51,11 @@ https://medium.com/@tomkob99_89317/singular-values-and-determinants-explained-by
     [Georgia Tech ILA: Determinants and Volumes](https://textbooks.math.gatech.edu/ila/determinants-volumes.html).
 -->
 
-This post explores an interesting combinatorial and statistical problem: What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once? It arose from a simpler question
+This post explores an interesting combinatorial and statistical problem: 
+
+> What is the distribution of determinants of all 3×3 matrices that can be formed from the numbers 1 through 9, each used exactly once? 
+
+It arose from a simpler question
 Math StackExchange: What is the [total number 3x3 matrices using only digits 1 to 9?](https://math.stackexchange.com/questions/2339056/total-number-of-3x3-matrices-using-only-digits-1-to-9)
 
 We answer this question in two ways:
@@ -76,7 +74,7 @@ library(moments)
 
 ## Exact Solution: All 9! Permutations
 
-$9! = 362,880$ is a large number, but no so large to preclude an elegant two-line computational solution, even if it takes time and storage space.
+$9! = 362,880$ is a large number, but not so large to preclude an elegant two-line computational solution, even if it takes time and storage space.
 
 * Use `arrangements::permutations()` to generate all of these
 * Use `apply()` to calculate their determinants, with a helper function `det_from_vec()`
@@ -97,6 +95,10 @@ determinants_exact <- apply(all_perms, 1, det_from_vec)
 ## Random Permutation Distribution
 
 Generating a Monte Carlo approximation with a large random sample of permutations.
+Here, `replicate()` is used to repeatedly apply the function `det_from_vec()`
+on a random permutation.
+
+As you can see, they are very nearly identical.
 
 ```{r random-permutations}
 B <- 100000
@@ -110,6 +112,7 @@ determinants_random <- replicate(B, {
 
 ## Summary Statistics
 
+How do the exact and simulated distributions compare?
 ```{r summary}
 det_summary <- function(x) {
   data.frame(
@@ -134,6 +137,10 @@ rbind(
 ## Visualizations
 
 ### Comparison of Both Methods
+
+We can compare the distributions by overlaying them in a single plot,
+showing the exact and permutation distributions as both histograms
+and density curves.
 
 ```{r plot-comparison}
 df_combined <- rbind(
@@ -161,6 +168,10 @@ ggplot(df_combined, aes(x = determinant, fill = method)) +
 ```
 
 ### Exact Distribution (Detailed View)
+
+The exact distribution has an interesting shape. It is symmetric around 0;
+the density plot shows a bunch of small "shoulders", and there are lots of
+spikes and troughs.
 
 ```{r plot-exact}
 ggplot(data.frame(determinant = determinants_exact), aes(x = determinant)) +
@@ -190,6 +201,9 @@ quantile(determinants_exact, probs = c(0, 0.25, 0.5, 0.75, 1))
 ```{r frequency-table}
 sort(table(determinants_exact), decreasing = TRUE) |> head(10)
 ```
+
+Each large positive value is exactly matched in frequency with its negative
+counterpart.
 
 ### Symmetry
 
@@ -238,14 +252,13 @@ The distribution never approaches Gaussian here because:
 
 ### An exact analytic formula?
 
-<!-- TODO: is there a closed-form for the distribution?
-  The exact distribution (from all 9! permutations) is a discrete distribution on integer values.
-  An analytic formula would require counting, for each integer d, how many permutations σ of {1,...,9}
-  satisfy det(A_σ) = d. This is a combinatorial counting problem with no known simple closed form.
-  Could mention: the problem is equivalent to counting solutions to a system of Diophantine equations
-  with the constraint that the variables are a permutation of {1,...,9}.
-  Possible angle: the generating function / characteristic function of the distribution.
--->
+The exact distribution computed above is a discrete distribution on integer values. But is there a closed-form expression for it --- a formula that gives, for each integer $d$, exactly how many of the 9! permutations produce $\text{det}(\mathbf{A}) = d$?
+
+The short answer is: if there is, not a simple one. The problem is equivalent to counting integer solutions to the determinant expansion
+
+$$a_{11}(a_{22}a_{33} - a_{23}a_{32}) - a_{12}(a_{21}a_{33} - a_{23}a_{31}) + a_{13}(a_{21}a_{32} - a_{22}a_{31}) = d$$
+
+subject to the constraint that $(a_{11}, \ldots, a_{33})$ is a permutation of $\{1, \ldots, 9\}$. This is a system of Diophantine equations with a permutation constraint, and no general closed form is known. The brute-force enumeration we performed is, in a sense, the answer --- the distribution *is* the count table. One could express it via a generating function or characteristic function, but these don't simplify to anything more illuminating than the enumeration itself. The problem is harder than it looks.
 
 ## Conclusions
 

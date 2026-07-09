@@ -174,6 +174,15 @@ The fun wrinkle: Body composition matters enormously. A high-fat floater can get
 
 Da Vinci wins over the Gospels, at least hydrodynamically.
 
+## Assistive devices: Pool hammock
+
+![](images/pool-hammock.png){style="float:right; margin-left:1.5em; margin-bottom:1em; width:40%"}
+If you find floating a challenge, even in very gentle water,
+there's a category of flotation aid that solves this specific problem: staying water-borne and roughly horizontal in waves without fighting them. The design that works best, called a **pool hammock**, is two inflatable cylinders connected by a mesh panel — you lie across the mesh, the cylinders take the buoyancy load on either side, and the structure flexes with the swell instead of resisting it. The mesh is the clever part: it doesn't trap water (no dead weight, no drag), and it lets the device articulate slightly as a wave passes under one cylinder before the other, rather than pitching you like a rigid board would.
+
+It's a nice small case study in matching device geometry to wave dynamics — rigid flotation devices (boogie boards, foam noodles) fight the wave's local slope, while a hinged, flexible structure like this one rides it, keeping you comfortably water-borne rather than constantly re-fighting your balance.
+
+
 ::: {style="background-color: #e8f4f8; padding: 1em; border-radius: 6px;"}
 **You are completely ready**.
 
