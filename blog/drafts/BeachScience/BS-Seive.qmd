@@ -1,0 +1,65 @@
+<!--
+Here is beach_sieve_prose.qmd — "The Beach as a Sieve" section draft, with phi-scale explanation, settling-velocity sorting mechanism, Dean profile tie-in, and [@key]-style citations (Kolmogorov 1941, Folk & Ward 1957, Dean 1991, Krumbein 1938) ready for your .bib file.
+-->
+
+## The Beach as a Sieve
+
+Stand on any beach and run sand through your fingers. On one beach it's a fine
+powder; on another, coarse grains that click as they fall; on a third, actual
+pebbles. This isn't random — a beach is a self-sorting machine, and the sorting
+follows real statistical law.
+
+The trick sedimentologists use is a change of scale. Instead of measuring grain
+diameter $D$ in millimetres, they use the **phi scale**:
+
+$$\phi = -\log_2(D_{mm})$$
+
+This is more than notational cleverness. Natural sediment size is
+**log-normal** in millimetres — a consequence of repeated random fragmentation
+(rocks breaking into pieces, those pieces breaking again), which Kolmogorov
+showed mathematically produces a log-normal distribution, the multiplicative
+cousin of the Central Limit Theorem [@kolmogorov1941]. Taking the log (the phi
+transform) converts that log-normal mess back into an ordinary bell curve. In
+phi-space, a beach's sand has a mean and a standard deviation just like any
+other Gaussian quantity — and the standard deviation, $\sigma_\phi$, is
+literally what Folk and Ward called the **sorting coefficient**
+[@folk1957]: small $\sigma_\phi$ means "well sorted" (all grains similar
+size), large $\sigma_\phi$ means "poorly sorted" (fine and coarse mixed
+together, as you'd see below a rockslide or glacial outwash).
+
+What actually does the sorting isn't grain size directly — it's **settling
+velocity**. For fine grains, Stokes' law gives settling velocity proportional
+to $D^2$; for coarser grains drag becomes turbulent and velocity scales as
+$\sqrt{D}$. Grains that share a settling velocity get deposited together
+regardless of size or density — which is the actual reason you sometimes see a
+dark streak of heavy minerals (magnetite, garnet) sitting beside ordinary
+quartz sand of a different size: same settling speed, different substance.
+
+The same self-sorting logic operates on the whole beach profile, not just
+individual grains. Dean's equilibrium profile,
+
+$$h(x) = A\, x^{2/3}$$
+
+says that a beach's cross-shore shape depends on grain size through the
+scale parameter $A$ — coarser sediment supports a steeper equilibrium slope,
+because coarse grains need more wave energy (steeper water) to stay in
+motion at all [@dean1991]. Fine sand spreads itself thin over a gentle
+slope; shingle piles up steep. It's the same sorting principle, just
+applied in two dimensions instead of one.
+
+*[grain size figure here]*
+
+*[Dean profile figure here]*
+
+### References
+
+- Dean, R.G. (1991). Equilibrium beach profiles: characteristics and
+  applications. *Journal of Coastal Research*, 7(1), 53–84.
+- Folk, R.L. & Ward, W.C. (1957). Brazos River bar: a study in the
+  significance of grain size parameters. *Journal of Sedimentary
+  Petrology*, 27(1), 3–26.
+- Kolmogorov, A.N. (1941). On the logarithmic normal distribution of
+  particle sizes under grinding. *Doklady Akademii Nauk SSSR*, 31(2),
+  99–101.
+- Krumbein, W.C. (1938). Size frequency distributions of sediments and the
+  normal phi curve. *Journal of Sedimentary Petrology*, 8(3), 84–90.
