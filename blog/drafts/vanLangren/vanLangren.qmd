@@ -15,18 +15,29 @@ execute:
 
 In 2009 I received an out-of-the-blue email from Joaquín Ibáñez Ulargui, a materials scientist in Madrid, who had been going through the papers of an ancestor — fray Íñigo de Brizuela, President of the Council of Flanders in the 1620s. He had found something odd tucked among them: a letter, undated, in old Spanish, containing a small graph and wondered if I was interested. 
 
-The graph showed seven names, a scale of degrees, a scatter of estimates for the distance in longitude between Toledo and Rome. It looked very much like the famous 1644 diagram in Michael Florent van Langren's [*La Verdadera Longitud por Mar y Tierra*](https://www.datavis.ca/gallery/langren/LaVerdadera.pdf) — except this letter predated that publication by at least sixteen years. 
+The graph showed seven names, a scale of degrees, a scatter of estimates for the distance in longitude between Toledo and Rome. It looked very much like the famous 1644 diagram in Michael Florent van Langren's [*La Verdadera Longitud por Mar y Tierra*](https://www.datavis.ca/gallery/langren/LaVerdadera.pdf) — except this letter predated that publication by at least sixteen years. The amateur historical sleuth in me was energized!
 
 ![The graph from the undated 1628 letter: seven authorities' estimates of the longitude difference between Toledo and Rome, plotted against a scale of degrees.](images/vanLangren1628-graph.jpg)
 
-That email was the seed of a paper Pedro Valero-Mora, Joaquín, and I published in 2010 in *The American Statistician*: ["The First (Known) Statistical Graph: Michael Florent van Langren and the 'Secret' of Longitude."](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html). We traced van Langren's graph back to its origin in this 1628 patronage letter to Isabella Clara Eugenia, governor of the Spanish Netherlands. van Langren laid out, with more salesmanship than science, the case that longitude determination was a mess, and King Fillipe of Spain
-surely needed to solve this for exploration. He said boldly 
+That email was the seed of a paper Pedro Valero-Mora, Joaquín, and I published in 2010 in *The American Statistician*: ["The First (Known) Statistical Graph: Michael Florent van Langren and the 'Secret' of Longitude."](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html). 
+What was particularly of interest was to understand why van Langren chose to display the previous estimates
+of the longitude distance from Toledo to Rome in what would be the first graphical display
+of quantitative **data**, rather than a simple table.
+Our conclusion was that only a one-dimensional
+line plot of the estimates would show directly what he wanted the King to **see**:
+all previous methods were so variable, and therefore with such large errors, as to be useless
+for accurate navigation at sea.
+
+We traced van Langren's graph back to its origin in this 1628 patronage letter to Isabella Clara Eugenia, governor of the Spanish Netherlands. van Langren laid out, with more salesmanship than science, the case that longitude determination was a mess, and King Fillipe of Spain
+surely needed to solve this for exploration (and plunder!). He said boldly 
 that he, Michael Florent van Langren, descendant of great Dutch globe-makers and
 mathematician to His Majesty, had found a solution.
 
-He never said what the fix was. In *La Verdadera*, on page 8, he printed it anyway — in cipher. He told the king he'd reveal the plaintext after suitable compensation. This was a classic request
+He never said what the fix was. In *La Verdadera*, on page 8, he printed his idea anyway — but in cipher. He told the king he'd reveal the plaintext after suitable compensation. This was a classic request
 for patronage, but couched as a puzzle.
 We reproduced the ciphertext in [our supplementary materials](https://www.datavis.ca/gallery/langren/), posed a few open questions about what kind of cipher it might be, and moved on.
+
+Except I didn't quite move on right away. In 2009 and 2010 I went looking for codebreakers on what the internet was back then, tracking down a handful of people — a few retired from the CIA, a couple from NASA — who I thought might enjoy a fun historical puzzle. Several wrote back, and a few actually gave it a real attempt. Van Langren beat every one of them. (We'll see why when we get to the final solution.)
 
 ![Page 8 of *La Verdadera Longitud por Mar y Tierra* (1644): the printed cipher, exactly as van Langren's readers first saw it.](images/verdadera-cipher.jpg){width="80%"}
 
