@@ -60,3 +60,22 @@ Bottom line: the VRT image (#1 above) is still the only real source found for
 the cipher/coded-manuscript image itself — nothing found beats it. Now
 superseded anyway by the actual cipher image obtained directly (see update
 above).
+
+## Own 2010 supplementary materials — cipher transcription found
+
+Found at `datavis.ca/gallery/langren/` (supplementary materials for the 2010
+*American Statistician* paper). Far better than OCR-ing the jpg: this is our
+own verified transcription, already exact-matched against
+`images/verdadera-cipher.jpg`.
+
+- **`cipher.txt`** — the ciphertext transcription itself. Already downloaded
+  to `cipher-transcription.txt` in this folder.
+- **`verdadera.pdf`** — described as a "modern transcription and translation"
+  (Spanish transcription + English translation) — not yet downloaded. Could
+  be very useful for showing the decoding steps directly.
+- **`Verdadera-old-spanish-stripped.txt`** — plain old-Spanish reference text
+  for frequency analysis — not yet downloaded. Relevant if illustrating the
+  frequency-analysis part of Van Eycke's approach.
+- **`LaVerdadera.pdf`** — the full original 1644 book — not yet downloaded.
+
+Full page: https://www.datavis.ca/gallery/langren/

@@ -1,35 +1,138 @@
 ---
 title: "Van Langren's Secret, Finally Told"
-description: "393 years after he encoded it, a warehouse worker and a Zodiac Killer codebreaker gave up the answer I never thought to look for"
+description: "393 years after van Langren encoded it, an amateur codebreaker gave an answer I never thought to look for"
 author: "Michael Friendly"
 date: today
 draft: true
 categories: [History of Statistics, Cryptography, Data Visualization]
+execute:
+  code-fold: show
+  warning: false
+  message: false
 ---
 
 ## How I Got Here
 
-In 2009 I received an email from Joaquín Ibáñez Ulargui, a materials scientist in Madrid, who had been going through the papers of an ancestor — fray Íñigo de Brizuela, President of the Council of Flanders in the 1620s — and had found something odd tucked among them: a letter, undated, in old Spanish, containing a small graph. Twelve names, a scale of degrees, a scatter of estimates for the distance in longitude between Toledo and Rome. It looked very much like the famous 1644 diagram in Michael Florent van Langren's *La Verdadera Longitud por Mar y Tierra* — except this letter predated that publication by at least sixteen years.
+In 2009 I received an out-of-the-blue email from Joaquín Ibáñez Ulargui, a materials scientist in Madrid, who had been going through the papers of an ancestor — fray Íñigo de Brizuela, President of the Council of Flanders in the 1620s. He had found something odd tucked among them: a letter, undated, in old Spanish, containing a small graph and wondered if I was interested. 
 
-That email became the seed of a paper Pedro Valero-Mora, Joaquín, and I published in 2010 in *The American Statistician*: "The First (Known) Statistical Graph: Michael Florent van Langren and the 'Secret' of Longitude." We traced van Langren's graph back to its origin in a 1628 patronage letter to Isabella Clara Eugenia, governor of the Spanish Netherlands, in which he laid out — with more salesmanship than science — the case that longitude determination was a mess, and that he, Michael Florent van Langren, mathematician to His Majesty, had found a fix.
+The graph showed seven names, a scale of degrees, a scatter of estimates for the distance in longitude between Toledo and Rome. It looked very much like the famous 1644 diagram in Michael Florent van Langren's [*La Verdadera Longitud por Mar y Tierra*](https://www.datavis.ca/gallery/langren/LaVerdadera.pdf) — except this letter predated that publication by at least sixteen years. 
 
-He never said what the fix was. In *La Verdadera*, on page 8, he printed it anyway — in cipher. He told the king he'd reveal the plaintext after suitable compensation. We reproduced the ciphertext in our supplementary materials, posed a few open questions about what kind of cipher it might be, and moved on. I assumed, as I think most people who have written about van Langren have assumed, that whatever he was hiding had something to do with the achievement he's actually remembered for: his 1645 lunar map, the first comprehensive survey of the moon's craters and mountains, and the method he spent years trying to build around it — using the sunrise and sunset lines crossing named lunar peaks as a kind of celestial clock, visible everywhere the moon was visible.
+![The graph from the undated 1628 letter: seven authorities' estimates of the longitude difference between Toledo and Rome, plotted against a scale of degrees.](images/vanLangren1628-graph.jpg)
+
+That email was the seed of a paper Pedro Valero-Mora, Joaquín, and I published in 2010 in *The American Statistician*: ["The First (Known) Statistical Graph: Michael Florent van Langren and the 'Secret' of Longitude."](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html). We traced van Langren's graph back to its origin in this 1628 patronage letter to Isabella Clara Eugenia, governor of the Spanish Netherlands. van Langren laid out, with more salesmanship than science, the case that longitude determination was a mess, and King Fillipe of Spain
+surely needed to solve this for exploration. He said boldly 
+that he, Michael Florent van Langren, descendant of great Dutch globe-makers and
+mathematician to His Majesty, had found a solution.
+
+He never said what the fix was. In *La Verdadera*, on page 8, he printed it anyway — in cipher. He told the king he'd reveal the plaintext after suitable compensation. This was a classic request
+for patronage, but couched as a puzzle.
+We reproduced the ciphertext in [our supplementary materials](https://www.datavis.ca/gallery/langren/), posed a few open questions about what kind of cipher it might be, and moved on.
+
+![Page 8 of *La Verdadera Longitud por Mar y Tierra* (1644): the printed cipher, exactly as van Langren's readers first saw it.](images/verdadera-cipher.jpg){width="80%"}
+
+Here it is in full, exactly as transcribed from page 8 — the thing everyone, including me, walked past for a decade:
+
+```
+ImIeV9  ap3Apa  Ihrr5e  tlSmeIf9  5lesEortEr  5e  eadnu9c  Rtl9e9T  omgupea  Nſnnd  cAlveMa
+dfneagL  p9rIir5  rEant  tdTeo9Im  nc5T9t  noqCtuN  veroQn  nnmEef  alarRl  9kIe  raIman
+Me4tn  eqtIu  u4xV  eu  ulriqDa  ſuVne  etſelId  ſe5tſ  couAu  9ſ9Vldu  lir5te  Tce4o  vEe7oſnE
+i5uameg  Ebſe  lodRa  9ebtſl  Sa95u  rVcmai  AenprIt  a9dL3do9  9nRt  e3enqQe  cun5ef
+Etſot  dEr  5emus  Oeacdſae  5ucſoMe  e9lrrI9  acnuoEd  umr92  L5d9a5  eI9cnai  dnneNt  t4pAIeai
+gPrmrO  e5e  VnſzbmF  oaenſeS5  uſlOnt  teoDe  p9noIl  l9lo  Enen  trEge59  cut  To  9uned
+V9neq  ItduLau  Deum  NamDe  nEerEmſ9  9LmdVl  eR99mEe  e5nOu  rdTd9  oOedu
+I9oVa5  nqnp  ntEaE  eerlVrt  lLrT9  5etoſ  Y9ntl  Sfrnae  eG9a6  rſaiIau  uulAnoTtp  9qVe  ruIcſeT
+t9pOu  erE9  leLſln  Ecedo  EſrNn  eMeſu  3Nove  Ar9ſ  VmdtS  qcVeueEd  oVn9nufu  R9fenPe
+utrTl  5eAten  Aftca  qTe9u  prSa  a5trOl  rle5ef  hRſ95  eDluſ  Iert5  eoVa  ſ9qc  lS  u  elalet
+eſ9Oſd  qtuuef  eſ9pero  tmuaaru  mumeuen  yſtdm  aeeuNr  9tlne  eſnmſt  pTdaſ  9n3t  taMe
+qnſutu  euDalnſa  depesE  rſeedtm9  l9tVe5e  ſrſaeu  H9uia  aſnſet  tReſrc  ſe  eomſ9p  ſtAle  v9du
+Qdc95  3dLloe  eu5ale  uea4Rrfe  ſ9l5na4  dAme  5nnr  neoeſR  nrtcaro  oe7uſOn  uuoer9r  pſtc
+tEn9e  rnresEa  aoplna  afrſa  lSe9  Eecrſoae  nTfſ4l  teoolLt  9atlq  elnr  eeuſlCn  elune  e3frLo  97mneb
+9tE9r  teaena  aduNue  ſ4tſ9Ve  ytm  ccpaNe  ſnled9  lCln  ladXedr  ſS9eſ  tſe5u  uepuIſ  p9todNo
+re9tnl  etlpLe  eaeſ  rqeEurua  aeE9alau  qCnmu  te5Snſ  lom9t  Ce5em  gRoeenr  dPl9ea
+dNq9  9nTſeos  nyMed  4ru9al  ec9uoeE  Inuold  ue  uurdeD.
+```
+
+Two hundred and four of those space-separated groups, every one of them four to eight characters long, no group repeating often enough to be a common word in any language. Take a minute and look at it before reading on — this is exactly what stared back at van Langren's readers for 376 years.
+
+I assumed, as I think most people who have written about van Langren have assumed, that whatever he was hiding had something to do with the achievement he's actually remembered for: his 1645 lunar map, the first comprehensive survey of the moon's craters and mountains, and the method he spent years trying to build around it — using the sunrise and sunset lines crossing named lunar peaks as a kind of celestial clock, visible everywhere the moon was visible.
 
 It was a reasonable guess. It was also wrong.
 
 ## The Cipher Falls
 
-Eleven years after our paper — long enough that I had filed the cryptogram away as one of those historical loose ends nobody would ever tie off — I learned that it had been solved. Not by a historian of science. By a Belgian warehouse worker.
+Eleven years after our paper — long enough that I had filed the cryptogram away as one of those historical loose ends nobody would ever tie off — I learned that it had been solved. Not by a historian of science. By a Belgian warehouse worker and amateur cryptographer.
 
-The backstory has its own small comedy of persistence. Klaus Schmeh, a German cryptology writer who maintains a blog called *Cipherbrain*, had stumbled on the van Langren cipher in 2015 and flagged it as a genuinely interesting unsolved historical cryptogram that nobody in the crypto world seemed to know about. An Antwerp amateur astronomer, Jos Pauwels, took an interest and kept it alive. Dirk Huylebrouck, a mathematician at KU Leuven, had been shopping the puzzle around online forums for the better part of a decade, by his own account without success.
+The backstory has its own small comedy of persistence. Klaus Schmeh, a German cryptology writer who maintains a blog called [*Cipherbrain*](https://scienceblogs.de/klausis-krypto-kolumne/), had stumbled on the van Langren cipher in 2015 and flagged it as a genuinely interesting unsolved historical cryptogram that nobody in the crypto world seemed to know about. An Antwerp amateur astronomer, Jos Pauwels, took an interest and kept it alive. [Dirk Huylebrouck](https://dirkhuylebrouck.be/), a mathematician at KU Leuven, had been shopping the puzzle around online forums for the better part of a decade, by his own account without success.
 
-Then, in December 2020, a trio of codebreakers — David Oranchak, Sam Blake, and a Fleming named Jarl Van Eycke — cracked the Zodiac Killer's notorious Z340 cipher, unsolved for 51 years. Huylebrouck read the news, tracked down Van Eycke, and handed him the Code of Langren.
+Then, in December 2020, a trio of codebreakers — David Oranchak, Sam Blake, and a Fleming named Jarl Van Eycke — [cracked the Zodiac Killer's notorious Z340 cipher](https://arxiv.org/pdf/2403.17350), unsolved for 51 years. Huylebrouck read the news, tracked down Van Eycke, and handed him the Code of Langren.
 
 Van Eycke solved it in about a week.
 
 His approach was pure applied cryptanalysis, and it's worth walking through because it's a small master class in how you break a cipher with no known key and no certainty about what kind of cipher it even is. He started by noticing that the "words" in the transcribed ciphertext were suspiciously uniform in length — a giveaway that the spacing was cosmetic, meant to look like word breaks without being any. He stripped the spaces and ran statistical tests for periodic transposition, the classic technique of simply reordering letters rather than substituting them. Nothing. He then tried removing different classes of symbols to see what improved the letter-trigram statistics, and found that the capital letters scattered through the text were pure decoys — meaningless once removed. With capitals and spaces both gone, he tried reading the remaining letters at different intervals, and found that taking every third letter suddenly produced recognizable fragments of real words.
 
-That was the structural key: the plaintext had been split across three interleaved streams before a final substitution — digits standing in for letters — was layered on top. Once he had the interleaving and the substitution, the message resolved into continuous prose. And the prose wasn't in the Spanish that both van Langren's introduction and our own paper had led everyone to expect. It was seventeenth-century French.
+That was the structural key: the plaintext had been split across three interleaved streams before a final substitution — digits standing in for letters — was layered on top. Once he had the interleaving and the substitution, the message resolved into continuous prose. And the prose wasn't in the Spanish that both van Langren's introduction and our own paper had led everyone to expect. It was seventeenth-century French. It is of some interest to show some of these steps using R.
+
+A quick note on sourcing before I reproduce any of this: Van Eycke never published his own account of the break. Every version of this story, including mine, traces back to [Klaus Schmeh's *Cipherbrain* post](https://scienceblogs.de/klausis-krypto-kolumne/jarl-van-eycke-solves-400-year-old-longitude-message/), which is Schmeh's own paraphrase of "a detailed description" Van Eycke sent him by email — not a verbatim quote, and not self-published. With that caveat, here's what happens when you run Van Eycke's described steps against the actual ciphertext from our 2010 supplementary materials.
+
+### Step 1: the "words" are a decoy
+
+```{r word-lengths}
+cipher_raw <- readLines("cipher-transcription.txt", encoding = "UTF-8") |> paste(collapse = " ")
+tokens <- strsplit(cipher_raw, "[ \t]+")[[1]]
+tokens <- tokens[tokens != ""]
+tab <- table(nchar(tokens))
+m <- rbind(nchar = as.integer(names(tab)), freq = as.integer(tab))
+colnames(m) <- rep("", ncol(m))
+m
+```
+
+204 "words," and the lengths cluster almost entirely between 4 and 8 characters — far too tight a spread for genuine word boundaries in any European language. That's the tell that the spacing in the printed cipher is cosmetic.
+
+### Step 2: strip spaces and decoy capitals
+
+```{r strip-capitals}
+nospace <- gsub("[ \t]+", "", cipher_raw)
+nocaps <- gsub("[A-Z]", "", nospace)
+substr(nospace, 1, 60)
+substr(nocaps, 1, 60)
+```
+
+Removing the capital letters scattered through the text (they carry no information — Van Eycke found they were pure noise) leaves a single unbroken run of lowercase letters, long-s (ſ), and digits.
+
+### Step 3: split into three interleaved streams
+
+```{r three-streams}
+chars <- strsplit(nocaps, "")[[1]]
+n <- length(chars)
+stream1 <- paste(chars[seq(1, n, by = 3)], collapse = "")
+stream2 <- paste(chars[seq(2, n, by = 3)], collapse = "")
+stream3 <- paste(chars[seq(3, n, by = 3)], collapse = "")
+substr(stream1, 1, 60)
+```
+
+Taking every third character — positions 1, 4, 7, ... — out of that run produces `stream1` above. It's still not readable, but the letter patterns already look far more like language than the raw ciphertext did.
+
+### Step 4: undo the digit substitution
+
+The last layer is a simple key: 1 = a, 2 = b, ... 9 = i. Concatenate the three streams in order and substitute:
+
+```{r digit-substitution}
+plain_raw <- paste0(stream1, stream2, stream3)
+digit_map <- setNames(letters[1:9], as.character(1:9))
+plain_chars <- strsplit(plain_raw, "")[[1]]
+subbed <- vapply(plain_chars, function(ch) {
+  if (ch %in% names(digit_map)) digit_map[[ch]] else ch
+}, character(1))
+plain_final <- gsub("ſ", "s", paste(subbed, collapse = ""))
+
+# an excerpt further into the message, not the very start
+excerpt <- substr(plain_final, 533, 940)
+for (s in seq(1, nchar(excerpt), by = 68)) {
+  cat(substr(excerpt, s, min(s + 67, nchar(excerpt))), "\n")
+}
+```
+
+Even with the word breaks still missing and a rough patch or two (likely a transcription slip somewhere in the 2010 `cipher.txt`, fifteen years old at this point), real seventeenth-century French is unmistakably there: *estoilles* (stars), *meridon* [méridien], and then — right on cue — *...florenc[ius] ouan langren dict qu'on faira deux uises de cuiure de semblable c[a]pacite en forme de celindre...* — "Florentius van Langren says one shall make two vessels of copper of similar capacity in the form of a cylinder." That's the same instruction already quoted in English translation above, arriving from the other direction, out of a 380-year-old jumble of letters and digits.
 
 ## What He Was Actually Hiding
 
