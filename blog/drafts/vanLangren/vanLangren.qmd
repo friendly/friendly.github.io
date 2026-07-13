@@ -11,6 +11,18 @@ execute:
   message: false
 ---
 
+Amateur historians of data visualization live for surprises. Sometimes they're delightful: an unknown fact about a hero of the field, like C. J. Minard's burial place in Montparnasse
+Cemetery and that his near neighbor there is Andre-Michel Guerry as told in
+[Raiders of the Lost Tombs](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf).
+Or a hero nobody had noticed yet,
+like the Hungarian cartographer Imre Milecz, [discovered by Attila Bátorfy](https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map) to have drawn the first flow map in 1773 — decades before the credit usually goes to Minard or Playfair,
+or Frances Harriet Lightfoot, whose 1831 *An Embellished Chart of General History and Chronology* had gone essentially unknown to modern researchers until [RJ Andrews found it](https://www.chartography.net/p/colossal-chronography).
+
+Sometimes these surprises are more unsettling: the discovery that we got some piece of the historical record entirely wrong. Van Langren's Secret is a surprise of the second kind.
+Yet, to an amateur historian like myself, telling the story of the surprise has a certain
+reward. It is not just a matter of correcting the record; more that of an appreciation of
+how our understanding of history continues to unfold.
+
 ## How I Got Here
 
 In 2009 I received an out-of-the-blue email from Joaquín Ibáñez Ulargui, a materials scientist in Madrid, who had been going through the papers of an ancestor — fray Íñigo de Brizuela, President of the Council of Flanders in the 1620s. He had found something odd tucked among them: a letter, undated, in old Spanish, containing a small graph and wondered if I was interested. 
