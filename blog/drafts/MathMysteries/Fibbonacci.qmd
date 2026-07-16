@@ -1,0 +1,44 @@
+---
+title: "Fibonacci Delights"
+subtitle: "Beach Science, Math Mysteries series"
+categories: [BS, math, fibonacci]
+date: last-modified
+---
+
+## Fibonacci Delights
+
+[Richard Feynman](https://en.wikipedia.org/wiki/Richard_Feynman) famously treated numbers as toys — something to turn over, poke at, and play with for the sheer fun of it. Finding the first run of five 9s in the digits of pi wasn't research for him; it was a game, a private joke he liked to spring on people learning to compute pi by hand. That spirit — noticing something odd in a sequence of numbers and chasing it purely for delight — is exactly the mood for a beach afternoon. Fibonacci numbers turn out to reward that kind of chasing more than most.
+
+### The rabbits, not the spiral
+
+The [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_sequence) is inseparable, in the popular imagination, from spirals and the [golden ratio](https://en.wikipedia.org/wiki/Golden_ratio). But Fibonacci's own 1202 treatise, [Liber Abaci](https://en.wikipedia.org/wiki/Liber_Abaci), introduced the sequence through a rabbit-breeding problem — no spirals, no φ, nothing aesthetic at all. The connection to spirals and the golden ratio came centuries later. A fun bit of trivia to have in your back pocket, in a very Feynman-esque "here's a thing most people get slightly wrong" way.
+
+### Shell spirals — myth and measurement
+
+Nautilus shells are the standard illustration of the "golden spiral" in nature. Worth a skeptical look: actual growth-ratio measurements of nautilus shells vary shell to shell and rarely land precisely on φ. The shells follow a [logarithmic spiral](https://en.wikipedia.org/wiki/Logarithmic_spiral) — true — but logarithmic spirals come in many ratios, and nature didn't specifically pick the golden one. A good beach exercise: measure a real shell's chamber ratios and see how close it actually comes.
+
+### Phyllotaxis on the dune
+
+Sea holly, dune grasses, pinecones washed up at the tideline — many show spiral counts of 8, 13, or 21 in their seed or leaf arrangement, genuine Fibonacci [phyllotaxis](https://en.wikipedia.org/wiki/Phyllotaxis). Unlike the shell-spiral claim, this one is countable by hand and holds up.
+
+### Zeckendorf's theorem — a beach pebble game
+
+[Zeckendorf's theorem](https://en.wikipedia.org/wiki/Zeckendorf%27s_theorem) states that every positive integer can be written uniquely as a sum of non-consecutive Fibonacci numbers. Pick a number, hand someone a pile of pebbles marked 1, 2, 3, 5, 8, 13, 21..., and have them decompose it. Simple, tactile, and it always works exactly one way.
+
+### Pisano periods
+
+Take Fibonacci numbers mod any integer m, and the sequence of remainders eventually repeats — the [Pisano period](https://en.wikipedia.org/wiki/Pisano_period). Easy to compute by hand in the sand for small m; the periods for large primes are still not fully understood, which keeps the exercise from feeling too tidy.
+
+### Benford's Law, again
+
+Leading digits of Fibonacci numbers follow [Benford's Law](https://en.wikipedia.org/wiki/Benford%27s_law) just as leading digits of shell measurements and driftwood lengths do — a small thread tying this post back to the pebble-counting exercises from the earlier Math Mysteries post.
+
+---
+
+## Addendum: more Math Mysteries for the beach
+
+A couple of ideas from the earlier round, worth keeping on file alongside Feynman's Point:
+
+Champernowne's constant — built by concatenating the counting numbers: 0.123456789101112... It has been proven [normal](https://en.wikipedia.org/wiki/Normal_number) (every digit string appears with the expected frequency) — a useful contrast to pi, whose normality is still only conjectured.
+
+Ramanujan's taxicab number, 1729 — the smallest number expressible as a sum of two cubes in two different ways. Famous from the hospital-visit story where Hardy called the taxi number "dull" and Ramanujan instantly spotted why it wasn't — the same instinct that sent Feynman hunting for 9s in pi: a number nobody else bothered to look at twice.

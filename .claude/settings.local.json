@@ -30,7 +30,31 @@
       "WebFetch(domain:www.rencontres-arles.com)",
       "WebFetch(domain:lucelebart.org)",
       "PowerShell(Copy-Item *)",
-      "WebFetch(domain:www.24presse.com)"
+      "WebFetch(domain:www.24presse.com)",
+      "Bash(mkdir -p images)",
+      "Bash(cp original/determinant_distribution_comparison.png images/determinant_distribution_comparison.png)",
+      "Bash(git mv *)",
+      "Bash(Rscript -e 'install.packages\\(\"arrangements\", repos=\"https://cloud.r-project.org\"\\)')",
+      "Bash(Rscript -e 'parse\\(\"beach-grain-size.R\"\\); cat\\(\"OK: parses cleanly\\\\n\"\\)')",
+      "Bash(awk 'BEGIN{c=0} /^$/{c++; if\\(c>1\\) print \"double blank at line \" NR; next} {c=0}' blog/drafts/BeachScience/BS-HowLong.qmd)",
+      "Bash(Rscript -e 'if \\(!requireNamespace\\(\"tidyverse\", quietly=TRUE\\)\\) cat\\(\"MISSING\\\\n\"\\) else cat\\(\"tidyverse OK\\\\n\"\\)')",
+      "WebFetch(domain:www.coastalwiki.org)",
+      "Bash(awk 'BEGIN{c=0} /^$/{c++; if\\(c>1\\) print \"double blank ending at line \" NR; next} {c=0}' vanLangren.md)",
+      "Bash(awk 'BEGIN{c=0} /^$/{c++; if\\(c>1\\) print \"double blank at line \" NR; next} {c=0}' vanLangren.md)",
+      "WebFetch(domain:www.eoswetenschap.eu)",
+      "WebFetch(domain:anewdomain.net)",
+      "WebFetch(domain:lirias.kuleuven.be)",
+      "WebFetch(domain:arxiv.org)",
+      "Bash(python3 -c \"print\\('python3 available'\\)\")",
+      "Bash(awk 'BEGIN{c=0} /^$/{c++; if\\(c>1\\) print \"double blank at line \" NR; next} {c=0}' isgeschiedenis.md)",
+      "Bash(curl -s -o \"C:/R/Projects/friendly.github.io/blog/drafts/vanLangren/cipher-transcription.txt\" \"http://datavis.ca/gallery/langren/cipher.txt\")",
+      "Bash(curl -sL -o \"C:/R/Projects/friendly.github.io/blog/drafts/vanLangren/cipher-transcription.txt\" \"https://www.datavis.ca/gallery/langren/cipher.txt\")",
+      "Bash(Rscript *)",
+      "Bash(rm -rf vanLangren.html vanLangren_files vanLangren.knit.md)",
+      "Bash(rm -f /tmp/decode_explore.R /tmp/wrap6.R /tmp/wrap6b.R /tmp/find_reveal.R /tmp/find_reveal2.R /tmp/longitude.txt)",
+      "Bash(where R *)",
+      "Bash(mkdir *)",
+      "Bash(C:/R/R-4.5.2/bin/Rscript.exe *)"
     ]
   }
 }
