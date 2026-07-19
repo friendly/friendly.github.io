@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael Friendly">
-<meta name="dcterms.date" content="2026-07-17">
+<meta name="dcterms.date" content="2026-07-19">
 <meta name="description" content="393 years after van Langren encoded it, an amateur codebreaker gave an answer I never thought to look for">
 
 <title>Van Langren’s Secret, Finally Told</title>
@@ -61,7 +61,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="vanLangren_files/libs/clipboard/clipboard.min.js"></script>
@@ -77,6 +96,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="vanLangren_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <meta name="quarto:status" content="draft">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -115,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 17, 2026</p>
+      <p class="date">July 19, 2026</p>
     </div>
   </div>
   
@@ -127,11 +175,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Historians of data visualization live for surprises. Sometimes they’re delightful: an unknown fact about a hero of the field, like C. J. Minard’s burial place in Montparnasse Cemetery and that his near neighbor there is Andre-Michel Guerry as told in <a href="https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf">Raiders of the Lost Tombs</a>. Or a hero nobody had noticed yet, like the Hungarian cartographer Imre Milecz, <a href="https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map">discovered by Attila Bátorfy</a> to have drawn the first flow map in 1773—decades before the credit usually goes to Minard or <a href="http://www.complexcity.info/files/2011/06/harness-1837-flowmap.pdf">Henry Harnass</a>, or Frances Harriet Lightfoot, whose 1831 <em>An Embellished Chart of General History and Chronology</em> had gone essentially unknown to modern researchers until <a href="https://www.chartography.net/p/colossal-chronography">RJ Andrews found it</a>.</p>
-<p>Sometimes these surprises are more unsettling. The worst is the discovery that we got some piece of the historical record entirely wrong. <strong>Van Langren’s Secret</strong>, for an accurate method of determining longitude at sea, is a surprise of the second kind. Yet, to an amateur historian like myself, telling the story of the surprise itself has a certain reward. It is not just a matter of correcting the record; more that of an appreciation of how our understanding of history continues to unfold. Perhaps paradoxically, history is not static. History is always undergoing reexamination and reconsideration as new facts or perspectives arise.</p>
+<p>Historians of data visualization live for surprises. Sometimes they’re delightful: an unknown fact about a hero of the field, like our discovery of C. J. Minard’s burial place in Montparnasse Cemetery and that his near neighbor there is Andre-Michel Guerry. The story of these and other historical excavations is told in <a href="https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf">Raiders of the Lost Tombs</a>. Or a hero nobody had noticed yet, like the Hungarian cartographer Imre Milecz, <a href="https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map">discovered by Attila Bátorfy</a> to have drawn the first flow map in 1773—decades before the credit usually goes to Minard or <a href="http://www.complexcity.info/files/2011/06/harness-1837-flowmap.pdf">Henry Harnass</a>, or Frances Harriet Lightfoot, whose 1831 <em>An Embellished Chart of General History and Chronology</em> had gone essentially unknown to modern researchers until <a href="https://www.chartography.net/p/colossal-chronography">RJ Andrews found it</a>.</p>
+<p>Sometimes these surprises are more unsettling. The worst is the discovery that we got some piece of the historical record or our interpretation entirely wrong. <strong>Van Langren’s Secret</strong>, for an accurate method of determining longitude at sea, is a surprise of the second kind.</p>
+<p>Yet, to an amateur historian like myself, telling the story of this unwelcome surprise itself has a certain reward. It is not just a matter of correcting the record; more that of an appreciation of how our understanding of history continues to unfold. Perhaps paradoxically, history is not static. History is always undergoing reexamination and reconsideration as new facts or perspectives arise.</p>
 <section id="how-i-got-here" class="level2">
 <h2 class="anchored" data-anchor-id="how-i-got-here">How I Got Here</h2>
-<p>In 2009 I received an out-of-the-blue email from Joaquín Ibáñez Ulargui, a materials scientist in Madrid, who had been going through the papers of an ancestor—fray Íñigo de Brizuela, President of the Council of Flanders in the 1620s. He had found something odd tucked among them: a letter, undated, in old Spanish, containing a small graph and wondered if I was interested.</p>
+<p>In Dec.&nbsp;2008 I received an out-of-the-blue email from Joaquín Ibáñez Ulargui, a materials scientist in Madrid, who had been going through the papers of an ancestor—fray Íñigo de Brizuela, President of the Council of Flanders in the 1620s. He had found something odd tucked among them: a letter, from Feb/Mar 1628, in old Spanish, containing a small graph. He wondered if I was interested. Was I? Graduate students at my university were on strike; no classes meant I had plenty of time.</p>
 <p>The graph showed seven names, a scale of degrees, a scatter of estimates for the distance in longitude between Toledo and Rome. It looked very much like the famous 1644 diagram in Michael Florent van Langren’s <a href="https://www.datavis.ca/gallery/langren/LaVerdadera.pdf"><em>La Verdadera Longitud por Mar y Tierra</em></a>—except this letter predated that publication by at least sixteen years. The amateur historical sleuth in me was energized!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -139,24 +188,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>The graph from the undated 1628 letter: seven authorities’ estimates of the longitude difference between Toledo and Rome, plotted against a scale of degrees.</figcaption>
 </figure>
 </div>
-<p>That email was the seed of a paper Pedro Valero-Mora, Joaquín, and I published in 2010 in <em>The American Statistician</em>: <a href="https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html">“The First (Known) Statistical Graph: Michael Florent van Langren and the ‘Secret’ of Longitude.”</a>. What was particularly of interest was to understand <em>why</em> van Langren chose to display the previous estimates of the longitude distance from Toledo to Rome in what would be the first graphical display of quantitative <strong>data</strong>, rather than a simple table, which was nearly always used at the time.</p>
-<p>Our conclusion was that only a one-dimensional line plot of the estimates would show directly what he wanted the King to <strong>see</strong>: all previous methods were so variable, and therefore with such large errors, as to be useless for accurate navigation at sea. In the version of this graph from 1644, You can see how wide the range of estimates is: nearly 40% of the range from Toledo to Rome shown. The arrow underneath marks the actual distance, 16^o31’.</p>
+<p>That email was the seed of a paper Pedro Valero-Mora, Joaquín, and I published in 2010 in <em>The American Statistician</em>: <a href="https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html">“The First (Known) Statistical Graph: Michael Florent van Langren and the ‘Secret’ of Longitude.”</a>. What was particularly of interest was to understand <em>why</em> van Langren chose to display the previous estimates of the longitude distance from Toledo to Rome in what would be the <strong>first graphical display of quantitative data</strong>, using a 1D dot plot. Why didn’t he just use a simple table, which was nearly always used at the time. We always ask:</p>
+<blockquote class="blockquote">
+<p>What was he thinking?</p>
+</blockquote>
+<p>Our conclusion was that only a one-dimensional dot plot of the estimates would show directly what he wanted the King to <strong>see</strong>: all previous methods were so variable, and therefore with such large errors, as to be useless for accurate navigation at sea. In the version of this graph from 1644, overlaid on the modern map, you can see how wide the range of estimates is: over 40% of the range from Toledo to Rome shown. The pin marks the actual distance, 16^o31’.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/Langren1644.jpg" class="img-fluid figure-img"></p>
-<figcaption>van Langren’s 1644 graph.</figcaption>
+<p><img src="images/Langren1644-overlay.jpg" class="img-fluid figure-img"></p>
+<figcaption>van Langren’s 1644 graph showing 12 estimates of the longitude distance from Toledo to Rome by eminent astronomers, overlaid on a modern map</figcaption>
 </figure>
 </div>
-<p>We traced van Langren’s graph back to its origin in this 1628 patronage letter, sent to Isabella Clara Eugenia, governor of the Spanish Netherlands. van Langren laid out, with more salesmanship than science, the case that longitude determination was a mess, and King Fillipe of Spain surely needed to solve this for exploration (and plunder!). He said boldly that he, Michael Florent van Langren, descendant of great Dutch globe-makers and mathematician to His Majesty, had found a solution.</p>
-<p>He never said what the fix was. In <em>La Verdadera</em>, on page 8, he printed his idea anyway—but in cipher. He told the king he’d reveal the plaintext after suitable compensation. This was a classic request for patronage, but couched as a puzzle. We reproduced the ciphertext in <a href="https://www.datavis.ca/gallery/langren/">our supplementary materials</a>, posed a few open questions about what kind of cipher it might be, and moved on.</p>
-<p>Except I didn’t quite move on right away. In 2009 and 2010 I went looking for codebreakers on what the internet was back then, tracking down a handful of people—a few retired from the CIA, a couple from NASA—who I thought might enjoy a fun historical puzzle. Several wrote back, and a few actually gave it a real attempt. Van Langren beat every one of them. (We’ll see why when we get to the final solution.)</p>
+<p>We traced van Langren’s graph back to its origin in this 1628 patronage letter, sent to Isabella Clara Eugenia, governor of the Spanish Netherlands. van Langren laid out, with more salesmanship than science, the case that longitude determination was a mess, and King Fillipe of Spain surely needed to solve this for exploration (and plunder!). He said boldly that he, Michael Florent van Langren, descendant of great Dutch globe-makers and mathematician to His Majesty, had found a solution and deserved a reward.</p>
+<p>He never said what the fix was. In <em>La Verdadera</em>, on page 8, he printed his idea anyway—but in cipher. He told the king he’d reveal the plaintext after suitable compensation. This was a classic request for patronage, but couched as a puzzle. Except for the puzzle, the <a href="https://www.datavis.ca/gallery/langren/verdadera.pdf">text of <em>La Verdadera</em></a> reads like a modern grant application. We reproduced the ciphertext in <a href="https://www.datavis.ca/gallery/langren/">our supplementary materials</a>, posed a few open questions about what kind of cipher it might be, and moved on.</p>
+<p>Except I didn’t quite move on right away. In 2009 and 2010 I went looking for codebreakers on what the internet was back then, tracking down a handful of people—a few retired from the CIA, a couple from NASA—who I thought might enjoy a fun historical puzzle. Several wrote back, and a few actually gave it a real attempt. But van Langren beat them all. (We’ll see why when we get to the final solution.)</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/verdadera-cipher.jpg" class="img-fluid figure-img" style="width:80.0%"></p>
 <figcaption>Page 8 of <em>La Verdadera Longitud por Mar y Tierra</em> (1644): the printed cipher, exactly as van Langren’s readers first saw it.</figcaption>
 </figure>
 </div>
-<p>Here it is in full, exactly as transcribed from page 8—the thing everyone, including me, walked past for a decade:</p>
+<p>Here it is as full text, transcribed exactly from page 8—the thing that stumped everyone, including me:</p>
 <pre><code>ImIeV9  ap3Apa  Ihrr5e  tlSmeIf9  5lesEortEr  5e  eadnu9c  Rtl9e9T  omgupea  Nſnnd  cAlveMa
 dfneagL  p9rIir5  rEant  tdTeo9Im  nc5T9t  noqCtuN  veroQn  nnmEef  alarRl  9kIe  raIman
 Me4tn  eqtIu  u4xV  eu  ulriqDa  ſuVne  etſelId  ſe5tſ  couAu  9ſ9Vldu  lir5te  Tce4o  vEe7oſnE
@@ -178,17 +230,35 @@ dNq9  9nTſeos  nyMed  4ru9al  ec9uoeE  Inuold  ue  uurdeD.</code></pre>
 <p>I assumed, as I think most people who have written about van Langren have assumed, that whatever he was hiding had something to do with the achievement he’s actually remembered for: his 1645 lunar map, the first comprehensive survey of the moon’s craters and mountains, and the method he spent years trying to build around it—using the sunrise and sunset lines crossing named lunar peaks as a kind of celestial clock, visible everywhere the moon was visible.</p>
 <p>It was a reasonable guess, backed by details about the <a href="https://en.wikipedia.org/wiki/Alfonsine_tables">Alfonsine Tables</a> which provided data for computing the position of the Sun, Moon and planets relative to the fixed stars. But it was also wrong.</p>
 </section>
+<section id="the-problem-of-longitude" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-of-longitude">The Problem of Longitude</h2>
+<p>Appreciating what van Langren was hiding requires understanding why <strong>longitude</strong> was so much harder to measure than <strong>latitude</strong> in the seventeenth century.</p>
+<p><strong>Latitude</strong> is easy: the elevation of the sun, moon, or stars above the horizon tells you directly how far north or south of the equator you are. Nature provides the reference frame.</p>
+<p><strong>Longitude</strong> offers no such anchor. There is no natural zero line, and the distance corresponding to one degree of longitude shrinks from 111 km at the equator to zero at the poles. What <em>is</em> fixed is the relationship between longitude and time: Earth rotates 360° in 24 hours, or 15° per hour, so a difference in longitude translates directly into a difference in local time:</p>
+<p><span class="math display">\[\Delta\text{longitude} = 15° \times \Delta\text{time}\]</span></p>
+<p>This means the general solution requires <strong>two clocks</strong>: one tracking local time (reset each day by observing solar noon), the other keeping the time at a reference location set before departure and never touched again:</p>
+<p><span class="math display">\[\Delta\text{time} = \text{time}_\text{Here} - \text{time}_\text{There}\]</span></p>
+<p>The difficulty was that no mechanical clock of the era was accurate enough to serve as the <em>reference</em> clock aboard a ship for weeks. The alternative—an <em>astronomical</em> solution—was to use a predictable celestial event (a lunar eclipse, an occultation of a star by the moon, the moons of Jupiter) as a surrogate reference clock: time the event locally, look up when it was predicted to occur at the reference meridian, subtract.</p>
+<p>Van Langren had spent years perfecting one such method, using (as we thought) the positions of sunrise and sunset lines crossing named peaks on the lunar surface—which is why his cipher was so unexpected. What he had chosen to hide was neither the lunar method nor a mechanical clock. It was a water clock.</p>
+</section>
 <section id="the-cipher-falls" class="level2">
 <h2 class="anchored" data-anchor-id="the-cipher-falls">The Cipher Falls</h2>
 <p>Eleven years after our paper—long enough that I had filed the cryptogram away as one of those historical loose ends nobody would ever tie off—I learned that it had been solved. Not by a historian of science. By a Belgian warehouse worker and amateur cryptographer.</p>
 <p>The backstory has its own small comedy of persistence. Klaus Schmeh, a German cryptology writer who maintains a blog called <a href="https://scienceblogs.de/klausis-krypto-kolumne/"><em>Cipherbrain</em></a>, had stumbled on the van Langren cipher in 2015 and flagged it as a genuinely interesting unsolved historical cryptogram that nobody in the crypto world seemed to know about. An Antwerp amateur astronomer, Jos Pauwels, took an interest and kept it alive. <a href="https://dirkhuylebrouck.be/">Dirk Huylebrouck</a>, a mathematician at KU Leuven, had been shopping the puzzle around online forums for the better part of a decade, by his own account without success.</p>
-<p>Then, in December 2020, a trio of codebreakers—David Oranchak, Sam Blake, and a Fleming named Jarl Van Eycke—<a href="https://arxiv.org/pdf/2403.17350">cracked the Zodiac Killer’s notorious Z340 cipher</a>, unsolved for 51 years. Huylebrouck read the news, tracked down Van Eycke, and handed him the Code of Langren.</p>
-<p>Van Eycke solved it in about a week.</p>
-<p>His approach was pure applied cryptanalysis, and it’s worth walking through because it’s a small master class in how you break a cipher with no known key and no certainty about what kind of cipher it even is. He started by noticing that the “words” in the transcribed ciphertext were suspiciously uniform in length—a giveaway that the spacing was cosmetic, meant to look like word breaks without being any. He stripped the spaces and ran statistical tests for periodic transposition, the classic technique of simply reordering letters rather than substituting them. Nothing. He then tried removing different classes of symbols to see what improved the letter-trigram statistics, and found that the capital letters scattered through the text were pure decoys—meaningless once removed. With capitals and spaces both gone, he tried reading the remaining letters at different intervals, and found that taking every third letter suddenly produced recognizable fragments of real words.</p>
+<p>Then, in December 2020, a trio of codebreakers—David Oranchak, Sam Blake, and a Belgian warehouse operator and programmer named Jarl Van Eycke—who had cracked the <a href="https://arxiv.org/pdf/2403.17350">Zodiac Killer’s notorious Z340 cipher</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, a 340-character code unsolved for 51 years. Huylebrouck read the news, tracked down Van Eycke, and handed him the Code of Langren.</p>
+<p>Van Eycke solved it in about a week!</p>
+<p>His approach was pure applied cryptanalysis, and it’s worth walking through because it’s a small master class in how you break a cipher with no known key and no certainty about what kind of cipher it even is.</p>
+<ul>
+<li>He started by noticing that the “words” in the transcribed ciphertext were suspiciously uniform in length—a giveaway that the spacing was cosmetic, meant to look like word breaks without being so.</li>
+<li>He stripped the spaces and ran statistical tests for <a href="https://en.wikipedia.org/wiki/Transposition_cipher">periodic transposition</a>, the classic technique of simply reordering letters rather than substituting them. Nothing came of this.</li>
+<li>He then tried removing different classes of symbols to see what improved the letter-trigram statistics<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. He found that the capital letters scattered through the text were pure decoys—meaningless once removed.</li>
+<li>With capitals and spaces both gone, he tried reading the remaining letters at different intervals, and found that taking every third letter suddenly produced recognizable fragments of real words.</li>
+</ul>
 <p>That was the structural key: the plaintext had been split across three interleaved streams before a final substitution—digits standing in for letters—was layered on top. Once he had the interleaving and the substitution, the message resolved into continuous prose. And the prose wasn’t in the Spanish that both van Langren’s introduction and our own paper had led everyone to expect. It was seventeenth-century French. <em>Quelle surprise!</em> It is of some interest to show some of these steps using R.</p>
 <p>A quick note on sourcing before I reproduce any of this: Van Eycke never published his own account of the break. Every version of this story, including mine, traces back to <a href="https://scienceblogs.de/klausis-krypto-kolumne/jarl-van-eycke-solves-400-year-old-longitude-message/">Klaus Schmeh’s <em>Cipherbrain</em> post</a>, which is Schmeh’s own paraphrase of “a detailed description” Van Eycke sent him by email—not a verbatim quote, and not self-published. With that caveat, here’s what happens when you run Van Eycke’s described steps against the actual ciphertext from our 2010 supplementary materials.</p>
 <section id="step-1-the-words-are-a-decoy" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-the-words-are-a-decoy">Step 1: the “words” are a decoy</h3>
+<p>Check the distribution of “word” length in the cipher.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cipher_raw <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"cipher-transcription.txt"</span>, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>) <span class="sc">|&gt;</span> <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">" "</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(cipher_raw, <span class="st">"[ </span><span class="sc">\t</span><span class="st">]+"</span>)[[<span class="dv">1</span>]]</span>
@@ -202,34 +272,99 @@ dNq9  9nTſeos  nyMed  4ru9al  ec9uoeE  Inuold  ue  uurdeD.</code></pre>
 nchar 1 2 3  4  5  6  7  8 9 10
 freq  1 6 4 25 54 53 43 16 1  1</code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Total tokens:"</span>, <span class="fu">sum</span>(tab), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total tokens: 204 </code></pre>
 </div>
-<p>204 “words,” and the lengths cluster almost entirely between 4 and 8 characters—far too tight a spread for genuine word boundaries in any European language. That’s the tell that the spacing in the printed cipher is cosmetic.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>prop_4_8 <span class="ot">&lt;-</span> <span class="fu">sum</span>(tab[<span class="fu">names</span>(tab) <span class="sc">%in%</span> <span class="fu">as.character</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">8</span>)]) <span class="sc">/</span> <span class="fu">sum</span>(tab)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Proportion with 4-6 characters: %.1f%%</span><span class="sc">\n</span><span class="st">"</span>, <span class="dv">100</span> <span class="sc">*</span> prop_4_8))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Proportion with 4-6 characters: 93.6%</code></pre>
+</div>
+</div>
+<p>204 “words,” and the lengths cluster almost entirely between 4 and 8 characters. You can actually see this narrow range of word lengths in the “rivers” of spaces that run down the lines in the cipher text. In French prose (the plaintext language, as it turns out), roughly 30% of words are 1–2 letters—<em>de</em>, <em>en</em>, <em>le</em>, <em>il</em>, <em>se</em>, the connective tissue of any sentence. In the cipher, barely 3% are that short; the rest pile up in the 4–8 character range at a frequency no natural language produces. The spacing is decorative and purposely deceptive, not linguistic.</p>
+<table class="caption-top table">
+<caption>Approximate word-length distributions (% of tokens), European languages vs.&nbsp;van Langren’s cipher.</caption>
+<colgroup>
+<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 15%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Length</th>
+<th style="text-align: right;">English</th>
+<th style="text-align: right;">French</th>
+<th style="text-align: right;">Spanish</th>
+<th style="text-align: right;">German</th>
+<th style="text-align: right;">Langren</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1–2</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;"><span style="color:red"><strong>3</strong></span></td>
+</tr>
+<tr class="even">
+<td>3–5</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">41</td>
+</tr>
+<tr class="odd">
+<td>6–9</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;"><span style="color:red"><strong>55</strong></span></td>
+</tr>
+<tr class="even">
+<td>10+</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;"><span style="color:red"><strong>&lt;1</strong></span></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="step-2-strip-spaces-and-decoy-capitals" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-strip-spaces-and-decoy-capitals">Step 2: strip spaces and decoy capitals</h3>
+<p>Removing the space characters and capital letters in the ciphertext is easily handled by <code>gsub()</code>, mapping these into NULL (““) characters.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nospace <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"[ </span><span class="sc">\t</span><span class="st">]+"</span>, <span class="st">""</span>, cipher_raw)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>nocaps <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"[A-Z]"</span>, <span class="st">""</span>, nospace)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">substr</span>(nospace, <span class="dv">1</span>, <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nospace <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"[ </span><span class="sc">\t</span><span class="st">]+"</span>, <span class="st">""</span>, cipher_raw)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>nocaps <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"[A-Z]"</span>, <span class="st">""</span>, nospace)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">substr</span>(nospace, <span class="dv">1</span>, <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "ImIeV9ap3ApaIhrr5etlSmeIf95lesEortEr5eeadnu9cRtl9e9TomgupeaN"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">substr</span>(nocaps, <span class="dv">1</span>, <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">substr</span>(nocaps, <span class="dv">1</span>, <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "me9ap3pahrr5etlmef95lesortr5eeadnu9ctl9e9omgupeaſnndclveadfn"</code></pre>
 </div>
 </div>
-<p>Removing the capital letters scattered through the text (they carry no information—Van Eycke found they were pure noise) leaves a single unbroken run of lowercase letters, long-s (ſ), and digits.</p>
+<p>Van Eycke also found that the capital letters sprinkled through the text carried no useful information. They were pure noise, meant to further deceive any rival who would try to steal his thunder.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Deleting these leaves a single unbroken run of 987 lowercase letters, long-s (ſ) characters, and digits.</p>
 </section>
 <section id="step-3-split-into-three-interleaved-streams" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-split-into-three-interleaved-streams">Step 3: split into three interleaved streams</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>chars <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(nocaps, <span class="st">""</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(chars)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>stream1 <span class="ot">&lt;-</span> <span class="fu">paste</span>(chars[<span class="fu">seq</span>(<span class="dv">1</span>, n, <span class="at">by =</span> <span class="dv">3</span>)], <span class="at">collapse =</span> <span class="st">""</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>stream2 <span class="ot">&lt;-</span> <span class="fu">paste</span>(chars[<span class="fu">seq</span>(<span class="dv">2</span>, n, <span class="at">by =</span> <span class="dv">3</span>)], <span class="at">collapse =</span> <span class="st">""</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>stream3 <span class="ot">&lt;-</span> <span class="fu">paste</span>(chars[<span class="fu">seq</span>(<span class="dv">3</span>, n, <span class="at">by =</span> <span class="dv">3</span>)], <span class="at">collapse =</span> <span class="st">""</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">substr</span>(stream1, <span class="dv">1</span>, <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>chars <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(nocaps, <span class="st">""</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(chars)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>stream1 <span class="ot">&lt;-</span> <span class="fu">paste</span>(chars[<span class="fu">seq</span>(<span class="dv">1</span>, n, <span class="at">by =</span> <span class="dv">3</span>)], <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>stream2 <span class="ot">&lt;-</span> <span class="fu">paste</span>(chars[<span class="fu">seq</span>(<span class="dv">2</span>, n, <span class="at">by =</span> <span class="dv">3</span>)], <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>stream3 <span class="ot">&lt;-</span> <span class="fu">paste</span>(chars[<span class="fu">seq</span>(<span class="dv">3</span>, n, <span class="at">by =</span> <span class="dv">3</span>)], <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">substr</span>(stream1, <span class="dv">1</span>, <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "maprem9er5autempſdvdepirtem5ntenmarkantquelqueeſto9ll5co7nue"</code></pre>
 </div>
@@ -240,19 +375,19 @@ freq  1 6 4 25 54 53 43 16 1  1</code></pre>
 <h3 class="anchored" data-anchor-id="step-4-undo-the-digit-substitution">Step 4: undo the digit substitution</h3>
 <p>The last layer is a simple key: 1 = a, 2 = b, … 9 = i. Concatenate the three streams in order and substitute:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plain_raw <span class="ot">&lt;-</span> <span class="fu">paste0</span>(stream1, stream2, stream3)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>digit_map <span class="ot">&lt;-</span> <span class="fu">setNames</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>], <span class="fu">as.character</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plain_chars <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(plain_raw, <span class="st">""</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>subbed <span class="ot">&lt;-</span> <span class="fu">vapply</span>(plain_chars, <span class="cf">function</span>(ch) {</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (ch <span class="sc">%in%</span> <span class="fu">names</span>(digit_map)) digit_map[[ch]] <span class="cf">else</span> ch</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>}, <span class="fu">character</span>(<span class="dv">1</span>))</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>plain_final <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"ſ"</span>, <span class="st">"s"</span>, <span class="fu">paste</span>(subbed, <span class="at">collapse =</span> <span class="st">""</span>))</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># an excerpt further into the message, not the very start</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>excerpt <span class="ot">&lt;-</span> <span class="fu">substr</span>(plain_final, <span class="dv">533</span>, <span class="dv">940</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (s <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nchar</span>(excerpt), <span class="at">by =</span> <span class="dv">68</span>)) {</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">substr</span>(excerpt, s, <span class="fu">min</span>(s <span class="sc">+</span> <span class="dv">67</span>, <span class="fu">nchar</span>(excerpt))), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>plain_raw <span class="ot">&lt;-</span> <span class="fu">paste0</span>(stream1, stream2, stream3)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>digit_map <span class="ot">&lt;-</span> <span class="fu">setNames</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>], <span class="fu">as.character</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plain_chars <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(plain_raw, <span class="st">""</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>subbed <span class="ot">&lt;-</span> <span class="fu">vapply</span>(plain_chars, <span class="cf">function</span>(ch) {</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (ch <span class="sc">%in%</span> <span class="fu">names</span>(digit_map)) digit_map[[ch]] <span class="cf">else</span> ch</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>}, <span class="fu">character</span>(<span class="dv">1</span>))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>plain_final <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"ſ"</span>, <span class="st">"s"</span>, <span class="fu">paste</span>(subbed, <span class="at">collapse =</span> <span class="st">""</span>))</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># an excerpt further into the message, not the very start</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>excerpt <span class="ot">&lt;-</span> <span class="fu">substr</span>(plain_final, <span class="dv">533</span>, <span class="dv">940</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (s <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nchar</span>(excerpt), <span class="at">by =</span> <span class="dv">68</span>)) {</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">substr</span>(excerpt, s, <span class="fu">min</span>(s <span class="sc">+</span> <span class="dv">67</span>, <span class="fu">nchar</span>(excerpt))), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ditesuasesetlesaiantssoitvuideeeafinderoncognoisteraparlesestoillese 
 ncombiendetempsellesseuuidenteeqraaumesmemeridiendulieouueichelflore 
@@ -262,12 +397,29 @@ queprendrecestedifferenceparlesestoillesdufirmamentautentantquelapre
 miereuastremplideleaudelamnneraouuertnrealasecondelaqnellefiniraauss </code></pre>
 </div>
 </div>
-<p>Even with the word breaks still missing and a rough patch or two (likely a transcription slip somewhere in the 2010 <code>cipher.txt</code>, fifteen years old at this point), real seventeenth-century French is unmistakably there: <em>estoilles</em> (stars), <em>meridon</em> [méridien], and then—right on cue—<em>…florenc[ius] ouan langren dict qu’on faira deux uises de cuiure de semblable c[a]pacite en forme de celindre…</em>—“Florentius van Langren says one shall make two vessels of copper of similar capacity in the form of a cylinder.” That’s the same instruction already quoted in English translation above, arriving from the other direction, out of a 380-year-old jumble of letters and digits.</p>
+<p>Even with the word breaks still missing and a rough patch or two (likely a transcription slip somewhere in the 2010 <code>cipher.txt</code>, fifteen years old at this point), real seventeenth-century French is unmistakably there: <em>estoilles</em> (stars), <em>meridon</em> [méridien], and then—right on cue—</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>French</strong></td>
+<td style="text-align: left;"><em>…florenc[ius] ouan langren dict qu’on faira deux uises de cuiure de semblable c[a]pacite en forme de celindre…</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>English</strong></td>
+<td style="text-align: left;">“Florentius van Langren says one shall make two vessels of copper of similar capacity in the form of a cylinder.”</td>
+</tr>
+</tbody>
+</table>
+<p>That’s the same instruction already quoted in English translation above, arriving from the other direction, out of a 380-year-old jumble of letters and digits.</p>
 </section>
 </section>
-<section id="what-he-was-actually-hiding" class="level2">
-<h2 class="anchored" data-anchor-id="what-he-was-actually-hiding">What He Was Actually Hiding</h2>
-<p>The plaintext, once unwound, turns out to describe not a lunar method at all, but a water clock:</p>
+<section id="what-van-langren-was-hiding" class="level2">
+<h2 class="anchored" data-anchor-id="what-van-langren-was-hiding">What van Langren Was Hiding</h2>
+<p>The plaintext, once unwound, turns out to describe not a lunar method at all, but a 24-hour water clock:</p>
 <blockquote class="blockquote">
 <p>Make two cylindrical copper vessels of equal capacity, each with a conical point at the bottom and a small hole at the center of that point. Fill them with seawater and let them drain. At departure, start the first vessel running while noting which known star sits on the meridian. That vessel will run empty in exactly 24 hours of sidereal time—the interval for a star to return to the same meridian. The moment the first vessel empties, start the second. Do this daily throughout the voyage. Each time a vessel empties, compare the position of the reference star against the meridian to read off how many degrees of longitude have been traveled from the port of departure. A small cork float, riding on the water inside, marks the level so the moment of emptying can be seen precisely.</p>
 </blockquote>
@@ -280,15 +432,184 @@ miereuastremplideleaudelamnneraouuertnrealasecondelaqnellefiniraauss </code></pr
 <p>The clepsydra—Greek for “water thief”—is one of the oldest instruments humans built for a purpose other than agriculture or shelter. The earliest known example comes from the tomb of Amenhotep I in Egypt, around 1500 BCE; water clocks appear independently in China at roughly the same remove. The basic principle never changed across three millennia: water drains from, or fills, a graduated vessel at a controlled rate, and the level tells you how much time has passed.</p>
 <p>What did change was the engineering. Ctesibius of Alexandria, in the third century BCE, added a second catch-vessel and a float mechanism, and eventually gears and a waterwheel to correct for the fact that Greek “hours” were a twelfth of daylight and therefore changed length with the seasons. Roman magistrates used clepsydras to time court speeches; ancient Greek naval crews used them to mark watch rotations at sea—so van Langren, whatever else he was doing, was not innovating the <em>application</em>, only the specific protocol. Chinese engineers under the Song dynasty built cascading, multi-stage clepsydras accurate enough to drive astronomical demonstration devices. The Han-dynasty court astronomer Huan Tan was already writing, two thousand years before van Langren, about how temperature affected the flow rate of water clocks and threw off their accuracy against a sundial.</p>
 <p>That last detail matters, because it was already the known Achilles’ heel of the technology, and it is compounded at sea by something no clepsydra maker on dry land ever had to solve: motion. A ship pitching in a swell does not let water drain at a controlled, predictable rate through a fixed orifice. Van Langren’s copper cones, however precisely matched at the maker’s bench, would have drifted out of agreement with each other and with the stars within days, for reasons no amount of careful calibration in a Brussels workshop could fix. It is a method that works beautifully at a desk and fails exactly where it needed to succeed.</p>
-<p>Van Langren wrote his cipher in the early 1630s. Christiaan Huygens would not patent the pendulum clock—the device that finally offered land-based timekeeping precise enough to matter—until 1656, and an accurate marine chronometer was still more than a century away, awaiting John Harrison. At the moment van Langren guarded his secret, the water clock was not an anachronism. It was still, in a sense, the state of the art in a world without anything better. He just happened to be trying to make it do a job—hold time steady on a heaving ship for weeks—that nothing built before the eighteenth century could actually do.</p>
+<p>Van Langren wrote his cipher in the early 1630s. Christiaan Huygens would not patent the pendulum clock—the device that finally offered land-based timekeeping precise enough to matter—until 1656, and an accurate <a href="https://www.rmg.co.uk/stories/time/harrisons-clocks-longitude-problem">marine chronometer</a> was still more than a century away, awaiting <a href="https://en.wikipedia.org/wiki/John_Harrison">John Harrison</a>. At the moment van Langren guarded his secret, the water clock was not an anachronism. It was still, in a sense, the state of the art in a world without anything better. He just happened to be trying to make it do a job—hold time steady on a heaving ship for weeks—that nothing built before the eighteenth century could actually do.</p>
 </section>
 <section id="every-cipher-tells-a-story" class="level2">
 <h2 class="anchored" data-anchor-id="every-cipher-tells-a-story">Every Cipher Tells a Story</h2>
-<p>I keep coming back to the epigraph we used to open the 2010 paper, borrowed a little irreverently from Rod Stewart: <em>every picture tells a story</em>. It turns out the same is true of every cipher, and this one told two stories at once. The first is about van Langren himself—a man who staked years of court patronage on a secret that turned out to be an old idea applied to an impossible environment, and who is, with some justice, remembered instead for the achievement he didn’t encrypt: the first comprehensive map of the moon.</p>
-<p>The second story is about the people who finally read it. Not a professional historian of science, not a specialist in seventeenth-century cryptography, but a chain of amateurs and one extraordinarily talented codebreaker: an astronomy hobbyist who wouldn’t let the puzzle drop, a mathematician who spent a decade asking strangers on forums for help, and a warehouse worker in Flanders who had, a few weeks earlier, helped unmask a serial killer. Joaquín’s ancestor’s papers gave us the graph’s true origin in 2009. Jarl Van Eycke’s week of work gave us, in 2021, the thing van Langren had been most careful to hide, and the thing I, writing about him in the year between, never thought to go looking for.</p>
+<p>I keep coming back to the epigraph we used to open the 2010 paper, borrowed a little irreverently from Rod Stewart: <em>every picture tells a story</em>. It turns out the same is true of every cipher, and this one told two stories at once. The first is about van Langren himself—a man who staked years of court patronage on a secret that turned out to be an old idea applied to an impossible environment; and one who is, with some justice, remembered instead for the achievement he didn’t encrypt: the first comprehensive map of the moon.</p>
+<p>The second story is about the people who finally read it. Not a professional historian of science, not a specialist in seventeenth-century cryptography, but a chain of amateurs and one extraordinarily talented codebreaker: an astronomy hobbyist who wouldn’t let the puzzle drop, a mathematician who spent a decade asking strangers on forums for help, and a warehouse worker in Flanders who had, a few weeks earlier, helped unmask a serial killer. Joaquín’s ancestor’s papers gave us the graph’s true origin in 2009. Jarl Van Eycke’s week of work gave us, in 2021, the thing van Langren had been most careful to hide, and the thing I, writing about him in the years between, was never able to find.</p>
+</section>
+<section id="bonus-reproducing-langrens-1644-graph" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-reproducing-langrens-1644-graph">Bonus: Reproducing Langren’s 1644 Graph</h2>
+<p>Reproducing a historical graph with modern tools is not just technical imitation. In my paper <a href="https://www.datavis.ca/papers/hbook.pdf">“A Brief History of Data Visualization”</a> <span class="citation" data-cites="Friendly:2006:hbook">(<a href="#ref-Friendly:2006:hbook" role="doc-biblioref">Friendly 2007</a>)</span> I describe an approach I call <strong>understanding through reproduction</strong> (or <em>re-visioning</em>): remaking a historical graph from the ground up—with current data and software—as a way of answering the historian’s perennial question, <em>what was he thinking?</em></p>
+<p>The attempt to reproduce forces you to make the choices the original maker faced: what to show, how to encode it, what to leave out. Those choices, and the difficulty of getting them right, reveal the intellectual and graphical constraints of the time. The method can reveal hidden insights, help to appreciate the historical ingenuity and sheer brilliance of hand-drawn graphics and reveal design flaws, such as distorted scales. Sometimes, the code you write to reproduce a graph</p>
+<p>For van Langren’s 1D dot plot the exercise is particularly instructive. The graph had no precedent—he was inventing a form, not following one. Try to re-create it and you realize almost immediately why a table of twelve longitude values would not have made his point: a column of numbers, however sorted, tells you nothing at a glance about their spread. Only when you place them on a common scale does the argument become visible—the estimates are scattered across nearly the entire plausible range, and <em>that</em> is van Langren’s case to the King.</p>
+<p>The data behind van Langren’s famous 1D dot plot are in <code>HistData::Langren1644</code>, which also ships the Google map image used here as a backdrop. The plot is built up in three layers. We define a helper function for each layer so the cumulative build-up can be shown cleanly.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jpeg)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(HistData)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Langren1644)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># translate degrees longitude → pixel x-coordinate</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>xlate <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">131</span> <span class="sc">+</span> x <span class="sc">*</span> <span class="dv">726</span> <span class="sc">/</span> <span class="dv">30</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Read image once globally so gdim is available for fig-asp chunk sizing</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>gimage <span class="ot">&lt;-</span> <span class="fu">readJPEG</span>(<span class="fu">system.file</span>(<span class="st">"images"</span>, <span class="st">"google-toledo-rome3.jpg"</span>, <span class="at">package =</span> <span class="st">"HistData"</span>))</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>gdim   <span class="ot">&lt;-</span> <span class="fu">dim</span>(gimage)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]   <span class="co"># NB: readJPEG returns y, x, colors</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>draw_map <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">yaxt =</span> <span class="st">"n"</span>, <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">c</span>(<span class="dv">1</span>, gdim[<span class="dv">2</span>]), <span class="fu">c</span>(<span class="dv">1</span>, gdim[<span class="dv">1</span>]), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">asp =</span> <span class="dv">1</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rasterImage</span>(gimage, <span class="dv">1</span>, <span class="dv">1</span>, gdim[<span class="dv">2</span>], gdim[<span class="dv">1</span>])</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(op)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>add_cities <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">131</span>, <span class="dv">59</span>), <span class="fu">c</span>(<span class="dv">506</span>, <span class="dv">119</span>)), <span class="at">cex =</span> <span class="dv">2</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">131</span>, <span class="dv">95</span>,  <span class="st">"Toledo"</span>, <span class="at">cex =</span> <span class="fl">1.5</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">506</span>, <span class="dv">104</span>, <span class="st">"Roma"</span>,   <span class="at">cex =</span> <span class="fl">1.5</span>)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>add_dotplot <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">131</span>, <span class="dv">856</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">52</span>, <span class="dv">52</span>)))</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>  ticks <span class="ot">&lt;-</span> <span class="fu">xlate</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">30</span>, <span class="dv">5</span>))</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(ticks, <span class="dv">52</span>, ticks, <span class="dv">45</span>)</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(ticks, <span class="dv">40</span>, <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">30</span>, <span class="dv">5</span>))</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fu">xlate</span>(<span class="dv">8</span>), <span class="dv">67</span>, <span class="st">"Grados de la Longitud"</span>, <span class="at">cex =</span> <span class="fl">1.7</span>)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="at">x =</span> <span class="fu">xlate</span>(Langren1644<span class="sc">$</span>Longitude), <span class="at">y =</span> <span class="fu">rep</span>(<span class="dv">57</span>, <span class="fu">nrow</span>(Langren1644)),</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch =</span> <span class="dv">25</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">bg =</span> <span class="st">"blue"</span>)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="at">x =</span> <span class="fu">xlate</span>(Langren1644<span class="sc">$</span>Longitude), <span class="at">y =</span> <span class="fu">rep</span>(<span class="dv">57</span>, <span class="fu">nrow</span>(Langren1644)),</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>       <span class="at">labels =</span> Langren1644<span class="sc">$</span>Name, <span class="at">srt =</span> <span class="dv">90</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">1</span>, .<span class="dv">5</span>), <span class="at">cex =</span> <span class="fl">0.8</span>)</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Step 1:</strong> Draw the background map. <code>readJPEG()</code> returns a pixel array; the plot device is scaled to those pixel dimensions (with <code>asp = 1</code>) so later additions can be placed by pixel coordinate.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_map</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="vanLangren_files/figure-html/langren-step1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Step 2:</strong> Mark Toledo and Rome. Their pixel positions were measured from the image, with the origin at the bottom-left corner.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_map</span>()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_cities</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="vanLangren_files/figure-html/langren-step2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Step 3:</strong> Overlay the 1D dot plot. <code>xlate()</code> maps each astronomer’s longitude estimate (in degrees) to a pixel x-coordinate. Names are rotated 90° to avoid overlap.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_map</span>()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_cities</span>()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add_dotplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="vanLangren_files/figure-html/langren-step3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The wide scatter of the estimates—spanning nearly half the Toledo-to-Rome range—is exactly the argument van Langren was making to the King: previous methods were hopelessly variable, and someone (him) deserved a reward for having a better one.</p>
+<section id="i-did-that-better-by-hand" class="level3">
+<h3 class="anchored" data-anchor-id="i-did-that-better-by-hand">“I did that better by hand!”</h3>
+<p>The map overlay above answers the <em>argument</em> well enough. But re-visioning in the deeper sense means trying to reproduce the <em>artifact</em>—the spare white strip, the figure-8 snowman markers, the italic lettering. Imagine showing van Langren the map overlay; he studies it for a moment and turns up his nose: <em>“I did that better by hand.”</em></p>
+<p>He has a point. Each of his snowman markers was hand-set type; each name was individually engraved. The uniformity <code>ggplot2</code> achieves in milliseconds would have taken hours of skilled labour in 1644. So: how close can we get?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Langren1644.jpg" class="img-fluid figure-img"></p>
+<figcaption>Van Langren’s original 1644 graph</figcaption>
+</figure>
+</div>
+<p>The reproduction uses a handful of <code>ggplot2</code> techniques worth noting:</p>
+<ul>
+<li><strong>Period font</strong>: the <code>showtext</code> package loads <em>IM Fell English</em> from Google Fonts, a typeface digitised from the Fell collection donated to Oxford University Press in 1686—forty-two years after <em>La Verdadera</em> was printed, but as close in spirit as a free font gets.</li>
+<li><strong>Arbitrary geometry via <code>annotate()</code></strong>: the axis line, minor tick marks, and major ticks are plain <code>"segment"</code> annotations rather than the usual ggplot2 axis machinery, which gives exact control over length and position. Fixed text labels—<em>TOLEDO.</em>, <em>ROMA</em>, <em>Grados de la Longitud.</em>—are placed the same way, with <code>hjust</code>, <code>vjust</code>, and <code>angle</code> set individually.</li>
+<li><strong>Snowman markers</strong>: van Langren’s figure-8 data symbols are approximated by two stacked <code>geom_point()</code> calls, one per astronomer—a filled body circle sitting on the axis and a smaller hollow head circle above it. <code>coord_fixed(ratio = 1)</code> locks the x and y scales to the same physical size so the circles stay round and the overall strip proportions match the original’s roughly 5:1 width-to-height ratio.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="st">"IM Fell English"</span>, <span class="st">"imfell"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_opts</span>(<span class="at">dpi =</span> <span class="dv">96</span>)   <span class="co"># match Quarto HTML default; fixes font size vs RStudio mismatch</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>roma_x    <span class="ot">&lt;-</span> <span class="fl">23.5</span>          <span class="co"># van Langren's placement</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>true_long <span class="ot">&lt;-</span> <span class="dv">16</span> <span class="sc">+</span> <span class="dv">31</span><span class="sc">/</span><span class="dv">60</span>   <span class="co"># true distance, unknown at the time</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>body_size <span class="ot">&lt;-</span> <span class="fl">4.0</span>;  head_size <span class="ot">&lt;-</span> <span class="fl">2.5</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>body_y    <span class="ot">&lt;-</span> <span class="fl">0.50</span>; head_y    <span class="ot">&lt;-</span> <span class="fl">0.80</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Langren1644, <span class="fu">aes</span>(<span class="at">x =</span> Longitude)) <span class="sc">+</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">xend =</span> <span class="dv">32</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> <span class="dv">0</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">32</span>, <span class="dv">1</span>), <span class="at">xend =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">32</span>, <span class="dv">1</span>),</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> <span class="sc">-</span><span class="fl">0.15</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>), <span class="at">xend =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>),</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> <span class="sc">-</span><span class="fl">0.35</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>), <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.6</span>,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"10."</span>, <span class="st">"20."</span>, <span class="st">"30."</span>), <span class="at">family =</span> <span class="st">"imfell"</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> body_y),</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> body_size, <span class="at">fill =</span> <span class="st">"black"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">stroke =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> head_y),</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> head_size, <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">stroke =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"point"</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> body_y,</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> body_size, <span class="at">fill =</span> <span class="st">"black"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">stroke =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"point"</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> head_y,</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> head_size, <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">stroke =</span> <span class="fl">1.0</span>) <span class="sc">+</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> head_y <span class="sc">+</span> <span class="fl">0.35</span>, <span class="at">label =</span> <span class="fu">paste0</span>(Name, <span class="st">"."</span>)),</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="st">"imfell"</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.8</span>, <span class="at">y =</span> <span class="fl">3.5</span>,</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"TOLEDO."</span>, <span class="at">angle =</span> <span class="dv">90</span>, <span class="at">family =</span> <span class="st">"imfell"</span>, <span class="at">size =</span> <span class="fl">4.2</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> roma_x, <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"ROMA"</span>, <span class="at">family =</span> <span class="st">"imfell"</span>, <span class="at">size =</span> <span class="fl">4.2</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">vjust =</span> <span class="fl">2.0</span>) <span class="sc">+</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">6</span>, <span class="at">y =</span> <span class="fl">2.8</span>,</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Grados de la Longitud."</span>,</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="st">"imfell"</span>, <span class="at">size =</span> <span class="fl">6.6</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arrow below the axis marking the true distance (16°31'), unknown to van Langren</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>,</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> true_long, <span class="at">xend =</span> true_long, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.9</span>, <span class="at">yend =</span> <span class="sc">-</span><span class="fl">0.4</span>,</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.15</span>, <span class="st">"cm"</span>), <span class="at">type =</span> <span class="st">"open"</span>),</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>(<span class="at">ratio =</span> <span class="dv">1</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">33</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.0</span>, <span class="fl">6.5</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="vanLangren_files/figure-html/langren-ggplot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Van Langren would still turn up his nose—the font is only a close cousin of his printer’s type, and his snowman markers were hand-punched where ours are computed circles. But the argument the graph was built to make comes through regardless: twelve authorities, strung across more than fifteen degrees, and not one of them close to the true answer of 16°31’.</p>
+
+</section>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Friendly:2006:hbook" class="csl-entry" role="listitem">
+Friendly, Michael. 2007. <span>“A Brief History of Data Visualization.”</span> Chap. 1 in <em>Handbook of Computational Statistics: Data Visualization</em>, edited by C. Chen, Wolfgang Härdle, and Antony Unwin, III. Springer-Verlag.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The Zodiac Killer is one of the infamous unsolved mysteries in American criminal history. In the San Francisco Bay area in the 1968–1969s, this unknown murder killed at least five people. Seeking public attention, he sent cryptic ciphers to newspapers and taunted police with letters describing his acts.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In cryptography, letter-trigram statistics involve measuring the frequency of overlapping three-letter sequences in a language (e.g., “the,” “and”). Analysts use these patterns as a “fitness score” to evaluate text coherence. If a proposed decryption matches the statistical probability of real-language trigrams, the plaintext is considered a valid decoding. A useful introduction to historical cryptography is Nigel Smart’s <a href="https://www.cis.upenn.edu/~sga001/classes/cis331f19/resources/smart_ch3.pdf"><em>Cryptography: An Introduction</em>, Ch 3</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The practice of hiding a priority claim in a cipher was not unique to van Langren. Galileo registered his 1610 observation of Saturn’s peculiar shape as a 37-letter Latin anagram (<em>Altissimum planetam tergeminum observavi</em> — “I have observed the highest planet three-formed” — what he had actually seen were the rings). Robert Hooke published his law of elasticity as the anagram <em>ceiiinosssttu</em> in 1676, decoding it two years later as <em>ut tensio, sic vis</em> (“as the extension, so the force”). In each case the goal was the same: hold the date of discovery in escrow without giving anything away.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

@@ -12,13 +12,17 @@
 # Token lengths are suspiciously uniform -- too tight a spread for genuine
 # word boundaries in any European language.
 
-cipher_raw <- readLines("cipher-transcription.txt", encoding = "UTF-8") |> paste(collapse = " ")
+cipher_raw <- readLines(here::here("blog/drafts/vanLangren", "cipher-transcription.txt"),
+                        encoding = "UTF-8") |> paste(collapse = " ")
 tokens <- strsplit(cipher_raw, "[ \t]+")[[1]]
 tokens <- tokens[tokens != ""]
 tab <- table(nchar(tokens))
 m <- rbind(nchar = as.integer(names(tab)), freq = as.integer(tab))
 colnames(m) <- rep("", ncol(m))
 m
+cat("Total tokens:", sum(tab), "\n")           # sum(m) would be wrong: it adds both rows
+prop_4_8 <- sum(tab[names(tab) %in% as.character(4:8)]) / sum(tab)
+cat(sprintf("Proportion with 4-6 characters: %.1f%%\n", 100 * prop_4_8))
 
 # ---- 2. Strip spaces and decoy capitals ------------------------------------
 # Capitals scattered through the text carry no information; removing them
