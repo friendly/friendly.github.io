@@ -299,11 +299,16 @@ What did change was the engineering. [Ctesibius of Alexandria](https://en.wikipe
 
 Chinese engineers under the [Song dynasty](https://en.wikipedia.org/wiki/Song_dynasty) built cascading, multi-stage clepsydras accurate enough to drive astronomical demonstration devices. The Han-dynasty court astronomer [Huan Tan](https://en.wikipedia.org/wiki/Huan_Tan) was already writing, two thousand years before van Langren, about how temperature affected the flow rate of water clocks and threw off their accuracy against a sundial.
 
-That last detail matters most of all, because it was already the known Achilles' heel of the technology, and it is compounded at sea by something no clepsydra maker on dry land ever had to solve: **motion**. Van Langren's copper cones, however precisely matched at the maker's bench, would have run at different rates within days — slowing as water pressure fell with the draining vessel, drifting further with the temperature swings between day and night, and lurching unpredictably with every pitch of the ship in a swell. The arithmetic is unforgiving: four minutes of accumulated time error equals one degree of longitude, and no clepsydra could hold rate reliably enough over a week at sea to stay within that margin, for reasons no amount of careful calibration in an Antwerp workshop could fix. It is a method that works beautifully at a desk and fails exactly where it needed to succeed.
+That last detail matters most of all, because it was already the known Achilles' heel of the technology, and it is compounded at sea by something no clepsydra maker on dry land ever had to solve: **motion**. Van Langren's copper cones, however precisely matched at the maker's bench, would have run at different rates within days — slowing as water pressure fell with the draining vessel, drifting further with the temperature swings between day and night, and lurching unpredictably with every pitch of the ship in a swell. 
+
+The arithmetic is unforgiving: four minutes of accumulated time error equals one degree of longitude, and no clepsydra could hold rate reliably enough over a week at sea to stay within that margin, for reasons no amount of careful calibration in an Antwerp workshop could fix. It is a method that works beautifully at a desk and fails exactly where it needed to succeed.
 
 
+::: {style="float: right; margin: 0 0 1em 1.5em; width: 30%;"}
+![Harrison's H1 marine chronometer (1735). By Phantom Photographer, [CC BY-SA 3.0](https://commons.wikimedia.org/w/index.php?curid=13817053).](images/Harrison-H1_low_250.jpg)
+:::
 Van Langren wrote his cipher in the early 1630s. [Christiaan Huygens](https://en.wikipedia.org/wiki/Christiaan_Huygens) would not patent the [pendulum clock](https://en.wikipedia.org/wiki/Pendulum_clock)---the device that finally offered land-based timekeeping precise enough to matter---until 1656. The ultimate solution lay in
-an accurate [marine chronometer](https://www.rmg.co.uk/stories/time/harrisons-clocks-longitude-problem), which was still more than a century away (1736), awaiting the master clockmakter [John Harrison](https://en.wikipedia.org/wiki/John_Harrison). 
+an accurate [marine chronometer](https://www.rmg.co.uk/stories/time/harrisons-clocks-longitude-problem), which was still more than another century away (1736), awaiting the master clockmakter [John Harrison](https://en.wikipedia.org/wiki/John_Harrison) to build his "H1".
 
 At the moment van Langren guarded his secret, the water clock was not an anachronism. It was still, in a sense, the state of the art in a world without anything better. He just happened to be trying to make it do a job---hold time steady on a heaving ship for weeks---that nothing built before the eighteenth century could actually do.
 
@@ -334,11 +339,11 @@ almost immediately why a table of twelve longitude values would not have made hi
 column of numbers, however sorted, tells you nothing at a glance about their spread.
 
 Only when you place them on a common scale does the argument become visible---the estimates
-are scattered across nearly the entire plausible range, and *that* is van Langren's case to
+are scattered across nearly the entire plausible range, and *that* is precisely van Langren's case to
 the King.
 
 The data behind van Langren's famous 1D dot plot are in `HistData::Langren1644`, which also
-ships the Google map image used here as a backdrop. The plot is built up in three layers.
+provides the Google map image used here as a backdrop. The plot is built up in three layers.
 We define a helper function for each layer so the cumulative build-up can be shown cleanly.
 
 ```{r langren-setup}
@@ -378,6 +383,9 @@ add_dotplot <- function() {
        labels = Langren1644$Name, srt = 90, adj = c(-.1, .5), cex = 0.8)
 }
 ```
+
+(This way of parsing an historical plot is one we also use in `HistData` to re-vision
+[John Snow's Cholera dot plot](https://friendly.github.io/HistData/reference/Snow.html), and [Minard's March on Moscow graphic](https://friendly.github.io/HistData/reference/Minard.html).)
 
 **Step 1:** Draw the background map. `readJPEG()` returns a pixel array; the plot device
 is scaled to those pixel dimensions (with `asp = 1`) so later additions can be placed by
