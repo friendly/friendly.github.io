@@ -3,6 +3,7 @@ title: "Distribution of Determinants of 3×3 Matrices from {1,2,...,9}"
 description: "Exploring an exact combinatorial result and Monte Carlo approximation for determinants of all permutation matrices of the digits 1–9"
 author: "Michael Friendly"
 date: "2026-07-09"
+date-modified: today
 draft: true
 categories: [R, combinatorics, linear algebra, simulation]
 image: "images/determinant_distribution_comparison.png"
@@ -56,7 +57,10 @@ We answer this question in two ways:
 
 ## Setup
 
+Load the packages we'll use here.
+
 ```{r libraries}
+#| code-fold: show
 library(ggplot2)
 library(dplyr)
 library(arrangements)
@@ -106,6 +110,7 @@ determinants_random <- replicate(B, {
 
 How do the exact and simulated distributions compare?
 ```{r summary}
+#| code-fold: true
 det_summary <- function(x) {
   data.frame(
     N       = length(x),
@@ -135,6 +140,7 @@ showing the exact and permutation distributions as both histograms
 and density curves.
 
 ```{r plot-comparison}
+#| code-fold: true
 df_combined <- rbind(
   data.frame(determinant = determinants_exact,
              method = "Exact (all 9! permutations)"),
@@ -166,6 +172,7 @@ the density plot shows a bunch of small "shoulders", and there are lots of
 spikes and troughs.
 
 ```{r plot-exact}
+#| code-fold: true
 ggplot(data.frame(determinant = determinants_exact), aes(x = determinant)) +
   geom_histogram(aes(y = after_stat(density)),
                  bins = 120, fill = "#3498db", alpha = 0.7) +
@@ -182,26 +189,43 @@ ggplot(data.frame(determinant = determinants_exact), aes(x = determinant)) +
 
 ## Additional Analysis
 
+The mathematical form of this distribution is unknown, so to supplement the eye-ball view above, some summary statistics help characterize it more precisely. Because the distribution is exactly symmetric around zero (as the analytical argument confirms), the mean and median are both zero and skewness measures vanish; the interesting quantities are those that capture spread and shape.
+
+```{r summary-stats}
+c(mean   = mean(determinants_exact),
+  median = median(determinants_exact),
+  sd     = round(sd(determinants_exact), 3))
+```
+
 ### Quartiles
+
+Because the distribution is exactly symmetric, Q1 = −Q3 and the median is 0. The interquartile range (Q3 − Q1) covers the middle 50% of determinant values, and the min/max give the full support of the distribution.
 
 ```{r quartiles}
 quantile(determinants_exact, probs = c(0, 0.25, 0.5, 0.75, 1))
 ```
 
+### Skewness
+
+With exact symmetry guaranteed analytically, both the parametric skewness (third standardized central moment, via `skewness()` from `moments`) and the non-parametric [Bowley quartile skewness](https://en.wikipedia.org/wiki/Skewness#Quartile-based_measures), $(Q_3 + Q_1 - 2Q_2)/(Q_3 - Q_1)$, should be exactly zero:
+
+```{r skewness}
+q <- quantile(determinants_exact, probs = c(0.25, 0.5, 0.75))
+c(parametric = skewness(determinants_exact),
+  bowley     = unname((q[3] + q[1] - 2 * q[2]) / (q[3] - q[1])))
+```
+
+Both are effectively zero, as expected: for every permutation yielding determinant $d$, swapping any two rows produces determinant $-d$, giving an exact bijection between the positive and negative halves of the distribution.
+
 ### Most Common Values
+
+Because the distribution is discrete and integer-valued, some determinant values occur far more often than others. The ten most frequent values are:
 
 ```{r frequency-table}
 sort(table(determinants_exact), decreasing = TRUE) |> head(10)
 ```
 
-Each large positive value is exactly matched in frequency with its negative
-counterpart.
-
-### Symmetry
-
-```{r symmetry}
-skewness(determinants_exact)
-```
+Each positive value in this table is matched exactly by its negative counterpart, again confirming symmetry. This table of modal values has a direct analogue in the 4×4 case below, though there it must be estimated from a Monte Carlo sample rather than computed exactly — making this 3×3 baseline a useful point of comparison.
 
 ## Why this shape? An analytical perspective
 
@@ -254,7 +278,7 @@ factorial(16) |> format(scientific = FALSE, big.mark = ",")
 
 
 
-That's 20.92 trillions!. Even at, say, 100 million determinants per second, enumerating every 4×4 filling would take on the order of two days of pure computation, and storing the results is its own problem. The 3×3 case worked because $9!$ fits comfortably in memory; the 4×4 case forces a change of approach---Monte Carlo sampling for the overall shape, and combinatorial optimization for the extremes, which is a genuinely different technique from anything used above.
+That's 20.92 trillions! Even at, say, 100 million determinants per second, enumerating every 4×4 filling would take on the order of two days of pure computation, and storing the results is its own problem. The 3×3 case worked because $9!$ fits comfortably in memory; the 4×4 case forces a change of approach---Monte Carlo sampling for the overall shape, and combinatorial optimization for the extremes, which is a genuinely different technique from anything used above.
 
 ### Monte Carlo approximation of the shape
 
@@ -285,6 +309,7 @@ The symmetry argument from the 3×3 case carries over unchanged---swapping two r
 The Leibniz expansion of a 4×4 determinant has $4! = 24$ signed terms (12 positive, 12 negative) instead of 6. The naive CLT-flavored intuition is that more terms should push the distribution closer to Gaussian. The opposite happens: the 3×3 exact distribution has kurtosis `r round(kurtosis(determinants_exact), 2)` (flatter than normal, consistent with the tent/triangular shape described above), while the 4×4 Monte Carlo distribution has kurtosis `r round(kurtosis(determinants_4x4), 2)`---*heavier*-tailed than the normal distribution (kurtosis 3), not lighter.
 
 ```{r plot-4x4-compare}
+#| code-fold: true
 df_shape <- rbind(
   data.frame(z = determinants_exact / sd(determinants_exact), n = "3x3 (exact, 9! perms)"),
   data.frame(z = determinants_4x4   / sd(determinants_4x4),   n = "4x4 (Monte Carlo, B=2e6)")
@@ -313,6 +338,7 @@ The Monte Carlo sample above found a maximum determinant of `r max(determinants_
 To find the true maximum, we need search, not sampling. A simple multi-start hill climb---repeatedly swapping pairs of entries whenever the swap increases the determinant, from many random starting matrices---works well here:
 
 ```{r hillclimb-function}
+#| code-fold: true
 hill_climb <- function(v, maximize = TRUE) {
   best_v <- v
   best_d <- det_mat_n(v, 4)
