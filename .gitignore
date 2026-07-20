@@ -10,3 +10,6 @@
 
 **/*.quarto_ipynb
 .positai
+
+# knitr/Quarto chunk cache
+*_cache/

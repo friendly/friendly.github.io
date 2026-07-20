@@ -268,7 +268,22 @@ $$a_{11}(a_{22}a_{33} - a_{23}a_{32}) - a_{12}(a_{21}a_{33} - a_{23}a_{31}) + a_
 
 subject to the constraint that $(a_{11}, \ldots, a_{33})$ is a permutation of $\{1, \ldots, 9\}$. This is a system of Diophantine equations with a permutation constraint, and no general closed form is known. The brute-force enumeration we performed is, in a sense, the answer --- the distribution *is* the count table. One could express it via a generating function or characteristic function, but these don't simplify to anything more illuminating than the enumeration itself. The problem is harder than it looks.
 
-## Extending to 4×4: When Enumeration Isn't an Option
+## Extending to Other Sizes
+
+### The 2×2 baseline
+
+Before pushing to 4×4, it is worth glancing back at the smaller case: 2×2 matrices built from the digits 1–4, each used once. There are only $4! = 24$ permutations, so exact enumeration is trivial.
+
+```{r 2x2-exact}
+all_perms_2x2 <- arrangements::permutations(1:4, k = 4)
+dets_2x2 <- apply(all_perms_2x2, 1,
+                  function(v) det(matrix(v, 2, 2, byrow = TRUE)))
+sort(table(dets_2x2))
+```
+
+The result is striking: only six distinct determinant values (±2, ±5, ±10), each occurring exactly four times — a **perfectly uniform** discrete distribution. Determinant zero is impossible, because no two-element partition of {1, 2, 3, 4} produces equal products. This uniformity is unique to the 2×2 case; it does not persist as the matrix grows.
+
+### 4×4: When Enumeration Isn't an Option
 
 The natural next question is whether any of this generalizes: what happens with 4×4 matrices built from the digits 1 through 16, each used once? The honest answer is that the *method* from the 3×3 case doesn't survive the jump: exhaustive enumeration is no longer feasible. This turns out to be more interesting than a simple "bigger version of the same result."
 
@@ -283,6 +298,7 @@ That's 20.92 trillions! Even at, say, 100 million determinants per second, enume
 ### Monte Carlo approximation of the shape
 
 ```{r 4x4-montecarlo}
+#| cache: true
 det_mat_n <- function(v, n) det(matrix(v, nrow = n, ncol = n, byrow = TRUE))
 
 set.seed(42)
@@ -363,6 +379,8 @@ hill_climb <- function(v, maximize = TRUE) {
 ```
 
 ```{r hillclimb-search}
+#| cache: true
+#| dependson: !expr c("4x4-montecarlo", "hillclimb-function")
 set.seed(123)
 n_starts <- 500
 best_overall <- -Inf
@@ -392,10 +410,16 @@ By the row-swap symmetry argument, the minimum (most negative) determinant is ex
 
 ### Uncharted territory?
 
-A search of OEIS and the maximal-determinant literature (Hadamard's maximal determinant problem, D-optimal designs, and related work) turns up plenty of results for matrices restricted to $\{0,1\}$ or $\{-1,+1\}$ entries, but nothing for "the maximum determinant of an $n \times n$ matrix using each of $1, \ldots, n^2$ exactly once." As far as I can tell, this specific problem---and the value `r best_overall` for $n=4$---isn't recorded anywhere. It would be a fun rabbit hole to compute the $n=5$ case and consider submitting a sequence.
+A search of the [OEIS](https://oeis.org) (On-Line Encyclopedia of Integer Sequences) and the maximal-determinant literature (Hadamard's maximal determinant problem, D-optimal designs, and related work) turns up plenty of results for matrices restricted to $\{0,1\}$ or $\{-1,+1\}$ entries, but nothing for "the maximum determinant of an $n \times n$ matrix using each of $1, \ldots, n^2$ exactly once." As far as I can tell, this specific problem---and the value `r best_overall` for $n=4$---isn't recorded anywhere. It would be a fun rabbit hole to compute the $n=5$ case and consider submitting a sequence.
 
 ## Conclusions
 
-This analysis reveals the distribution of determinants when all possible 3×3 matrices are formed from the digits 1-9, each used exactly once. The Monte Carlo approximation with random permutations closely matches the exact distribution, validating the sampling approach for similar problems where exact enumeration might be computationally prohibitive.
+Examining how determinant distributions change with matrix size reveals a progression that is more varied than the "bigger version of the same" expectation.
 
-<!-- TODO: revise this conclusion to also cover the 4x4 findings: symmetry generalizes for free, but the "tent shape" doesn't -- 4x4 is more leptokurtic, not less. Also worth stating the general lesson about Monte Carlo vs. optimization for finding extremes. -->
+**The 2×2 baseline** is deceptively simple: permutations of {1, 2, 3, 4} into a 2×2 matrix yield only six possible determinant values (±2, ±5, ±10), each equally frequent, and singular matrices are impossible---no permutation of distinct digits produces a zero determinant.
+
+**The 3×3 case** is considerably richer: 362,880 permutations, many distinct values, and a distribution that is symmetric around zero but distinctly tent-shaped rather than Gaussian. The Monte Carlo approximation with a large random sample closely matches exact enumeration, validating sampling as a strategy for problems where exhaustive computation is infeasible.
+
+**The 4×4 case** shows that some properties scale and others do not. Symmetry around zero carries over---the row-swap argument is independent of matrix size. But the tent shape does not: rather than flattening toward Gaussian as the Leibniz expansion grows from 6 to 24 terms, the distribution becomes *more* leptokurtic (heavier-tailed, sharper-peaked). Each term is a product of correlated entries, not a sum of independent ones, so the Central Limit Theorem intuition doesn't apply.
+
+A secondary lesson is methodological: **Monte Carlo finds the shape; combinatorial optimization finds the extremes.** Two million random samples never reached the true 4×4 maximum. A multi-start hill climb did, converging reliably to a value that appears unrecorded in the existing literature.
