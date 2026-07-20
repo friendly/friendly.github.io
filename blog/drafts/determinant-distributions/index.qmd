@@ -380,7 +380,7 @@ hill_climb <- function(v, maximize = TRUE) {
 
 ```{r hillclimb-search}
 #| cache: true
-#| dependson: !expr c("4x4-montecarlo", "hillclimb-function")
+#| dependson: ["4x4-montecarlo", "hillclimb-function"]
 set.seed(123)
 n_starts <- 500
 best_overall <- -Inf
