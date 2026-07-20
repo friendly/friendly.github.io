@@ -57,7 +57,7 @@ We answer this question in two ways:
 
 ## Setup
 
-Load the packages we'll use here.
+Load the pakages we'll use here.
 
 ```{r libraries}
 #| code-fold: show
@@ -108,7 +108,7 @@ determinants_random <- replicate(B, {
 
 ## Summary Statistics
 
-How do the exact and simulated distributions compare?
+How do the exact and simulated distributions compare? Their stats look pretty close.
 ```{r summary}
 #| code-fold: true
 det_summary <- function(x) {
