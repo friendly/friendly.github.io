@@ -16,20 +16,22 @@ Historians of data visualization live for surprises. Sometimes they're delightfu
 Cemetery and that his near neighbor there is Andre-Michel Guerry. The story of these and other historical excavations is told in
 [Raiders of the Lost Tombs](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf).
 Or a hero nobody had noticed yet,
-like the Hungarian cartographer Imre Milecz, [discovered by Attila Bátorfy](https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map) to have drawn the first flow map in 1773---decades before the credit usually goes to Minard or [Henry Harnass](http://www.complexcity.info/files/2011/06/harness-1837-flowmap.pdf),
-or Frances Harriet Lightfoot, whose 1831 *An Embellished Chart of General History and Chronology* had gone essentially unknown to modern researchers until [RJ Andrews found it](https://www.chartography.net/p/colossal-chronography).
+like the Hungarian cartographer Imre Milecz, [discovered by Attila Bátorfy](https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map) to have drawn the first flow map in 1773---decades before the credit usually goes to Minard or [Henry Harnass](http://www.complexcity.info/files/2011/06/harness-1837-flowmap.pdf).
+Or Frances Harriet Lightfoot, whose 1831 *An Embellished Chart of General History and Chronology* had gone essentially unknown to modern researchers until [RJ Andrews found it](https://www.chartography.net/p/colossal-chronography).
 
 Sometimes these surprises are more unsettling. The worst is the discovery that we got some piece of the historical record
-or our interpretation entirely wrong. **Van Langren's Secret**, for an accurate method of determining longitude at sea, is a surprise of the second kind.
+or our interpretation entirely wrong. **Van Langren's Secret**, for an accurate method of determining longitude at sea, is a surprise of this second kind.
 
 Yet, to an amateur historian like myself, telling the story of this unwelcome surprise itself has a certain
 reward. It is not just a matter of correcting the record; more that of an appreciation of
-how our understanding of history continues to unfold. Perhaps paradoxically, history is not static.
+how our understanding of history continues to unfold, as new "data" is uncovered.
+Perhaps paradoxically, history is not static.
 History is always undergoing reexamination and reconsideration as new facts or perspectives arise. 
+This is one such tale.
 
 ## How I Got Here
 
-In Dec. 2008 I received an out-of-the-blue email from Joaquín Ibáñez Ulargui, a materials scientist in Madrid, who had been going through the papers of an ancestor---fray Íñigo de Brizuela, President of the Council of Flanders in the 1620s. He had found something odd tucked among them: a letter, from Feb/Mar 1628, in old Spanish, containing a small graph. He wondered if I was interested.  I was indeed! Graduate students at my university were on strike; no classes meant I had plenty of time to consider a new historical hero.
+In Dec. 2008 I received an out-of-the-blue email from Joaquín Ibáñez Ulargui, a materials scientist in Madrid. He had been going through the papers of an ancestor---fray Íñigo de Brizuela, President of the _Council of Flanders_ in the 1620s. He had found something odd tucked among them: a letter, from Feb/Mar 1628, in old Spanish, containing a small graph. He wondered if I was interested.  I was indeed! Graduate students at my university were on strike; no classes meant I had plenty of time to consider a new historical hero.
 
 The graph showed seven names, a scale of degrees, a scatter of estimates for the distance in longitude between Toledo and Rome. It looked very much like the famous 1644 diagram in Michael Florent van Langren's [*La Verdadera Longitud por Mar y Tierra*](https://www.datavis.ca/gallery/langren/LaVerdadera.pdf)---except this letter predated that publication by at least sixteen years. The amateur historical sleuth in me was energized!
 
@@ -40,15 +42,17 @@ What was particularly of interest was to understand _why_ van Langren chose to d
 of the longitude distance from Toledo to Rome in what would be the **first graphical display of quantitative data**, using a 1D dot plot.
 Why didn't he just use a simple table, which was nearly always used at the time. We always ask:
 
-> What was he thinking?
+> **What was he thinking?**
 
 Our conclusion was that only a one-dimensional
 dot plot of the estimates would show directly what he wanted the King to **see**:
 all previous methods were so variable, and therefore with such large errors, as to be useless
-for accurate navigation at sea. In the version of this graph from 1644, overlaid on the modern map,
+for accurate navigation at sea.[^methods] In the version of this graph from 1644, overlaid on the modern map,
 you can see how wide
 the range of estimates is: over 40% of the range from Toledo to Rome shown.
 The pin marks the actual distance, 16^o31'.
+
+[^methods]: The astronomers in van Langren's graph estimated longitude by several methods, all theoretically sound but practically limited: **lunar eclipses** (both observers record local time when the moon enters or exits Earth's shadow — simultaneous everywhere, so the time difference gives the longitude difference, but eclipses are rare); **lunar distances** (measuring the angle between the moon and a reference star, since the moon moves ~0.5° per hour against the stars — proposed by Regiomontanus in the 1470s, but requiring accurate lunar tables that didn't yet exist); and **occultations** (the moon passing in front of a star — sharp-edged and predictable, but again rare). Some estimates were less astronomical still, built up from travellers' accumulated records of distances and directions. Tycho Brahe's estimate, made with the finest pre-telescopic instruments of the age, was the best of the lot — and still badly wrong. That was the point.
 
 ![van Langren's 1644 graph showing 12 estimates of the longitude distance from Toledo to Rome by eminent astronomers, overlaid on a modern map](images/Langren1644-overlay.jpg)
 
@@ -129,16 +133,16 @@ method nor a mechanical clock. It was a water clock.
 
 ## The Cipher Falls
 
-Eleven years after our paper---long enough that I had filed the cryptogram away as one of those historical loose ends nobody would ever tie off---I learned that it had been solved. Not by a historian of science. By a Belgian warehouse worker and amateur cryptographer.
+Eleven years after our paper---long enough that I had filed the cryptogram away as one of those historical loose ends nobody would ever tie off---I learned that it had been solved. Not by a historian of science. By a Belgian warehouse worker and amateur cryptographer who loved a good puzzle.
 
 The backstory has its own small comedy of persistence. Klaus Schmeh, a German cryptology writer who maintains a blog called [*Cipherbrain*](https://scienceblogs.de/klausis-krypto-kolumne/), had stumbled on the van Langren cipher in 2015 and flagged it as a genuinely interesting unsolved historical cryptogram that nobody in the crypto world seemed to know about. An Antwerp amateur astronomer, Jos Pauwels, took an interest and kept it alive. [Dirk Huylebrouck](https://dirkhuylebrouck.be/), a mathematician at KU Leuven, had been shopping the puzzle around online forums for the better part of a decade, by his own account without success.
 
-Then, in December 2020, a trio of codebreakers---David Oranchak, Sam Blake, and a Belgian warehouse operator and programmer named Jarl Van Eycke---who had cracked the [Zodiac Killer's notorious Z340 cipher](https://arxiv.org/pdf/2403.17350)[^zodiac], a 340-character code unsolved for 51 years. Huylebrouck read the news, tracked down Van Eycke, and handed him the Code of Langren.
+Then, in December 2020, a trio of codebreakers---David Oranchak, Sam Blake, and a Belgian warehouse operator and programmer named Jarl Van Eycke---who had cracked the [Zodiac Killer's notorious Z340 cipher](https://arxiv.org/pdf/2403.17350)[^zodiac], a 340-character code unsolved for 51 years. Huylebrouck read the news, tracked down Van Eycke, and handed him the _van Langren Code_.
 
 [^zodiac]: The Zodiac Killer is one of the infamous unsolved mysteries in American criminal history.
 In the San Francisco Bay area in the 1968--1969s, this unknown murder killed at least five people.
 Seeking public attention, he sent cryptic ciphers to newspapers and taunted police with letters
-describing his acts.
+describing his acts. Van Eycke's solution was hailed as a break-through in amateur cryptographic circles.
 
 Van Eycke solved it in about a week!
 
@@ -384,7 +388,7 @@ add_dotplot <- function() {
 }
 ```
 
-(This way of parsing an historical plot is one we also use in `HistData` to re-vision
+(This way of "parsing" an historical plot into meaningful functions is one we also use in `HistData` to re-vision
 [John Snow's Cholera dot plot](https://friendly.github.io/HistData/reference/Snow.html), and [Minard's March on Moscow graphic](https://friendly.github.io/HistData/reference/Minard.html).)
 
 **Step 1:** Draw the background map. `readJPEG()` returns a pixel array; the plot device
@@ -515,3 +519,18 @@ it takes the remaining 80% of work to perfect it.
 Nevertheless the argument the graph was built to make comes through regardless: twelve
 authorities, strung across more than fifteen degrees, and not one of them close to the
 true answer of 16°31'.
+
+## Coda
+
+Van Langren hid his method and published his graph in letters to the King. History can now remember it the right way around.
+
+The cipher protected an idea that the technology of the seventeenth century made unsuitable---copper cones that couldn't hold time steady on a heaving ship. His method was guarded for nearly four centuries by an ingenious three-layer scramble. The graph, printed openly on the same page, showed only the *problem* he claimed to solve. 
+
+That graph is the earliest known statistical graph, which was exactly the right tool for communicating
+the nature of the problem.
+The cipher, finally decoded, shows a man who understood the longitude problem deeply enough to devise a plausible solution, but who was simply working with tools the task made impossible. His mistake wasn't foolishness; it was reasonable given the tools available. And our mistake, to interpret the cipher as describing a lunar method, was equally reasonable given what we could read.
+
+What van Langren is actually remembered for, when he's remembered at all, is his 1645 *Selenographia* — the first detailed map of the moon, with craters named after European monarchs and scientists, strategic flattery disguising a petition. The longitude method failed; the map endures, as does the name of the lunar crater
+_Langrenus_, a prominent, 132-km-wide impact crater located near the eastern lunar limb on the shores of _Mare Fecunditatis_. 
+
+The answer to the question historians always ask--- *what was he thinking?* --- turns out to be: something clever, impractical, and beautifully encrypted. The shock of finding our interpretation wrong is replaced, in the end, by a feeling of satisfaction in being able to right the ship of history.
