@@ -2,66 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://friendly.github.io/software.html</loc>
-    <lastmod>2026-06-11T09:56:12.652Z</lastmod>
+    <lastmod>2026-01-07T16:33:31.335Z</lastmod>
   </url>
   <url>
     <loc>https://friendly.github.io/index.html</loc>
-    <lastmod>2026-06-11T09:56:12.651Z</lastmod>
+    <lastmod>2026-05-21T17:08:42.011Z</lastmod>
   </url>
   <url>
     <loc>https://friendly.github.io/books.html</loc>
-    <lastmod>2026-06-11T09:56:12.585Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science/index.html</loc>
-    <lastmod>2026-07-07T09:19:55.187Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-umbrella/index.html</loc>
-    <lastmod>2026-07-08T20:21:05.044Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-howwarm/index.html</loc>
-    <lastmod>2026-06-30T09:18:53.903Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-04-welcome/index.html</loc>
-    <lastmod>2026-06-11T09:56:12.585Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-04-making-vis-mlm/index.html</loc>
-    <lastmod>2026-06-11T09:56:12.578Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/index.html</loc>
-    <lastmod>2026-06-30T09:10:03.431Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-04-quarto-indexes/index.html</loc>
-    <lastmod>2026-07-08T09:22:16.128Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-beachpeople/index.html</loc>
-    <lastmod>2026-06-30T09:18:55.061Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-patterns/index.html</loc>
-    <lastmod>2026-06-30T09:18:43.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-warmup/index.html</loc>
-    <lastmod>2026-07-09T08:34:52.245Z</lastmod>
+    <lastmod>2026-01-07T16:33:28.196Z</lastmod>
   </url>
   <url>
     <loc>https://friendly.github.io/blog/posts/2026-07-determinant-distributions/index.html</loc>
-    <lastmod>2026-07-09T10:46:26.974Z</lastmod>
+    <lastmod>2026-07-16T13:38:41.045Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-warmup/index.html</loc>
+    <lastmod>2026-07-16T13:38:41.035Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-patterns/index.html</loc>
+    <lastmod>2026-07-16T13:38:41.003Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-beachpeople/index.html</loc>
+    <lastmod>2026-07-16T13:38:40.939Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-04-quarto-indexes/index.html</loc>
+    <lastmod>2026-07-16T13:38:40.935Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/index.html</loc>
+    <lastmod>2026-07-16T13:38:40.931Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-04-making-vis-mlm/index.html</loc>
+    <lastmod>2026-05-21T17:08:41.978Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-04-welcome/index.html</loc>
+    <lastmod>2026-05-21T17:08:41.988Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-howwarm/index.html</loc>
+    <lastmod>2026-07-16T13:38:40.943Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science-umbrella/index.html</loc>
+    <lastmod>2026-07-16T13:38:41.006Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-06-beach-science/index.html</loc>
+    <lastmod>2026-07-16T13:38:41.042Z</lastmod>
+  </url>
+  <url>
+    <loc>https://friendly.github.io/blog/posts/2026-07-van-langren/index.html</loc>
+    <lastmod>2026-07-21T18:57:50.275Z</lastmod>
   </url>
   <url>
     <loc>https://friendly.github.io/courses.html</loc>
-    <lastmod>2026-06-11T09:56:12.586Z</lastmod>
+    <lastmod>2026-01-07T16:33:29.809Z</lastmod>
   </url>
   <url>
     <loc>https://friendly.github.io/packages.html</loc>
-    <lastmod>2026-06-11T09:56:12.651Z</lastmod>
+    <lastmod>2026-01-07T16:33:26.724Z</lastmod>
   </url>
 </urlset>
