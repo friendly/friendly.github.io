@@ -46,6 +46,91 @@
 6. **Verse lookup**: Column values index into pre-composed Latin hexameter fragments
    in the book's tables → output oracle response.
 
+### Notes from the Avertissement and Introduction (pp. 7–19)
+
+**Avertissement (pp. vij–viij)**
+- Migneret originally planned a large folio volume; the printer refused, saying
+  "even if your book were a foolish trifle (*une sottise*) of the moment, I'd be sure
+  to sell it" in a small format. A fire then destroyed the larger plan.
+- Key word: *sottise*. Migneret adopts it without irony — he's advertising his own work
+  as a learned trifle. The satirical frame is declared from the very first page.
+- Boast buried in the same section (p.8): "even the most skilled mathematicians of his
+  day would perhaps have declared it *impossible* to produce Latin verses by arithmetic."
+  This is not false modesty — he's proud of pulling off the impossible.
+
+**Sur les Oracles / Moyenne Proportionnelle (pp. 1–9)**
+- Core thesis (stated explicitly, approx. p.7):
+  > *"Les prêtres des payens ne forgeoient pas non plus les oracles. Ils ne faisoient que
+  > les tirer d'une table numérique, & la combinaison résultante de diverses opérations
+  > arithmétiques, faisoit avoir une réponse vaguement relative au sujet de la question."*
+  ("The pagan priests did not forge the oracles. They merely drew them from a numerical
+  table, and the combination resulting from various arithmetical operations produced a
+  response vaguely related to the subject of the question.")
+- Oracle responses were *"réponses vagues, accommodées à l'alternative de l'événement"* —
+  vague answers calibrated to fit either outcome. The 1759 version of "hallucination."
+- Elaborate fictional frame: ancient bronze tablets found in a cave near Rome, two-layer
+  plates with numbers on top and unknown characters below, translated by scholars, declared
+  "the most valuable antiquities ever found." Obvious fiction — mocks the discovery rhetoric
+  of serious antiquarians.
+- Secondary, educational purpose (p.9): the machine "offers the further advantage of
+  inspiring, through curiosity and the pleasure of amusement, the desire to learn arithmetic
+  or to advance one's skill in those who already know it, because to work a Latin verse on
+  this little loom, one must of necessity employ the four basic rules of Arithmetic."
+  → The oracle game is also an arithmetic teaching tool.
+- Reference to two predecessors on oracles: Wan-Dale and Fontenelle (*Histoire des Oracles*,
+  1687). Migneret positions himself as adding the *demonstrative* step they lacked: not just
+  arguing oracles were fraud, but *showing the mechanism*.
+
+**Avantages des Mathématiques (pp. 10–19)**
+- Pages 10–19 are a full Enlightenment manifesto: mathematics as the foundation of all
+  knowledge — every art, every science, every correct judgment.
+- Key argument (p.11): mathematics is the *most error-free* science, therefore the most true
+  and the easiest. The prejudice that it's hard comes from a false opinion about universality
+  implying difficulty.
+- Mathematics as the basis of aesthetics (pp.12–14): the fine arts succeed only insofar as
+  they imitate nature's proportions. Judgment = comparison = ratio. Even poetic similes
+  ("*autant, aussi, égal, de même*") are expressions of mathematical equality.
+- Syllogism reduced to equation (p.15): "All men are animals; Pierre is a man; therefore
+  Pierre is an animal" → Homme=Animal, Pierre=homme → Pierre = animal. Logic is arithmetic.
+- Named heroes who demonstrate mathematics as the key to everything:
+  - **Fontenelle** (p.16, footnote a): the "illustrious savant" who earned the reputation
+    of a universal man through his mathematical knowledge
+  - **Voltaire** (p.16, footnote b): "philosophical works and translations of Newton assure
+    him the reputation of a geometer, illustrious poet, learned man of letters and profound
+    geometer — any one of these would suffice to make him illustrious, and he combines all three"
+  - **Diderot & d'Alembert** (p.18, footnote a): the two supreme mathematical geniuses
+    responsible for the Encyclopédie (p.17 footnote: "*L'Encyclopédie*" is the "admirable
+    execution" that belonged to "the two foremost mathematical geniuses we have")
+  - **Rameau** (p.18, footnote b): the "musician-geometer" who reformed music by reducing
+    it to mathematical principles
+  - **Gassendi, Descartes, the Bernoullis, Newton, Galileo** (p.18): the physicists who
+    assigned mathematics its principles, banishing "thick darkness" and occult causes
+- Closing statement (p.19): mathematics "has brought philosophy out of the darkness where
+  it was buried, unveiled nature to our eyes, shows us its mechanism, enlightens us in all
+  sciences, gives us the rules and certain principles for operating in all the arts."
+
+**What this means for the post:**
+- Migneret is not a crank with a party trick. He's a committed Encyclopédiste writing a
+  demonstration piece — proof by construction — that the oracle tradition is no different
+  from arithmetic. The machine *is* the argument.
+- The educational framing (arithmetic via amusement) gives him cover; the philosophical
+  framing (mathematics defeats superstition) gives him ambition. Both are sincere.
+- The Diderot/d'Alembert/Encyclopédie reference places him in the innermost circle of
+  Enlightenment thought. The *Encyclopédie* was still appearing (final volumes 1765) —
+  this pamphlet (1759) was written *during* that project.
+- Voltaire is described in identical terms to the Encyclopédistes — philosopher, poet,
+  mathematician. Migneret sees no split between literary and mathematical genius.
+- The logic-as-equation passage (pp.14-15) is important: Migneret explicitly argues that
+  *all reasoning* reduces to arithmetic. His oracle machine is therefore not a toy — it's
+  a demonstration of a general claim about the nature of thought.
+- Quotable for section 2: the printer's *sottise* line; the "impossible" boast; the
+  explicit oracle-as-lookup-table thesis; the educational purpose.
+- Quotable for section 5: the closing sentence of p.19 (mathematics vs. darkness) maps
+  perfectly onto the AI debate — swap "mathematics" for "LLMs" and half the tech press
+  would sign it.
+
+---
+
 ### The LLM Parallel
 
 | Migneret (1759)               | Modern LLM                        |
@@ -95,8 +180,13 @@ but the same category of trick.
 - The fake Amsterdam imprint (Arkstée & Merkus existed but didn't publish this)
 - Satirical premise: "anyone can now be the Pythia and sit on the sacred tripod
   to deliver oracles" — the oracle tradition exposed as a mechanical trick
-- Enlightenment context: the *Encyclopédistes* were demystifying everything;
-  Migneret demystifies oracles by *reproducing* them algorithmically
+- Enlightenment context: Migneret is a committed Encyclopédiste — Diderot, d'Alembert,
+  Voltaire, Fontenelle all named approvingly in pp.10–19. He demystifies oracles by
+  *reproducing* them algorithmically — proof by construction, not just assertion.
+- Secondary intent: an arithmetic teaching tool ("four basic rules of arithmetic" are
+  all one needs to operate the machine — inspires learners through amusement)
+- The boast: best mathematicians of his day would have declared it *impossible* to make
+  Latin verses by arithmetic. He's proud of the trick.
 - Include image of title page (Mignaret-cover.jpg)
 
 ## 3. The algorithm: walking through an example
