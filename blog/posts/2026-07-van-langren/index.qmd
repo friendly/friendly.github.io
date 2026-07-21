@@ -4,6 +4,10 @@ description: "393 years after van Langren encoded it, an amateur codebreaker gav
 author: "Michael Friendly"
 date: today
 categories: [History of Statistics, Cryptography, Data Visualization]
+citation:
+  type: post-weblog
+  url: https://friendly.github.io/blog/posts/2026-07-van-langren/
+google-scholar: true
 bibliography: references.bib
 execute:
   code-fold: show

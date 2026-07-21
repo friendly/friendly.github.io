@@ -5,6 +5,10 @@ author: "Michael Friendly"
 date: today
 draft: true
 categories: [History of Statistics, Cryptography, Data Visualization]
+citation:
+  type: post-weblog
+  url: https://friendly.github.io/blog/posts/2026-07-van-langren/
+google-scholar: true
 bibliography: references.bib
 execute:
   code-fold: show
