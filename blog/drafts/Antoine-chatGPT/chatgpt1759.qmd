@@ -159,3 +159,28 @@ Modern deep learning does something structurally similar. In a **transformer**, 
 **Step 6 — Look up the verse.** Each index points to a pre-composed Latin hexameter fragment in Migneret's tables; the nine fragments are concatenated into the Oracle response. The verse fragments are the one part of the system that required genuine creative labor: Migneret had to compose Latin hexameter lines that would read plausibly in any combination. Everything else is arithmetic.
 
 What was he thinking? Not, surely, that he had built a useful oracle. The point is the demonstration: show the mechanism, expose the trick. *Any* oracle could be built this way. The god in the machine is **arithmetic**.
+
+## The LLM parallel
+
+And here's where this gets interesting: the parallel to modern LLMs is hard to dismiss. Step by step, Migneret's system maps onto what modern language models do — not metaphorically, but structurally. Both take natural language in, convert it to numbers, transform those numbers through several layers of arithmetic, and look up the result in a pre-assembled table. The differences are real, and we'll get to them. But first, the resemblance:
+
+| Migneret (1759) | Modern LLM |
+|---|---|
+| Reword question to 9 words | Tokenization / prompt formatting |
+| Letter → number table | Token embeddings |
+| Word sums | Weighted feature aggregation |
+| Triangle mod-9 operations | Layer-by-layer transformation |
+| Column index lookup | Sampling from output distribution |
+| Pre-compiled verse table | Learned weight matrix |
+
+**Input normalization.** Before either system does anything, it imposes structure on raw input. Migneret requires exactly nine words; an LLM tokenizes the prompt (splitting words into subword units) and formats it according to a template. Neither processes language as-is — both demand it arrive in a specific form first.
+
+**Symbol → number.** Both convert discrete symbols to numbers as their first real operation. Migneret's *Table Alphabéti-Numérique* assigns one integer per letter. An LLM's embedding layer assigns one high-dimensional vector per token — hundreds or thousands of numbers rather than one. The dimensionality differs by orders of magnitude; the operation is the same.
+
+**Aggregation.** Both combine those numbers into a summary representation per unit. Migneret adds the letter values within each word. LLMs compute weighted sums across token embeddings using learned attention weights. Migneret's weights are all equal (plain addition); an LLM's are learned from data. But the category of operation — aggregate component values into a single score — is identical.
+
+**Iterated mixing.** Both run the aggregated values through multiple rounds of transformation. Migneret's triangle applies the same mod-9 operation nine times, row by row, until the original structure is thoroughly scrambled. An LLM passes representations through dozens or hundreds of transformer layers, each mixing information across all positions. The depth differs enormously; the principle — iterate until the output is a complex function of the entire input — does not.
+
+**Index lookup.** Both reduce their transformed representation to a set of indices into a table of outputs. Migneret reads one value from each column of the triangle; an LLM computes a probability distribution over its vocabulary and samples a token. Migneret's lookup is deterministic; an LLM's introduces controlled randomness (temperature). But the logical structure — transform input to pointer, use pointer to select output — is the same.
+
+**The table itself.** In Migneret, the verse fragments are the stored "knowledge" — hand-crafted Latin hexameters assembled to be combinable in any order. In an LLM, the weight matrices play the same role: a static structure, assembled in advance, that maps indices to outputs. Migneret compiled his table by hand, presumably over considerable effort. An LLM's "table" was assembled by training on essentially all of human writing. The scale differs by nine or ten orders of magnitude. The architecture does not.
