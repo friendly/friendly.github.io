@@ -1,0 +1,55 @@
+Email, 2/5/2023
+From: Antoine de Falguerolles <antoine@falguerolles.net>
+  Sent: February 5, 2023 11:43 AM
+To: Ludovic Lebart <ludovic@lebart.fr>; Michael L Friendly <friendly@yorku.ca>; Michael Greenacre <michael.greenacre@gmail.com>; Emilie Arnal <530810ea@student.eur.nl>; françois bompaire <fbompaire@hotmail.fr>
+  Subject: A 1759 challenge to ChatGPT!
+
+
+Bonsoir,
+I hope that you are all well despite this cold winter and hectic world. On my side, radiotherapy had a positive impact and I am currently clean from morphine. Annick is fine.
+In echo to our former exchanges on ChatGPT  I would like to send a non-serious contribution (but the deadline is possibly passed). The first pamphlet against ChatGPT (possibly the Encyclopedists) was published in 1759 by Pierre-Jean Migneret (17..-18..): Invention d'une manufacture et fabrique de vers, au petit métier, ou l'Art de versifier par les seules règles du calcul numérique, Arkstée & Merkus (Amsterdam) 1759 (See https://iris.univ-lille.fr/handle/1908/5106). Publishers names are faked as is the address and the book was certainly printed in France.  (Nevertheless, Kasper Arkstee et Hendrick Merkus existed and published in Amsterdam and Leipzig!) Pierre-Jean Migneret appears as a former mathematics teacher and accountant in a book which he published in Paris in 1798/1799 or an VII (La science des jeunes négocians et teneurs de livres; ou cours complet d'instructions élémentaires sur les opérations du commerce en marchandises et banque). In his1759 pamphlet, Migneret "claims" that by the use of dirty arithmetic (with a mix of coding and ad nauseam iterations of the nine rule proof principle), the algorithm answers simple questions. Two examples are worked out.  Example 1; question: Celui que j’aime deviendra-t-il mon époux ? answer: Ecce equidem liccitè praedicit talia numen. Example 2; question: La paix sera-t-elle prochaine et avantageuse aux Français? answer: Credo satis licitè, donabit foedera numen ...
+All the best,
+Antoine
+
+
+
+MF: Reply 2/5/2023
+
+Dear Antoine
+
+
+
+From the Canadian Polar Vortex, I’m wishing you a happy post-Ground Hog Day. You may have heard about the prognosticating powers of Punxsutawney Phil, their Canadian cousins: Wiarton Willie,  Shubenacadie Sam and all their brethren.
+
+But you should not restrain yourself in offering condolences to the friends and family of Fred la Marmotte, who passed untimely, quite inconveniently in Quebec, and was replaced at the last moment with a stuffed animal – And, yet: the band played on.
+
+
+
+Among older soothsayers,  Migneret is hilarious! Thanks for sending this. It would make a great blog post somewhere.  For those who don’t read Latin, here is Example 1, and in translations
+
+
+
+Example 1
+
+
+
+Q: Celui que j’aime deviendra-t-il mon époux ?
+
+A: Ecce equidem liccitè praedicit talia numen.
+
+
+Translations:
+
+Q: Will the one I love become my husband?
+
+A: Behold, indeed, the god predicts such things.
+
+
+It reminds me of the Magic 8 ball I had when I was a kid, where you asked a question, shook the ball, and up popped your answer.
+
+For those in urgent need of an answer to Life Questions, there is now an online app: http://sethclydesdale.github.io/magic-8-ball/
+
+Not to be outdone by this, I asked ChatGPT to write a song about loglinear models, fashioned after a Beatles Song, perhaps as a contribution to @Michael Greenacre ‘s Statistical Songs
+...
+
+
