@@ -272,7 +272,89 @@ but the same category of trick.
 
   The closing line of p.19 is quotable for section 5 — swap "mathematics" for "LLMs" and it reads like a 2024 tech press
   release.
-  
+
+---
+
+### Notes from the Application section (pp. 49–55)
+
+These pages contain the fully worked example and reveal the complete architecture of the lookup tables.
+
+**The two-table lookup (pp. 49–52)**
+
+Steps 5–6 are more intricate than a simple "column lookup." There are in fact two tables:
+
+1. **Tabula Prima Numerica** (fold-out, upper half): a 9×7 grid (rows I–IX, columns A–G). Each cell contains
+   a small range of numbers (e.g., row 1, column B = 11, 14, 17). Given an index from the triangle, you locate
+   which column (A–G) it falls in for its row — this gives you a *bande* (section) label and position.
+
+2. **Tabula Secunda Litteralis** (fold-out, lower half): same 9×7 structure, but cells contain letters
+   (and some digrams: *qu*, *ra*, *te*, *di*, *ci*) plus "+" placeholders. Given the bande and row from the
+   numerical table, you read the corresponding letter or letter-pair.
+
+The "+" symbol means: skip this cell, move to the next. It allows variable-length words to fit within a
+fixed table structure — short words leave some cells unused.
+
+**The verse is assembled letter by letter, not phrase by phrase**
+
+The triangle produces six "lignes" (I–VI), each corresponding to one word of the Latin hexameter. Each ligne
+uses one bande and looks up 6 candidate cells, taking letters and skipping +'s:
+
+- Ligne I (bande 3): 18→*e*, 27→+, 33→*c*, 42→*c*, 57→+, 60→*e* → **ecce**
+- Ligne II (bande 9): 27→*e*, 33→*qu*, 42→*i*, 48→*d*, 57→*e*, 66→*m* → **equidem**
+- Ligne III (bande 3): 15→*l*, 30→*i*, 39→*c*, 42→+, 54→*i*, 63→*te* → **licitæ**
+- Ligne IV (bande 6): 31→*p*, 33→*ra*, 39→*e*, 45→*di*, 57→*ci*, 69→*t* → **prædicit**
+- Ligne V (bande 2): 13→*t*, 22→+, 34→*a*, 46→*l*, 55→*i*, 64→*a* → **talia**
+- Ligne VI (bande 3): 15→*n*, 24→+, 36→*u*, 42→*m*, 54→*e*, 60→*n* → **numen**
+
+Concatenated: *Ecce equidem licitæ prædicit talia numen.* ✓ Confirmed.
+
+Migneret then confirms on p.52: "Toutes les lettres ayant été écrites de suite dans l'ordre qu'elles auront
+été trouvées en les cherchant, formeront le vers, *Ecce equidem licitæ prædicit talia numen,* qui est le
+résultat des différentes opérations numériques qui ont été faites, & la réponse à la question: *Celui que
+j'aime deviendra-t-il cette année mon époux?*"
+
+**Second question worked (p.53)**
+
+"La paix sera-t-elle prochaine et avantageuse aux François?" Triangle:
+```
+3 1 6 5 4 6 2 6 9
+ 4 7 2 9 1 8 8 6
+  2 9 2 1 9 7 5
+   2 3 1 7 3
+    4 5 4 8 1
+     9 9 3 9
+      9 3 3
+       3 6
+        9
+```
+Output verse (confirmed p.55): *Credo satis licité, donabit fœdera numen.* The pamphlet ends here: "FIN."
+
+**What this changes for the post**
+
+The "pre-compiled verse table" described in Section 4's LLM parallel table is more precisely described as
+a **sub-word letter table**. Migneret's stored units are not whole verse phrases but individual letters
+and digrams (qu, ra, te, di, ci). This is strikingly close to modern **byte-pair encoding (BPE)** —
+the tokenization method used by GPT-2 onwards — which also stores a vocabulary of subword units (single
+characters up to common letter-pairs and longer fragments) and assembles outputs by concatenating them.
+
+The + placeholder (skip cell) is effectively a null token or padding token — the same concept modern
+tokenizers use to handle variable-length sequences within fixed-size batches.
+
+So the "vocabulary" parallel is tighter than previously described:
+| Migneret | Modern LLM |
+|----------|-----------|
+| Letter table cells (single letters + digrams: qu, ra, te, di, ci) | BPE vocabulary (single chars + common subwords) |
+| "+" placeholder = skip | Padding token |
+| 6 lignes × 6 lookups = 36 positions → one hexameter | Context window of token positions → one output |
+
+**Editorial implications**
+- Step 6 description in the post should say "letter by letter" not "verse fragment by verse fragment"
+- Section 4's table row "Pre-compiled verse table → Learned weight matrix" could be sharpened:
+  "Sub-word letter table (letters + digrams) → BPE token vocabulary"
+- The + placeholder as padding token is a nice additional touch, but may be too technical for the post
+- The fold-out image (Tabula Prima/Secunda, page 54) would make an excellent figure — it is the
+  complete Oracle Machine on one page
+
 ---
 
 ## Assets
