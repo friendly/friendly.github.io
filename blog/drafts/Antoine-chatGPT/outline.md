@@ -248,6 +248,31 @@ but the same category of trick.
   in the history of ideas — and shares them with characteristic lightness
 - "A non-serious contribution" that turns out to illuminate something large
 
+
+## Notes from reading
+
+? Here's what those pages add:
+
+  Pages 8–9 (end of "Sur les Oracles") give two things worth quoting directly: Migneret's boast that even the best
+  mathematicians of his era would have declared it impossible to make Latin verses by arithmetic — and his explicit
+  educational purpose: the machine teaches the four basic rules of arithmetic through amusement. That secondary motive
+  (fun ? math skills) is completely separate from the satirical argument and worth a sentence in section 2.
+
+  Pages 10–19 ("Avantages des Mathématiques") are the real surprise. This isn't just an introduction — it's a full
+  Encyclopédiste manifesto arguing that mathematics is the foundation of every art, science, and correct judgment. Logic
+  is arithmetic (he reduces the syllogism to an equation on p.15). Beauty is ratio. Even poetic similes are expressions
+  of mathematical equality. Migneret names his heroes in footnotes: Fontenelle, Voltaire, Diderot & d'Alembert (the
+  Encyclopédie itself is called "l'exécution admirable"), Rameau, Newton, Galileo.
+
+  The implication for the post: Migneret is not an eccentric with a party trick. He's a committed Encyclopédiste writing
+  a proof by construction — if oracles were just a lookup table, and all reasoning reduces to arithmetic, then the
+  appearance of divine knowledge is nothing but arithmetic. The oracle machine is the demonstration of a general claim
+  about the nature of thought. That makes the parallel to LLMs much sharper: same philosophical claim, 265 years apart,
+  vastly different scale.
+
+  The closing line of p.19 is quotable for section 5 — swap "mathematics" for "LLMs" and it reads like a 2024 tech press
+  release.
+  
 ---
 
 ## Assets

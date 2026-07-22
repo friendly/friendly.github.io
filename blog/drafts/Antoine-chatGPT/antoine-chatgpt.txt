@@ -1,0 +1,36 @@
+In echo to our former exchanges on ChatGPT  
+I would like to send a non-serious contribution (but the deadline is possibly passed). 
+
+The first pamphlet against ChatGPT (possibly the Encyclopedists) was published
+in 1759 by Pierre-Jean Migneret (17..-18..): Invention d'une manufacture et
+fabrique de vers, au petit métier, ou l'Art de versifier par les seules règles
+du calcul numérique, Arkstée & Merkus (Amsterdam) 1759 (See https://iris.univ-
+lille.fr/handle/1908/5106). 
+
+Publishers names are faked as is the address and the
+book was certainly printed in France.  (Nevertheless, Kasper Arkstee et Hendrick
+Merkus existed and published in Amsterdam and Leipzig!) 
+
+Pierre-Jean Migneret
+appears as a former mathematics teacher and accountant in a book which he
+published in Paris in 1798/1799 or an VII (La science des jeunes négocians et
+teneurs de livres; ou cours complet d'instructions élémentaires sur les
+opérations du commerce en marchandises et banque).
+
+Example 1; question: 
+
+Q: Celui que j’aime deviendra-t-il mon époux ? 
+A: Ecce equidem liccitè praedicit talia numen. 
+
+Translations:
+Q: Will the one I love become my husband?
+A: Behold, indeed, the god predicts such things.
+
+
+Example 2; 
+Q: La paix sera-t-elle prochaine et avantageuse aux Français? 
+A: Credo satis licitè, donabit foedera numen ...
+
+Translations:
+Q: Will peace be near and advantageous to the French?
+A: I think it's fair enough, the god will give a covenant...
