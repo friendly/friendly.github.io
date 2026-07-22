@@ -1,4 +1,11 @@
-# ChatGPT, 1759 Edition
+---
+title: "ChatGPT, 1759 Edition"
+description: "A 1759 pamphlet by Pierre-Jean Migneret exposes ancient oracles as a lookup table and arithmetic — and accidentally anticipates the architecture of modern AI"
+author: "Michael Friendly"
+date: today
+categories: [History of Statistics, History of Mathematics, AI]
+draft: true
+---
 
 In February 2023, just a few months before he died, my dear friend Antoine de Falguerolles sent me an email
 and a 1759 pamphlet by Pierre-Jean Migneret, *Invention d'une Manufacture et Fabrique de Vers, au Petit Métier,
@@ -12,7 +19,7 @@ showing me the 1864 volume of the _Albums de Statistique Graphique_, containing 
 We later formed _Les Chevaliers_ to purchase an entire collection of these albums, published by the Ministery of Public Works
 in France, 1879--1899. Over many years, Antoine would toss me many, many historical nuggets: the address in Paris, where
 Charles Joseph Minard lived in Paris (32 rue du Bac); where Minard was buried (Montparnasse Cemetery, Paris);
-the remarkable contributions of André-Louis Cholesky and so on. 
+the remarkable contributions of André-Louis Cholesky and so on.
 
 I could go on. But the point is not the list. It's the cast of mind behind it: the statistician and historian who kept finding things that mattered, and sharing them with characteristic lightness. This one, it turns out, mattered more than either of us realized.
 
@@ -58,27 +65,27 @@ declared it *impossible* to produce Latin verses by arithmetic. He pulled it off
 
 ## The Oracle at work
 
-Let’s see what the machine actually produces. Antoine worked through two examples with a question posed to the
+Let's see what the machine actually produces. Antoine worked through two examples with a question posed to the
 Oracle, and its' response, both in Latin:
 
 | Question | Oracle response |
 |----------|----------------|
-| *Celui que j’aime deviendra-t-il mon époux?* | *Ecce equidem licitæ prædicit talia numen.* |
+| *Celui que j'aime deviendra-t-il mon époux?* | *Ecce equidem licitæ prædicit talia numen.* |
 | *La paix sera-t-elle prochaine et avantageuse aux Français?* | *Credo satis licitæ, donabit fœdera numen...* |
 
 Translated:
 
-Will the one I love become my husband? — *Behold, the god foretells such things as are permitted.* 
+Will the one I love become my husband? — *Behold, the god foretells such things as are permitted.*
 
-Will peace be near and advantageous to the French? — *I think it fair enough; the god will grant a treaty.* 
+Will peace be near and advantageous to the French? — *I think it fair enough; the god will grant a treaty.*
 
 Both answers are perfectly oracular: confident-sounding, Latin, and applicable to almost anything.
 
 Here is how Migneret built this. The *Instruction sur la manière de travailler* (pp. 28–34) walks through every step.
 
-**Step 1 — Normalize the question to exactly nine words.** The example question becomes: *Celui que j’aime deviendra-t-il cette année mon époux?*
+**Step 1 — Normalize the question to exactly nine words.** The example question becomes: *Celui que j'aime deviendra-t-il cette année mon époux?*
 
-**Step 2 — Encode each letter as a number.** Migneret’s *Table Alphabéti-Numérique* assigns A=1, B=2, … Z=23 (no J, no W, no X — the table follows 18th-century French orthography). Letters within each word are summed:
+**Step 2 — Encode each letter as a number.** Migneret's *Table Alphabéti-Numérique* assigns A=1, B=2, … Z=23 (no J, no W, no X — the table follows 18th-century French orthography). Letters within each word are summed:
 
 ```
 C    e    l    u    i
@@ -99,7 +106,7 @@ j    a    i    m    e
 Word        sum   mod 9
 Celui        48     3
 que          41     5
-j’aime       36     9   (0 → 9)
+j'aime       36     9   (0 → 9)
  …            …     7
  …            …     2
  …            …     6
@@ -126,6 +133,4 @@ nine-digit key:  3  5  9  7  2  6  1  3  3
 
 **Step 5 — Read nine index values** from the nine columns of the triangle.
 
-**Step 6 — Look up the verse.** Each index points to a pre-composed Latin hexameter fragment in Migneret’s tables; the nine fragments are concatenated into the oracle response.
-
-
+**Step 6 — Look up the verse.** Each index points to a pre-composed Latin hexameter fragment in Migneret's tables; the nine fragments are concatenated into the oracle response.
