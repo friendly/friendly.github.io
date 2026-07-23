@@ -3,7 +3,7 @@ title: "ChatGPT, 1759 Edition"
 description: "A 1759 pamphlet by Pierre-Jean Migneret exposes ancient oracles as a lookup table and arithmetic — and accidentally anticipates the architecture of modern AI"
 author: "Michael Friendly"
 date: today
-categories: [History of Statistics, History of Mathematics, AI]
+categories: [History of Statistics, History of Mathematics, AI, Chevaliers]
 draft: true
 ---
 
