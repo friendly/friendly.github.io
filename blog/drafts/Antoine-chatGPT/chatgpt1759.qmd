@@ -1,25 +1,35 @@
 ---
 title: "ChatGPT, 1759 Edition"
-description: "A 1759 pamphlet by Pierre-Jean Migneret exposes ancient oracles as a lookup table and arithmetic---and accidentally anticipates the architecture of modern AI"
+description: "A 1759 pamphlet by Pierre-Jean Migneret exposes ancient oracles as a lookup table and arithmetic---and accidentally anticipates the architecture of modern AI. A tribute to the friend who found it."
 author: "Michael Friendly"
 date: today
 categories: [History of Statistics, History of Mathematics, AI, Chevaliers]
+image: images/Migneret-banner.png
+title-block-banner: images/Migneret-banner.png
+title-block-banner-color: white
 draft: true
 ---
 
+<style>
+.quarto-title-banner {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url("images/Migneret-banner.png") center / cover no-repeat !important;
+}
+</style>
+
 In February 2023, just a few months before he died, my dear friend Antoine de Falguerolles sent me an email
-and a 1759 pamphlet by Pierre-Jean Migneret, *Invention d'une Manufacture et Fabrique de Vers, au Petit Métier,
-ou l'Art de Versifier par les Seules Règles du Calcul Numérique*,
+and a 1759 pamphlet by Pierre-Jean Migneret, [*Invention d'une Manufacture et Fabrique de Vers, au Petit Métier, ou l'Art de Versifier par les Seules Règles du Calcul Numérique*](https://friendly.github.io/papers/Migneret1759.pdf),
 that he said might be "the first pamphlet against ChatGPT", Characteristically, he framed it as "a non-serious contribution".
 But, when I recently translated and read this, I thought, "holy molly, it actually anticipates so many aspects of modern AI,
 that it is worth a closer look."
 
-This was so typical of Antoine. He got me interested in the history of data visualization the first time we met in Toulouse,
-showing me the 1864 volume of the [_Albums de Statistique Graphique_](https://www.datavis.ca/papers/golden-STS268.pdf), containing beautiful statistical graphics I never thought existed.
-We later formed _Les Chevaliers_ to purchase an entire collection of these albums, published by Emile Cheysson for the Ministery of Public Works
+This was so typical of Antoine. He got me interested in the history of data visualization: the first time we met in Toulouse, he
+showed me the 1864 volume of the [_Albums de Statistique Graphique_](https://www.datavis.ca/papers/golden-STS268.pdf), containing beautiful statistical graphics I never thought existed. I was instantly hooked on datavis history.
+
+We later formed [_Les Chevaliers_](https://www.datavis.ca/papers/ruderman-chevaliers.pdf) to purchase an entire collection of these albums, published by [Émile Cheysson](https://en.wikipedia.org/wiki/%C3%89mile_Cheysson) for the Ministery of Public Works
 in France, 1879--1899. Over many years, Antoine would toss me many, many historical nuggets: the address in Paris, where
-Charles Joseph Minard lived in Paris (32 rue du Bac); where [Minard was buried](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) (Montparnasse Cemetery, Paris);
-the remarkable contributions of André-Louis Cholesky and so on.
+Charles Joseph Minard lived in Paris ([32 rue du Bac](https://www.google.com/maps/search/32+Rue+du+Bac,++Paris,+France)); where [Minard was buried](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) (Montparnasse Cemetery, Paris);
+the birth certificate of [André-Michel Guerry](https://www.datavis.ca/papers/guerry-STS241.pdf) which helped me track down his genealogy, and so on.
 
 I could go on. But the point is not the list. It's the cast of mind behind it: the statistician and historian who kept finding things that mattered, and sharing them with characteristic lightness. This one, it turns out, mattered more than either of us realized.
 
@@ -35,8 +45,7 @@ Isn't that ChatGPT without the loom?
 ![Title page of Migneret's 1759 pamphlet.](images/Migneret-cover.jpg)
 :::
 
-The fancy title page says "Published by Arkstée & Merkus, Amsterdam, 1759". Except it wasn't Amsterdam, and Arkstée & Merkus didn't publish it. They were real publishers, operating in Amsterdam and Leipzig---but the address was a decoy, a standard precaution for a pamphlet
-that might offend someone.
+The fancy title page says "Published by Arkstée & Merkus, Amsterdam, 1759" — or so it claims. Arkstée & Merkus were real publishers, operating in Amsterdam and Leipzig, but a Dutch imprint on a French pamphlet was a common precaution for works that might offend someone; the true printer is unconfirmed. A satirical pamphlet debunking religious oracles had reason for a little cover.
 
 The brief preface---the *Avertissement*---is candid about how this thing came to exist. Migneret had planned something
 grander, a large folio volume. The printer talked him down: "even if your book were a foolish trifle (*une sottise*)
@@ -62,17 +71,17 @@ This reminds me so much of [ELIZA](https://en.wikipedia.org/wiki/ELIZA), the wor
 
 Migneret is doing Enlightenment demystification in the tradition of Fontenelle's [*Histoire des Oracles*](https://classiques.uqam.ca/classiques/fontenelle_bernard_de/histoire_des_oracles/Histoire_des_oracles.pdf) (1687), which he
 cites explicitly. But Fontenelle had simply *argued* that oracles were fraud; Migneret goes a step further and *demonstrates
-the mechanism* for producing replies to prompts without knowing anything of _substance_. ChatGPT 0.1?
+the mechanism* for producing replies to prompts without knowing anything of _substance_. Was this ChatGPT v0.1?
 
 His pamphlet contains a working algorithm: a proof of concept that anyone can operate. 
 Migneret knew exactly what he had done: he could have written an R or Python function, `Oracle(inputtext)` if time travel had been
 available to him. But there is more to Migneret's bravado:
 Buried in the preface is a quiet boast: the best mathematicians of his day would perhaps have
-declared it *impossible* to produce Latin verses by arithmetic. He pulled it off anyway.
+declared it *impossible* to produce Latin verses by arithmetic alone. He pulled it off anyway.
 
 ## The Oracle at work
 
-Let's see what Migneret's machine actually produces. Antoine worked through two examples with a question posed to the
+Let's see what Migneret's Oracle machine actually produces. Antoine worked through two examples with a question posed to the
 Oracle, and its' response, both in Latin:
 
 | Question | Oracle response |
@@ -82,13 +91,17 @@ Oracle, and its' response, both in Latin:
 
 Translated:
 
-Will the one I love become my husband?---*Behold, the god foretells such things as are permitted.*
+**Q**: Will the one I love become my husband?
+**A**: *Behold, the god foretells such things as are permitted.*
 
-Will peace be near and advantageous to the French?---*I think it fair enough; the god will grant a treaty.*
+**Q**: Will peace be near and advantageous to the French?
+**A**: *I think it fair enough; the god will grant a treaty.*
 
 Both answers are perfectly oracular: confident-sounding (like the Oracle of Delphi), Latin (to make it mystic), and applicable to almost anything. Just like ELIZA!
 
-Here is how Migneret built this. The *Instruction sur la manière de travailler* (pp. 28–34) walks us through every step.
+### How the machine works
+
+Here is how Migneret built his Oracle machine. The section *Instruction sur la manière de travailler* (pp. 28–34) walks us through every step.
 Let's follow the first question (Q) through all six.
 
 **Step 1---Normalize the question to exactly nine words.** Nine is the key number throughout: nine word-scores, a nine-digit key, a nine-row triangle, six words of a Latin hexameter. The standardized Q becomes: *Celui que j'aime deviendra-t-il cette année mon époux?*
@@ -174,6 +187,8 @@ And here's where this gets interesting: the parallel to modern LLMs is hard to d
 | Triangle mod-9 operations | Layer-by-layer transformation |
 | Column index lookup | Sampling from output distribution |
 | Letter & digram lookup table | Learned weight matrix |
+
+The steps involve:
 
 * **Input normalization.** Before either system does anything, it imposes structure on raw input. Migneret requires exactly nine words; an LLM tokenizes the prompt (splitting words into subword units) and formats it according to a template. Neither processes language as-is---both demand it arrive in a specific form first.
 
