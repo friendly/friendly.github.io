@@ -91,7 +91,7 @@ Both answers are perfectly oracular: confident-sounding (like the Oracle of Delp
 Here is how Migneret built this. The *Instruction sur la manière de travailler* (pp. 28–34) walks us through every step.
 Let's follow the first question (Q) through all six.
 
-**Step 1 — Normalize the question to exactly nine words.** Nine is the key number throughout: nine word-scores, a nine-digit key, a nine-row triangle, nine verse fragments. The standardized Q becomes: *Celui que j'aime deviendra-t-il cette année mon époux?*
+**Step 1 — Normalize the question to exactly nine words.** Nine is the key number throughout: nine word-scores, a nine-digit key, a nine-row triangle, six words of a Latin hexameter. The standardized Q becomes: *Celui que j'aime deviendra-t-il cette année mon époux?*
 
 **Step 2 — Encode each letter as a number.** Migneret's *Table Alphabéti-Numérique* assigns A=1, B=2, … Z=23 (no J, no W, no X — the table follows 18th-century French orthography). Letters within each word are summed:
 
@@ -115,7 +115,7 @@ Language in, numbers out. Whatever the question actually *means* is already irre
 Celui  que  j'aime  deviendra   il  cette  année   mon  époux
 ```
 
-[^tokens]: This example was a bit tricky: "deviendra-t-il" splits as "deviendra" + "il", with the euphonic* t *dropped*. The sum for "époux" depends on how Migneret's table handled* x*, a letter absent from the standard 23-letter French alphabet — to be confirmed from the INSTRUCTION pages. Fittingly, how to handle characters outside the expected vocabulary is a tokenization problem that modern LLMs still wrestle with.
+[^tokens]: This example was a bit tricky: "deviendra-t-il" splits as "deviendra" + "il", with the euphonic *t* dropped. The sum for "époux" depends on how Migneret's table handled *x*, a letter absent from the standard 23-letter French alphabet — to be confirmed from the INSTRUCTION pages. Fittingly, how to handle characters outside the expected vocabulary is a tokenization problem that modern LLMs still wrestle with. Migneret's table also uses a "+" symbol as a skip placeholder — cells where a word needs fewer letters than the table has slots are simply passed over. The 18th-century padding token.
 
 **Step 3 — Compress each score modulo 9.** Divide by 9, keep the remainder; a remainder of zero becomes 9:
 
@@ -156,7 +156,9 @@ Modern deep learning does something structurally similar. In a **transformer**, 
 
 **Step 5 — Read nine index values** from the nine columns of the triangle.
 
-**Step 6 — Look up the verse.** Each index points to a pre-composed Latin hexameter fragment in Migneret's tables; the nine fragments are concatenated into the Oracle response. The verse fragments are the one part of the system that required genuine creative labor: Migneret had to compose Latin hexameter lines that would read plausibly in any combination. Everything else is arithmetic.
+**Step 6 — Look up the verse.** Two tables do the final work. The *Tabula Prima Numerica* maps each index to a section (A–G); the *Tabula Secunda Litteralis* gives the corresponding letter or letter-pair at that position. Cells marked "+" are skipped. Reading the surviving letters in order spells one word. This is repeated for six triangle rows — one word per row — and the six words concatenate into the hexameter. That is the only part of the system requiring genuine creative labor: Migneret had to fill the letter table so that whatever combination the arithmetic produces assembles into plausible Latin. Everything else is arithmetic.
+
+![The complete oracle: *Tabula Prima Numerica* (top) maps index values to sections A–G; *Tabula Secunda Litteralis* (bottom) gives the corresponding letter or letter-pair. Together, these two tables are Migneret's entire "knowledge base."](images/Migneret-p63.png)
 
 What was he thinking? Not, surely, that he had built a useful oracle. The point is the demonstration: show the mechanism, expose the trick. *Any* oracle could be built this way. The god in the machine is **arithmetic**.
 
@@ -171,7 +173,7 @@ And here's where this gets interesting: the parallel to modern LLMs is hard to d
 | Word sums | Weighted feature aggregation |
 | Triangle mod-9 operations | Layer-by-layer transformation |
 | Column index lookup | Sampling from output distribution |
-| Pre-compiled verse table | Learned weight matrix |
+| Letter & digram lookup table | Learned weight matrix |
 
 **Input normalization.** Before either system does anything, it imposes structure on raw input. Migneret requires exactly nine words; an LLM tokenizes the prompt (splitting words into subword units) and formats it according to a template. Neither processes language as-is — both demand it arrive in a specific form first.
 
@@ -183,7 +185,7 @@ And here's where this gets interesting: the parallel to modern LLMs is hard to d
 
 **Index lookup.** Both reduce their transformed representation to a set of indices into a table of outputs. Migneret reads one value from each column of the triangle; an LLM computes a probability distribution over its vocabulary and samples a token. Migneret's lookup is deterministic; an LLM's introduces controlled randomness (temperature). But the logical structure — transform input to pointer, use pointer to select output — is the same.
 
-**The table itself.** In Migneret, the verse fragments are the stored "knowledge" — hand-crafted Latin hexameters assembled to be combinable in any order. In an LLM, the weight matrices play the same role: a static structure, assembled in advance, that maps indices to outputs. Migneret compiled his table by hand, presumably over considerable effort. An LLM's "table" was assembled by training on essentially all of human writing. The scale differs by nine or ten orders of magnitude. The architecture does not.
+**The table itself.** In Migneret, the stored "knowledge" is a table of individual letters and letter-pairs — hand-crafted so that whatever combination the arithmetic produces assembles into plausible Latin hexameter. In an LLM, the weight matrices play the same role: a static structure, assembled in advance, that maps indices to outputs. The sub-word units in Migneret's table (single letters plus digrams like *qu*, *ra*, *te*, *di*, *ci*) are strikingly close to modern **byte-pair encoding** (BPE) — the tokenization scheme used by GPT-2 and its successors, which also stores a vocabulary of characters and common letter-sequences and assembles output by concatenating them. Migneret compiled his table by hand. An LLM's was assembled by training on essentially all of human writing. The scale differs by nine or ten orders of magnitude. The architecture does not.
 
 ## Then and Now
 
@@ -193,6 +195,16 @@ Replace "pagan priests" with "large language models" and the argument is essenti
 
 But the argument cuts both ways. If Migneret's machine — nine letter values, one triangle, a hand-compiled table of Latin verse — can produce outputs that feel oracular, then perhaps the LLM deserves more credit than its debunkers allow. Scale is not nothing. An LLM trained on essentially all of human writing, with billions of parameters learned from that data, is doing something Migneret's machine could not: generalizing. His oracle would produce the same Latin hexameter in response to any question that happened to map to the same nine-digit key. An LLM produces something different, and often genuinely useful, for nearly every input.
 
-The real differences come down to three things. **Scale**: 9 verse fragments versus billions of learned parameters. **Generality**: Migneret's table handles any nine-word French question; an LLM handles any text in any language about any topic. And most importantly, **learning**: Migneret compiled his table by hand; an LLM's "table" was assembled by gradient descent over essentially all of human writing, encoding implicitly an enormous amount of structure about language and the world. Whether that implicit structure constitutes "understanding" is a philosophical question this post will not resolve. But it is a genuine question — one that Migneret's machine does not raise.
+The real differences come down to three things. **Scale**: a two-table letter lookup versus billions of learned parameters. **Generality**: Migneret's table handles any nine-word French question; an LLM handles any text in any language about any topic. And most importantly, **learning**: Migneret compiled his table by hand; an LLM's "table" was assembled by gradient descent over essentially all of human writing, encoding implicitly an enormous amount of structure about language and the world. Whether that implicit structure constitutes "understanding" is a philosophical question this post will not resolve. But it is a genuine question — one that Migneret's machine does not raise.
 
 What his machine does raise is the prior question: is the category of trick sufficient? Migneret thought it was enough to debunk oracles, and he was right. Whether the same trick, scaled by nine orders of magnitude, is enough to debunk ChatGPT — that Antoine left as an exercise for the reader.
+
+## Coda
+
+Antoine called it "a non-serious contribution." He was, as always, being modest.
+
+I said at the start that this one mattered more than either of us realized. What Migneret found — and what Antoine recognized in it — is that the appearance of intelligence requires no intelligence: only a well-constructed table and some arithmetic. That argument is as alive now as it was in 1759. Antoine spotted it in a pamphlet about oracles, attached it to a note in February 2023, and sent it along. A few months later, he was gone.
+
+That was the cast of mind. Find the thing, share the thing, let the thing speak. With Antoine, "non-serious" was never quite the last word.
+
+We are still listening.
