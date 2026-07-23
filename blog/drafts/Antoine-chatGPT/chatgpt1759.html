@@ -63,7 +63,7 @@ background-size: cover;
 
 </head>
 
-<body class="fullcontent quarto-light"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+<body class="quarto-light"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
 
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
@@ -105,7 +105,22 @@ background-size: cover;
     
   
   </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#migneret-and-his-pamphlet" id="toc-migneret-and-his-pamphlet" class="nav-link active" data-scroll-target="#migneret-and-his-pamphlet">Migneret and his pamphlet</a></li>
+  <li><a href="#the-oracle-at-work" id="toc-the-oracle-at-work" class="nav-link" data-scroll-target="#the-oracle-at-work">The Oracle at work</a>
+  <ul class="collapse">
+  <li><a href="#how-the-machine-works" id="toc-how-the-machine-works" class="nav-link" data-scroll-target="#how-the-machine-works">How the machine works</a></li>
+  </ul></li>
+  <li><a href="#the-llm-parallel" id="toc-the-llm-parallel" class="nav-link" data-scroll-target="#the-llm-parallel">The LLM parallel</a></li>
+  <li><a href="#then-and-now" id="toc-then-and-now" class="nav-link" data-scroll-target="#then-and-now">Then and Now</a></li>
+  <li><a href="#coda" id="toc-coda" class="nav-link" data-scroll-target="#coda">Coda</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
@@ -118,7 +133,7 @@ background-size: cover;
               url("images/Migneret-banner.png") center / cover no-repeat !important;
 }
 </style>
-<p>In February 2023, just a few months before he died, my dear friend Antoine de Falguerolles sent me an email and a 1759 pamphlet by Pierre-Jean Migneret, <em>Invention d’une Manufacture et Fabrique de Vers, au Petit Métier, ou l’Art de Versifier par les Seules Règles du Calcul Numérique</em>, that he said might be “the first pamphlet against ChatGPT”, Characteristically, he framed it as “a non-serious contribution”. But, when I recently translated and read this, I thought, “holy molly, it actually anticipates so many aspects of modern AI, that it is worth a closer look.”</p>
+<p>In February 2023, just a few months before he died, my dear friend Antoine de Falguerolles sent me an email and a 1759 pamphlet by Pierre-Jean Migneret, <a href="https://friendly.github.io/papers/Migneret1759.pdf"><em>Invention d’une Manufacture et Fabrique de Vers, au Petit Métier, ou l’Art de Versifier par les Seules Règles du Calcul Numérique</em></a>, that he said might be “the first pamphlet against ChatGPT”, Characteristically, he framed it as “a non-serious contribution”. But, when I recently translated and read this, I thought, “holy molly, it actually anticipates so many aspects of modern AI, that it is worth a closer look.”</p>
 <p>This was so typical of Antoine. He got me interested in the history of data visualization: the first time we met in Toulouse, he showed me the 1864 volume of the <a href="https://www.datavis.ca/papers/golden-STS268.pdf"><em>Albums de Statistique Graphique</em></a>, containing beautiful statistical graphics I never thought existed. I was instantly hooked on datavis history.</p>
 <p>We later formed <a href="https://www.datavis.ca/papers/ruderman-chevaliers.pdf"><em>Les Chevaliers</em></a> to purchase an entire collection of these albums, published by <a href="https://en.wikipedia.org/wiki/%C3%89mile_Cheysson">Émile Cheysson</a> for the Ministery of Public Works in France, 1879–1899. Over many years, Antoine would toss me many, many historical nuggets: the address in Paris, where Charles Joseph Minard lived in Paris (<a href="https://www.google.com/maps/search/32+Rue+du+Bac,++Paris,+France">32 rue du Bac</a>); where <a href="https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf">Minard was buried</a> (Montparnasse Cemetery, Paris); the birth certificate of <a href="https://www.datavis.ca/papers/guerry-STS241.pdf">André-Michel Guerry</a> which helped me track down his genealogy, and so on.</p>
 <p>I could go on. But the point is not the list. It’s the cast of mind behind it: the statistician and historian who kept finding things that mattered, and sharing them with characteristic lightness. This one, it turns out, mattered more than either of us realized.</p>
@@ -176,7 +191,9 @@ background-size: cover;
 <p><strong>Q</strong>: Will the one I love become my husband? <strong>A</strong>: <em>Behold, the god foretells such things as are permitted.</em></p>
 <p><strong>Q</strong>: Will peace be near and advantageous to the French? <strong>A</strong>: <em>I think it fair enough; the god will grant a treaty.</em></p>
 <p>Both answers are perfectly oracular: confident-sounding (like the Oracle of Delphi), Latin (to make it mystic), and applicable to almost anything. Just like ELIZA!</p>
-<p>Here is how Migneret built this. The <em>Instruction sur la manière de travailler</em> (pp.&nbsp;28–34) walks us through every step. Let’s follow the first question (Q) through all six.</p>
+<section id="how-the-machine-works" class="level3">
+<h3 class="anchored" data-anchor-id="how-the-machine-works">How the machine works</h3>
+<p>Here is how Migneret built his Oracle machine, as far as I can tell. The section <em>Instruction sur la manière de travailler</em> (pp.&nbsp;28–34) walks us through every step. Let’s follow the first question (Q) through all six.</p>
 <p><strong>Step 1—Normalize the question to exactly nine words.</strong> Nine is the key number throughout: nine word-scores, a nine-digit key, a nine-row triangle, six words of a Latin hexameter. The standardized Q becomes: <em>Celui que j’aime deviendra-t-il cette année mon époux?</em></p>
 <p><strong>Step 2—Encode each letter as a number.</strong> Migneret’s <em>Table Alphabéti-Numérique</em> assigns A=1, B=2, … Z=23 (no J, no W, no X—the table follows 18th-century French orthography). Letters within each word are summed:</p>
 <pre><code>C    e    l    u    i
@@ -206,7 +223,7 @@ mon            39     3
                ─────────────
 nine-digit key:  3  5  9  7  2  6  1  3  3</code></pre>
 <p>By this point, whatever the question <em>meant</em> has been completely discarded. “Will I marry him?” and “Will France win the war?” each survive only as nine digits between 1 and 9—different digits, but equally stripped of content. And, that’s the point!</p>
-<p><strong>Step 4—Build the triangle.</strong> Apply the same mod-9 operation to adjacent pairs, row by row, building a downward triangle of 9 rows:</p>
+<p><strong>Step 4—Mix these in a triangle.</strong> Apply the same mod-9 operation to adjacent pairs, row by row, building a downward triangle of 9 rows:</p>
 <pre><code>3 5 9 7 2 6 1 3 3
  8 5 7 9 8 7 4 6
   4 3 7 8 6 2 1
@@ -216,9 +233,14 @@ nine-digit key:  3  5  9  7  2  6  1  3  3</code></pre>
       6 6 3
        3 9
         3</code></pre>
-<p>Nine layers of mixing. Each row is computed from its predecessor, so a change in any single word ripples outward through the triangle. By the bottom, every digit has influenced every other. Step 3 discarded the question’s <em>meaning</em>; Step 4 scrambles the arithmetic residue too, so the output indices carry no recoverable trace of the original input.</p>
-<p>Modern deep learning does something structurally similar. In a <strong>transformer</strong>, each layer mixes information across all positions through attention, progressively entangling the original tokens until the output is a function of the entire input. Migneret’s triangle is a pocket-sized version of the same intuition: iterate a simple mixing operation until nothing from the original survives intact.</p>
-<p><strong>Step 5—Read nine index values</strong> from the nine columns of the triangle.</p>
+<p>Nine layers of mixing. Each row is computed from its predecessor, so a change in any single word ripples outward through the triangle. By the bottom, every digit has influenced every other. Step 3 discarded the question’s <em>meaning</em>; Step 4 scrambles the arithmetic residue too, so the output indices carry no recoverable trace of the original input. A numerical magic trick. Voila!</p>
+<p>Modern deep learning does something structurally similar. In a <a href="https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)"><strong>transformer</strong></a>, each layer mixes information across all positions through attention, progressively entangling the original tokens until the output is a function of the entire input. Migneret’s triangle is a pocket-sized version of the same intuition: iterate a simple mixing operation until nothing from the original survives intact.</p>
+<p><strong>Step 5—Extract six band indicators from the triangle.</strong> Reading specific positions of the completed triangle yields six index values — one for each word of the output hexameter — each a digit between 1 and 9. As best I can reconstruct from the worked example in the pamphlet, for our question they are:</p>
+<pre><code>Ligne:    I     II    III    IV     V    VI
+Band:     3      9      3     6     2     3
+Word:  ecce  equi-  lici-  præ-  tal-   nu-
+              dem     tæ  dicit    ia   men</code></pre>
+<p>Each value selects a horizontal band (row) of the <em>Tabula Prima Numerica</em> used in Step 6.</p>
 <p><strong>Step 6—Look up the verse.</strong> Two tables do the final work. The <em>Tabula Prima Numerica</em> maps each index to a section (A–G); the <em>Tabula Secunda Litteralis</em> gives the corresponding letter or letter-pair at that position. Cells marked “+” are skipped. Reading the surviving letters in order spells one word. This is repeated for six triangle rows—one word per row—and the six words concatenate into the hexameter. That is the only part of the system requiring genuine creative labor: Migneret had to fill the letter table so that whatever combination the arithmetic produces assembles into plausible Latin. Everything else is arithmetic.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -227,6 +249,7 @@ nine-digit key:  3  5  9  7  2  6  1  3  3</code></pre>
 </figure>
 </div>
 <p>What was he thinking? Not, surely, that he had built a useful oracle. The point is the demonstration: show the mechanism, expose the trick. <em>Any</em> oracle could be built this way. The god in the machine is <strong>arithmetic</strong>.</p>
+</section>
 </section>
 <section id="the-llm-parallel" class="level2">
 <h2 class="anchored" data-anchor-id="the-llm-parallel">The LLM parallel</h2>
@@ -284,14 +307,14 @@ nine-digit key:  3  5  9  7  2  6  1  3  3</code></pre>
 <ul>
 <li><strong>Scale</strong>: a two-table letter lookup versus billions of learned parameters.</li>
 <li><strong>Generality</strong>: Migneret’s table handles any nine-word French question; an LLM handles any text in any language about any topic.</li>
-<li>And most importantly, <strong>learning</strong>: Migneret compiled his table by hand; an LLM’s “table” was assembled by gradient descent over essentially all of human writing, encoding implicitly an enormous amount of structure about language and the world. Whether that implicit structure constitutes “understanding” is a philosophical question this post will not resolve. But it is a genuine question—one that Migneret’s machine does not raise.</li>
+<li>And most importantly, <strong>learning</strong>: Migneret compiled his table by hand; an LLM’s “table” was assembled by gradient descent over essentially all of human writing, encoding implicitly an enormous amount of structure about language and the world. That structure is no longer purely a matter for speculation. <a href="https://arxiv.org/abs/2607.20058">Buehler et al.&nbsp;(2026)</a> probed a language model’s internal states directly and found that physical laws are encoded not as static facts but as <em>relational transformations</em>—matched displacements between hidden states that correctly order and orient dozens of materials-science laws, and that can be causally steered by adding a single learned direction. Whether that implicit structure constitutes “understanding” is a philosophical question this post will not resolve. But it is a genuine, and increasingly testable, question—one that Migneret’s machine does not raise.</li>
 </ul>
 <p>What his machine does raise is the prior question: is the category of trick sufficient? Migneret thought it was enough to debunk oracles, and he was right. Whether the same trick, scaled by nine orders of magnitude, is enough to debunk ChatGPT—that Antoine left as an exercise for the reader.</p>
 </section>
 <section id="coda" class="level2">
 <h2 class="anchored" data-anchor-id="coda">Coda</h2>
 <p>Antoine called it “a non-serious contribution.” He was, as always, being modest.</p>
-<p>I said at the start that this one mattered more than either of us realized. What Migneret found—and what Antoine recognized in it—is that the appearance of intelligence requires no intelligence: only a well-constructed table and some arithmetic. It was a delicious, but sublte joke. That argument is as alive now as it was in 1759. Antoine spotted it in a pamphlet about oracles, attached it to a note in February 2023, and sent it along. A few months later, he was gone.</p>
+<p>I said at the start that this one mattered more than either of us realized. What Migneret found—and what Antoine recognized in it—is that the appearance of intelligence requires no intelligence: only a well-constructed table and some arithmetic. It was a delicious, but subtle joke. That argument is as alive now as it was in 1759. Antoine spotted it in a pamphlet about oracles, attached it to a note in February 2023, and sent it along. A few months later, he was gone.</p>
 <p>That was the cast of mind. Find the thing, share the thing, let the thing speak. With Antoine, “non-serious” was never quite the last word.</p>
 <p>We are still listening, Antoine.</p>
 </section>

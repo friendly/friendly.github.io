@@ -4,9 +4,10 @@ description: "A 1759 pamphlet by Pierre-Jean Migneret exposes ancient oracles as
 author: "Michael Friendly"
 date: today
 categories: [History of Statistics, History of Mathematics, AI, Chevaliers]
-image: images/Migneret-banner.png
+image: images/Migneret-cover.jpg
 title-block-banner: images/Migneret-banner.png
 title-block-banner-color: white
+toc: true
 draft: true
 ---
 
@@ -223,7 +224,7 @@ The real differences come down to three things:
 
 * **Scale**: a two-table letter lookup versus billions of learned parameters. 
 * **Generality**: Migneret's table handles any nine-word French question; an LLM handles any text in any language about any topic. 
-* And most importantly, **learning**: Migneret compiled his table by hand; an LLM's "table" was assembled by gradient descent over essentially all of human writing, encoding implicitly an enormous amount of structure about language and the world. Whether that implicit structure constitutes "understanding" is a philosophical question this post will not resolve. But it is a genuine question---one that Migneret's machine does not raise.
+* And most importantly, **learning**: Migneret compiled his table by hand; an LLM's "table" was assembled by gradient descent over essentially all of human writing, encoding implicitly an enormous amount of structure about language and the world. That structure is no longer purely a matter for speculation. [Buehler et al. (2026)](https://arxiv.org/abs/2607.20058) probed a language model's internal states directly and found that physical laws are encoded not as static facts but as *relational transformations*---matched displacements between hidden states that correctly order and orient dozens of materials-science laws, and that can be causally steered by adding a single learned direction. Whether that implicit structure constitutes "understanding" is a philosophical question this post will not resolve. But it is a genuine, and increasingly testable, question---one that Migneret's machine does not raise.
 
 What his machine does raise is the prior question: is the category of trick sufficient? Migneret thought it was enough to debunk oracles, and he was right. Whether the same trick, scaled by nine orders of magnitude, is enough to debunk ChatGPT---that Antoine left as an exercise for the reader.
 
@@ -231,7 +232,7 @@ What his machine does raise is the prior question: is the category of trick suff
 
 Antoine called it "a non-serious contribution." He was, as always, being modest.
 
-I said at the start that this one mattered more than either of us realized. What Migneret found---and what Antoine recognized in it---is that the appearance of intelligence requires no intelligence: only a well-constructed table and some arithmetic. It was a delicious, but sublte joke. That argument is as alive now as it was in 1759. Antoine spotted it in a pamphlet about oracles, attached it to a note in February 2023, and sent it along. A few months later, he was gone.
+I said at the start that this one mattered more than either of us realized. What Migneret found---and what Antoine recognized in it---is that the appearance of intelligence requires no intelligence: only a well-constructed table and some arithmetic. It was a delicious, but subtle joke. That argument is as alive now as it was in 1759. Antoine spotted it in a pamphlet about oracles, attached it to a note in February 2023, and sent it along. A few months later, he was gone.
 
 That was the cast of mind. Find the thing, share the thing, let the thing speak. With Antoine, "non-serious" was never quite the last word.
 

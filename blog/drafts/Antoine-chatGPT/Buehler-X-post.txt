@@ -1,0 +1,34 @@
+A physical law is not a fact about any single state of the world; it is a relationship between states. An LLM, it turns out, encodes the law in the same way - not as a point, but as a transformation. In new work using Google's Gemma model we show that a model's physical knowledge lives not in static neural states, but in the controlled relationships between them. The idea was inspired by mechanics - a spring’s stiffness is invisible in a photograph: it appears only when we pull the spring and measure its response. We similarly “pulled” on the model using counterfactual prompt pairs and measured how its hidden states moved.
+
+This revealed three levels of internal physics:
+
+  1⃣ Readability: Broad materials concepts (like corrosion, toughness, or oxidation) are linearly readable directly from intermediate hidden states, even when those exact terms are completely omitted from the prompt.
+
+2⃣ Representation: Rather than absolute state locations, matched state displacements accurately track and order direct, neutral, and inverse constitutive laws across 60 materials science laws (ρ = 0.910), correctly orienting 39 of 40 directional laws.
+
+3⃣ Causal Use: We can bidirectionally steer the model's decisions. Adding a single, frozen microstructural direction to the hidden state causally shifts its output preference in a controlled, relation-appropriate way.
+
+This is a major step toward representation-aware scientific AI: building models that are evaluated and rewarded for preserving physical laws internally, resisting shallow text shortcuts, and exposing testable reasoning structures.
+
+This gives us a sharp definition of what it means for an LLM to understand physics, and how we can train future models to develop even deeper abstractions about the world.
+0:08 / 1:17
+6:58 AM · Jul 23, 2026
+·
+12.6K
+ Views
+View quotes
+Michael Friendly @datavisfriendly.bsky.social
+
+Markus J. Buehler
+@ProfBuehlerMIT
+·
+12h
+Code: https://github.com/lamm-mit/Substrates
+
+Data, weights, and more 🤗: https://huggingface.co/collections/lamm-mit/substrates-reading-and-steering-representations-in-llms
+
+Paper: https://arxiv.org/abs/2607.20058
+From github.com
+John 🔮🌳 🌎☀️
+@johnhanacek
+·
