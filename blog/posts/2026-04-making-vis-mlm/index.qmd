@@ -143,6 +143,10 @@ As I write them up, they will become links to full posts.
 - *Color in figure captions and text* —
   `colorize()`, conditional HTML/PDF output, and why this is harder than it looks
 
+- *Mind your chunks* —
+  treating `.qmd` files as data: parsing ~670 code chunks into a data frame to audit
+  code-folding status and catch lines that overflow the printed page
+
 ## Things Quarto does well
 
 In fairness: Quarto's HTML output is excellent (and PDF output is pretty decent, when properly configured in your `_quarto.yml` file):
