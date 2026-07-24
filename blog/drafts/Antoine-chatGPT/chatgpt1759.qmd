@@ -20,16 +20,16 @@ draft: true
 
 In February 2023, just a few months before he died, my dear friend Antoine de Falguerolles sent me an email
 and a 1759 pamphlet by Pierre-Jean Migneret, [*Invention d'une Manufacture et Fabrique de Vers, au Petit Métier, ou l'Art de Versifier par les Seules Règles du Calcul Numérique*](https://friendly.github.io/papers/Migneret1759.pdf),
-that he said might be "the first pamphlet against ChatGPT", Characteristically, he framed it as "a non-serious contribution".
-But, when I recently translated and read this, I thought, "holy molly, it actually anticipates so many aspects of modern AI,
+that he said might be "the first pamphlet against ChatGPT." Characteristically, he framed it as "a non-serious contribution".
+But, when I recently translated and read this, I thought, "holy moly, it actually anticipates so many aspects of modern AI,
 that it is worth a closer look."
 
 This was so typical of Antoine. He got me interested in the history of data visualization: the first time we met in Toulouse, he
 showed me the 1864 volume of the [_Albums de Statistique Graphique_](https://www.datavis.ca/papers/golden-STS268.pdf), containing beautiful statistical graphics I never thought existed. I was instantly hooked on datavis history.
 
-We later formed [_Les Chevaliers_](https://www.datavis.ca/papers/ruderman-chevaliers.pdf) to purchase an entire collection of these albums, published by [Émile Cheysson](https://en.wikipedia.org/wiki/%C3%89mile_Cheysson) for the Ministery of Public Works
-in France, 1879--1899. Over many years, Antoine would toss me many, many historical nuggets: the address in Paris, where
-Charles Joseph Minard lived in Paris ([32 rue du Bac](https://www.google.com/maps/search/32+Rue+du+Bac,++Paris,+France)); where [Minard was buried](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) (Montparnasse Cemetery, Paris);
+We later formed [_Les Chevaliers_](https://www.datavis.ca/papers/ruderman-chevaliers.pdf) to purchase an entire collection of these albums, published by [Émile Cheysson](https://en.wikipedia.org/wiki/%C3%89mile_Cheysson) for the Ministry of Public Works
+in France, 1879--1899. Over many years, Antoine would toss me many, many historical nuggets: the address in Paris where
+Charles Joseph Minard lived ([32 rue du Bac](https://www.google.com/maps/search/32+Rue+du+Bac,++Paris,+France)); where [Minard was buried](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) (Montparnasse Cemetery, Paris);
 the birth certificate of [André-Michel Guerry](https://www.datavis.ca/papers/guerry-STS241.pdf) which helped me track down his genealogy, and so on.
 
 I could go on. But the point is not the list. It's the cast of mind behind it: the statistician and historian who kept finding things that mattered, and sharing them with characteristic lightness. This one, it turns out, mattered more than either of us realized.
@@ -83,7 +83,7 @@ declared it *impossible* to produce Latin verses by arithmetic alone. He pulled 
 ## The Oracle at work
 
 Let's see what Migneret's Oracle machine actually produces. Antoine worked through two examples with a question posed to the
-Oracle, and its' response, both in Latin:
+Oracle, and its response, both in Latin:
 
 | Question | Oracle response |
 |----------|----------------|
@@ -224,7 +224,7 @@ The real differences come down to three things:
 
 * **Scale**: a two-table letter lookup versus billions of learned parameters. 
 * **Generality**: Migneret's table handles any nine-word French question; an LLM handles any text in any language about any topic. 
-* And most importantly, **learning**: Migneret compiled his table by hand; an LLM's "table" was assembled by gradient descent over essentially all of human writing, encoding implicitly an enormous amount of structure about language and the world. That structure is no longer purely a matter for speculation. [Buehler et al. (2026)](https://arxiv.org/abs/2607.20058) probed a language model's internal states directly and found that physical laws are encoded not as static facts but as *relational transformations*---matched displacements between hidden states that correctly order and orient dozens of materials-science laws, and that can be causally steered by adding a single learned direction. Whether that implicit structure constitutes "understanding" is a philosophical question this post will not resolve. But it is a genuine, and increasingly testable, question---one that Migneret's machine does not raise.
+* And most importantly, **learning**: Migneret compiled his table by hand; an LLM's "table" was assembled by gradient descent over essentially all of human writing, encoding implicitly an enormous amount of structure about language and the world. That structure is no longer purely a matter for speculation. [Buehler (2026)](https://arxiv.org/abs/2607.20058) probed a language model's internal states directly and found that physical laws are encoded not as static facts but as *relational transformations*---matched displacements between hidden states that correctly order and orient dozens of materials-science laws, and that can be causally steered by adding a single learned direction. Whether that implicit structure constitutes "understanding" is a philosophical question this post will not resolve. But it is a genuine, and increasingly testable, question---one that Migneret's machine does not raise.
 
 What his machine does raise is the prior question: is the category of trick sufficient? Migneret thought it was enough to debunk oracles, and he was right. Whether the same trick, scaled by nine orders of magnitude, is enough to debunk ChatGPT---that Antoine left as an exercise for the reader.
 
