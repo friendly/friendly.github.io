@@ -60,8 +60,15 @@ But `code-fold` is an HTML-only feature---it has no effect on PDF output, where 
 will still appear in full. For print, the relevant option is `echo`. You can suppress code
 entirely in PDF while keeping it foldable in HTML with a small `knitr` trick: put
 `echo=knitr::is_html_output()` directly on the chunk header line (not as a `#|` comment,
-which won't work), so the header line above becomes
-`` ```{r echo=knitr::is_html_output()} `` , with the same `#|` options following it as before.
+which won't work):
+
+```{r echo=knitr::is_html_output()}
+#| label: fig-my-plot-2
+#| code-fold: true
+#| code-summary: "Show the code"
+#| fig-cap: "A scatterplot"
+ggplot(data, aes(x, y)) + geom_point()
+```
 
 Now the code is hidden in PDF and folded-but-available in HTML. The two options work
 independently: `echo=knitr::is_html_output()` controls whether code reaches the output at
@@ -125,8 +132,9 @@ this produces a tidy data frame of 669 chunks with 17 fields:
 
 ```{r}
 #| eval: true
+library(dplyr)
 load("data/chunks.RData")
-dplyr::glimpse(chunks)
+glimpse(chunks)
 ```
 
 The fields include: `chapter`, `file`, `line`, `label`, `has_label`, `old_style`,
@@ -152,7 +160,9 @@ For the *Vis-MLM* book, the breakdown across 281 figure chunks is:
 
 ```{r}
 #| eval: true
-table(chunks$fold_status[chunks$is_fig])
+chunks |>
+  filter(is_fig) |>
+  count(fold_status, sort = TRUE)
 ```
 
 Reading that: `neither` (227) are potential targets for future folding; `fold-only` (19) are
@@ -167,13 +177,16 @@ Those were candidates for a follow-up editing pass.
 ## Practical uses
 
 With `chunks.RData` in hand, a few lines of R answer questions that would otherwise require
-manually scanning thousands of lines of source:
+manually scanning thousands of lines of source. Here are just a couple of examples of things
+I tried:
 
-**Which figure chunks still need folding treatment?** (first few, of 227)
+**Which figure chunks still need folding treatment?** (longest few, of 227 --- the highest-payoff targets)
 ```{r}
 #| eval: true
-head(chunks[chunks$is_fig & chunks$fold_status == "neither",
-       c("chapter", "label", "n_code_lines")])
+chunks |>
+  filter(is_fig, fold_status == "neither") |>
+  select(chapter, line, label, n_code_lines) |>
+  slice_max(n_code_lines, n = 6)
 ```
 
 **How many old-style chunk labels remain?**
@@ -182,10 +195,11 @@ head(chunks[chunks$is_fig & chunks$fold_status == "neither",
 sum(chunks$old_style, na.rm = TRUE)
 ```
 
-**Which chapters have the longest unfolded figure code?**
+There's a lot! I could write a script to fix these if I wanted, but it would have to guess at meaningful chunk labels.
+
+**Which chapters have the longest unfolded _figure_ code?**
 ```{r}
 #| eval: true
-library(dplyr)
 chunks |>
   filter(is_fig, fold_status == "neither") |>
   group_by(chapter) |>
