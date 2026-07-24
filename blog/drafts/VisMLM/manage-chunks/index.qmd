@@ -227,10 +227,10 @@ Plain fancyvrb does *not* support `breaklines`; `fvextra` must be loaded first
 `breaklines=true` wraps at spaces; `breakanywhere=true` additionally breaks mid-token
 for long strings or identifiers with no internal spaces.
 
-*R-side fix (targeted):* For source lines you want to reformat explicitly,
+*R-side fix (targeted):* For source lines you want to reformat explicitly, the script
 [`issues/wide-code.R`](https://github.com/friendly/Vis-MLM-book/blob/master/issues/wide-code.R)
 extends the chunk-scanning approach to measure line widths.
-It expands tabs with the same tabstop=4 rule that knitr uses, then flags every
+It expands tabs with the same `tabstop=4` rule that knitr uses, then flags every
 code line exceeding the limit---but only in chunks that are actually **visible in the
 PDF** (skipping `echo=knitr::is_html_output()`, `echo=FALSE`, and `#| echo: false` chunks).
 The output gives file, line number, chunk label, width, and a text snippet so each
@@ -243,7 +243,7 @@ The parsing logic is straightforward---chunks have a regular open/close structur
 `#|` options are easy to extract. The resulting data frame supports systematic auditing,
 reviewer cross-checks, and bulk edits that would be tedious to do by hand.
 
-The full script (`chunks.R`) is available as a GitHub gist <!-- TODO: add gist link -->.
+The full script ([`chunks.R`](https://gist.github.com/friendly/765761673f9f74ada34ffa8051080ecd)) is available as a GitHub gist.
 Adapt the `active_files` list and the `child_files` vector to your own project structure,
 and you should be able to build a similar database in a few minutes.
 
