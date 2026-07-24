@@ -1,31 +1,22 @@
 # Claude Instructions for friendly.github.io
 
-## History of Data Visualization
+## What this is
+Personal academic/blog website for Michael Friendly, built with Quarto
+(`_quarto.yml`) and published to GitHub Pages via the `docs/` output directory.
 
-### Papers index
-- Full list: https://www.datavis.ca/papers/
-- History papers: https://www.datavis.ca/papers/#history
+## Building / rendering
+- Full site render: `./render-site.sh` (or `render-site.cmd` on Windows) —
+  wraps `quarto render`, works around Dropbox file-locking issues, then
+  copies `images/` into `docs/`.
+- `blog/drafts/**` and all `*.md` files are excluded from the site build
+  (see `_quarto.yml`) — drafts never appear on the published site no matter
+  how they're rendered.
+- Rendering a single `.qmd` only updates that file's own output. It does
+  **not** refresh `docs/blog/index.html` or `docs/listings.json`, so a
+  new or changed post won't show up in blog listings until a full site
+  render runs. Do a full render before committing anything meant to appear
+  there.
 
-### Commonly referenced papers
-| Topic | URL |
-|-------|-----|
-| Golden Age of Statistical Graphics | https://www.datavis.ca/papers/golden-STS268.pdf |
-| Raiders of the Lost Tombs (Minard's burial) | https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf |
-| A Brief History of Data Visualization | https://www.datavis.ca/papers/hbook.pdf |
-| Guerry's Moral Statistics of France | https://www.datavis.ca/papers/guerry-STS241.pdf |
-| Van Langren and the Secret of Longitude | https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html |
-| The Milestones Project | https://www.datavis.ca/papers/MilestonesProject.pdf |
-| Galton and Visual Thinking | https://www.datavis.ca/papers/Friendly2020-Galton-Gleam.pdf |
-| The radiant diagrams of Florence Nightingale | https://www.datavis.ca/papers/Nightingale-radiant.pdf |
-| A Brief History of the Mosaic Display | https://www.datavis.ca/papers/mosahist.pdf |
-
-**Milestones Project website**: http://datavis.ca/milestones/
-
-> **Note on preprints**: most links above are preprints or working papers hosted on datavis.ca. Where possible, prefer linking to the published journal version. A future pass should replace preprint links with DOIs or journal URLs where available.
-
-### BibTeX bibliographies
-On Windows: `C:\Dropbox\localtexmf\bibtex\bib\`
-- `timeref.bib` — historical references
-- `graphics.bib` — data visualization and statistical graphics
-
-When looking for a citation or BibTeX key, check these files first.
+## Directory-specific guidance
+- Blog writing — voice/style, per-series notes, DataViz reference material,
+  BibTeX bib file locations: see `blog/SKILL.md`.
