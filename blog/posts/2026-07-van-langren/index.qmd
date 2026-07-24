@@ -19,7 +19,7 @@ Historians of data visualization live for surprises. Sometimes they're delightfu
 Cemetery and that his near neighbor there is Andre-Michel Guerry. The story of these and other historical excavations is told in
 [Raiders of the Lost Tombs](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf).
 Or a hero nobody had noticed yet,
-like the Hungarian cartographer Imre Milecz, [discovered by Attila Bátorfy](https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map) to have drawn the first flow map in 1773---decades before the credit usually goes to Minard or [Henry Harnass](http://www.complexcity.info/files/2011/06/harness-1837-flowmap.pdf).
+like the Hungarian cartographer Imre Milecz, [discovered by Attila Bátorfy](https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map) to have drawn the first flow map in 1773---decades before the credit usually goes to Minard or [Henry Harness](http://www.complexcity.info/files/2011/06/harness-1837-flowmap.pdf).
 Or Frances Harriet Lightfoot, whose 1831 *An Embellished Chart of General History and Chronology* had gone essentially unknown to modern researchers until [RJ Andrews found it](https://www.chartography.net/p/colossal-chronography).
 
 Sometimes these surprises are more unsettling. The worst is the discovery that we got some piece of the historical record
@@ -169,13 +169,16 @@ A quick note on sourcing before I reproduce any of this: Van Eycke never publish
 Check the distribution of "word" length in the cipher.
 
 ```{r word-lengths}
-cipher_raw <- readLines("cipher-transcription.txt", encoding = "UTF-8") |> paste(collapse = " ")
+cipher_raw <- readLines("cipher-transcription.txt", encoding = "UTF-8") |> 
+  paste(collapse = " ")
 tokens <- strsplit(cipher_raw, "[ \t]+")[[1]]
 tokens <- tokens[tokens != ""]
+
 tab <- table(nchar(tokens))
 m <- rbind(nchar = as.integer(names(tab)), freq = as.integer(tab))
 colnames(m) <- rep("", ncol(m))
 m
+
 cat("Total tokens:", sum(tab), "\n")
 prop_4_8 <- sum(tab[names(tab) %in% as.character(4:8)]) / sum(tab)
 cat(sprintf("Proportion with 4-6 characters: %.1f%%\n", 100 * prop_4_8))
