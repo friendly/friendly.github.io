@@ -203,7 +203,7 @@ binding the rows together:
 
 ### What this gives
 
-For a full book project like *Vis-MLM*, with 19 source files and several active child files,
+For a full book project like [*Vis-MLM*](https://friendly.github.io/Vis-MLM-book/), with 19 source files and several active child files,
 this produces a tidy data frame of 669 chunks with 17 fields:
 
 ```{r}
@@ -218,16 +218,16 @@ The fields captured into the `chunks` database by our script include: `chapter`,
 `eval`, `fig_cap`, `out_width`, `n_code_lines`, and a derived `fold_status`.
 
 The important point is that you can adapt this script to record *any* aspects of
-chunks you want to monitor, analyze, or act on. Your chunks can work for *you* now.
+chunks you want to monitor, analyze, or act on. Your chunks can now work for *you*.
 
 ### The `fold_status` field
 
 The key derived field is `fold_status`, which combines `code_fold` and `echo_html` into a
 single summary:
 
-| `fold_status` | Meaning |
+| Value (`fold_status`) | Meaning |
 |---|---|
-| `"both"` | `echo_html` + `code-fold: true`---fully treated |
+| `"both"` | `echo_html` + `code-fold: true`---fully folded |
 | `"fold-only"` | `code-fold: true` but no `echo_html`---HTML folds, code still in PDF |
 | `"echo-only"` | `echo_html` but no `code-fold`---PDF hidden, but code visible in HTML |
 | `"fold-show"` | `code-fold: show`---always shown, but collapsible |
@@ -245,8 +245,8 @@ chunks |>
 ```
 
 Reading that: `neither` (227) are potential targets for future folding; `fold-only` (19) are
-folded in HTML but code still appears in PDF — incomplete; `both` (14) are fully treated
-(Gavin's audit, this round); the rest (`fold-show`, `fold-false`, `no-eval`) are chunks where
+folded in HTML but code still appears in PDF — incomplete; `both` (14) are fully folded
+(Gavin's audit, this round). The rest (`fold-show`, `fold-false`, `no-eval`) are chunks where
 the current treatment is intentional rather than an oversight.
 
 The 19 `fold-only` figure chunks are a useful finding in themselves: they were folded in HTML
@@ -295,9 +295,10 @@ chunks |>
 ```
 
 From this, the four chapters that are most heavy on my data visualization methods stand out, as they should.
+Note here that a few `child/` documents, included via the `knitr` option `child =` are captured in the process. 
 
 ### Cross-checking a reviewer's audit
-Gavin's reviewed the code for possible folding.
+Gavin's reviewed the code shown in the HTML and PDF versions for possible folding.
 His review came back as an `.Rmd` file with each chunk he flagged marked like `***Label: fig-xxx***`. Some of these looked like this:
 
 ```
@@ -407,7 +408,7 @@ It also reflects John W. Tukey's observation,
 > The _practical_ power of a statistical test is the product of its' statistical power and the probability of use.
 --- John W. Tukey (1959), _A Quick, Compact, Two Sample Test to Duckworth's Specifications_
 
-But if I ever want to rev-visit this problem,
+But if I ever want to revisit this problem,
 the database makes it trivial to sort by `n_code_lines` and find the highest-payoff
 targets for a follow-up pass. That list exists. It's just waiting for a rainy afternoon; or, my editor
 asking if I can trim a few more pages.

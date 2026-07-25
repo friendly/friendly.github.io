@@ -143,7 +143,7 @@ As I write them up, they will become links to full posts.
 - *Color in figure captions and text* —
   `colorize()`, conditional HTML/PDF output, and why this is harder than it looks
 
-- *Mind your chunks* —
+- [*Mind your chunks*](../2026-07-mind-your-chunks/index.qmd) —
   treating `.qmd` files as data: parsing ~670 code chunks into a data frame to audit
   code-folding status and catch lines that overflow the printed page
 

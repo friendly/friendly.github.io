@@ -131,10 +131,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-problem-show-all-the-code" id="toc-the-problem-show-all-the-code" class="nav-link active" data-scroll-target="#the-problem-show-all-the-code">The problem: Show all the code?</a></li>
   <li><a href="#folding-code-in-html-and-pdf" id="toc-folding-code-in-html-and-pdf" class="nav-link" data-scroll-target="#folding-code-in-html-and-pdf">Folding code in HTML and PDF</a></li>
   <li><a href="#what-else-is-worth-tracking" id="toc-what-else-is-worth-tracking" class="nav-link" data-scroll-target="#what-else-is-worth-tracking">What else is worth tracking?</a></li>
-  <li><a href="#building-a-chunk-database" id="toc-building-a-chunk-database" class="nav-link" data-scroll-target="#building-a-chunk-database">Building a chunk database</a></li>
+  <li><a href="#building-a-chunk-database" id="toc-building-a-chunk-database" class="nav-link" data-scroll-target="#building-a-chunk-database">Building a chunk database</a>
+  <ul class="collapse">
+  <li><a href="#what-this-gives" id="toc-what-this-gives" class="nav-link" data-scroll-target="#what-this-gives">What this gives</a></li>
   <li><a href="#the-fold_status-field" id="toc-the-fold_status-field" class="nav-link" data-scroll-target="#the-fold_status-field">The <code>fold_status</code> field</a></li>
+  </ul></li>
   <li><a href="#practical-uses" id="toc-practical-uses" class="nav-link" data-scroll-target="#practical-uses">Practical uses</a>
   <ul class="collapse">
+  <li><a href="#which-chapters-have-the-most-unfolded-figure-code" id="toc-which-chapters-have-the-most-unfolded-figure-code" class="nav-link" data-scroll-target="#which-chapters-have-the-most-unfolded-figure-code">Which chapters have the most unfolded <em>figure</em> code?</a></li>
   <li><a href="#cross-checking-a-reviewers-audit" id="toc-cross-checking-a-reviewers-audit" class="nav-link" data-scroll-target="#cross-checking-a-reviewers-audit">Cross-checking a reviewer’s audit</a></li>
   <li><a href="#finding-wide-code-in-pdf" id="toc-finding-wide-code-in-pdf" class="nav-link" data-scroll-target="#finding-wide-code-in-pdf">Finding wide code in PDF</a></li>
   <li><a href="#so-how-did-it-go" id="toc-so-how-did-it-go" class="nav-link" data-scroll-target="#so-how-did-it-go">So, how did it go?</a></li>
@@ -219,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="building-a-chunk-database" class="level2">
 <h2 class="anchored" data-anchor-id="building-a-chunk-database">Building a chunk database</h2>
 <p>The idea is simple: treat your <code>.qmd</code> source files as <em>data</em> and use R to parse them. Each code chunk becomes one tidy row in a data frame, with columns for the attributes mentioned above.</p>
-<p>In R, code chunks start with a line matching <code>```{r</code> and end at the next line that is exactly <code>```</code>. Everything in between is either a <a href="https://quarto.org/docs/computations/execution-options.html"><code>#|</code> YAML option</a> line or code. That structure is regular enough to parse with base-R string tools like <code>grep()</code> and map that over the text using <code>lapply()</code>. No specialized packages needed. (But the <a href=""><code>stringr</code> package</a> might be a good candidate to simplify the parsing logic here, in another lifetime.)</p>
+<p>In R, code chunks start with a line matching <code>```{r</code> and end at the next line that is exactly <code>```</code>. Everything in between is either a <a href="https://quarto.org/docs/computations/execution-options.html"><code>#|</code> YAML option</a> line or code. That structure is regular enough to parse with base-R string tools like <code>grep()</code> and map that over the text using <code>lapply()</code>. No specialized packages needed. (But the <a href="https://stringr.tidyverse.org/"><code>stringr</code> package</a> might be a good candidate to simplify the parsing logic here, in another lifetime.)</p>
 <p><code>get_opt()</code> in the snippet below is a small local helper—not from any package. It that scans a vector of <code>#|</code> YAML lines for a given option <code>name</code> and returns its value (or <code>NA</code> if absent):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>get_opt <span class="ot">&lt;-</span> <span class="cf">function</span>(opts, name) {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  pat <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"^#</span><span class="sc">\\</span><span class="st">|</span><span class="sc">\\</span><span class="st">s*"</span>, name, <span class="st">"</span><span class="sc">\\</span><span class="st">s*:</span><span class="sc">\\</span><span class="st">s*(.+)$"</span>)</span>
@@ -251,7 +255,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For a full book project like <em>Vis-MLM</em>, with 19 source files and several active child files, this produces a tidy data frame of 669 chunks with 17 fields:</p>
+<p>The snippet above is the skeleton. The full script (<a href="https://gist.github.com/friendly/765761673f9f74ada34ffa8051080ecd"><code>chunks.R</code></a>) extends <code>get_opt()</code> calls to cover all the fields listed below—<code>echo_header</code>, <code>echo_opt</code>, <code>code_summary</code>, <code>eval</code>, <code>fig_cap</code>, <code>out_width</code>—plus a few structural ones derived from the file name and chunk position (<code>chapter</code>, <code>line</code>, <code>has_label</code>, <code>old_style</code>, <code>is_fig</code>, <code>n_code_lines</code>). The logic is the same in each case: scan the chunk header or its <code>#|</code> lines with a targeted regex and record what you find (or <code>NA</code>).</p>
+<p>The results are then assembled into a data frame by a <code>lapply()</code> simple pass over the <code>active_files</code>, binding the rows together:</p>
+<p><code>do.call(rbind, lapply(active_files, parse_file_chunks))</code></p>
+<section id="what-this-gives" class="level3">
+<h3 class="anchored" data-anchor-id="what-this-gives">What this gives</h3>
+<p>For a full book project like <a href="https://friendly.github.io/Vis-MLM-book/"><em>Vis-MLM</em></a>, with 19 source files and several active child files, this produces a tidy data frame of 669 chunks with 17 fields:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"data/chunks.RData"</span>)</span>
@@ -278,10 +287,11 @@ $ n_code_lines &lt;int&gt; 2, 1, 1, 1, 1, 21, 7, 1, 2, 1, 1, 1, 2, 2, 4, 2, 14, 
 $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither", "n…</code></pre>
 </div>
 </div>
-<p>The fields include: <code>chapter</code>, <code>file</code>, <code>line</code>, <code>label</code>, <code>has_label</code>, <code>old_style</code>, <code>is_fig</code>, <code>echo_html</code>, <code>echo_header</code>, <code>echo_opt</code>, <code>code_fold</code>, <code>code_summary</code>, <code>eval</code>, <code>fig_cap</code>, <code>out_width</code>, <code>n_code_lines</code>, and a derived <code>fold_status</code>.</p>
+<p>The fields captured into the <code>chunks</code> database by our script include: <code>chapter</code>, <code>file</code>, <code>line</code>, <code>label</code>, <code>has_label</code>, <code>old_style</code>, <code>is_fig</code>, <code>echo_html</code>, <code>echo_header</code>, <code>echo_opt</code>, <code>code_fold</code>, <code>code_summary</code>, <code>eval</code>, <code>fig_cap</code>, <code>out_width</code>, <code>n_code_lines</code>, and a derived <code>fold_status</code>.</p>
+<p>The important point is that you can adapt this script to record <em>any</em> aspects of chunks you want to monitor, analyze, or act on. Your chunks can now work for <em>you</em>.</p>
 </section>
-<section id="the-fold_status-field" class="level2">
-<h2 class="anchored" data-anchor-id="the-fold_status-field">The <code>fold_status</code> field</h2>
+<section id="the-fold_status-field" class="level3">
+<h3 class="anchored" data-anchor-id="the-fold_status-field">The <code>fold_status</code> field</h3>
 <p>The key derived field is <code>fold_status</code>, which combines <code>code_fold</code> and <code>echo_html</code> into a single summary:</p>
 <table class="caption-top table">
 <colgroup>
@@ -290,14 +300,14 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 </colgroup>
 <thead>
 <tr class="header">
-<th><code>fold_status</code></th>
+<th>Value (<code>fold_status</code>)</th>
 <th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><code>"both"</code></td>
-<td><code>echo_html</code> + <code>code-fold: true</code>—fully treated</td>
+<td><code>echo_html</code> + <code>code-fold: true</code>—fully folded</td>
 </tr>
 <tr class="even">
 <td><code>"fold-only"</code></td>
@@ -340,8 +350,9 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 6     no-eval   3</code></pre>
 </div>
 </div>
-<p>Reading that: <code>neither</code> (227) are potential targets for future folding; <code>fold-only</code> (19) are folded in HTML but code still appears in PDF — incomplete; <code>both</code> (14) are fully treated (Gavin’s audit, this round); the rest (<code>fold-show</code>, <code>fold-false</code>, <code>no-eval</code>) are chunks where the current treatment is intentional rather than an oversight.</p>
+<p>Reading that: <code>neither</code> (227) are potential targets for future folding; <code>fold-only</code> (19) are folded in HTML but code still appears in PDF — incomplete; <code>both</code> (14) are fully folded (Gavin’s audit, this round). The rest (<code>fold-show</code>, <code>fold-false</code>, <code>no-eval</code>) are chunks where the current treatment is intentional rather than an oversight.</p>
 <p>The 19 <code>fold-only</code> figure chunks are a useful finding in themselves: they were folded in HTML (probably added before the book targeted PDF), but code still appears in the printed version. Those were candidates for a follow-up editing pass.</p>
+</section>
 </section>
 <section id="practical-uses" class="level2">
 <h2 class="anchored" data-anchor-id="practical-uses">Practical uses</h2>
@@ -374,7 +385,9 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 <pre><code>[1] 235</code></pre>
 </div>
 </div>
-<p><strong>Which chapters have the most unfolded <em>figure</em> code?</strong></p>
+<section id="which-chapters-have-the-most-unfolded-figure-code" class="level3">
+<h3 class="anchored" data-anchor-id="which-chapters-have-the-most-unfolded-figure-code">Which chapters have the most unfolded <em>figure</em> code?</h3>
+<p>I can also ask a question of the book text regarding the relative number of displayed code lines in relation to the number of figures produced in a chapter:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>chunks <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_fig, fold_status <span class="sc">==</span> <span class="st">"neither"</span>) <span class="sc">|&gt;</span></span>
@@ -407,9 +420,11 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 19       2 02-intro.qmd                               3      3</code></pre>
 </div>
 </div>
+<p>From this, the four chapters that are most heavy on my data visualization methods stand out, as they should. Note here that a few <code>child/</code> documents, included via the <code>knitr</code> option <code>child =</code> are captured in the process.</p>
+</section>
 <section id="cross-checking-a-reviewers-audit" class="level3">
 <h3 class="anchored" data-anchor-id="cross-checking-a-reviewers-audit">Cross-checking a reviewer’s audit</h3>
-<p>Gavin’s reviewed the code for possible folding. His review came back as an <code>.Rmd</code> file with each chunk he flagged marked like <code>***Label: fig-xxx***</code>. Some of these looked like this:</p>
+<p>Gavin’s reviewed the code shown in the HTML and PDF versions for possible folding. His review came back as an <code>.Rmd</code> file with each chunk he flagged marked like <code>***Label: fig-xxx***</code>. Some of these looked like this:</p>
 <pre><code># Chapter 1: Warm-up Exercises
 ***Label: fig-diabetes1*** 
 - The narrative here is what the figure shows as opposed to its creation in R
