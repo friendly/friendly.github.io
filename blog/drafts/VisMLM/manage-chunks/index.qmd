@@ -5,6 +5,8 @@ description: "Treating a book's .qmd source files as data: parsing ~670 R code c
 author: "Michael Friendly"
 date: today
 draft: true
+image: "images/code_chunk_examples-snip.png"
+title-block-banner: true
 execute:
   eval: false
   warning: false
@@ -23,10 +25,12 @@ more mechanical problem: once a book has hundreds of code chunks, how do you eve
 
 OK, you've written an R-based book with extensive code examples---all analyses and figures
 are reproducible from source. But now, for publication in both online and print form, you ask:
-is it really necessary to show **all that code inline**? Or, you see a code block in the PDF that extends outside the shaded box.
+is it really necessary to show **all that code inline**? How does this affect readability,
+the narrative flow?
+Or, you see a code block in the PDF that extends outside the shaded box.
 
 A reviewer of my book [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
-commented that there was too much code on display, and that the book could be shortened
+commented that there was too much code on display in the PDF, and that the book could be shortened
 by folding or hiding some of it. My RA, Gavin Klorfine, noticed that there were a bunch of code chunks that strayed into the margin.
 The book contains 281 figures, most generated directly from R code, among 669 chunks throughout the book.
 
@@ -42,7 +46,8 @@ Some aspects of this work may be useful to others, so I describe the problems an
 
 ## Folding code in HTML and PDF
 
-With Quarto, it is easy to fold code in HTML using the YAML chunk option `code-fold`. In your source `.qmd` file, it looks like this:
+With Quarto, it is easy to fold code in HTML using the YAML chunk option
+[`code-fold`](https://quarto.org/docs/output-formats/html-code.html#folding-code). In your source `.qmd` file, it looks like this:
 
 ```{{r}}
 #| label: fig-my-plot
@@ -56,23 +61,32 @@ This renders a collapsed "Show the code" button in HTML that the reader can expa
 Setting `code-fold: show` makes code visible but still collapsible; `code-fold: false` forces
 it always open.
 
-But `code-fold` is an HTML-only feature---it has no effect on PDF output, where the code
-will still appear in full. For print, the relevant option is `echo`. You can suppress code
-entirely in PDF while keeping it foldable in HTML with a small `knitr` trick: put
-`echo=knitr::is_html_output()` directly on the chunk header line (not as a `#|` comment,
-which won't work):
+It works like so in HTML:
 
 ```{r echo=knitr::is_html_output()}
-#| label: fig-my-plot-2
+#| label: fig-my-plot-3
 #| code-fold: true
 #| code-summary: "Show the code"
 #| fig-cap: "A scatterplot"
 ggplot(data, aes(x, y)) + geom_point()
 ```
 
+
+But `code-fold` is an HTML-only feature---it has no effect on PDF output, where the code
+will still appear in full. For print, the relevant option is `echo`. You can suppress code
+entirely in PDF while keeping it foldable in HTML with a small `knitr` trick: put
+`echo = knitr::is_html_output()` directly on the chunk header line (not as a `#|` comment,
+which won't work). The header line for the example above becomes:
+
+`{r echo=knitr::is_html_output()}`
+
+with the other options (`label`, `code-fold`, `code-summary`, `fig-cap`) staying exactly as before.
+
 Now the code is hidden in PDF and folded-but-available in HTML. The two options work
 independently: `echo=knitr::is_html_output()` controls whether code reaches the output at
 all; `code-fold` controls how it is presented once it does.
+
+
 
 <!-- TODO: maybe add a side-by-side screenshot of HTML folded vs PDF suppressed? -->
 
@@ -83,23 +97,25 @@ come up naturally:
 
 - **Label style**: Quarto recommends `#| label: my-chunk` (YAML-style, inside the chunk body),
   but old-style knitr labels `` ```{r my-chunk} `` are still valid. A book that started before
-  Quarto may have a mix. It would be nice to know which files still use the old style.
+  Quarto may have a mix. It would be nice to know which files still use the old style in case
+  you want to clean things up.
 - **Figure inventory**: which chunks produce figures (`fig-cap` set, label starts with `fig-`),
   what size are they (`fig-width`, `fig-height`, `out-width`)? This information can be more generally
-  useful in editing the book.
+  useful in editing the book, standardizing figure sizes and other tasks.
 - **Unlabeled chunks**: chunks without labels can't be cross-referenced and are harder to
   audit. How many are there?
 - **Dead code**: chunks with `eval: false` don't run at all. This was likely designed when writing, but is useful to know when reviewing.
-- **Code volume**: how many lines of non-trivial code are in each chunk? Longer chunks are
-  the higher-payoff targets for folding.
+- **Code length**: how many lines of non-trivial code are in each chunk? Longer chunks are
+  the higher-payoff targets for folding to save space.
 
 ## Building a chunk database
 
-The idea is simple: treat your `.qmd` source files as data and use R to parse them.
+The idea is simple: treat your `.qmd` source files as _data_ and use R to parse them.
 Each code chunk becomes one tidy row in a data frame, with columns for the attributes mentioned above.
 
 In R, code chunks start with a line matching `` ```{r `` and end at the next line that is
-exactly ` ``` `. Everything in between is either a `#|` YAML option line or code. That
+exactly ` ``` `. Everything in between is either a
+[`#|` YAML option](https://quarto.org/docs/computations/execution-options.html) line or code. That
 structure is regular enough to parse with base-R string tools like `grep()` and
 map that over the text using `lapply()`. No specialized packages needed.
 
@@ -180,40 +196,79 @@ With `chunks.RData` in hand, a few lines of R answer questions that would otherw
 manually scanning thousands of lines of source. Here are just a couple of examples of things
 I tried:
 
-**Which figure chunks still need folding treatment?** (longest few, of 227 --- the highest-payoff targets)
+**Which figure chunks still need folding treatment?** 
+Here are longest few (of 227) --- the highest-payoff targets for folding. Line numbers help to
+find them in the chapter files.
 ```{r}
 #| eval: true
 chunks |>
-  filter(is_fig, fold_status == "neither") |>
-  select(chapter, line, label, n_code_lines) |>
-  slice_max(n_code_lines, n = 6)
+  filter(is_fig, fold_status == "neither") |> 
+  select(chapter, file, line, label, n_code_lines) |>
+  slice_max(n_code_lines, n = 8)
 ```
 
 **How many old-style chunk labels remain?**
+
+There's a lot! I could write a script to fix these if I wanted, but it would have to guess at meaningful chunk labels.
+
 ```{r}
 #| eval: true
 sum(chunks$old_style, na.rm = TRUE)
 ```
 
-There's a lot! I could write a script to fix these if I wanted, but it would have to guess at meaningful chunk labels.
+**Which chapters have the most unfolded _figure_ code?**
 
-**Which chapters have the longest unfolded _figure_ code?**
 ```{r}
 #| eval: true
 chunks |>
   filter(is_fig, fold_status == "neither") |>
-  group_by(chapter) |>
+  group_by(chapter, file) |>
   summarise(total_lines = sum(n_code_lines), n_figs = n()) |>
   arrange(desc(total_lines))
 ```
 
-**Cross-checking a reviewer's audit**: given a list of chunk labels a reviewer flagged
-for folding, join against `chunks` to confirm each has been treated and report its
-`fold_status` automatically---no manual searching through source files required.
+### Cross-checking a reviewer's audit
+Gavin's reviewed the code for possible folding.
+His review came back as an `.Rmd` file with each chunk he flagged marked like `***Label: fig-xxx***`. Some of these looked like this:
 
-<!-- TODO: could link to the annotate-audit.R script or show a snippet -->
+```
+# Chapter 1: Warm-up Exercises
+***Label: fig-diabetes1*** 
+- The narrative here is what the figure shows as opposed to its creation in R
 
-**Finding wide code in PDF**
+# Chapter 3: Getting Started
+***Label: fig-davis-reg1*** 
+- The narrative here is what the figure shows as opposed to its creation in R
+***Label: fig-davis-reg2*** 
+- The text describing the reversing of the `x` and `y` axes may be sufficient 
+ ...
+```
+
+Rather than checking each one by hand against the book source, the script
+[`annotate-audit.R`](https://github.com/friendly/Vis-MLM-book/blob/master/test/annotate-audit.R)
+looks up every flagged label in `chunks` and appends its `fold_status` right there in the
+review document:
+
+```r
+lookup <- with(chunks, setNames(fold_status, label))
+
+pat <- "^(\\*\\*\\*Label: ([^*]+)\\*\\*\\*)(.*)"
+
+for (i in seq_along(lines)) {
+  m <- regmatches(lines[i], regexec(pat, lines[i]))[[1]]
+  if (length(m) == 0) next
+
+  label  <- trimws(m[3])
+  status <- if (label %in% names(lookup)) lookup[[label]] else "NOT IN DATASET"
+  lines[i] <- paste0(m[2], " [FOLDED: ", status, "]", m[4])
+}
+```
+
+A line like `***Label: fig-scatter***` in the review becomes
+`***Label: fig-scatter*** [FOLDED: fold-only]`---turning a manual cross-check into a
+one-line lookup, with no risk of missing a flagged chunk or misreading its status.
+
+### Finding wide code in PDF
 
 For the most part in writing, I tried to be careful about formatting code for readability. But not always.
 Rather than reviewing every such chunk manually, there was a fix within the Quarto rendering process.
@@ -221,16 +276,16 @@ Rather than reviewing every such chunk manually, there was a fix within the Quar
 Code lines that overflow the shaded box in a PDF book have a root cause in LaTeX geometry:
 the available width is set by `\textwidth` (determined by the document class and trim size)
 minus the padding of the code-block environment.
-For this book (`krantz2`, `letterpaper`, 10 pt, Fira Mono in a `tcolorbox`) the safe limit
+For this book (`krantz2` class, `letterpaper`, 10 pt, Fira Mono in a [`tcolorbox`](https://ctan.org/pkg/tcolorbox)) the safe limit
 works out to roughly **65 characters** per line, well below R's default `options(width = 80)`.
 
 Two fixes operate at different levels:
 
-*LaTeX fix (automatic):* Loading `fvextra` (a fancyvrb extension) and setting
+* **LaTeX fix (automatic):** Loading [`fvextra`](https://ctan.org/pkg/fvextra) (a [`fancyvrb`](https://ctan.org/pkg/fancyvrb) extension) and setting
 `breaklines=true` on the `Highlighting` environment makes any line that exceeds the
 box width wrap automatically, with a small continuation symbol---no source edits required.
-Plain fancyvrb does *not* support `breaklines`; `fvextra` must be loaded first
-(after fancyvrb, which Pandoc loads in its generated preamble):
+Plain `fancyvrb` does *not* support `breaklines`; `fvextra` must be loaded first
+(after `fancyvrb`, which Pandoc loads in its generated preamble):
 
 ```latex
 \usepackage{fvextra}
@@ -241,14 +296,40 @@ Plain fancyvrb does *not* support `breaklines`; `fvextra` must be loaded first
 `breaklines=true` wraps at spaces; `breakanywhere=true` additionally breaks mid-token
 for long strings or identifiers with no internal spaces.
 
-*R-side fix (targeted):* For source lines you want to reformat explicitly, the script
+* **R-side fix (targeted):** For source lines you want to reformat explicitly, the script
 [`issues/wide-code.R`](https://github.com/friendly/Vis-MLM-book/blob/master/issues/wide-code.R)
 extends the chunk-scanning approach to measure line widths.
-It expands tabs with the same `tabstop=4` rule that knitr uses, then flags every
+It expands tabs with the same `tabstop = 4` rule that knitr uses, then flags every
 code line exceeding the limit---but only in chunks that are actually **visible in the
 PDF** (skipping `echo=knitr::is_html_output()`, `echo=FALSE`, and `#| echo: false` chunks).
 The output gives file, line number, chunk label, width, and a text snippet so each
 case can be located and fixed directly.
+
+## Isn't there a package for this already?
+
+[`xfun`](https://cran.r-project.org/package=xfun), Yihui Xie's grab-bag of utilities behind `knitr`, was my first guess. But it's
+general-purpose file/string helpers (`xfun::read_utf8()`, `xfun::proj_root()`, and the like),
+not a chunk parser. `knitr` itself comes closer: after a document has been knitted,
+[`knitr::knit_code$get()`](https://rdrr.io/cran/knitr/man/knit_code.html) returns every chunk's code and options from that run---but it only
+exists *after* you've knitted the whole thing, whereas the point here was to inspect chunks
+*before* running anything.
+
+The package that actually does this job properly is
+[`parsermd`](https://rundel.github.io/parsermd/) (by Colin Rundel). `parse_rmd()` turns a
+`.Rmd`/`.qmd` file into a proper [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+(AST)---a tree that mirrors the document's structure (headings nesting sections, chunks and
+prose as ordered nodes within them) rather than a flat wall of text---and `as_tibble()`
+flattens it to one row per node, with chunk `label`, `engine`, and a parsed `options` list
+(old-style header args and new-style `#|` YAML alike) as columns. I tried against a *Vis-MLM*
+chapter, it picked up `echo=knitr::is_html_output()`, `code.fold`, and even a computed
+`fig.cap` expression without complaint. Had I found it first, `parsermd` would have replaced
+most of `chunks.R`'s parsing logic outright, leaving just the project-specific rollup (the
+`fold_status` derivation and the auditing queries) to write myself. I found out about it
+only after the fact, which is itself a small lesson in searching CRAN before writing 100
+lines of regex.
+
+[`quarto inspect`](https://quarto.org/docs/cli/inspect.html), for completeness, was *not* the answer: it reports document/project-level
+metadata (formats, engines, extensions)---nothing per-chunk.
 
 ## Summing up
 
@@ -260,5 +341,3 @@ reviewer cross-checks, and bulk edits that would be tedious to do by hand.
 The full script ([`chunks.R`](https://gist.github.com/friendly/765761673f9f74ada34ffa8051080ecd)) is available as a GitHub gist.
 Adapt the `active_files` list and the `child_files` vector to your own project structure,
 and you should be able to build a similar database in a few minutes.
-
-<!-- TODO: check whether knitr or any other package already provides something like this -->
