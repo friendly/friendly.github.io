@@ -188,6 +188,21 @@ parse_file_chunks <- function(file) {
 }
 ```
 
+The snippet above is the skeleton. The full script
+([`chunks.R`](https://gist.github.com/friendly/765761673f9f74ada34ffa8051080ecd)) extends
+`get_opt()` calls to cover all the fields listed below---`echo_header`, `echo_opt`,
+`code_summary`, `eval`, `fig_cap`, `out_width`---plus a few structural ones derived from the
+file name and chunk position (`chapter`, `line`, `has_label`, `old_style`, `is_fig`,
+`n_code_lines`). The logic is the same in each case: scan the chunk header or its `#|` lines
+with a targeted regex and record what you find (or `NA`). 
+
+The results are then assembled into a data frame by a `lapply()` simple pass over the `active_files`,
+binding the rows together:
+
+`do.call(rbind, lapply(active_files, parse_file_chunks))`
+
+### What this gives
+
 For a full book project like *Vis-MLM*, with 19 source files and several active child files,
 this produces a tidy data frame of 669 chunks with 17 fields:
 
@@ -198,11 +213,14 @@ load("data/chunks.RData")
 glimpse(chunks)
 ```
 
-The fields include: `chapter`, `file`, `line`, `label`, `has_label`, `old_style`,
+The fields captured into the `chunks` database by our script include: `chapter`, `file`, `line`, `label`, `has_label`, `old_style`,
 `is_fig`, `echo_html`, `echo_header`, `echo_opt`, `code_fold`, `code_summary`,
 `eval`, `fig_cap`, `out_width`, `n_code_lines`, and a derived `fold_status`.
 
-## The `fold_status` field
+The important point is that you can adapt this script to record *any* aspects of
+chunks you want to monitor, analyze, or act on. Your chunks can work for *you* now.
+
+### The `fold_status` field
 
 The key derived field is `fold_status`, which combines `code_fold` and `echo_html` into a
 single summary:
@@ -262,7 +280,10 @@ There's a lot! I could write a script to fix these if I wanted, but it would hav
 sum(chunks$old_style, na.rm = TRUE)
 ```
 
-**Which chapters have the most unfolded _figure_ code?**
+### Which chapters have the most unfolded _figure_ code?
+
+I can also ask a question of the book text regarding the relative number of displayed code lines in relation
+to the number of figures produced in a chapter:
 
 ```{r}
 #| eval: true
@@ -272,6 +293,8 @@ chunks |>
   summarise(total_lines = sum(n_code_lines), n_figs = n()) |>
   arrange(desc(total_lines))
 ```
+
+From this, the four chapters that are most heavy on my data visualization methods stand out, as they should.
 
 ### Cross-checking a reviewer's audit
 Gavin's reviewed the code for possible folding.
