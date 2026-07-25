@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael Friendly">
-<meta name="dcterms.date" content="2026-07-24">
+<meta name="dcterms.date" content="2026-07-25">
 <meta name="description" content="Treating a book’s .qmd source files as data: parsing ~670 R code chunks into a queryable data frame to audit code-folding, and other problems">
 
 <title>Mind Your Chunks</title>
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">July 24, 2026</p>
+        <p class="date">July 25, 2026</p>
       </div>
     </div>
     
@@ -128,7 +128,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#folding-code-in-html-and-pdf" id="toc-folding-code-in-html-and-pdf" class="nav-link active" data-scroll-target="#folding-code-in-html-and-pdf">Folding code in HTML and PDF</a></li>
+  <li><a href="#the-problem-show-all-the-code" id="toc-the-problem-show-all-the-code" class="nav-link active" data-scroll-target="#the-problem-show-all-the-code">The problem: Show all the code?</a></li>
+  <li><a href="#folding-code-in-html-and-pdf" id="toc-folding-code-in-html-and-pdf" class="nav-link" data-scroll-target="#folding-code-in-html-and-pdf">Folding code in HTML and PDF</a></li>
   <li><a href="#what-else-is-worth-tracking" id="toc-what-else-is-worth-tracking" class="nav-link" data-scroll-target="#what-else-is-worth-tracking">What else is worth tracking?</a></li>
   <li><a href="#building-a-chunk-database" id="toc-building-a-chunk-database" class="nav-link" data-scroll-target="#building-a-chunk-database">Building a chunk database</a></li>
   <li><a href="#the-fold_status-field" id="toc-the-fold_status-field" class="nav-link" data-scroll-target="#the-fold_status-field">The <code>fold_status</code> field</a></li>
@@ -136,6 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#cross-checking-a-reviewers-audit" id="toc-cross-checking-a-reviewers-audit" class="nav-link" data-scroll-target="#cross-checking-a-reviewers-audit">Cross-checking a reviewer’s audit</a></li>
   <li><a href="#finding-wide-code-in-pdf" id="toc-finding-wide-code-in-pdf" class="nav-link" data-scroll-target="#finding-wide-code-in-pdf">Finding wide code in PDF</a></li>
+  <li><a href="#so-how-did-it-go" id="toc-so-how-did-it-go" class="nav-link" data-scroll-target="#so-how-did-it-go">So, how did it go?</a></li>
   </ul></li>
   <li><a href="#isnt-there-a-package-for-this-already" id="toc-isnt-there-a-package-for-this-already" class="nav-link" data-scroll-target="#isnt-there-a-package-for-this-already">Isn’t there a package for this already?</a></li>
   <li><a href="#summing-up" id="toc-summing-up" class="nav-link" data-scroll-target="#summing-up">Summing up</a></li>
@@ -149,20 +151,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This is another post in the <a href="../../../posts/2026-04-making-vis-mlm/index.qmd">Making of Vis-MLM</a> series, alongside <a href="../quarto-is-not-latex/index.qmd">Quarto Is Not LaTeX, However Hard It Tries</a> and <a href="../../../posts/2026-04-quarto-indexes/index.qmd">Creating Book Indexes in Quarto</a>. This one is about a smaller, more mechanical problem: once a book has hundreds of code chunks, how do you even find the ones that need attention?</p>
-<p>OK, you’ve written an R-based book with extensive code examples—all analyses and figures are reproducible from source. But now, for publication in both online and print form, you ask: is it really necessary to show <strong>all that code inline</strong>? How does this affect readability, the narrative flow? Or, you see a code block in the PDF that extends outside the shaded box.</p>
-<p>A reviewer of my book <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> commented that there was too much code on display in the PDF, and that the book could be shortened by folding or hiding some of it. My RA, Gavin Klorfine, noticed that there were a bunch of code chunks that strayed into the margin. The book contains 281 figures, most generated directly from R code, among 669 chunks throughout the book.</p>
-<p>The question was:</p>
-<blockquote class="blockquote">
-<p>Can I make it easier to analyse the properties of all these chunks, in a way that could make editing easier to resolve these and other issues?</p>
-</blockquote>
-<p>One solution to this class of problems, which I implemented by guiding Claude 4.6, involves simply treating your text <code>.qmd</code> files as “data”, scanning these with RegExs to find chunks and their properties, and writing this information to a <code>chunks</code> dataset that can be used to analyze and fix such problems.</p>
-<p>Some aspects of this work may be useful to others, so I describe the problems and solution steps below.</p>
+<ul>
+<li>Code that is not readable because it’s too wide or poorly formatted?</li>
+<li>Code that while necessary, should not be shown to the reader?</li>
+<li>Figures too high/wide, small/large?</li>
+</ul>
+<p>It also touches on the interesting meta-question of <em>How you can use R itself to help with writing about R</em>?.</p>
+<p>The title is a small call to <em>mindfulness</em>: in a large book project, it pays to be deliberate about which code you show, how you show it, and whether showing it at all serves the reader. After all, the display of code is part of of the communication goal a book should serve. <strong>Chunks should earn their keep!</strong></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/code_chunk_examples.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption>A chunk’s options control how much of it survives into the rendered output—here <code>echo</code>, <code>results</code>, <code>eval</code>, and <code>include</code> all shown side by side in RStudio. Multiply that by hundreds of chunks scattered across a book, and “just check them by eye” stops being realistic.</figcaption>
+<figcaption>Screenshot comparing RStudio editor window using RMarkdown (left) with the rendered output in a Viewer panel (right). A chunk’s options control how much of it survives into the rendered output—here <code>echo</code>, <code>results</code>, <code>eval</code>, and <code>include</code> all shown side by side in RStudio.</figcaption>
 </figure>
 </div>
+<section id="the-problem-show-all-the-code" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-show-all-the-code">The problem: Show all the code?</h2>
+<p>OK, you’ve written an R-based book with extensive code examples—all analyses and figures are <strong>reproducible from source</strong>. That’s important! Stemming from Donald Knuth’s (<a href="https://academic.oup.com/comjnl/article/27/2/97/343244">1984</a>) idea of <a href="https://towardsdatascience.com/literate-programming-reproducible-research-and-clean-code-docstrings-accf1a9f6661/">literate programming</a>— the paradigm where computer programs and their explanatory documentation are intertwined into a single, cohesive, reproducible source file— R has evolved for this purpose from <a href="https://en.wikipedia.org/wiki/Sweave">Sweave</a>, to <a href="https://rmarkdown.rstudio.com/">RMarkdown</a>, and <a href="https://quarto.org/">Quarto</a>. And this aspect of writing about graphical methods and software that does it, is still evolving.</p>
+<p>But now, for publication in both online and print form, you ask: is it really necessary to show <strong>all that code inline</strong>? How does this affect readability, the narrative flow? Or, you see a code block in the PDF that extends outside the shaded box.</p>
+<p>A reviewer of my book <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> commented that there was too much code on display in the PDF, and that the book could be shortened by folding or hiding some of it. My RA, Gavin Klorfine, also noticed that there were a bunch of code chunks that strayed into the margin. The book contains 281 figures, most generated directly from R code, among 669 chunks throughout the book.</p>
+<p>I should mention that I was mindful of these general issues while writing. But the mental work of writing the text—most important—often gave less attention to the details of code display, favoring other work on getting the graphs right.</p>
+<p>The question, with this review, became:</p>
+<blockquote class="blockquote">
+<p><strong>Can I make it easier to analyse the properties of all these chunks, in a way that could make editing easier to resolve these and other issues?</strong></p>
+</blockquote>
+<p>One solution to this class of problems, which I implemented by guiding Claude 4.6, involves simply treating your text <code>.qmd</code> files as “data”,</p>
+<ul>
+<li>scanning these with RegExs to find chunks and their properties, and</li>
+<li>writing this information to a <code>chunks</code> dataset that can be used to analyze and fix such problems.</li>
+</ul>
+<p>Some aspects of this work may be useful to others, so I describe the problems and solution steps below.</p>
+</section>
 <section id="folding-code-in-html-and-pdf" class="level2">
 <h2 class="anchored" data-anchor-id="folding-code-in-html-and-pdf">Folding code in HTML and PDF</h2>
 <p>With Quarto, it is easy to fold code in HTML using the YAML chunk option <a href="https://quarto.org/docs/output-formats/html-code.html#folding-code"><code>code-fold</code></a>. In your source <code>.qmd</code> file, it looks like this:</p>
@@ -201,33 +219,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="building-a-chunk-database" class="level2">
 <h2 class="anchored" data-anchor-id="building-a-chunk-database">Building a chunk database</h2>
 <p>The idea is simple: treat your <code>.qmd</code> source files as <em>data</em> and use R to parse them. Each code chunk becomes one tidy row in a data frame, with columns for the attributes mentioned above.</p>
-<p>In R, code chunks start with a line matching <code>```{r</code> and end at the next line that is exactly <code>```</code>. Everything in between is either a <a href="https://quarto.org/docs/computations/execution-options.html"><code>#|</code> YAML option</a> line or code. That structure is regular enough to parse with base-R string tools like <code>grep()</code> and map that over the text using <code>lapply()</code>. No specialized packages needed.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>parse_file_chunks <span class="ot">&lt;-</span> <span class="cf">function</span>(file) {</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  lines  <span class="ot">&lt;-</span> <span class="fu">readLines</span>(file, <span class="at">warn =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"^```</span><span class="sc">\\</span><span class="st">{r"</span>, lines)          <span class="co"># chunk openings</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(starts, <span class="cf">function</span>(s) {</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># find the closing ```</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    e <span class="ot">&lt;-</span> s <span class="sc">+</span> <span class="fu">which</span>(<span class="fu">grepl</span>(<span class="st">"^```</span><span class="sc">\\</span><span class="st">s*$"</span>, lines[(s<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(lines)]))[<span class="dv">1</span>]</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    chunk_lines <span class="ot">&lt;-</span> lines[(s<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>e]</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    opts <span class="ot">&lt;-</span> chunk_lines[<span class="fu">grepl</span>(<span class="st">"^#</span><span class="sc">\\</span><span class="st">|"</span>, chunk_lines)]   <span class="co"># YAML options</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    code <span class="ot">&lt;-</span> chunk_lines[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"^#</span><span class="sc">\\</span><span class="st">|"</span>, chunk_lines) <span class="sc">&amp;</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                        <span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"^```</span><span class="sc">\\</span><span class="st">s*$"</span>, chunk_lines)]</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">label     =</span> <span class="fu">get_opt</span>(opts, <span class="st">"label"</span>),     <span class="co"># #| label: value</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">code_fold =</span> <span class="fu">get_opt</span>(opts, <span class="st">"code-fold"</span>),</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">echo_html =</span> <span class="fu">grepl</span>(<span class="st">"echo=knitr::is_html_output()"</span>, lines[s], <span class="at">fixed=</span><span class="cn">TRUE</span>),</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_code    =</span> <span class="fu">sum</span>(<span class="fu">nchar</span>(<span class="fu">trimws</span>(code)) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In R, code chunks start with a line matching <code>```{r</code> and end at the next line that is exactly <code>```</code>. Everything in between is either a <a href="https://quarto.org/docs/computations/execution-options.html"><code>#|</code> YAML option</a> line or code. That structure is regular enough to parse with base-R string tools like <code>grep()</code> and map that over the text using <code>lapply()</code>. No specialized packages needed. (But the <a href=""><code>stringr</code> package</a> might be a good candidate to simplify the parsing logic here, in another lifetime.)</p>
+<p><code>get_opt()</code> in the snippet below is a small local helper—not from any package. It that scans a vector of <code>#|</code> YAML lines for a given option <code>name</code> and returns its value (or <code>NA</code> if absent):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>get_opt <span class="ot">&lt;-</span> <span class="cf">function</span>(opts, name) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  pat <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"^#</span><span class="sc">\\</span><span class="st">|</span><span class="sc">\\</span><span class="st">s*"</span>, name, <span class="st">"</span><span class="sc">\\</span><span class="st">s*:</span><span class="sc">\\</span><span class="st">s*(.+)$"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (o <span class="cf">in</span> opts) {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">regmatches</span>(o, <span class="fu">regexec</span>(pat, o))[[<span class="dv">1</span>]]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(m) <span class="sc">==</span> <span class="dv">2</span>) <span class="fu">return</span>(<span class="fu">trimws</span>(m[<span class="dv">2</span>]))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA_character_</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then, we parse chunks that appear in a given chapter .qmd <code>file</code> as follows, returning a list of one item per chunk, with some of it’s options and characteristics:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>parse_file_chunks <span class="ot">&lt;-</span> <span class="cf">function</span>(file) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  lines  <span class="ot">&lt;-</span> <span class="fu">readLines</span>(file, <span class="at">warn =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"^```</span><span class="sc">\\</span><span class="st">{r"</span>, lines)          <span class="co"># chunk openings</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(starts, <span class="cf">function</span>(s) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># find the closing ```</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    e <span class="ot">&lt;-</span> s <span class="sc">+</span> <span class="fu">which</span>(<span class="fu">grepl</span>(<span class="st">"^```</span><span class="sc">\\</span><span class="st">s*$"</span>, lines[(s<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(lines)]))[<span class="dv">1</span>]</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    chunk_lines <span class="ot">&lt;-</span> lines[(s<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>e]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    opts <span class="ot">&lt;-</span> chunk_lines[<span class="fu">grepl</span>(<span class="st">"^#</span><span class="sc">\\</span><span class="st">|"</span>, chunk_lines)]   <span class="co"># YAML options</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    code <span class="ot">&lt;-</span> chunk_lines[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"^#</span><span class="sc">\\</span><span class="st">|"</span>, chunk_lines) <span class="sc">&amp;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                        <span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"^```</span><span class="sc">\\</span><span class="st">s*$"</span>, chunk_lines)]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">label     =</span> <span class="fu">get_opt</span>(opts, <span class="st">"label"</span>),     <span class="co"># #| label: value</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">code_fold =</span> <span class="fu">get_opt</span>(opts, <span class="st">"code-fold"</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">echo_html =</span> <span class="fu">grepl</span>(<span class="st">"echo=knitr::is_html_output()"</span>, lines[s], <span class="at">fixed=</span><span class="cn">TRUE</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_code    =</span> <span class="fu">sum</span>(<span class="fu">nchar</span>(<span class="fu">trimws</span>(code)) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For a full book project like <em>Vis-MLM</em>, with 19 source files and several active child files, this produces a tidy data frame of 669 chunks with 17 fields:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"data/chunks.RData"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(chunks)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"data/chunks.RData"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(chunks)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 669
 Columns: 17
@@ -299,9 +327,9 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 </table>
 <p>For the <em>Vis-MLM</em> book, the breakdown across 281 figure chunks is:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>chunks <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_fig) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(fold_status, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>chunks <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_fig) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(fold_status, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  fold_status   n
 1     neither 227
@@ -318,12 +346,13 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 <section id="practical-uses" class="level2">
 <h2 class="anchored" data-anchor-id="practical-uses">Practical uses</h2>
 <p>With <code>chunks.RData</code> in hand, a few lines of R answer questions that would otherwise require manually scanning thousands of lines of source. Here are just a couple of examples of things I tried:</p>
-<p><strong>Which figure chunks still need folding treatment?</strong> Here are longest few (of 227) — the highest-payoff targets for folding. Line numbers help to find them in the chapter files.</p>
+<p><strong>Which figure chunks still need folding treatment?</strong></p>
+<p>Here are longest few (of 227) — the highest-payoff targets for folding. Line numbers help to find them in the chapter files.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>chunks <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_fig, fold_status <span class="sc">==</span> <span class="st">"neither"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(chapter, file, line, label, n_code_lines) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(n_code_lines, <span class="at">n =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>chunks <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_fig, fold_status <span class="sc">==</span> <span class="st">"neither"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(chapter, file, line, label, n_code_lines) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(n_code_lines, <span class="at">n =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  chapter                      file line                    label n_code_lines
 1      11         11-mlm-review.qmd 1456       fig-plastic-ggline           27
@@ -340,18 +369,18 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 <p><strong>How many old-style chunk labels remain?</strong></p>
 <p>There’s a lot! I could write a script to fix these if I wanted, but it would have to guess at meaningful chunk labels.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(chunks<span class="sc">$</span>old_style, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(chunks<span class="sc">$</span>old_style, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 235</code></pre>
 </div>
 </div>
 <p><strong>Which chapters have the most unfolded <em>figure</em> code?</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>chunks <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_fig, fold_status <span class="sc">==</span> <span class="st">"neither"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(chapter, file) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_lines =</span> <span class="fu">sum</span>(n_code_lines), <span class="at">n_figs =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_lines))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>chunks <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_fig, fold_status <span class="sc">==</span> <span class="st">"neither"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(chapter, file) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_lines =</span> <span class="fu">sum</span>(n_code_lines), <span class="at">n_figs =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_lines))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 19 × 4
 # Groups:   chapter [16]
@@ -392,18 +421,18 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 - The text describing the reversing of the `x` and `y` axes may be sufficient 
  ...</code></pre>
 <p>Rather than checking each one by hand against the book source, the script <a href="https://github.com/friendly/Vis-MLM-book/blob/master/test/annotate-audit.R"><code>annotate-audit.R</code></a> looks up every flagged label in <code>chunks</code> and appends its <code>fold_status</code> right there in the review document:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lookup <span class="ot">&lt;-</span> <span class="fu">with</span>(chunks, <span class="fu">setNames</span>(fold_status, label))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>pat <span class="ot">&lt;-</span> <span class="st">"^(</span><span class="sc">\\</span><span class="st">*</span><span class="sc">\\</span><span class="st">*</span><span class="sc">\\</span><span class="st">*Label: ([^*]+)</span><span class="sc">\\</span><span class="st">*</span><span class="sc">\\</span><span class="st">*</span><span class="sc">\\</span><span class="st">*)(.*)"</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(lines)) {</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">regmatches</span>(lines[i], <span class="fu">regexec</span>(pat, lines[i]))[[<span class="dv">1</span>]]</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(m) <span class="sc">==</span> <span class="dv">0</span>) <span class="cf">next</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  label  <span class="ot">&lt;-</span> <span class="fu">trimws</span>(m[<span class="dv">3</span>])</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  status <span class="ot">&lt;-</span> <span class="cf">if</span> (label <span class="sc">%in%</span> <span class="fu">names</span>(lookup)) lookup[[label]] <span class="cf">else</span> <span class="st">"NOT IN DATASET"</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  lines[i] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(m[<span class="dv">2</span>], <span class="st">" [FOLDED: "</span>, status, <span class="st">"]"</span>, m[<span class="dv">4</span>])</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>lookup <span class="ot">&lt;-</span> <span class="fu">with</span>(chunks, <span class="fu">setNames</span>(fold_status, label))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>pat <span class="ot">&lt;-</span> <span class="st">"^(</span><span class="sc">\\</span><span class="st">*</span><span class="sc">\\</span><span class="st">*</span><span class="sc">\\</span><span class="st">*Label: ([^*]+)</span><span class="sc">\\</span><span class="st">*</span><span class="sc">\\</span><span class="st">*</span><span class="sc">\\</span><span class="st">*)(.*)"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(lines)) {</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">regmatches</span>(lines[i], <span class="fu">regexec</span>(pat, lines[i]))[[<span class="dv">1</span>]]</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(m) <span class="sc">==</span> <span class="dv">0</span>) <span class="cf">next</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  label  <span class="ot">&lt;-</span> <span class="fu">trimws</span>(m[<span class="dv">3</span>])</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  status <span class="ot">&lt;-</span> <span class="cf">if</span> (label <span class="sc">%in%</span> <span class="fu">names</span>(lookup)) lookup[[label]] <span class="cf">else</span> <span class="st">"NOT IN DATASET"</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  lines[i] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(m[<span class="dv">2</span>], <span class="st">" [FOLDED: "</span>, status, <span class="st">"]"</span>, m[<span class="dv">4</span>])</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A line like <code>***Label: fig-scatter***</code> in the review becomes <code>***Label: fig-scatter*** [FOLDED: fold-only]</code>—turning a manual cross-check into a one-line lookup, with no risk of missing a flagged chunk or misreading its status.</p>
 </section>
 <section id="finding-wide-code-in-pdf" class="level3">
@@ -414,25 +443,71 @@ $ fold_status  &lt;chr&gt; "neither", "neither", "neither", "neither", "neither"
 <ul>
 <li><strong>LaTeX fix (automatic):</strong> Loading <a href="https://ctan.org/pkg/fvextra"><code>fvextra</code></a> (a <a href="https://ctan.org/pkg/fancyvrb"><code>fancyvrb</code></a> extension) and setting <code>breaklines=true</code> on the <code>Highlighting</code> environment makes any line that exceeds the box width wrap automatically, with a small continuation symbol—no source edits required. Plain <code>fancyvrb</code> does <em>not</em> support <code>breaklines</code>; <code>fvextra</code> must be loaded first (after <code>fancyvrb</code>, which Pandoc loads in its generated preamble):</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">fvextra</span>}</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\RecustomVerbatimEnvironment</span>{Highlighting}{Verbatim} <span class="co">%</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    {commandchars=<span class="fu">\\\{\}</span>,breaklines=true,breakanywhere=true}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">fvextra</span>}</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\RecustomVerbatimEnvironment</span>{Highlighting}{Verbatim} <span class="co">%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    {commandchars=<span class="fu">\\\{\}</span>,breaklines=true,breakanywhere=true}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>breaklines=true</code> wraps at spaces; <code>breakanywhere=true</code> additionally breaks mid-token for long strings or identifiers with no internal spaces.</p>
 <ul>
 <li><strong>R-side fix (targeted):</strong> For source lines you want to reformat explicitly, the script <a href="https://github.com/friendly/Vis-MLM-book/blob/master/issues/wide-code.R"><code>issues/wide-code.R</code></a> extends the chunk-scanning approach to measure line widths. It expands tabs with the same <code>tabstop = 4</code> rule that knitr uses, then flags every code line exceeding the limit—but only in chunks that are actually <strong>visible in the PDF</strong> (skipping <code>echo=knitr::is_html_output()</code>, <code>echo=FALSE</code>, and <code>#| echo: false</code> chunks). The output gives file, line number, chunk label, width, and a text snippet so each case can be located and fixed directly.</li>
 </ul>
 </section>
+<section id="so-how-did-it-go" class="level3">
+<h3 class="anchored" data-anchor-id="so-how-did-it-go">So, how did it go?</h3>
+<p>Once <code>chunks.RData</code> was ready and Gavin’s annotated audit came back, implementing the changes was mechanical. He flagged <strong>15 chunks</strong> as candidates for folding across all 19 chapter files (Chs. 1–21 of the book). Fourteen got the two-step treatment—<code>echo=knitr::is_html_output()</code> on the header line, <code>#| code-fold: true</code> and <code>#| code-summary: "Show the code"</code> in the body. The fifteenth, <code>ggally-smooth-fns</code>, was a two-line exploratory listing that didn’t belong as a chunk at all; it was removed and its content folded into surrounding prose.</p>
+<p>Four chunks Gavin reviewed were explicitly kept visible. These were places where showing the code <em>is</em> the point—the first figure in Ch. 1 where seeing the <code>ggplot()</code> call is half the lesson, or a reference figure the surrounding text explains line by line.</p>
+<p>Before Gavin’s pass, about 30 figure chunks already had <code>code-fold: true</code> from earlier editing, and those show up in the data as <code>fold_status == "fold-only"</code> (19 in the final count): HTML folds them, but code still appears in the printed PDF—an artifact of being folded before the <code>echo_html</code> trick was settled. Gavin’s 14 additions hit the <code>"both"</code> column: hidden in PDF, foldable in HTML.</p>
+<p>The remaining <strong>227 figure chunks</strong> with <code>fold_status == "neither"</code> are what they look like: simply displayed. This is mostly a communication choice— one aspect of the _Vis-MLM` project is to describe <strong>how</strong> a given graph was constructed, so the reader could use that method with their own data. I also tried to describe this process step-by-step, so the code for a given graph is often distributed across several chunks. In addition, I also matched the R figures in the book to the corresponding R source files in my project tree, and provide an <a href="https://friendly.github.io/Vis-MLM-book/30-Rcode.html">online appendix of R code</a>.</p>
+<p>This approach to writing about R is an example of <strong>Chairman Mao’s Dictum:</strong> <em>Theory into Practice</em>. It also reflects John W. Tukey’s observation,</p>
+<blockquote class="blockquote">
+<p>The <em>practical</em> power of a statistical test is the product of its’ statistical power and the probability of use. — John W. Tukey (1959), <em>A Quick, Compact, Two Sample Test to Duckworth’s Specifications</em></p>
+</blockquote>
+<p>But if I ever want to rev-visit this problem, the database makes it trivial to sort by <code>n_code_lines</code> and find the highest-payoff targets for a follow-up pass. That list exists. It’s just waiting for a rainy afternoon; or, my editor asking if I can trim a few more pages.</p>
+</section>
 </section>
 <section id="isnt-there-a-package-for-this-already" class="level2">
 <h2 class="anchored" data-anchor-id="isnt-there-a-package-for-this-already">Isn’t there a package for this already?</h2>
-<p><a href="https://cran.r-project.org/package=xfun"><code>xfun</code></a>, Yihui Xie’s grab-bag of utilities behind <code>knitr</code>, was my first guess. But it’s general-purpose file/string helpers (<code>xfun::read_utf8()</code>, <code>xfun::proj_root()</code>, and the like), not a chunk parser. <code>knitr</code> itself comes closer: after a document has been knitted, <a href="https://rdrr.io/cran/knitr/man/knit_code.html"><code>knitr::knit_code$get()</code></a> returns every chunk’s code and options from that run—but it only exists <em>after</em> you’ve knitted the whole thing, whereas the point here was to inspect chunks <em>before</em> running anything.</p>
-<p>The package that actually does this job properly is <a href="https://rundel.github.io/parsermd/"><code>parsermd</code></a> (by Colin Rundel). <code>parse_rmd()</code> turns a <code>.Rmd</code>/<code>.qmd</code> file into a proper <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a> (AST)—a tree that mirrors the document’s structure (headings nesting sections, chunks and prose as ordered nodes within them) rather than a flat wall of text—and <code>as_tibble()</code> flattens it to one row per node, with chunk <code>label</code>, <code>engine</code>, and a parsed <code>options</code> list (old-style header args and new-style <code>#|</code> YAML alike) as columns. I tried against a <em>Vis-MLM</em> chapter, it picked up <code>echo=knitr::is_html_output()</code>, <code>code.fold</code>, and even a computed <code>fig.cap</code> expression without complaint. Had I found it first, <code>parsermd</code> would have replaced most of <code>chunks.R</code>’s parsing logic outright, leaving just the project-specific rollup (the <code>fold_status</code> derivation and the auditing queries) to write myself. I found out about it only after the fact, which is itself a small lesson in searching CRAN before writing 100 lines of regex.</p>
-<p><a href="https://quarto.org/docs/cli/inspect.html"><code>quarto inspect</code></a>, for completeness, was <em>not</em> the answer: it reports document/project-level metadata (formats, engines, extensions)—nothing per-chunk.</p>
+<p>My first guess was <a href="https://cran.r-project.org/package=xfun"><code>xfun</code></a>, Yihui Xie’s grab-bag of utilities behind <code>knitr</code>. But it’s really just a collection of general-purpose file/string helpers (<code>xfun::read_utf8()</code>, <code>xfun::proj_root()</code>, and the like), not a <strong>chunk parser</strong>. <code>knitr</code> itself comes closer: after a document has been knitted, <a href="https://rdrr.io/cran/knitr/man/knit_code.html"><code>knitr::knit_code$get()</code></a> returns every chunk’s code and options from that run. But that only exists <em>after</em> you’ve knitted the whole thing, whereas the point here was to inspect chunks in the “wild”, <em>before</em> running anything.</p>
+<p>The package that actually does this job properly is <a href="https://rundel.github.io/parsermd/"><code>parsermd</code></a> (by Colin Rundel). <a href="https://rundel.github.io/parsermd/reference/parse_rmd.html"><code>parse_rmd()</code></a> turns a <code>.Rmd</code>/<code>.qmd</code> file into a proper <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a> (AST)—a tree that mirrors the document’s structure (headings nesting sections, chunks and prose as ordered nodes within them) rather than a flat wall of text—and <code>as_tibble()</code> flattens it to one row per node, with chunk <code>label</code>, <code>engine</code>, and a parsed <code>options</code> list (old-style header args and new-style <code>#|</code> YAML alike) as columns.</p>
+<p>A small <code>.qmd</code> fragment like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Some introductory text.</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>::: {.cell}</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Analysis</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>Here we fit a model.</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>::: {.cell}</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="in">```{.r .cell-code  code-fold="true"}</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>produces an AST whose structure looks roughly like:</p>
+<pre><code>Document
+├── Section [h2]: "Introduction"
+│   ├── Prose: "Some introductory text."
+│   └── Chunk [r, label="setup"]
+│           options: {echo: false}
+└── Section [h2]: "Analysis"
+    ├── Prose: "Here we fit a model."
+    └── Chunk [r, label="fig-scatter"]
+            options: {fig-cap: "A scatterplot", code-fold: true}</code></pre>
+<p><code>as_tibble()</code> then flattens this to one row per node, making it straightforward to filter for chunks, inspect options, or join against other metadata.</p>
+<p>I tried <code>parse_rmd()</code> against a <em>Vis-MLM</em> chapter, it picked up <code>echo=knitr::is_html_output()</code>, <code>code.fold</code>, and even a computed <code>fig.cap</code> expression without complaint. Had I found it first, <code>parsermd</code> would have replaced most of <code>chunks.R</code>’s parsing logic outright, leaving just the project-specific rollup (the <code>fold_status</code> derivation and the auditing queries) to write myself. I found out about it only after the fact, which is itself a small lesson in searching CRAN before writing many lines of regex— not a fun prospect because R’s escaping mechanism means doubling <code>\</code> characters, which are the heart of a <a href="https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html">regular expression</a>.</p>
+<p>For completeness, the command line tool <a href="https://quarto.org/docs/cli/inspect.html"><code>quarto inspect</code></a>, was <em>not</em> the answer: it reports document/project-level metadata (formats, engines, extensions), but there is nothing per-chunk.</p>
 </section>
 <section id="summing-up" class="level2">
 <h2 class="anchored" data-anchor-id="summing-up">Summing up</h2>
-<p>For a large Quarto/knitr book project, treating code chunks as data pays off quickly. The parsing logic is straightforward—chunks have a regular open/close structure and <code>#|</code> options are easy to extract. The resulting data frame supports systematic auditing, reviewer cross-checks, and bulk edits that would be tedious to do by hand.</p>
-<p>The full script (<a href="https://gist.github.com/friendly/765761673f9f74ada34ffa8051080ecd"><code>chunks.R</code></a>) is available as a GitHub gist. Adapt the <code>active_files</code> list and the <code>child_files</code> vector to your own project structure, and you should be able to build a similar database in a few minutes.</p>
+<p>For a large Quarto/knitr book project, treating code chunks as data pays off quickly. The parsing logic is relatively straightforward—chunks have a regular open/close structure and <code>#|</code> chunkl options are easy to extract. The resulting data frame supports systematic auditing, reviewer cross-checks, and bulk edits that would be tedious to do by hand.</p>
+<p>The full script (<a href="https://gist.github.com/friendly/765761673f9f74ada34ffa8051080ecd"><code>chunks.R</code></a>) is available as a GitHub gist. Adapt the <code>active_files</code> list and the <code>child_files</code> vector to your own project structure, and you should be able to build a similar database in a few minutes. Happy Chunk Minding!</p>
 </section>
 
 </main>

@@ -23,28 +23,53 @@ alongside [Quarto Is Not LaTeX, However Hard It Tries](../quarto-is-not-latex/in
 [Creating Book Indexes in Quarto](../../../posts/2026-04-quarto-indexes/index.qmd). This one is about a smaller,
 more mechanical problem: once a book has hundreds of code chunks, how do you even find the ones that need attention?
 
+* Code that is not readable because it's too wide or poorly formatted?
+* Code that while necessary, should not be shown to the reader?
+* Figures too high/wide, small/large? 
+
+It also touches on the interesting meta-question of _How you can use R itself to help with writing about R_?.
+
+The title is a small call to _mindfulness_: in a large book project, it pays to be deliberate about which code you show, how you show it, and whether showing it at all serves the reader. After all, the display of code is part of
+of the communication goal a book should serve. **Chunks should earn their keep!**
+
+![Screenshot comparing RStudio editor window using RMarkdown (left) with the rendered output in a Viewer panel (right). A chunk's options control how much of it survives into the rendered output---here `echo`, `results`, `eval`, and `include` all shown side by side in RStudio.](images/code_chunk_examples.png){fig-align="center" width="90%"}
+
+## The problem: Show all the code?
+
 OK, you've written an R-based book with extensive code examples---all analyses and figures
-are reproducible from source. But now, for publication in both online and print form, you ask:
+are **reproducible from source**. That's important! Stemming from Donald Knuth's ([1984](https://academic.oup.com/comjnl/article/27/2/97/343244)) idea of
+[literate programming](https://towardsdatascience.com/literate-programming-reproducible-research-and-clean-code-docstrings-accf1a9f6661/)---
+the paradigm where computer programs and their explanatory documentation are intertwined into a single, cohesive, reproducible source file--- R has evolved for this purpose from [Sweave](https://en.wikipedia.org/wiki/Sweave), to [RMarkdown](https://rmarkdown.rstudio.com/), and [Quarto](https://quarto.org/). And this aspect of writing about
+graphical methods and software that does it, is still evolving.
+
+
+
+But now, for publication in both online and print form, you ask:
 is it really necessary to show **all that code inline**? How does this affect readability,
 the narrative flow?
 Or, you see a code block in the PDF that extends outside the shaded box.
 
 A reviewer of my book [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
 commented that there was too much code on display in the PDF, and that the book could be shortened
-by folding or hiding some of it. My RA, Gavin Klorfine, noticed that there were a bunch of code chunks that strayed into the margin.
+by folding or hiding some of it. My RA, Gavin Klorfine, also noticed that there were a bunch of code chunks that strayed into the margin.
 The book contains 281 figures, most generated directly from R code, among 669 chunks throughout the book.
 
-The question was:
+I should mention that I was mindful of these general issues while writing. But the mental work of
+writing the text---most important---often gave less attention to the details of code display,
+favoring other work on getting the graphs right.
 
-> Can I make it easier to analyse the properties of all these chunks, in a way that could make editing easier to resolve these and other issues?
+The question, with this review, became:
+
+> **Can I make it easier to analyse the properties of all these chunks, in a way that could make editing easier to resolve these and other issues?**
 
 One solution to this class of problems, which I implemented by guiding Claude 4.6, involves simply treating your text `.qmd` files as "data",
-scanning these with RegExs to find chunks and their properties, and writing this information to a `chunks` dataset that can be used to analyze
-and fix such problems.
+
+* scanning these with RegExs to find chunks and their properties, and 
+* writing this information to a `chunks` dataset that can be used to analyze and fix such problems.
 
 Some aspects of this work may be useful to others, so I describe the problems and solution steps below.
 
-![A chunk's options control how much of it survives into the rendered output---here `echo`, `results`, `eval`, and `include` all shown side by side in RStudio. Multiply that by hundreds of chunks scattered across a book, and "just check them by eye" stops being realistic.](images/code_chunk_examples.png){fig-align="center" width="90%"}
+
 
 ## Folding code in HTML and PDF
 
@@ -119,7 +144,25 @@ In R, code chunks start with a line matching `` ```{r `` and end at the next lin
 exactly ` ``` `. Everything in between is either a
 [`#|` YAML option](https://quarto.org/docs/computations/execution-options.html) line or code. That
 structure is regular enough to parse with base-R string tools like `grep()` and
-map that over the text using `lapply()`. No specialized packages needed.
+map that over the text using `lapply()`. No specialized packages needed. (But the [`stringr` package](https://stringr.tidyverse.org/) might
+be a good candidate to simplify the parsing logic here, in another lifetime.)
+
+`get_opt()` in the snippet below is a small local helper---not from any package. It that scans
+a vector of `#|` YAML lines for a given option `name` and returns its value (or `NA` if absent):
+
+```r
+get_opt <- function(opts, name) {
+  pat <- paste0("^#\\|\\s*", name, "\\s*:\\s*(.+)$")
+  for (o in opts) {
+    m <- regmatches(o, regexec(pat, o))[[1]]
+    if (length(m) == 2) return(trimws(m[2]))
+  }
+  NA_character_
+}
+```
+
+Then, we parse chunks that appear in a given chapter .qmd  `file` as follows, returning a list of one item per chunk,
+with some of it's options and characteristics:
 
 ```r
 parse_file_chunks <- function(file) {
@@ -199,6 +242,7 @@ manually scanning thousands of lines of source. Here are just a couple of exampl
 I tried:
 
 **Which figure chunks still need folding treatment?** 
+
 Here are longest few (of 227) --- the highest-payoff targets for folding. Line numbers help to
 find them in the chapter files.
 ```{r}
@@ -307,39 +351,119 @@ PDF** (skipping `echo=knitr::is_html_output()`, `echo=FALSE`, and `#| echo: fals
 The output gives file, line number, chunk label, width, and a text snippet so each
 case can be located and fixed directly.
 
+### So, how did it go?
+
+Once `chunks.RData` was ready and Gavin's annotated audit came back, implementing the changes
+was mechanical. He flagged **15 chunks** as candidates for folding across all 19 chapter files
+(Chs. 1–21 of the book). Fourteen got the two-step treatment---`echo=knitr::is_html_output()`
+on the header line, `#| code-fold: true` and `#| code-summary: "Show the code"` in the body.
+The fifteenth, `ggally-smooth-fns`, was a two-line exploratory listing that didn't belong as a
+chunk at all; it was removed and its content folded into surrounding prose.
+
+Four chunks Gavin reviewed were explicitly kept visible. These were places where showing the
+code *is* the point---the first figure in Ch. 1 where seeing the `ggplot()` call is half the
+lesson, or a reference figure the surrounding text explains line by line.
+
+Before Gavin's pass, about 30 figure chunks already had `code-fold: true` from earlier
+editing, and those show up in the data as `fold_status == "fold-only"` (19 in the final
+count): HTML folds them, but code still appears in the printed PDF---an artifact of being
+folded before the `echo_html` trick was settled. Gavin's 14 additions hit the `"both"` column:
+hidden in PDF, foldable in HTML.
+
+The remaining **227 figure chunks** with `fold_status == "neither"` are what they look like:
+simply displayed. This is mostly a communication choice--- one aspect of the _Vis-MLM` project
+is to describe **how** a given graph was constructed, so the reader could use that method
+with their own data. I also tried to describe this process step-by-step, so the code for
+a given graph is often distributed across several chunks. In addition, I also matched
+the R figures in the book to the corresponding R source files in my project tree,
+and provide an [online appendix of R code](https://friendly.github.io/Vis-MLM-book/30-Rcode.html).
+
+This approach to writing about R is an example of **Chairman Mao's Dictum:** _Theory into Practice_.
+It also reflects John W. Tukey's observation,
+
+> The _practical_ power of a statistical test is the product of its' statistical power and the probability of use.
+--- John W. Tukey (1959), _A Quick, Compact, Two Sample Test to Duckworth's Specifications_
+
+But if I ever want to rev-visit this problem,
+the database makes it trivial to sort by `n_code_lines` and find the highest-payoff
+targets for a follow-up pass. That list exists. It's just waiting for a rainy afternoon; or, my editor
+asking if I can trim a few more pages.
+
 ## Isn't there a package for this already?
 
-[`xfun`](https://cran.r-project.org/package=xfun), Yihui Xie's grab-bag of utilities behind `knitr`, was my first guess. But it's
+My first guess was [`xfun`](https://cran.r-project.org/package=xfun), Yihui Xie's grab-bag of utilities behind `knitr`. But it's really just a collection of
 general-purpose file/string helpers (`xfun::read_utf8()`, `xfun::proj_root()`, and the like),
-not a chunk parser. `knitr` itself comes closer: after a document has been knitted,
-[`knitr::knit_code$get()`](https://rdrr.io/cran/knitr/man/knit_code.html) returns every chunk's code and options from that run---but it only
-exists *after* you've knitted the whole thing, whereas the point here was to inspect chunks
+not a **chunk parser**. `knitr` itself comes closer: after a document has been knitted,
+[`knitr::knit_code$get()`](https://rdrr.io/cran/knitr/man/knit_code.html) returns every chunk's code and options from that run. But that only
+exists *after* you've knitted the whole thing, whereas the point here was to inspect chunks in the "wild",
 *before* running anything.
 
 The package that actually does this job properly is
-[`parsermd`](https://rundel.github.io/parsermd/) (by Colin Rundel). `parse_rmd()` turns a
+[`parsermd`](https://rundel.github.io/parsermd/) (by Colin Rundel). [`parse_rmd()`](https://rundel.github.io/parsermd/reference/parse_rmd.html) turns a
 `.Rmd`/`.qmd` file into a proper [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
 (AST)---a tree that mirrors the document's structure (headings nesting sections, chunks and
 prose as ordered nodes within them) rather than a flat wall of text---and `as_tibble()`
 flattens it to one row per node, with chunk `label`, `engine`, and a parsed `options` list
-(old-style header args and new-style `#|` YAML alike) as columns. I tried against a *Vis-MLM*
+(old-style header args and new-style `#|` YAML alike) as columns.
+
+A small `.qmd` fragment like this:
+
+````markdown
+## Introduction
+
+Some introductory text.
+
+```{r setup, echo=FALSE}
+library(ggplot2)
+```
+
+## Analysis
+
+Here we fit a model.
+
+```{r}
+#| label: fig-scatter
+#| fig-cap: "A scatterplot"
+#| code-fold: true
+ggplot(data, aes(x, y)) + geom_point()
+```
+````
+
+produces an AST whose structure looks roughly like:
+
+```
+Document
+├── Section [h2]: "Introduction"
+│   ├── Prose: "Some introductory text."
+│   └── Chunk [r, label="setup"]
+│           options: {echo: false}
+└── Section [h2]: "Analysis"
+    ├── Prose: "Here we fit a model."
+    └── Chunk [r, label="fig-scatter"]
+            options: {fig-cap: "A scatterplot", code-fold: true}
+```
+
+`as_tibble()` then flattens this to one row per node, making it straightforward to filter for chunks, inspect options, or join against other metadata.
+
+I tried `parse_rmd()` against a *Vis-MLM*
 chapter, it picked up `echo=knitr::is_html_output()`, `code.fold`, and even a computed
 `fig.cap` expression without complaint. Had I found it first, `parsermd` would have replaced
 most of `chunks.R`'s parsing logic outright, leaving just the project-specific rollup (the
 `fold_status` derivation and the auditing queries) to write myself. I found out about it
-only after the fact, which is itself a small lesson in searching CRAN before writing 100
-lines of regex.
+only after the fact, which is itself a small lesson in searching CRAN before writing many
+lines of regex--- not a fun prospect because R's escaping mechanism means doubling `\`
+characters, which are the heart of a [regular expression](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html).
 
-[`quarto inspect`](https://quarto.org/docs/cli/inspect.html), for completeness, was *not* the answer: it reports document/project-level
-metadata (formats, engines, extensions)---nothing per-chunk.
+For completeness, the command line tool [`quarto inspect`](https://quarto.org/docs/cli/inspect.html), was *not* the answer: it reports document/project-level
+metadata (formats, engines, extensions), but there is nothing per-chunk.
 
 ## Summing up
 
 For a large Quarto/knitr book project, treating code chunks as data pays off quickly.
-The parsing logic is straightforward---chunks have a regular open/close structure and
-`#|` options are easy to extract. The resulting data frame supports systematic auditing,
+The parsing logic is relatively straightforward---chunks have a regular open/close structure and
+`#|` chunkl options are easy to extract. The resulting data frame supports systematic auditing,
 reviewer cross-checks, and bulk edits that would be tedious to do by hand.
 
 The full script ([`chunks.R`](https://gist.github.com/friendly/765761673f9f74ada34ffa8051080ecd)) is available as a GitHub gist.
 Adapt the `active_files` list and the `child_files` vector to your own project structure,
-and you should be able to build a similar database in a few minutes.
+and you should be able to build a similar database in a few minutes. Happy Chunk Minding!
