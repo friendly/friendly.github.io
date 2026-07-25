@@ -44,6 +44,8 @@ and fix such problems.
 
 Some aspects of this work may be useful to others, so I describe the problems and solution steps below.
 
+![A chunk's options control how much of it survives into the rendered output---here `echo`, `results`, `eval`, and `include` all shown side by side in RStudio. Multiply that by hundreds of chunks scattered across a book, and "just check them by eye" stops being realistic.](images/code_chunk_examples.png){fig-align="center" width="90%"}
+
 ## Folding code in HTML and PDF
 
 With Quarto, it is easy to fold code in HTML using the YAML chunk option

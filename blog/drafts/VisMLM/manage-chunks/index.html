@@ -157,6 +157,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>One solution to this class of problems, which I implemented by guiding Claude 4.6, involves simply treating your text <code>.qmd</code> files as “data”, scanning these with RegExs to find chunks and their properties, and writing this information to a <code>chunks</code> dataset that can be used to analyze and fix such problems.</p>
 <p>Some aspects of this work may be useful to others, so I describe the problems and solution steps below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/code_chunk_examples.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>A chunk’s options control how much of it survives into the rendered output—here <code>echo</code>, <code>results</code>, <code>eval</code>, and <code>include</code> all shown side by side in RStudio. Multiply that by hundreds of chunks scattered across a book, and “just check them by eye” stops being realistic.</figcaption>
+</figure>
+</div>
 <section id="folding-code-in-html-and-pdf" class="level2">
 <h2 class="anchored" data-anchor-id="folding-code-in-html-and-pdf">Folding code in HTML and PDF</h2>
 <p>With Quarto, it is easy to fold code in HTML using the YAML chunk option <a href="https://quarto.org/docs/output-formats/html-code.html#folding-code"><code>code-fold</code></a>. In your source <code>.qmd</code> file, it looks like this:</p>
