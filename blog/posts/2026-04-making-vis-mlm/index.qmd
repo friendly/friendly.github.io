@@ -3,6 +3,7 @@ title: "The Making of Vis-MLM"
 description: "A behind-the-scenes series on writing a technical book with Quarto: choices, surprises, and some hard-won solutions"
 author: "Michael Friendly"
 date: "2026-04-26"
+date-modified: today
 draft: false
 categories: [Vis-MLM, quarto, books]
 image: "images/cover-peng.jpg"
@@ -57,7 +58,7 @@ R code, and other resources. I also prepared an Instructor's Solution Manual for
 but that was another afterthought. Yet, the framework of the DDAR GitHub repo made this easier to work on
 with my co-author.
 
-### What's differfent with Quarto?
+### What's different with Quarto?
 
 With Quarto, the pipeline becomes something like:
 
@@ -87,7 +88,7 @@ As I write them up, they will become links to full posts.
 - *Starting from the CRC bare-bones Quarto template*:
   What it provides, what it doesn't, and what I had to figure out on my own
 
-- *Quarto is not LaTeX, however hard it tries*:
+- *Quarto is not LaTeX, however hard it tries* *(coming soon)*:
   A broad comparison of the `.Rnw` and Quarto workflows; what I gained and lost
 
 - *Getting HELP*: 
