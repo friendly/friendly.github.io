@@ -129,7 +129,7 @@ deeply nested conditional blocks (a callout inside a format-conditional block in
 become a wall of colons with no visual hierarchy. This is minor but adds up across a 15-chapter
 book.
 
-## Global variables
+## Global variables and LaTeX definitions
 
 
 One nice feature of the `.Rnw` workflow was the ability to define **global variables** in LaTeX and in R. In Quarto,
@@ -192,14 +192,30 @@ Instead of defining these via an `\input{commands}`, I hit on a way to do the sa
 but this involved including a file `commands.qmd`, but only for the HTML version
 that uses MathJax for equations.
 
-TODO: Clear up why this is necessary, why HTML only and and what that `{{<   >}}` notation does
-
-
 ````
 ::: {.content-visible unless-format="pdf"}
-{{< include latex/latex-commands.qmd >}}
+{{</* include latex/latex-commands.qmd */>}}
 :::
 ````
+
+For PDF, custom LaTeX commands go in `preamble.tex`, referenced in `_quarto.yml` under
+`pdf: include-in-header:`. XeLaTeX picks them up normally; nothing extra is needed.
+
+For HTML, math is rendered by [MathJax](https://www.mathjax.org/) (a JavaScript engine running
+in the browser), not by LaTeX. MathJax supports `\newcommand` but only sees what is defined in the HTML
+page itself. `preamble.tex` is never sent to the browser, so any custom macros defined there are
+simply unknown to MathJax --- equations that use them render as raw command names like `\mat{X}`
+instead of **X**.
+
+**The fix** was to put the same `\newcommand` definitions in a small `.qmd` file (inside a `$$...$$`
+display block so MathJax processes them as math), then inject it at the top of each chapter
+using `{{</* include */>}}`. Wrapping the include in `::: {.content-visible unless-format="pdf"}`
+ensures it only runs for HTML output --- PDF already has the definitions from the preamble.
+
+`{{</* include file */>}}` is a Quarto [shortcode](https://quarto.org/docs/extensions/shortcodes.html):
+it copies the content of another file verbatim into the current document before rendering,
+analogous to LaTeX's `\input{}`.
+
 
 ## Problems in practice
 
