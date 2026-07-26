@@ -15,10 +15,10 @@ format:
     toc-depth: 3
 ---
 
-This is the second post in the [Making of Vis-MLM](../2026-04-26-making-vis-mlm/index.qmd) series.
-The [first post](../2026-04-26-making-vis-mlm/index.qmd) described the `.Rnw` vs. Quarto pipelines and the
-topics I'll be covering. Here I go deeper on what that trade-off actually felt like in practice —
-where the abstraction over LaTeX helped, where it hurt, and what it took to recover control.
+This is another post in the [Making of Vis-MLM](../../../posts/2026-04-making-vis-mlm/index.qmd) series.
+The [first post](../../../posts/2026-04-making-vis-mlm/index.qmd) described the `.Rnw` vs. Quarto pipelines and the
+topics I'll be covering. Here I go deeper on what that trade-off actually felt like in practice---
+where the abstraction in Quarto over LaTeX helped, where it hurt, and what it took to recover control.
 
 When I was writing [*Discrete Data Analysis with R*](https://www.taylorfrancis.com/books/mono/10.1201/b19022/discrete-data-analysis-michael-friendly-david-meyer)
 in `.Rnw`, I had complete control over the entire PDF pipeline. I could design custom visual chapter headers
@@ -30,26 +30,82 @@ and Part title pages with coordinated accent colors:
 ![DDAR title page](images/DDAR-title-page.png)
 :::
 
-Along with a comprehensive dual index (Subject + Author), it's the book I'm most proud of.
+Along with a nice page design, theme colors for the various book parts, a comprehensive dual index (Subject + Author), DDAR is the book I'm most proud of. I wanted the current book, [_Visualizing Multivariate Data and Models in R_](https://friendly.github.io/Vis-MLM-book/) to give me a similar pride in publishing a technical book
+about advanced multivariate graphical methods.
 
 Quarto traded that control for something I genuinely wanted: a free online HTML version alongside the
-print book, from a single source. The trade-off turned out to be steeper than advertised.
-This post documents where the abstraction layer broke things that were trivial in `.Rnw`.
+print book, all produced from a single source. The trade-off turned out to be steeper than advertised.
+This post documents where the abstraction layer in Quarto broke things that were trivial in `.Rnw`.
+
+Don't get me wrong. This is not a cry-baby post about the work to move a writing project to new technology like Quarto.
+It is more about a variety of small, but important things that could be done better, to make the writing task easier.
+In AI speak, I'd like to consume fewer personal tokens to re-write a paragraph, introduce or edit an existing graph,
+add citations, etc., and be able to see the result, in HTML or PDF fairly quickly.
+
+<!--
+TODO: Add here, or elsewhere, something about how long it took to build/render my DDAR book, compared to Vis-MLM. 
+      The subject of the ./build.sh script required here, vs. a simple `Makefile` script used in DDAR is something
+      that could eve added. It might also be the subject of a separate post.
+-->
 
 ## The fundamental tension
 
-In `.Rnw`, you **controlled the LaTeX**. The final `book.tex` contained exactly the `\cite{}`,
-`\index{}`, and `\usepackage{}` calls you wrote. You could open it in
-[TeXStudio](https://www.texstudio.org/), see exactly where problems were, and re-run any
-individual step in the pipeline.
+In `.Rnw` (R NoWeb) format, you **controlled the LaTeX**. My top-level file was `book.Rnw`.
+Compiling this in RStudio did the `knitr` processing of chunks, emitting formatted code, output and graphics
+and producing a LaTeX file, `book.tex`.
+
+This `.tex` file was entirely yours: the exact `\usepackage{}` calls you wrote, `\input{}` for
+included files, `\cite{}`, `\index{}` exactly as authored. Math equations were written directly
+in LaTeX. Nothing was generated or renamed by an intermediate tool.
+
+
+After R processing, you could open the `book.tex` file in the nice LaTex GUI
+[TeXStudio](https://www.texstudio.org/), see you can see the entire structure of the book
+pinpoint exactly where problems were, and re-run any
+individual step in the pipeline. In the process of creating the PDF, it wrote a
+`.synctex` file that allowed clicking on something in the PDF viewer and going right to the
+lines in the `.tex` file that produced them.
+
+![TeXStudio showing the Vis-MLM book source: the full `.tex` file is visible and navigable, with the document structure panel on the left.](images/texstudio-VisMLM.png){fig-align="center" width="100%"}
+
+One nice feature was the ability to define **global variables** in LaTeX and in R. In Quarto,
+every chapter listed in the `_quarto.yml` file is compiled separately, so anything common
+must be replicated in each chapter.
+
+<!--
+TODO: The above should be a separate section, using as illustrations the `R/common.R` file run in each chapter, as well as the
+LaTeX definitions inserted using `{{}}` in the chapters, keeping track of R packages loaded, and other tasks.
+
+Example:
+
+```
+<<includeonly, include=FALSE>>=
+# start each run with a clean workspace
+remove(list=ls())
+.locals <- list()
+.pkgs <- list()
+
+# chapter names
+chapters <- c(sprintf("ch%02d", 1:11))
+includeonly <- chapters[1:4]
+
+includes = function(file) {
+  if (file %in% includeonly) paste0(file, '.Rnw')
+}
+.globals <- c("chapters", "includeonly", "includes" , ".locals", ".pkgs")
+
+# write any messages to a single file
+unlink('messages.txt') # Start fresh with each run
+@
+-->
 
 In Quarto, **pandoc owns the `.tex` file**. It reads your Markdown (with knitr-executed R
 output spliced in), resolves citations itself via `citeproc`, and emits LaTeX that doesn't look
-like anything you wrote. External tools that plug into the traditional LaTeX pipeline — BibTeX,
-`authorindex`, `makeindex` — often break because the `.tex` and `.aux` files don't have the
+like anything you wrote. External tools that plug into the traditional LaTeX pipeline---BibTeX,
+`authorindex`, `makeindex`---often break because the `.tex` and `.aux` files don't have the
 structure those tools expect.
 
-The `_quarto.yml` file is now the center of gravity: project type, book metadata, chapter list,
+The `_quarto.yml` file is now the center of gravity: It defines the project type, book metadata, chapter list,
 bibliography sources, output formats. That works beautifully for simple projects. When something
 breaks, knowing where to look is the first puzzle.
 
@@ -59,7 +115,7 @@ advantages of some of the lovely features Quarto offers:
 - **Extensions**: Analogous to LaTeX packages, the Quarto community provides a wide range of
   extensions for things like custom callouts, diagrams, and shortcodes.
 - **Multiple languages**: Quarto supports R, Python, `mermaid` diagrams, and more in the same
-  document.
+  document. 
 - **Conditional compilation**: Different content for HTML vs. PDF from a single source —
   animated graphics in HTML, static replacements in PDF.
 - **Tabsets**: Easy reader-selectable views in HTML (R vs. Python code, data by group, ...) with
@@ -73,7 +129,7 @@ well in isolation, but aren't designed to be performant when used together."* Th
 
 ## Whitespace shouldn't matter
 
-When writing, the focus should be on ideas — markup exists to express them in style and formatting.
+When writing, the focus should be on ideas---markup exists to express them in style and formatting.
 Markdown violates the spirit of WYSIWG in a few quiet ways:
 
 - **Hard line breaks**: ending a line with two or more trailing spaces before a newline creates an
@@ -84,8 +140,8 @@ Markdown violates the spirit of WYSIWG in a few quiet ways:
 
 ## The `<div>` vs `:::` design
 
-Nearly everything in Quarto that is not straight-up text or a code chunk — callout blocks,
-conditional content, custom layouts — uses the fenced div syntax:
+Nearly everything in Quarto that is not straight-up text or a code chunk---callout blocks,
+conditional content, custom layouts---uses the fenced div syntax:
 
 ````markdown
 ::: {.callout-note}
@@ -119,7 +175,7 @@ interferes with file-locking errors like:
 The process cannot access the file because it is being used by another process.
 ```
 
-**Fix:** Move the project to a local directory outside Dropbox. Use `git` exclusively for sync and
+**Fix:** Move the project to a **local** directory outside Dropbox. Use `git` exclusively for sync and
 backup. (Dropbox now supports a `~/Dropbox/.dropboxignore` rules file, similar to `.gitignore`,
 as an alternative.)
 
@@ -130,21 +186,21 @@ run the `authorindex` Perl script after BibTeX, add `\printauthorindex`. It Just
 
 In Quarto, five things broke simultaneously:
 
-1. **No `\cite{}` in the generated `.tex`** — pandoc `citeproc` resolves all citations before
+1. **No `\cite{}` in the generated `.tex`**---pandoc `citeproc` resolves all citations before
    LaTeX runs, replacing `[@key]` with `\citeproc{ref-key}{Formatted Author, Year}`. The
    `authorindex` package intercepts `\cite`; since there are no `\cite` calls, it writes zero
    entries.
-2. **No BibTeX step** — `citeproc` reads `.bib` files itself and emits a `\begin{thebibliography}`
+2. **No BibTeX step**---`citeproc` reads `.bib` files itself and emits a `\begin{thebibliography}`
    block directly. LaTeX never calls BibTeX, so `\bibdata{}` is never written to `.aux`. The
    Perl script dies: *"You must specify at least one BibTeX database."*
-3. **Citation keys renamed** — pandoc prefixes every key with `ref-`, so `Friendly2013` becomes
+3. **Citation keys renamed**---pandoc prefixes every key with `ref-`, so `Friendly2013` becomes
    `ref-Friendly2013`. BibTeX lookups fail silently.
-4. **`authorindex.sty` doesn't auto-patch `\cite`** — it provides `\aicite` as opt-in. In `.Rnw`
+4. **`authorindex.sty` doesn't auto-patch `\cite`**---it provides `\aicite` as opt-in. In `.Rnw`
    you could use `\aicite` directly; in Quarto the `.tex` is generated and you can't.
-5. **Windows CRLF line endings** — the `authorindex` Perl script was written for Unix; its regexes
+5. **Windows CRLF line endings**---the `authorindex` Perl script was written for Unix; its regexes
    anchor on `$` but `\r` sits before `\n` on Windows, causing every pattern match to silently
    fail. No errors, no output, no index.
-6. **`@Preamble` in `.bib` files silently ignored** — `citeproc` reads `.bib` but never passes
+6. **`@Preamble` in `.bib` files silently ignored**---`citeproc` reads `.bib` but never passes
    `@Preamble` content to LaTeX, breaking author names that rely on custom commands defined there.
 
 **Workaround:** Patch `\@citex` in `preamble.tex` to also call `\@aicitey`; write `\bibdata`
@@ -158,14 +214,14 @@ In LaTeX, `_` is the subscript character in math mode. In `.Rnw`, a macro like
 `\ixfunc{stat\_ellipse}` let you write the escaped name once and everything was consistent.
 
 In Quarto, index entries are emitted as raw LaTeX strings from inline R expressions. Markdown,
-pandoc, and LaTeX each have different opinions about underscores — the rules for escaping differ
+pandoc, and LaTeX each have different opinions about underscores---the rules for escaping differ
 between code spans, prose, and inline LaTeX, and the two-argument `\ixfunc{sort-key}{display-text}`
-pattern is needed to thread the needle. See [Creating Book Indexes in Quarto](../quarto-indexes/index.qmd) for the full solution.
+pattern is needed to thread the needle. See [Creating Book Indexes in Quarto](../../../posts/2026-04-quarto-indexes/index.qmd) for the full solution.
 
 ### Links become dead text in print
 
 In Markdown, `[text](url)` renders as a hyperlink in HTML. In a printed book it renders as just
-`text` — the URL disappears. In `.Rnw` you could redefine `\href` globally:
+`text`---the URL disappears. In `.Rnw` you could redefine `\href` globally:
 
 ```latex
 \renewcommand{\href}[2]{#2\footnote{\url{#1}}}
@@ -191,7 +247,7 @@ use. No duplication, no inconsistency, same behavior everywhere.
 In Quarto, you need an R function that detects output format and generates different output for
 HTML vs. PDF. Getting it to also emit `\index{}` entries without breaking HTML is non-trivial.
 The current `pkg()` in `R/common.R` handles formatting and optional citation; indexing is handled
-separately via `\ixp{}` macros. See [Creating Book Indexes in Quarto](../quarto-indexes/index.qmd).
+separately via `\ixp{}` macros. See [Creating Book Indexes in Quarto](../../../posts/2026-04-quarto-indexes/index.qmd).
 
 ### Build workflow fragility
 
@@ -205,10 +261,10 @@ Two additional Quarto-specific quirks:
 
 - Building only HTML **wipes `docs/`** even if you changed only a PDF-specific file, because
   Quarto re-renders all output.
-- `output-file: Vis-MLM` in `_quarto.yml` sounds like it names the PDF. It doesn't — it names the
+- `output-file: Vis-MLM` in `_quarto.yml` sounds like it names the PDF. It doesn't---it names the
   LaTeX intermediate (`Vis-MLM.tex`). The final PDF is named after the entry-point file
   (`index.qmd`) and lands in the project root as `index.pdf`. The `.aux` file is therefore
-  `index.aux` — which breaks external tools that expect it to match the output filename.
+  `index.aux`---which breaks external tools that expect it to match the output filename.
 
 ### No incremental build
 
@@ -232,7 +288,7 @@ ERROR: The process cannot access the file because it is being used by another pr
 
 Quarto's execution cache (`.quarto/_freeze/`) stores the output of knitr chunks so unchanged
 chapters can be skipped on subsequent builds. When an R helper function changes but the surrounding
-`.qmd` source does not, Quarto sees no reason to invalidate the cache — old output silently
+`.qmd` source does not, Quarto sees no reason to invalidate the cache---old output silently
 persists until it causes a LaTeX error.
 
 In one incident, updating `dataset()` to use a cleaner `\ixd{}` macro left a stale cache entry
@@ -243,8 +299,8 @@ the footnote brace was never opened, and LaTeX failed with:
 ! Extra }, or forgotten \endgroup.
 ```
 
-The error pointed at `\citeproc{ref-Blishen-etal-1987}{1987}` — the last token before the orphaned
-`}` — which led to a long but incorrect investigation of the `citeproc` machinery. The real culprit
+The error pointed at `\citeproc{ref-Blishen-etal-1987}{1987}`---the last token before the orphaned
+`}`---which led to a long but incorrect investigation of the `citeproc` machinery. The real culprit
 was invisible: the stale freeze cache.
 
 **Fix:** Delete the stale file:
@@ -260,17 +316,17 @@ after changing `R/common.R`.
 ### Code chunks aren't invisible to all readers
 
 The freeze cache is one symptom of a deeper structural issue. Knuth designed TeX around the
-metaphor of a *mouth* that consumes a single, linear stream of tokens — category codes,
+metaphor of a *mouth* that consumes a single, linear stream of tokens---category codes,
 grouping, macro expansion all governed by the same tokenizer and the same rules. A `%`
 comment is a `%` comment everywhere. Code is code everywhere.
 
 A Quarto document passes through at least three independent readers, each with its own model
 of what the document contains:
 
-1. **Quarto's book builder** — pre-scans raw `.qmd` source files to extract chapter titles
+1. **Quarto's book builder**---pre-scans raw `.qmd` source files to extract chapter titles
    and build the sidebar/TOC, before knitr runs.
-2. **knitr** — executes R code chunks according to chunk options (`include`, `echo`, `eval`).
-3. **pandoc** — converts the post-knitr Markdown to HTML or LaTeX.
+2. **knitr**---executes R code chunks according to chunk options (`include`, `echo`, `eval`).
+3. **pandoc**---converts the post-knitr Markdown to HTML or LaTeX.
 
 What is invisible to one reader may be fully visible to another.
 
@@ -287,17 +343,17 @@ knitr::opts_chunk$set(...)
 ````
 
 knitr correctly suppresses the entire chunk (`include=FALSE`). pandoc never sees it. But
-Quarto's book builder pre-scans the **raw source** to extract chapter titles — and its
+Quarto's book builder pre-scans the **raw source** to extract chapter titles---and its
 scanner found the `#` comment line and treated it as a Markdown heading. The sidebar showed:
 
-> **Chapter 1 — Make** *(full title: "Make \usepackage{smartdiagram} available for the
+> **Chapter 1---Make** *(full title: "Make \usepackage{smartdiagram} available for the
 > {tikz} diagram below.")*
 
 instead of **Preface** (unnumbered). Every subsequent chapter was bumped up by one.
 
-![Sidebar showing "Chapter 1 — Make" instead of "Preface"](images/sidebar-issue.png)
+![Sidebar showing "Chapter 1---Make" instead of "Preface"](images/sidebar-issue.png)
 
-The page itself rendered correctly — `# Preface {.unnumbered}` produced the right `<h1>` —
+The page itself rendered correctly---`# Preface {.unnumbered}` produced the right `<h1>` —
 because pandoc received the post-knitr Markdown where the setup chunk had already been
 removed. The mismatch was entirely between what the sidebar scanner saw (raw source) and
 what pandoc rendered (knitr output).
@@ -319,9 +375,9 @@ and make their own decisions about what counts as content.
 
 In fairness:
 
-- **HTML output is excellent** — equations (MathJax), code folding, callout blocks, tabsets,
+- **HTML output is excellent**---equations (MathJax), code folding, callout blocks, tabsets,
   cross-references, and a polished default theme work well with minimal configuration.
-- **Single source for two formats** — most of the book's content works for both HTML and PDF
+- **Single source for two formats**---most of the book's content works for both HTML and PDF
   without any conditional blocks.
 - **Cross-references** (`@fig-name`, `@sec-label`, `@eq-name`) are cleaner than LaTeX's `\ref`.
 - **`code-fold` / `code-summary`** allow showing/hiding code in HTML in ways that would require
