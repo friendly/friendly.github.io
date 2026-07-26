@@ -56,7 +56,8 @@ and producing a LaTeX file, `book.tex`.
 
 This `.tex` file was entirely yours: the exact `\usepackage{}` calls you wrote, `\input{}` for
 included files, `\cite{}`, `\index{}` exactly as authored. Math equations were written directly
-in LaTeX. Nothing was generated or renamed by an intermediate tool.
+in LaTeX. Nothing was generated or renamed by an intermediate tool. A PDF file was produced
+directly.
 
 
 After R processing, you could open the `book.tex` file in the nice LaTex GUI
@@ -67,37 +68,6 @@ individual step in the pipeline. In the process of creating the PDF, it wrote a
 lines in the `.tex` file that produced them.
 
 ![TeXStudio showing the Vis-MLM book source: the full `.tex` file is visible and navigable, with the document structure panel on the left.](images/texstudio-VisMLM.png){fig-align="center" width="100%"}
-
-One nice feature was the ability to define **global variables** in LaTeX and in R. In Quarto,
-every chapter listed in the `_quarto.yml` file is compiled separately, so anything common
-must be replicated in each chapter.
-
-<!--
-TODO: The above should be a separate section, using as illustrations the `R/common.R` file run in each chapter, as well as the
-LaTeX definitions inserted using `{{}}` in the chapters, keeping track of R packages loaded, and other tasks.
-
-Example:
-
-```
-<<includeonly, include=FALSE>>=
-# start each run with a clean workspace
-remove(list=ls())
-.locals <- list()
-.pkgs <- list()
-
-# chapter names
-chapters <- c(sprintf("ch%02d", 1:11))
-includeonly <- chapters[1:4]
-
-includes = function(file) {
-  if (file %in% includeonly) paste0(file, '.Rnw')
-}
-.globals <- c("chapters", "includeonly", "includes" , ".locals", ".pkgs")
-
-# write any messages to a single file
-unlink('messages.txt') # Start fresh with each run
-@
--->
 
 In Quarto, **pandoc owns the `.tex` file**. It reads your Markdown (with knitr-executed R
 output spliced in), resolves citations itself via `citeproc`, and emits LaTeX that doesn't look
@@ -158,6 +128,78 @@ to make hierarchy visible. Quarto's `:::` syntax provides no standard indentatio
 deeply nested conditional blocks (a callout inside a format-conditional block inside a tabset)
 become a wall of colons with no visual hierarchy. This is minor but adds up across a 15-chapter
 book.
+
+## Global variables
+
+
+One nice feature of the `.Rnw` workflow was the ability to define **global variables** in LaTeX and in R. In Quarto,
+every chapter listed in the `_quarto.yml` file is compiled separately, so anything common
+must be replicated in each chapter.
+
+For example, my `book.Rnw` used this chunk to ensure a clean workspace,
+initialize a list of R packages used in the book, and define a list of chapters,
+`includeonly`, specifying which would be processed in the current build.
+
+```
+<<includeonly, include=FALSE>>=
+# start each run with a clean workspace
+remove(list=ls())
+.pkgs <- list()
+
+# chapter names
+chapters <- c(sprintf("ch%02d", 1:11))
+includeonly <- chapters[1:4]
+
+includes = function(file) {
+  if (file %in% includeonly) paste0(file, '.Rnw')
+}
+.globals <- c("chapters", "includeonly", "includes" , ".pkgs")
+
+# write any messages to a single file
+unlink('messages.txt') # Start fresh with each run
+@
+```
+
+In Quarto, there is no such thing as global variables. Every chapter listed in your `_quarto.yml` file
+is compiled separately.  Instead, something similar was achieved by starting each chapter `.qmd`
+with this chunk:
+
+````
+```{r include=FALSE}
+source("R/common.R")
+knitr::opts_chunk$set(fig.path = "figs/ch01/")
+```
+````
+
+My file [`R/common.R`](https://github.com/friendly/Vis-MLM-book/blob/master/R/common.R) sets `knitr` and R options, `ggplot2` themes and shorthands, colors, and more.
+It also defines a collection of R functions and LaTeX macros for generating
+consistent, automatic index entries, described in [Creating Book Indexes in Quarto](../../../posts/2026-04-quarto-indexes/index.qmd).
+
+In addition, I use many LaTeX shortcuts in equations, particularly for matrices and vectors, such as:
+
+```latex
+\renewcommand{\vec}[1]{\ensuremath{\mathbf{#1}}}         % vectors
+\newcommand{\mat}[1]{\ensuremath{\mathbf{#1}}}           % matrix (bold)
+\newcommand{\trans}{\ensuremath{^\mathsf{T}}}            % transpose
+
+\newcommand*{\rank}[1]{\ensuremath{\mathrm{rank} (\mat{#1})}}
+\newcommand*{\dev}[1]{(#1 - \bar{#1})}
+\newcommand*{\inv}[1]{\ensuremath{\mat{#1}^{-1}}}
+\newcommand*{\half}[1]{\ensuremath{\mat{#1}^{1/2}}}
+```
+
+Instead of defining these via an `\input{commands}`, I hit on a way to do the same in Quarto, 
+but this involved including a file `commands.qmd`, but only for the HTML version
+that uses MathJax for equations.
+
+TODO: Clear up why this is necessary, why HTML only and and what that `{{<   >}}` notation does
+
+
+````
+::: {.content-visible unless-format="pdf"}
+{{< include latex/latex-commands.qmd >}}
+:::
+````
 
 ## Problems in practice
 
