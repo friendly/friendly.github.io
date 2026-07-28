@@ -1,5 +1,15 @@
 /* Custom styles for friendly.github.io */
 
+/* Dark mode: the darkly bootswatch theme hardcodes inline `code` spans
+   (e.g. in headings/table cells) to a light #f8f9fa background while text
+   color resolves to white, making them unreadable white-on-white ovals.
+   Quarto's dark-mode toggle adds .quarto-dark to <body> (not data-bs-theme
+   on <html>), so that's what this must key off of. */
+body.quarto-dark code:not(.sourceCode) {
+  background-color: #2b2e31;
+  color: #dee2e6;
+}
+
 /* Card hover effects */
 .card {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
