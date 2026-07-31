@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael Friendly">
-<meta name="dcterms.date" content="2026-07-21">
+<meta name="dcterms.date" content="2026-07-31">
 <meta name="description" content="393 years after van Langren encoded it, an amateur codebreaker gave an answer I never thought to look for">
 
 <title>Van Langren’s Secret, Finally Told – Michael Friendly</title>
@@ -166,10 +166,10 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../styles.css">
 <meta name="citation_title" content="Van Langren&amp;amp;#039;s Secret, Finally Told">
 <meta name="citation_author" content="Michael Friendly">
-<meta name="citation_publication_date" content="2026-07-21">
-<meta name="citation_cover_date" content="2026-07-21">
+<meta name="citation_publication_date" content="2026-07-31">
+<meta name="citation_cover_date" content="2026-07-31">
 <meta name="citation_year" content="2026">
-<meta name="citation_online_date" content="2026-07-21">
+<meta name="citation_online_date" content="2026-07-31">
 <meta name="citation_fulltext_html_url" content="https://friendly.github.io/blog/posts/2026-07-van-langren/">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=A brief history of data visualization;,citation_author=Michael Friendly;,citation_editor=C. Chen;,citation_editor=Wolfgang Härdle;,citation_editor=Antony Unwin;,citation_publication_date=2007;,citation_cover_date=2007;,citation_year=2007;,citation_isbn=978-3-540-32825-4;,citation_volume=III;,citation_inbook_title=Handbook of computational statistics: Data visualization;">
@@ -440,7 +440,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 21, 2026</p>
+      <p class="date">July 31, 2026</p>
     </div>
   </div>
   
@@ -452,7 +452,7 @@ window.Quarto = {
 </header>
 
 
-<p>Historians of data visualization live for surprises. Sometimes they’re delightful: an unknown fact about a hero of the field, like our discovery of C. J. Minard’s burial place in Montparnasse Cemetery and that his near neighbor there is Andre-Michel Guerry. The story of these and other historical excavations is told in <a href="https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf">Raiders of the Lost Tombs</a>. Or a hero nobody had noticed yet, like the Hungarian cartographer Imre Milecz, <a href="https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map">discovered by Attila Bátorfy</a> to have drawn the first flow map in 1773—decades before the credit usually goes to Minard or <a href="http://www.complexcity.info/files/2011/06/harness-1837-flowmap.pdf">Henry Harnass</a>. Or Frances Harriet Lightfoot, whose 1831 <em>An Embellished Chart of General History and Chronology</em> had gone essentially unknown to modern researchers until <a href="https://www.chartography.net/p/colossal-chronography">RJ Andrews found it</a>.</p>
+<p>Historians of data visualization live for surprises. Sometimes they’re delightful: an unknown fact about a hero of the field, like our discovery of C. J. Minard’s burial place in Montparnasse Cemetery and that his near neighbor there is Andre-Michel Guerry. The story of these and other historical excavations is told in <a href="https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf">Raiders of the Lost Tombs</a>. Or a hero nobody had noticed yet, like the Hungarian cartographer Imre Milecz, <a href="https://attilabatorfy.substack.com/p/could-this-be-the-first-flow-map">discovered by Attila Bátorfy</a> to have drawn the first flow map in 1773—decades before the credit usually goes to Minard or <a href="http://www.complexcity.info/files/2011/06/harness-1837-flowmap.pdf">Henry Harness</a>. Or Frances Harriet Lightfoot, whose 1831 <em>An Embellished Chart of General History and Chronology</em> had gone essentially unknown to modern researchers until <a href="https://www.chartography.net/p/colossal-chronography">RJ Andrews found it</a>.</p>
 <p>Sometimes these surprises are more unsettling. The worst is the discovery that we got some piece of the historical record or our interpretation entirely wrong. <strong>Van Langren’s Secret</strong>, for an accurate method of determining longitude at sea, is a surprise of this second kind.</p>
 <p>Yet, to an amateur historian like myself, telling the story of this unwelcome surprise itself has a certain reward. It is not just a matter of correcting the record; more that of an appreciation of how our understanding of history continues to unfold, as new “data” is uncovered. Perhaps paradoxically, history is not static. History is always undergoing reexamination and reconsideration as new facts or perspectives arise. This is one such tale.</p>
 <section id="how-i-got-here" class="level2">
@@ -537,13 +537,15 @@ dNq9  9nTſeos  nyMed  4ru9al  ec9uoeE  Inuold  ue  uurdeD.</code></pre>
 <h3 class="anchored" data-anchor-id="step-1-the-words-are-a-decoy">Step 1: the “words” are a decoy</h3>
 <p>Check the distribution of “word” length in the cipher.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cipher_raw <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"cipher-transcription.txt"</span>, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>) <span class="sc">|&gt;</span> <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">" "</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(cipher_raw, <span class="st">"[ </span><span class="sc">\t</span><span class="st">]+"</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> tokens[tokens <span class="sc">!=</span> <span class="st">""</span>]</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="fu">nchar</span>(tokens))</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="at">nchar =</span> <span class="fu">as.integer</span>(<span class="fu">names</span>(tab)), <span class="at">freq =</span> <span class="fu">as.integer</span>(tab))</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(m) <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">""</span>, <span class="fu">ncol</span>(m))</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cipher_raw <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"cipher-transcription.txt"</span>, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">" "</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(cipher_raw, <span class="st">"[ </span><span class="sc">\t</span><span class="st">]+"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>tokens <span class="ot">&lt;-</span> tokens[tokens <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="fu">nchar</span>(tokens))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="at">nchar =</span> <span class="fu">as.integer</span>(<span class="fu">names</span>(tab)), <span class="at">freq =</span> <span class="fu">as.integer</span>(tab))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(m) <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">""</span>, <span class="fu">ncol</span>(m))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                               
 nchar 1 2 3  4  5  6  7  8 9 10
@@ -945,13 +947,13 @@ Friendly, Michael. 2007. <span>“A Brief History of Data Visualization.”</spa
 </section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{friendly2026,
   author = {Friendly, Michael},
   title = {Van {Langren’s} {Secret,} {Finally} {Told}},
-  date = {2026-07-21},
+  date = {2026-07-31},
   url = {https://friendly.github.io/blog/posts/2026-07-van-langren/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-friendly2026" class="csl-entry quarto-appendix-citeas" role="listitem">
 Friendly, Michael. 2026. <em>Van Langren’s Secret, Finally Told</em>.
-accepted, July 21. <a href="https://friendly.github.io/blog/posts/2026-07-van-langren/">https://friendly.github.io/blog/posts/2026-07-van-langren/</a>.
+accepted, July 31. <a href="https://friendly.github.io/blog/posts/2026-07-van-langren/">https://friendly.github.io/blog/posts/2026-07-van-langren/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
