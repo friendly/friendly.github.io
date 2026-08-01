@@ -54,7 +54,9 @@
       "Bash(rm -f /tmp/decode_explore.R /tmp/wrap6.R /tmp/wrap6b.R /tmp/find_reveal.R /tmp/find_reveal2.R /tmp/longitude.txt)",
       "Bash(where R *)",
       "Bash(mkdir *)",
-      "Bash(C:/R/R-4.5.2/bin/Rscript.exe *)"
+      "Bash(C:/R/R-4.5.2/bin/Rscript.exe *)",
+      "WebFetch(domain:dvsnightingale.wpenginepowered.com)",
+      "Bash('/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe' --headless --disable-gpu --screenshot=/c/Users/friendly/AppData/Local/Temp/claude/C--R-projects-friendly-github-io/fd4fd25b-9e0c-4c3d-9a80-dc214877957a/scratchpad/Migneret-full.png --window-size=1000,7000 file:///C:/R/projects/friendly.github.io/blog/drafts/Antoine-chatGPT/ChatGPT1759.html)"
     ]
   }
 }
