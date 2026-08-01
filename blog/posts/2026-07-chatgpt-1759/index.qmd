@@ -8,7 +8,7 @@ image: images/Migneret-cover.jpg
 title-block-banner: images/Migneret-banner.png
 title-block-banner-color: white
 toc: true
-draft: true
+draft: false
 ---
 
 <style>
