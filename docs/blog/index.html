@@ -44,12 +44,10 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -87,9 +85,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -140,7 +138,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -282,10 +280,8 @@ window.Quarto = {
         changeGiscusTheme();
       }
     };
-    const authorPrefersDark = false;
+    const authorPrefersDark = true;
     const darkModeDefault = authorPrefersDark;
-      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
     // Dark / light mode switch
     window.quartoToggleColorScheme = () => {
@@ -372,7 +368,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(12)</span></div><div class="category" data-category="QUk=">AI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YW5ub3VuY2VtZW50">announcement <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YmVhY2glMjBzY2llbmNl">beach science <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Ym9va3M=">books <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Q2hldmFsaWVycw==">Chevaliers <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29tYmluYXRvcmljcw==">combinatorics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q3J5cHRvZ3JhcGh5">Cryptography <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyMFZpc3VhbGl6YXRpb24=">Data Visualization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aGVhdG1hcA==">heatmap <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGlzdG9yeSUyMG9mJTIwTWF0aGVtYXRpY3M=">History of Mathematics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGlzdG9yeSUyMG9mJTIwU3RhdGlzdGljcw==">History of Statistics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="aHVtb3I=">humor <span class="quarto-category-count">(5)</span></div><div class="category" data-category="aW5kZXhpbmc=">indexing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bGF0ZXg=">latex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bGluZWFyJTIwYWxnZWJyYQ==">linear algebra <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGF0dGVybnM=">patterns <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGVyc29uYWxpdHk=">personality <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGh5c2ljcw==">physics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cXVhcnRv">quarto <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmlkZ2VsaW5lJTIwcGxvdA==">ridgeline plot <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c2NpZW5jZQ==">science <span class="quarto-category-count">(2)</span></div><div class="category" data-category="c2ltdWxhdGlvbg==">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c3RhdGlzdGljcw==">statistics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VmlzLU1MTQ==">Vis-MLM <span class="quarto-category-count">(2)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(12)</span></div><div class="category" data-category="YW5ub3VuY2VtZW50">announcement <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YmVhY2glMjBzY2llbmNl">beach science <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Ym9va3M=">books <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Y29tYmluYXRvcmljcw==">combinatorics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q3J5cHRvZ3JhcGh5">Cryptography <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyMFZpc3VhbGl6YXRpb24=">Data Visualization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aGVhdG1hcA==">heatmap <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGlzdG9yeSUyMG9mJTIwU3RhdGlzdGljcw==">History of Statistics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aHVtb3I=">humor <span class="quarto-category-count">(5)</span></div><div class="category" data-category="aW5kZXhpbmc=">indexing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="a25pdHI=">knitr <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bGF0ZXg=">latex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bGluZWFyJTIwYWxnZWJyYQ==">linear algebra <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGF0dGVybnM=">patterns <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGVyc29uYWxpdHk=">personality <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGh5c2ljcw==">physics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cXVhcnRv">quarto <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmlkZ2VsaW5lJTIwcGxvdA==">ridgeline plot <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c2NpZW5jZQ==">science <span class="quarto-category-count">(2)</span></div><div class="category" data-category="c2ltdWxhdGlvbg==">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c3RhdGlzdGljcw==">statistics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VmlzLU1MTQ==">Vis-MLM <span class="quarto-category-count">(3)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -424,7 +420,7 @@ window.Quarto = {
   </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="YW5ub3VuY2VtZW50" data-listing-date-sort="1776657600000" data-listing-file-modified-sort="1777644640031" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="225">
+<div class="quarto-post image-right" data-index="0" data-categories="YW5ub3VuY2VtZW50" data-listing-date-sort="1776657600000" data-listing-file-modified-sort="1781171772585" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="225">
 <div class="thumbnail"><a href="../blog/posts/2026-04-welcome/index.html" class="no-external">
 
 <p class="card-img-top"><img loading='lazy' src="posts\2026-04-welcome\images\RoundTuit.avif"  class="thumbnail-image card-img"/></p>
@@ -434,6 +430,9 @@ window.Quarto = {
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-04-welcome/index.html" class="no-external">Welcome to Datavis Musings</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-04-welcome/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('YW5ub3VuY2VtZW50'); return false;">announcement</div>
@@ -454,7 +453,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="VmlzLU1MTSUyQ3F1YXJ0byUyQ2Jvb2tz" data-listing-date-sort="1777176000000" data-listing-file-modified-sort="1784916284176" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1084">
+<div class="quarto-post image-right" data-index="1" data-categories="VmlzLU1MTSUyQ3F1YXJ0byUyQ2Jvb2tz" data-listing-date-sort="1777176000000" data-listing-file-modified-sort="1785027609092" data-listing-date-modified-sort="1785124800000" data-listing-reading-time-sort="6" data-listing-word-count-sort="1086">
 <div class="thumbnail"><a href="../blog/posts/2026-04-making-vis-mlm/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-04-making-vis-mlm/images/cover-peng.jpg" class="thumbnail-image">
@@ -464,6 +463,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-04-making-vis-mlm/index.html" class="no-external">The Making of Vis-MLM</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-04-making-vis-mlm/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('VmlzLU1MTQ=='); return false;">Vis-MLM</div>
@@ -488,7 +490,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="VmlzLU1MTSUyQ3F1YXJ0byUyQ2xhdGV4JTJDaW5kZXhpbmclMkNib29rcw==" data-listing-date-sort="1777348800000" data-listing-file-modified-sort="1784315399888" data-listing-date-modified-sort="1785470400000" data-listing-reading-time-sort="20" data-listing-word-count-sort="3872">
+<div class="quarto-post image-right" data-index="2" data-categories="VmlzLU1MTSUyQ3F1YXJ0byUyQ2xhdGV4JTJDaW5kZXhpbmclMkNib29rcw==" data-listing-date-sort="1777348800000" data-listing-file-modified-sort="1783502536128" data-listing-date-modified-sort="1785124800000" data-listing-reading-time-sort="20" data-listing-word-count-sort="3872">
 <div class="thumbnail"><a href="../blog/posts/2026-04-quarto-indexes/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-04-quarto-indexes/images/vis-mlm-index.png" class="thumbnail-image">
@@ -498,6 +500,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-04-quarto-indexes/index.html" class="no-external">Creating Book Indexes in Quarto</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-04-quarto-indexes/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('VmlzLU1MTQ=='); return false;">Vis-MLM</div>
@@ -526,7 +531,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="YmVhY2glMjBzY2llbmNlJTJDaHVtb3IlMkNzY2llbmNl" data-listing-date-sort="1781236800000" data-listing-file-modified-sort="1784315400005" data-listing-date-modified-sort="1784315400000" data-listing-reading-time-sort="6" data-listing-word-count-sort="1149">
+<div class="quarto-post image-right" data-index="3" data-categories="YmVhY2glMjBzY2llbmNlJTJDaHVtb3IlMkNzY2llbmNl" data-listing-date-sort="1781236800000" data-listing-file-modified-sort="1783415995187" data-listing-date-modified-sort="1783415995000" data-listing-reading-time-sort="6" data-listing-word-count-sort="1149">
 <div class="thumbnail"><a href="../blog/posts/2026-06-beach-science/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-06-beach-science/images/leucate-plage.webp" class="thumbnail-image">
@@ -536,6 +541,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-06-beach-science/index.html" class="no-external">Beach Science: A New Field is Born</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-06-beach-science/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('YmVhY2glMjBzY2llbmNl'); return false;">beach science</div>
@@ -560,7 +568,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="YmVhY2glMjBzY2llbmNlJTJDaHVtb3IlMkNzY2llbmNl" data-listing-date-sort="1781409600000" data-listing-file-modified-sort="1784315399996" data-listing-date-modified-sort="1784315399000" data-listing-reading-time-sort="10" data-listing-word-count-sort="1804">
+<div class="quarto-post image-right" data-index="4" data-categories="YmVhY2glMjBzY2llbmNlJTJDaHVtb3IlMkNzY2llbmNl" data-listing-date-sort="1781409600000" data-listing-file-modified-sort="1783586092245" data-listing-date-modified-sort="1783586092000" data-listing-reading-time-sort="10" data-listing-word-count-sort="1804">
 <div class="thumbnail"><a href="../blog/posts/2026-06-beach-science-warmup/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-06-beach-science-warmup/images/sunbathing-sandy-beach-cropped.png" class="thumbnail-image">
@@ -570,6 +578,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-06-beach-science-warmup/index.html" class="no-external">Warm-Up Exercises for the Beach Scientist</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-06-beach-science-warmup/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('YmVhY2glMjBzY2llbmNl'); return false;">beach science</div>
@@ -594,7 +605,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="YmVhY2glMjBzY2llbmNlJTJDc3RhdGlzdGljcyUyQ2h1bW9yJTJDaGVhdG1hcCUyQ3JpZGdlbGluZSUyMHBsb3Q=" data-listing-date-sort="1782014400000" data-listing-file-modified-sort="1784315399896" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3406">
+<div class="quarto-post image-right" data-index="5" data-categories="YmVhY2glMjBzY2llbmNlJTJDc3RhdGlzdGljcyUyQ2h1bW9yJTJDaGVhdG1hcCUyQ3JpZGdlbGluZSUyMHBsb3Q=" data-listing-date-sort="1782014400000" data-listing-file-modified-sort="1782811133903" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3406">
 <div class="thumbnail"><a href="../blog/posts/2026-06-beach-science-howwarm/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-06-beach-science-howwarm/images/thermometer-readouts.webp" class="thumbnail-image">
@@ -604,6 +615,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-06-beach-science-howwarm/index.html" class="no-external">BS: How Warm Is “Warm”?</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-06-beach-science-howwarm/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('YmVhY2glMjBzY2llbmNl'); return false;">beach science</div>
@@ -632,7 +646,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="YmVhY2glMjBzY2llbmNlJTJDcGVyc29uYWxpdHklMkNodW1vcg==" data-listing-date-sort="1782187200000" data-listing-file-modified-sort="1784315399891" data-listing-date-modified-sort="1784315399000" data-listing-reading-time-sort="10" data-listing-word-count-sort="1822">
+<div class="quarto-post image-right" data-index="6" data-categories="YmVhY2glMjBzY2llbmNlJTJDcGVyc29uYWxpdHklMkNodW1vcg==" data-listing-date-sort="1782187200000" data-listing-file-modified-sort="1782811135061" data-listing-date-modified-sort="1782811135000" data-listing-reading-time-sort="10" data-listing-word-count-sort="1822">
 <div class="thumbnail"><a href="../blog/posts/2026-06-beach-science-beachpeople/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-06-beach-science-beachpeople/images/beach-pool-banner.jpg" class="thumbnail-image">
@@ -642,6 +656,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-06-beach-science-beachpeople/index.html" class="no-external">BS: Are You a Beach Person or a Pool Person?</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-06-beach-science-beachpeople/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('YmVhY2glMjBzY2llbmNl'); return false;">beach science</div>
@@ -666,7 +683,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="YmVhY2glMjBzY2llbmNlJTJDcGh5c2ljcyUyQ3BhdHRlcm5z" data-listing-date-sort="1782532800000" data-listing-file-modified-sort="1784315399961" data-listing-date-modified-sort="1784315399000" data-listing-reading-time-sort="7" data-listing-word-count-sort="1301">
+<div class="quarto-post image-right" data-index="7" data-categories="YmVhY2glMjBzY2llbmNlJTJDcGh5c2ljcyUyQ3BhdHRlcm5z" data-listing-date-sort="1782532800000" data-listing-file-modified-sort="1782811123886" data-listing-date-modified-sort="1782811123000" data-listing-reading-time-sort="7" data-listing-word-count-sort="1301">
 <div class="thumbnail"><a href="../blog/posts/2026-06-beach-science-patterns/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-06-beach-science-patterns/images/Sand-Cala-Biminel-La.jpeg" class="thumbnail-image">
@@ -676,6 +693,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-06-beach-science-patterns/index.html" class="no-external">Beach Patterns as a Physics Laboratory</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-06-beach-science-patterns/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('YmVhY2glMjBzY2llbmNl'); return false;">beach science</div>
@@ -700,7 +720,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="YmVhY2glMjBzY2llbmNlJTJDcGh5c2ljcyUyQ2h1bW9y" data-listing-date-sort="1782619200000" data-listing-file-modified-sort="1784315399965" data-listing-date-modified-sort="1784315399000" data-listing-reading-time-sort="8" data-listing-word-count-sort="1544">
+<div class="quarto-post image-right" data-index="8" data-categories="YmVhY2glMjBzY2llbmNlJTJDcGh5c2ljcyUyQ2h1bW9y" data-listing-date-sort="1782619200000" data-listing-file-modified-sort="1783542065044" data-listing-date-modified-sort="1783542065000" data-listing-reading-time-sort="8" data-listing-word-count-sort="1544">
 <div class="thumbnail"><a href="../blog/posts/2026-06-beach-science-umbrella/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-06-beach-science-umbrella/images/umbrellas.jpeg" class="thumbnail-image">
@@ -710,6 +730,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-06-beach-science-umbrella/index.html" class="no-external">BS: The Aerodynamics of Not Losing Your Umbrella</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-06-beach-science-umbrella/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('YmVhY2glMjBzY2llbmNl'); return false;">beach science</div>
@@ -734,7 +757,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="UiUyQ2NvbWJpbmF0b3JpY3MlMkNsaW5lYXIlMjBhbGdlYnJhJTJDc2ltdWxhdGlvbg==" data-listing-date-sort="1783569600000" data-listing-file-modified-sort="1784315400009" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1641">
+<div class="quarto-post image-right" data-index="9" data-categories="UiUyQ2NvbWJpbmF0b3JpY3MlMkNsaW5lYXIlMjBhbGdlYnJhJTJDc2ltdWxhdGlvbg==" data-listing-date-sort="1783569600000" data-listing-file-modified-sort="1783593986974" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1641">
 <div class="thumbnail"><a href="../blog/posts/2026-07-determinant-distributions/index.html" class="no-external">
 
 <img loading="lazy" src="../blog/posts/2026-07-determinant-distributions/images/determinant_distribution_comparison.png" class="thumbnail-image">
@@ -744,6 +767,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-07-determinant-distributions/index.html" class="no-external">Distribution of Determinants of 3×3 Matrices from {1,2,…,9}</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-07-determinant-distributions/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -770,35 +796,38 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="SGlzdG9yeSUyMG9mJTIwU3RhdGlzdGljcyUyQ0hpc3RvcnklMjBvZiUyME1hdGhlbWF0aWNzJTJDQUklMkNDaGV2YWxpZXJz" data-listing-date-sort="1785470400000" data-listing-file-modified-sort="1785531781268" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3351">
-<div class="thumbnail"><a href="../blog/posts/2026-07-chatgpt-1759/index-test-nodraft.html" class="no-external">
+<div class="quarto-post image-right" data-index="10" data-categories="VmlzLU1MTSUyQ3F1YXJ0byUyQ2tuaXRyJTJDYm9va3M=" data-listing-date-sort="1784952000000" data-listing-file-modified-sort="1785027609100" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3137">
+<div class="thumbnail"><a href="../blog/posts/2026-07-mind-your-chunks/index.html" class="no-external">
 
-<img loading="lazy" src="../blog/posts/2026-07-chatgpt-1759/images/Migneret-cover.jpg" class="thumbnail-image">
+<img loading="lazy" src="../blog/posts/2026-07-mind-your-chunks/images/code_chunk_examples-snip.png" class="thumbnail-image">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="../blog/posts/2026-07-chatgpt-1759/index-test-nodraft.html" class="no-external">ChatGPT, 1759 Edition</a>
+<a href="../blog/posts/2026-07-mind-your-chunks/index.html" class="no-external">Mind Your Chunks</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-07-mind-your-chunks/index.html" class="no-external">The Care and Feeding of R Code Chunks</a>
+</div>
 <div class="listing-categories">
 
-<div class="listing-category" onclick="window.quartoListingCategory('SGlzdG9yeSUyMG9mJTIwU3RhdGlzdGljcw=='); return false;">History of Statistics</div>
+<div class="listing-category" onclick="window.quartoListingCategory('VmlzLU1MTQ=='); return false;">Vis-MLM</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('SGlzdG9yeSUyMG9mJTIwTWF0aGVtYXRpY3M='); return false;">History of Mathematics</div>
+<div class="listing-category" onclick="window.quartoListingCategory('cXVhcnRv'); return false;">quarto</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
+<div class="listing-category" onclick="window.quartoListingCategory('a25pdHI='); return false;">knitr</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('Q2hldmFsaWVycw=='); return false;">Chevaliers</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Ym9va3M='); return false;">books</div>
 
 </div>
-<div class="delink listing-description"><a href="../blog/posts/2026-07-chatgpt-1759/index-test-nodraft.html" class="no-external">
-<p>A 1759 pamphlet by Pierre-Jean Migneret exposes ancient oracles as a lookup table and arithmetic—and accidentally anticipates the architecture of modern AI. A tribute to the friend who found it.</p>
+<div class="delink listing-description"><a href="../blog/posts/2026-07-mind-your-chunks/index.html" class="no-external">
+<p>Treating a book’s .qmd source files as data: parsing ~670 R code chunks into a queryable data frame to audit code-folding, and other problems</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="../blog/posts/2026-07-chatgpt-1759/index-test-nodraft.html" class="no-external">
+<a href="../blog/posts/2026-07-mind-your-chunks/index.html" class="no-external">
 <div class="listing-date">
-Jul 31, 2026
+Jul 25, 2026
 </div>
 <div class="listing-author">
 Michael Friendly
@@ -806,7 +835,7 @@ Michael Friendly
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="SGlzdG9yeSUyMG9mJTIwU3RhdGlzdGljcyUyQ0NyeXB0b2dyYXBoeSUyQ0RhdGElMjBWaXN1YWxpemF0aW9u" data-listing-date-sort="1785470400000" data-listing-file-modified-sort="1784904899345" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="32" data-listing-word-count-sort="6230">
+<div class="quarto-post image-right" data-index="11" data-categories="SGlzdG9yeSUyMG9mJTIwU3RhdGlzdGljcyUyQ0NyeXB0b2dyYXBoeSUyQ0RhdGElMjBWaXN1YWxpemF0aW9u" data-listing-date-sort="1785124800000" data-listing-file-modified-sort="1784936248258" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="32" data-listing-word-count-sort="6230">
 <div class="thumbnail"><a href="../blog/posts/2026-07-van-langren/index.html" class="no-external">
 
 <p class="card-img-top"><img loading='lazy' src="posts\2026-07-van-langren\images\vanLangren1628-graph.jpg"  class="thumbnail-image card-img"/></p>
@@ -816,6 +845,9 @@ Michael Friendly
 <h3 class="no-anchor listing-title">
 <a href="../blog/posts/2026-07-van-langren/index.html" class="no-external">Van Langren’s Secret, Finally Told</a>
 </h3>
+<div class="listing-subtitle">
+<a href="../blog/posts/2026-07-van-langren/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('SGlzdG9yeSUyMG9mJTIwU3RhdGlzdGljcw=='); return false;">History of Statistics</div>
@@ -832,7 +864,7 @@ Michael Friendly
 <div class="metadata">
 <a href="../blog/posts/2026-07-van-langren/index.html" class="no-external">
 <div class="listing-date">
-Jul 31, 2026
+Jul 27, 2026
 </div>
 <div class="listing-author">
 Michael Friendly

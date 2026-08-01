@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-04-26">
+<meta name="description" content="A broad comparison of writing a serious technical book in .Rnw vs.&nbsp;Quarto: the abstraction layer over LaTeX that buys you HTML but costs you control">
+
+<title>Quarto Is Not LaTeX, However Hard It Tries</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="quarto:status" content="draft">
+
+
+</head>
+
+<body class="quarto-light"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-fundamental-tension" id="toc-the-fundamental-tension" class="nav-link active" data-scroll-target="#the-fundamental-tension">The fundamental tension</a></li>
+  <li><a href="#whitespace-shouldnt-matter" id="toc-whitespace-shouldnt-matter" class="nav-link" data-scroll-target="#whitespace-shouldnt-matter">Whitespace shouldn’t matter</a></li>
+  <li><a href="#the-div-vs-design" id="toc-the-div-vs-design" class="nav-link" data-scroll-target="#the-div-vs-design">The <code>&lt;div&gt;</code> vs <code>:::</code> design</a></li>
+  <li><a href="#global-variables-and-latex-definitions" id="toc-global-variables-and-latex-definitions" class="nav-link" data-scroll-target="#global-variables-and-latex-definitions">Global variables and LaTeX definitions</a></li>
+  <li><a href="#problems-in-practice" id="toc-problems-in-practice" class="nav-link" data-scroll-target="#problems-in-practice">Problems in practice</a>
+  <ul class="collapse">
+  <li><a href="#dropbox-wont-work" id="toc-dropbox-wont-work" class="nav-link" data-scroll-target="#dropbox-wont-work">Dropbox won’t work</a></li>
+  <li><a href="#the-authorindex-disaster" id="toc-the-authorindex-disaster" class="nav-link" data-scroll-target="#the-authorindex-disaster">The <code>authorindex</code> disaster</a></li>
+  <li><a href="#indexing-r-function-names-with-underscores" id="toc-indexing-r-function-names-with-underscores" class="nav-link" data-scroll-target="#indexing-r-function-names-with-underscores">Indexing R function names with underscores</a></li>
+  <li><a href="#links-become-dead-text-in-print" id="toc-links-become-dead-text-in-print" class="nav-link" data-scroll-target="#links-become-dead-text-in-print">Links become dead text in print</a></li>
+  <li><a href="#formatting-r-package-dataset-and-function-names" id="toc-formatting-r-package-dataset-and-function-names" class="nav-link" data-scroll-target="#formatting-r-package-dataset-and-function-names">Formatting R package, dataset, and function names</a></li>
+  <li><a href="#build-workflow-fragility" id="toc-build-workflow-fragility" class="nav-link" data-scroll-target="#build-workflow-fragility">Build workflow fragility</a></li>
+  <li><a href="#no-incremental-build" id="toc-no-incremental-build" class="nav-link" data-scroll-target="#no-incremental-build">No incremental build</a></li>
+  <li><a href="#the-mysterious-freeze-cache" id="toc-the-mysterious-freeze-cache" class="nav-link" data-scroll-target="#the-mysterious-freeze-cache">The mysterious freeze cache</a></li>
+  <li><a href="#code-chunks-arent-invisible-to-all-readers" id="toc-code-chunks-arent-invisible-to-all-readers" class="nav-link" data-scroll-target="#code-chunks-arent-invisible-to-all-readers">Code chunks aren’t invisible to all readers</a></li>
+  </ul></li>
+  <li><a href="#things-quarto-does-better" id="toc-things-quarto-does-better" class="nav-link" data-scroll-target="#things-quarto-does-better">Things Quarto does better</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Quarto Is Not LaTeX, However Hard It Tries</h1>
+<p class="subtitle lead">From <code>.Rnw</code> to Quarto: What I Gained, What I Lost</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Vis-MLM</div>
+    <div class="quarto-category">quarto</div>
+    <div class="quarto-category">latex</div>
+    <div class="quarto-category">books</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A broad comparison of writing a serious technical book in <code>.Rnw</code> vs.&nbsp;Quarto: the abstraction layer over LaTeX that buys you HTML but costs you control
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 26, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This is another post in the <a href="../../../posts/2026-04-making-vis-mlm/index.qmd">Making of Vis-MLM</a> series. The <a href="../../../posts/2026-04-making-vis-mlm/index.qmd">first post</a> described the <code>.Rnw</code> vs.&nbsp;Quarto pipelines and the topics I’ll be covering. Here I go deeper on what that trade-off actually felt like in practice— where the abstraction in Quarto over LaTeX helped, where it hurt, and what it took to recover control.</p>
+<p>When I was writing <a href="https://www.taylorfrancis.com/books/mono/10.1201/b19022/discrete-data-analysis-michael-friendly-david-meyer"><em>Discrete Data Analysis with R</em></a> in <code>.Rnw</code>, I had complete control over the entire PDF pipeline. I could design custom visual chapter headers and Part title pages with coordinated accent colors:</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/DDAR-Ch2-header.png" class="img-fluid figure-img"></p>
+<figcaption>DDAR chapter header</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/DDAR-title-page.png" class="img-fluid figure-img"></p>
+<figcaption>DDAR title page</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Along with a nice page design, theme colors for the various book parts, a comprehensive dual index (Subject + Author), DDAR is the book I’m most proud of. I wanted the current book, <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> to give me a similar pride in publishing a technical book about advanced multivariate graphical methods.</p>
+<p>Quarto traded that control for something I genuinely wanted: a free online HTML version alongside the print book, all produced from a single source. The trade-off turned out to be steeper than advertised. This post documents where the abstraction layer in Quarto broke things that were trivial in <code>.Rnw</code>.</p>
+<p>Don’t get me wrong. This is not a cry-baby post about the work to move a writing project to new technology like Quarto. It is more about a variety of small, but important things that could be done better, to make the writing task easier. In AI speak, I’d like to consume fewer personal tokens to re-write a paragraph, introduce or edit an existing graph, add citations, etc., and be able to see the result, in HTML or PDF fairly quickly.</p>
+<!--
+TODO: Add here, or elsewhere, something about how long it took to build/render my DDAR book, compared to Vis-MLM. 
+      The subject of the ./build.sh script required here, vs. a simple `Makefile` script used in DDAR is something
+      that could eve added. It might also be the subject of a separate post.
+-->
+<section id="the-fundamental-tension" class="level2">
+<h2 class="anchored" data-anchor-id="the-fundamental-tension">The fundamental tension</h2>
+<p>In <code>.Rnw</code> (R NoWeb) format, you <strong>controlled the LaTeX</strong>. My top-level file was <code>book.Rnw</code>. Compiling this in RStudio did the <code>knitr</code> processing of chunks, emitting formatted code, output and graphics and producing a LaTeX file, <code>book.tex</code>.</p>
+<p>This <code>.tex</code> file was entirely yours: the exact <code>\usepackage{}</code> calls you wrote, <code>\input{}</code> for included files, <code>\cite{}</code>, <code>\index{}</code> exactly as authored. Math equations were written directly in LaTeX. Nothing was generated or renamed by an intermediate tool. A PDF file was produced directly.</p>
+<p>After R processing, you could open the <code>book.tex</code> file in the nice LaTex GUI <a href="https://www.texstudio.org/">TeXStudio</a>, see you can see the entire structure of the book pinpoint exactly where problems were, and re-run any individual step in the pipeline. In the process of creating the PDF, it wrote a <code>.synctex</code> file that allowed clicking on something in the PDF viewer and going right to the lines in the <code>.tex</code> file that produced them.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/texstudio-VisMLM.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>TeXStudio showing the Vis-MLM book source: the full <code>.tex</code> file is visible and navigable, with the document structure panel on the left.</figcaption>
+</figure>
+</div>
+<p>In Quarto, <strong>pandoc owns the <code>.tex</code> file</strong>. It reads your Markdown (with knitr-executed R output spliced in), resolves citations itself via <code>citeproc</code>, and emits LaTeX that doesn’t look like anything you wrote. External tools that plug into the traditional LaTeX pipeline—BibTeX, <code>authorindex</code>, <code>makeindex</code>—often break because the <code>.tex</code> and <code>.aux</code> files don’t have the structure those tools expect.</p>
+<p>The <code>_quarto.yml</code> file is now the center of gravity: It defines the project type, book metadata, chapter list, bibliography sources, output formats. That works beautifully for simple projects. When something breaks, knowing where to look is the first puzzle.</p>
+<p>What this also means is that there is much more to learn and understand if you want to take advantages of some of the lovely features Quarto offers:</p>
+<ul>
+<li><strong>Extensions</strong>: Analogous to LaTeX packages, the Quarto community provides a wide range of extensions for things like custom callouts, diagrams, and shortcodes.</li>
+<li><strong>Multiple languages</strong>: Quarto supports R, Python, <code>mermaid</code> diagrams, and more in the same document.</li>
+<li><strong>Conditional compilation</strong>: Different content for HTML vs.&nbsp;PDF from a single source — animated graphics in HTML, static replacements in PDF.</li>
+<li><strong>Tabsets</strong>: Easy reader-selectable views in HTML (R vs.&nbsp;Python code, data by group, …) with no natural equivalent in print.</li>
+</ul>
+<p>But you can quickly get into trouble if you want features (like a serious index, fancy page design, external LaTeX tools) that are simple in LaTeX but fraught in Quarto. As I write this, a <a href="https://quarto.org/docs/blog/posts/2026-04-06-whats-next-quarto-2/">Quarto 2.0</a> is in the works. The Quarto team acknowledges: <em>“Quarto 1 is built by integrating a number of tools that work very well in isolation, but aren’t designed to be performant when used together.”</em> The issues run deeper.</p>
+</section>
+<section id="whitespace-shouldnt-matter" class="level2">
+<h2 class="anchored" data-anchor-id="whitespace-shouldnt-matter">Whitespace shouldn’t matter</h2>
+<p>When writing, the focus should be on ideas—markup exists to express them in style and formatting. Markdown violates the spirit of WYSIWG in a few quiet ways:</p>
+<ul>
+<li><strong>Hard line breaks</strong>: ending a line with two or more trailing spaces before a newline creates an HTML <code>&lt;br&gt;</code> within the paragraph. A common invisible typo.</li>
+<li><strong>Blank lines matter</strong>: code chunks, equations, and list items placed immediately after prose (without a blank line) often render unexpectedly. The rule is consistent, but inconsistent with how authors think.</li>
+</ul>
+</section>
+<section id="the-div-vs-design" class="level2">
+<h2 class="anchored" data-anchor-id="the-div-vs-design">The <code>&lt;div&gt;</code> vs <code>:::</code> design</h2>
+<p>Nearly everything in Quarto that is not straight-up text or a code chunk—callout blocks, conditional content, custom layouts—uses the fenced div syntax:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Text here.</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This maps to the HTML <code>&lt;div&gt;...&lt;/div&gt;</code> construct: a generic container used for grouping, styling, and JavaScript targeting. <code>&lt;div&gt;</code> nesting is how the web creates hierarchical structure, with properties inherited from parents.</p>
+<p>The problem is <strong>visual legibility in source</strong>. HTML developers indent nested <code>&lt;div&gt;</code> elements to make hierarchy visible. Quarto’s <code>:::</code> syntax provides no standard indentation convention: deeply nested conditional blocks (a callout inside a format-conditional block inside a tabset) become a wall of colons with no visual hierarchy. This is minor but adds up across a 15-chapter book.</p>
+</section>
+<section id="global-variables-and-latex-definitions" class="level2">
+<h2 class="anchored" data-anchor-id="global-variables-and-latex-definitions">Global variables and LaTeX definitions</h2>
+<p>One nice feature of the <code>.Rnw</code> workflow was the ability to define <strong>global variables</strong> in LaTeX and in R. In Quarto, every chapter listed in the <code>_quarto.yml</code> file is compiled separately, so anything common must be replicated in each chapter.</p>
+<p>For example, my <code>book.Rnw</code> used this chunk to ensure a clean workspace, initialize a list of R packages used in the book, and define a list of chapters, <code>includeonly</code>, specifying which would be processed in the current build.</p>
+<pre><code>&lt;&lt;includeonly, include=FALSE&gt;&gt;=
+# start each run with a clean workspace
+remove(list=ls())
+.pkgs &lt;- list()
+
+# chapter names
+chapters &lt;- c(sprintf("ch%02d", 1:11))
+includeonly &lt;- chapters[1:4]
+
+includes = function(file) {
+  if (file %in% includeonly) paste0(file, '.Rnw')
+}
+.globals &lt;- c("chapters", "includeonly", "includes" , ".pkgs")
+
+# write any messages to a single file
+unlink('messages.txt') # Start fresh with each run
+@</code></pre>
+<p>In Quarto, there is no such thing as global variables. Every chapter listed in your <code>_quarto.yml</code> file is compiled separately. Instead, something similar was achieved by starting each chapter <code>.qmd</code> with this chunk:</p>
+<pre><code></code></pre>
+<p>My file <a href="https://github.com/friendly/Vis-MLM-book/blob/master/R/common.R"><code>R/common.R</code></a> sets <code>knitr</code> and R options, <code>ggplot2</code> themes and shorthands, colors, and more. It also defines a collection of R functions and LaTeX macros for generating consistent, automatic index entries, described in <a href="../../../posts/2026-04-quarto-indexes/index.qmd">Creating Book Indexes in Quarto</a>.</p>
+<p>In addition, I use many LaTeX shortcuts in equations, particularly for matrices and vectors, such as:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\renewcommand</span>{<span class="ex">\vec</span>}[1]{<span class="ss">\ensuremath{</span><span class="sc">\mathbf</span><span class="ss">{#1}}</span>}         <span class="co">% vectors</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\mat</span>}[1]{<span class="ss">\ensuremath{</span><span class="sc">\mathbf</span><span class="ss">{#1}}</span>}           <span class="co">% matrix (bold)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\trans</span>}{<span class="ss">\ensuremath{^</span><span class="sc">\mathsf</span><span class="ss">{T}}</span>}            <span class="co">% transpose</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand*</span>{<span class="ex">\rank</span>}[1]{<span class="ss">\ensuremath{</span><span class="sc">\mathrm</span><span class="ss">{rank} (</span><span class="sc">\mat</span><span class="ss">{#1})}</span>}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand*</span>{<span class="ex">\dev</span>}[1]{(#1 - <span class="fu">\bar</span>{#1})}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand*</span>{<span class="ex">\inv</span>}[1]{<span class="ss">\ensuremath{</span><span class="sc">\mat</span><span class="ss">{#1}^{-1}}</span>}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand*</span>{<span class="ex">\half</span>}[1]{<span class="ss">\ensuremath{</span><span class="sc">\mat</span><span class="ss">{#1}^{1/2}}</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Instead of defining these via an <code>\input{commands}</code>, I hit on a way to do the same in Quarto, but this involved including a file <code>commands.qmd</code>, but only for the HTML version that uses MathJax for equations.</p>
+<pre><code>::: {.content-visible unless-format="pdf"}
+{{&lt; include latex/latex-commands.qmd &gt;}}
+:::</code></pre>
+<p>For PDF, custom LaTeX commands go in <code>preamble.tex</code>, referenced in <code>_quarto.yml</code> under <code>pdf: include-in-header:</code>. XeLaTeX picks them up normally; nothing extra is needed.</p>
+<p>For HTML, math is rendered by <a href="https://www.mathjax.org/">MathJax</a> (a JavaScript engine running in the browser), not by LaTeX. MathJax supports <code>\newcommand</code> but only sees what is defined in the HTML page itself. <code>preamble.tex</code> is never sent to the browser, so any custom macros defined there are simply unknown to MathJax — equations that use them render as raw command names like <code>\mat{X}</code> instead of <strong>X</strong>.</p>
+<p><strong>The fix</strong> was to put the same <code>\newcommand</code> definitions in a small <code>.qmd</code> file (inside a <code>$$...$$</code> display block so MathJax processes them as math), then inject it at the top of each chapter using <code>{{&lt; include &gt;}}</code>. Wrapping the include in <code>::: {.content-visible unless-format="pdf"}</code> ensures it only runs for HTML output — PDF already has the definitions from the preamble.</p>
+<p><code>{{&lt; include file &gt;}}</code> is a Quarto <a href="https://quarto.org/docs/extensions/shortcodes.html">shortcode</a>: it copies the content of another file verbatim into the current document before rendering, analogous to LaTeX’s <code>\input{}</code>.</p>
+</section>
+<section id="problems-in-practice" class="level2">
+<h2 class="anchored" data-anchor-id="problems-in-practice">Problems in practice</h2>
+<p>The sections below summarize the specific issues I hit. Some have their own detailed posts in the series; others I may write up separately.</p>
+<section id="dropbox-wont-work" class="level3">
+<h3 class="anchored" data-anchor-id="dropbox-wont-work">Dropbox won’t work</h3>
+<p>In <code>.Rnw</code>, the DDAR project lived in <code>C:/Dropbox/</code> without issues, synced across machines. Quarto writes many temporary files during compilation (<code>.aux</code>, <code>.log</code>, <code>.quarto/</code>, figure caches) and is very sensitive to files being locked or modified by external processes. Dropbox’s continuous sync interferes with file-locking errors like:</p>
+<pre><code>The process cannot access the file because it is being used by another process.</code></pre>
+<p><strong>Fix:</strong> Move the project to a <strong>local</strong> directory outside Dropbox. Use <code>git</code> exclusively for sync and backup. (Dropbox now supports a <code>~/Dropbox/.dropboxignore</code> rules file, similar to <code>.gitignore</code>, as an alternative.)</p>
+</section>
+<section id="the-authorindex-disaster" class="level3">
+<h3 class="anchored" data-anchor-id="the-authorindex-disaster">The <code>authorindex</code> disaster</h3>
+<p>In <code>.Rnw</code>, generating an Author Index alongside the Subject Index was straightforward: <code>\usepackage{authorindex}</code>, run the <code>authorindex</code> Perl script after BibTeX, add <code>\printauthorindex</code>. It Just Worked.</p>
+<p>In Quarto, five things broke simultaneously:</p>
+<ol type="1">
+<li><strong>No <code>\cite{}</code> in the generated <code>.tex</code></strong>—pandoc <code>citeproc</code> resolves all citations before LaTeX runs, replacing <code>[@key]</code> with <code>\citeproc{ref-key}{Formatted Author, Year}</code>. The <code>authorindex</code> package intercepts <code>\cite</code>; since there are no <code>\cite</code> calls, it writes zero entries.</li>
+<li><strong>No BibTeX step</strong>—<code>citeproc</code> reads <code>.bib</code> files itself and emits a <code>\begin{thebibliography}</code> block directly. LaTeX never calls BibTeX, so <code>\bibdata{}</code> is never written to <code>.aux</code>. The Perl script dies: <em>“You must specify at least one BibTeX database.”</em></li>
+<li><strong>Citation keys renamed</strong>—pandoc prefixes every key with <code>ref-</code>, so <code>Friendly2013</code> becomes <code>ref-Friendly2013</code>. BibTeX lookups fail silently.</li>
+<li><strong><code>authorindex.sty</code> doesn’t auto-patch <code>\cite</code></strong>—it provides <code>\aicite</code> as opt-in. In <code>.Rnw</code> you could use <code>\aicite</code> directly; in Quarto the <code>.tex</code> is generated and you can’t.</li>
+<li><strong>Windows CRLF line endings</strong>—the <code>authorindex</code> Perl script was written for Unix; its regexes anchor on <code>$</code> but <code>\r</code> sits before <code>\n</code> on Windows, causing every pattern match to silently fail. No errors, no output, no index.</li>
+<li><strong><code>@Preamble</code> in <code>.bib</code> files silently ignored</strong>—<code>citeproc</code> reads <code>.bib</code> but never passes <code>@Preamble</code> content to LaTeX, breaking author names that rely on custom commands defined there.</li>
+</ol>
+<p><strong>Workaround:</strong> Patch <code>\@citex</code> in <code>preamble.tex</code> to also call <code>\@aicitey</code>; write <code>\bibdata</code> manually to the <code>.aux</code> file; fix CRLF in the Perl script; strip <code>ref-</code> prefix from keys; move <code>@Preamble</code> command definitions into <code>preamble.tex</code>. See the dedicated post in this series for details.</p>
+</section>
+<section id="indexing-r-function-names-with-underscores" class="level3">
+<h3 class="anchored" data-anchor-id="indexing-r-function-names-with-underscores">Indexing R function names with underscores</h3>
+<p>In LaTeX, <code>_</code> is the subscript character in math mode. In <code>.Rnw</code>, a macro like <code>\ixfunc{stat\_ellipse}</code> let you write the escaped name once and everything was consistent.</p>
+<p>In Quarto, index entries are emitted as raw LaTeX strings from inline R expressions. Markdown, pandoc, and LaTeX each have different opinions about underscores—the rules for escaping differ between code spans, prose, and inline LaTeX, and the two-argument <code>\ixfunc{sort-key}{display-text}</code> pattern is needed to thread the needle. See <a href="../../../posts/2026-04-quarto-indexes/index.qmd">Creating Book Indexes in Quarto</a> for the full solution.</p>
+</section>
+<section id="links-become-dead-text-in-print" class="level3">
+<h3 class="anchored" data-anchor-id="links-become-dead-text-in-print">Links become dead text in print</h3>
+<p>In Markdown, <code>[text](url)</code> renders as a hyperlink in HTML. In a printed book it renders as just <code>text</code>—the URL disappears. In <code>.Rnw</code> you could redefine <code>\href</code> globally:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\renewcommand</span>{<span class="ex">\href</span>}[2]{#2<span class="fu">\footnote</span>{<span class="fu">\url</span>{#1}}}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In Quarto, adding this to <code>preamble.tex</code> applies globally including to internal cross-references that shouldn’t become footnotes. Conditional <code>::: {.content-visible when-format="pdf"}</code> blocks can help, but require rewriting every link in the source.</p>
+<p><strong>Status:</strong> Open. Needs a systematic pass through all chapters.</p>
+</section>
+<section id="formatting-r-package-dataset-and-function-names" class="level3">
+<h3 class="anchored" data-anchor-id="formatting-r-package-dataset-and-function-names">Formatting R package, dataset, and function names</h3>
+<p>In <code>.Rnw</code>, a single macro did everything:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\def\pkg</span>#1{<span class="fu">\textsf</span>{#1}<span class="fu">\ixp</span>{#1}<span class="fu">\citex</span>{#1}<span class="fu">\xspace</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>One <code>\pkg{ggplot2}</code> call typeset the name, added two index entries, and cited the package on first use. No duplication, no inconsistency, same behavior everywhere.</p>
+<p>In Quarto, you need an R function that detects output format and generates different output for HTML vs.&nbsp;PDF. Getting it to also emit <code>\index{}</code> entries without breaking HTML is non-trivial. The current <code>pkg()</code> in <code>R/common.R</code> handles formatting and optional citation; indexing is handled separately via <code>\ixp{}</code> macros. See <a href="../../../posts/2026-04-quarto-indexes/index.qmd">Creating Book Indexes in Quarto</a>.</p>
+</section>
+<section id="build-workflow-fragility" class="level3">
+<h3 class="anchored" data-anchor-id="build-workflow-fragility">Build workflow fragility</h3>
+<p>In <code>.Rnw</code>, “compile” was an explicit sequence: knitr → LaTeX → BibTeX → LaTeX → makeindex → LaTeX. Each step was transparent; failure identified itself.</p>
+<p>In Quarto, <code>Build → Render Book</code> is one monolithic operation. When it fails, the error may come from R, pandoc, LaTeX, or Quarto itself, and messages are sometimes swallowed or misattributed.</p>
+<p>Two additional Quarto-specific quirks:</p>
+<ul>
+<li>Building only HTML <strong>wipes <code>docs/</code></strong> even if you changed only a PDF-specific file, because Quarto re-renders all output.</li>
+<li><code>output-file: Vis-MLM</code> in <code>_quarto.yml</code> sounds like it names the PDF. It doesn’t—it names the LaTeX intermediate (<code>Vis-MLM.tex</code>). The final PDF is named after the entry-point file (<code>index.qmd</code>) and lands in the project root as <code>index.pdf</code>. The <code>.aux</code> file is therefore <code>index.aux</code>—which breaks external tools that expect it to match the output filename.</li>
+</ul>
+</section>
+<section id="no-incremental-build" class="level3">
+<h3 class="anchored" data-anchor-id="no-incremental-build">No incremental build</h3>
+<p>In <code>.Rnw</code>, a <code>Makefile</code> could rebuild only what had changed. You could run <code>make chapter3</code> and only that chapter would be re-knitted and re-typeset. The PDF viewer could stay open; pdflatex overwrites in place and the viewer reloads.</p>
+<p>In Quarto, there is no Makefile equivalent. Quarto has chunk-level caching (<code>cache: true</code>) but a change to <code>_quarto.yml</code> or <code>preamble.tex</code> can invalidate the entire cache and force a full rebuild of all 15 chapters.</p>
+<p>Worse: Quarto deletes and recreates <code>index.pdf</code> on every build rather than overwriting it. The <strong>PDF must be closed</strong> in Acrobat before building, or the build fails:</p>
+<pre><code>ERROR: The process cannot access the file because it is being used by another process.
+(os error 32): remove 'C:\R\Projects\Vis-MLM-book\index.pdf'</code></pre>
+</section>
+<section id="the-mysterious-freeze-cache" class="level3">
+<h3 class="anchored" data-anchor-id="the-mysterious-freeze-cache">The mysterious freeze cache</h3>
+<p>Quarto’s execution cache (<code>.quarto/_freeze/</code>) stores the output of knitr chunks so unchanged chapters can be skipped on subsequent builds. When an R helper function changes but the surrounding <code>.qmd</code> source does not, Quarto sees no reason to invalidate the cache—old output silently persists until it causes a LaTeX error.</p>
+<p>In one incident, updating <code>dataset()</code> to use a cleaner <code>\ixd{}</code> macro left a stale cache entry that still had trailing <code>%</code> comment characters. The <code>%</code> commented out a following <code>\footnote{}</code>, the footnote brace was never opened, and LaTeX failed with:</p>
+<pre><code>! Extra }, or forgotten \endgroup.</code></pre>
+<p>The error pointed at <code>\citeproc{ref-Blishen-etal-1987}{1987}</code>—the last token before the orphaned <code>}</code>—which led to a long but incorrect investigation of the <code>citeproc</code> machinery. The real culprit was invisible: the stale freeze cache.</p>
+<p><strong>Fix:</strong> Delete the stale file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> .quarto/_freeze/<span class="op">&lt;</span>chapter<span class="op">&gt;</span>/execute-results/tex.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Lesson:</strong> Treat the freeze cache as a build artifact that can become stale when R helper functions change. Check it before investigating the LaTeX machinery when errors appear right after changing <code>R/common.R</code>.</p>
+</section>
+<section id="code-chunks-arent-invisible-to-all-readers" class="level3">
+<h3 class="anchored" data-anchor-id="code-chunks-arent-invisible-to-all-readers">Code chunks aren’t invisible to all readers</h3>
+<p>The freeze cache is one symptom of a deeper structural issue. Knuth designed TeX around the metaphor of a <em>mouth</em> that consumes a single, linear stream of tokens—category codes, grouping, macro expansion all governed by the same tokenizer and the same rules. A <code>%</code> comment is a <code>%</code> comment everywhere. Code is code everywhere.</p>
+<p>A Quarto document passes through at least three independent readers, each with its own model of what the document contains:</p>
+<ol type="1">
+<li><strong>Quarto’s book builder</strong>—pre-scans raw <code>.qmd</code> source files to extract chapter titles and build the sidebar/TOC, before knitr runs.</li>
+<li><strong>knitr</strong>—executes R code chunks according to chunk options (<code>include</code>, <code>echo</code>, <code>eval</code>).</li>
+<li><strong>pandoc</strong>—converts the post-knitr Markdown to HTML or LaTeX.</li>
+</ol>
+<p>What is invisible to one reader may be fully visible to another.</p>
+<p>I hit this directly when I added a comment to the hidden R setup chunk at the top of <code>index.qmd</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>knitr correctly suppresses the entire chunk (<code>include=FALSE</code>). pandoc never sees it. But Quarto’s book builder pre-scans the <strong>raw source</strong> to extract chapter titles—and its scanner found the <code>#</code> comment line and treated it as a Markdown heading. The sidebar showed:</p>
+<blockquote class="blockquote">
+<strong>Chapter 1—Make</strong> *(full title: “Make
+<p>available for the {tikz} diagram below.”)*</p>
+</blockquote>
+<p>instead of <strong>Preface</strong> (unnumbered). Every subsequent chapter was bumped up by one.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/sidebar-issue.png" class="img-fluid figure-img"></p>
+<figcaption>Sidebar showing “Chapter 1—Make” instead of “Preface”</figcaption>
+</figure>
+</div>
+<p>The page itself rendered correctly—<code># Preface {.unnumbered}</code> produced the right <code>&lt;h1&gt;</code> — because pandoc received the post-knitr Markdown where the setup chunk had already been removed. The mismatch was entirely between what the sidebar scanner saw (raw source) and what pandoc rendered (knitr output).</p>
+<p><strong>Fix:</strong> Delete the comment. A more robust defence is to add explicit YAML frontmatter to every book chapter so the scanner never needs to search the body:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Preface</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Lesson:</strong> R chunk options like <code>include=FALSE</code> are knitr instructions, not a general promise that the chunk is invisible. Other parts of the Quarto toolchain read the raw source and make their own decisions about what counts as content.</p>
+</section>
+</section>
+<section id="things-quarto-does-better" class="level2">
+<h2 class="anchored" data-anchor-id="things-quarto-does-better">Things Quarto does better</h2>
+<p>In fairness:</p>
+<ul>
+<li><strong>HTML output is excellent</strong>—equations (MathJax), code folding, callout blocks, tabsets, cross-references, and a polished default theme work well with minimal configuration.</li>
+<li><strong>Single source for two formats</strong>—most of the book’s content works for both HTML and PDF without any conditional blocks.</li>
+<li><strong>Cross-references</strong> (<code>@fig-name</code>, <code>@sec-label</code>, <code>@eq-name</code>) are cleaner than LaTeX’s <code>\ref</code>.</li>
+<li><strong><code>code-fold</code> / <code>code-summary</code></strong> allow showing/hiding code in HTML in ways that would require JavaScript hacks in <code>.Rnw</code>.</li>
+<li><strong>Publishing to GitHub Pages</strong> from <code>docs/</code> is straightforward.</li>
+</ul>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 38%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th><code>.Rnw</code> / LaTeX</th>
+<th>Quarto / pandoc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Author index</td>
+<td>Works natively via BibTeX pipeline</td>
+<td>Requires patching 4 separate things</td>
+</tr>
+<tr class="even">
+<td>Package name macros</td>
+<td>One <code>\pkg{}</code> macro does everything</td>
+<td>Needs R function + conditional output</td>
+</tr>
+<tr class="odd">
+<td>Index entries</td>
+<td>Direct <code>\index{}</code> in source</td>
+<td>Fragile via raw LaTeX in Markdown</td>
+</tr>
+<tr class="even">
+<td>Footnote links in print</td>
+<td>One <code>\renewcommand{\href}</code></td>
+<td>Requires per-link conditional blocks</td>
+</tr>
+<tr class="odd">
+<td>Build control</td>
+<td>Explicit multi-step Makefile</td>
+<td>One button; hard to customize</td>
+</tr>
+<tr class="even">
+<td>Dropbox-friendly</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>PDF viewer during build</td>
+<td>Can stay open (overwrites in place)</td>
+<td>Must be closed (deletes and recreates)</td>
+</tr>
+<tr class="even">
+<td>Freeze cache staleness</td>
+<td>No cache; re-knit is explicit</td>
+<td>Cache can silently hold stale output</td>
+</tr>
+<tr class="odd">
+<td>Chapter title extraction</td>
+<td>Single tokenizer; code is code</td>
+<td>Multiple independent scanners; chunk comments can leak into TOC</td>
+</tr>
+<tr class="even">
+<td>Windows compatibility</td>
+<td>Good</td>
+<td>CRLF issues with external tools</td>
+</tr>
+<tr class="odd">
+<td>HTML output</td>
+<td>Minimal</td>
+<td>Excellent, first-class</td>
+</tr>
+<tr class="even">
+<td>Online publishing</td>
+<td>Manual</td>
+<td>Built-in GitHub Pages workflow</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
