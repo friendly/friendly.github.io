@@ -2,7 +2,7 @@
 title: "ChatGPT, 1759 Edition"
 description: "A 1759 pamphlet by Pierre-Jean Migneret exposes ancient oracles as a lookup table and arithmetic---and accidentally anticipates the architecture of modern AI. A tribute to the friend who found it."
 author: "Michael Friendly"
-date: today
+date: 2026-08-01
 categories: [History of Statistics, History of Mathematics, AI, Chevaliers]
 image: images/Migneret-cover.jpg
 title-block-banner: images/Migneret-banner.png
@@ -246,6 +246,6 @@ Antoine called it "a non-serious contribution." He was, as always, being modest.
 
 I said at the start that this one mattered more than either of us realized. What Migneret found---and what Antoine recognized in it---is that the appearance of intelligence requires no intelligence: only a well-constructed table and some arithmetic. It was a delicious, but subtle joke. That argument is as alive now as it was in 1759. Antoine spotted it in a pamphlet about oracles, attached it to a note in February 2023, and sent it along. A few months later, he was gone.
 
-That was his cast of mind. Find the thing, share the thing, let the thing speak. With Antoine, "non-serious" was never quite the last word.
+That was his cast of mind. Find an interesting thing, share the thing, let the thing speak. With Antoine, "non-serious" was never quite the last word.
 
 We are still listening, Antoine.
