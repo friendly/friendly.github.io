@@ -1,18 +1,18 @@
 ---
 title: "R Packages"
 description: "R packages by Michael Friendly for multivariate analysis, categorical data analysis, and data visualization. Including heplots, candisc, vcdExtra, HistData, and more."
-image: "images/hexsession-mypkgs.jpg"
+image: "images/hexsession-mypkgs2-2row.png"
 twitter-card:
-  image: "images/hexsession-mypkgs.jpg"
+  image: "images/hexsession-mypkgs2-2row.png"
 open-graph:
   title: "R Packages by Michael Friendly"
   description: "R packages for multivariate analysis, categorical data analysis, and data visualization. Including heplots, candisc, vcdExtra, HistData, and more."
-  image: "images/hexsession-mypkgs.jpg"
+  image: "images/hexsession-mypkgs2-2row.png"
 ---
 
 ::: {.column-page}
 
-<img src="images/hexsession-mypkgs.jpg" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">
+<img src="images/hexsession-mypkgs2-2row.png" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">
 
 This page provides overview descriptions of my R packages and those I have contributed to. The package logos link to the GitHub repositories. Documentation buttons take you to the [pkgdown](https://pkgdown.r-lib.org/) sites with full documentation and rendered vignettes.
 

@@ -65,7 +65,10 @@
       "WebFetch(domain:rdrr.io)",
       "WebFetch(domain:quarto.org)",
       "Read(//c/Users/friendly/Dropbox/localtexmf/bibtex/bib/**)",
-      "Read(//c/Users/friendly/Dropbox/**)"
+      "Read(//c/Users/friendly/Dropbox/**)",
+      "Bash(magick identify *)",
+      "Bash(cp C:/Users/friendly/AppData/Local/Temp/claude/C--R-Projects-friendly-github-io/0b8bf933-95ec-47bf-8089-7eed5f3848ee/scratchpad/hexsession-mypkgs2-2row-transparent.png C:/R/Projects/friendly.github.io/images/hexsession-mypkgs2-2row.png)",
+      "Bash(cp C:/Users/friendly/AppData/Local/Temp/claude/C--R-Projects-friendly-github-io/0b8bf933-95ec-47bf-8089-7eed5f3848ee/scratchpad/hexsession-mypkgs2-3row-transparent.png C:/R/Projects/friendly.github.io/images/hexsession-mypkgs2-3row.png)"
     ]
   }
 }
