@@ -2,7 +2,7 @@ A physical law is not a fact about any single state of the world; it is a relati
 
 This revealed three levels of internal physics:
 
-  1⃣ Readability: Broad materials concepts (like corrosion, toughness, or oxidation) are linearly readable directly from intermediate hidden states, even when those exact terms are completely omitted from the prompt.
+1⃣ Readability: Broad materials concepts (like corrosion, toughness, or oxidation) are linearly readable directly from intermediate hidden states, even when those exact terms are completely omitted from the prompt.
 
 2⃣ Representation: Rather than absolute state locations, matched state displacements accurately track and order direct, neutral, and inverse constitutive laws across 60 materials science laws (ρ = 0.910), correctly orienting 39 of 40 directional laws.
 
