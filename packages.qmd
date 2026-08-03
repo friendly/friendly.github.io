@@ -14,6 +14,45 @@ open-graph:
 
 <img src="images/hexsession-mypkgs2-2row.png" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">
 
+<!-- Experiment: live interactive hex tile via hexsession::make_tile(), embedded directly -->
+```{r}
+#| echo: false
+#| message: false
+
+library(hexsession)
+
+# "twoway" omitted: its installed package has no man/figures/logo.png,
+# so hexsession can't auto-discover a logo for it (prompts interactively).
+pkgs <- c("heplots", "candisc", "mvinfluence", "genridge", "VisCollin",
+          "matlib", "gellipsoid", "ggbiplot", "vcdExtra", "nestedLogit",
+          "HistData", "Guerry", "Lahman", "WordPools")
+
+# Some packages ship multiple logo-like images (e.g. logo.png + logo-old.png),
+# which makes hexsession's auto-picker prompt interactively. Resolve those
+# ourselves -- preferring a file literally named "logo.png" -- so make_tile()
+# never needs to ask.
+resolve_logo <- function(pkg) {
+  files <- list.files(system.file(package = pkg),
+                       pattern = "\\.png$|\\.jpg$|\\.svg$",
+                       recursive = TRUE, full.names = TRUE)
+  matches <- files[grepl("hex|logo", files, ignore.case = TRUE)]
+  if (length(matches) == 0) return(NA_character_)
+  preferred <- matches[basename(matches) == "logo.png"]
+  if (length(preferred) >= 1) preferred[1] else matches[1]
+}
+
+logos <- vapply(pkgs, resolve_logo, character(1))
+urls <- vapply(pkgs, function(p) {
+  url <- packageDescription(p)$URL
+  if (is.null(url)) paste0("https://cran.r-project.org/package=", p) else strsplit(url, ",")[[1]][1]
+}, character(1))
+
+htmltools::div(
+  style = "max-width: 600px; margin: 20px auto;",
+  make_tile(local_images = logos, local_urls = urls)
+)
+```
+
 This page provides overview descriptions of my R packages and those I have contributed to. The package logos link to the GitHub repositories. Documentation buttons take you to the [pkgdown](https://pkgdown.r-lib.org/) sites with full documentation and rendered vignettes.
 
 For a complete list of all packages with full descriptions, see the GitHub [packages.md](https://github.com/friendly/friendly/blob/main/packages.md) page in my profile.

@@ -39,9 +39,15 @@ make_tile(packages = pkgs)
 # 3: logo.png
 # 4: None of the above
 
-# TODO: How to get this into an image or something with the right shape: number of rows? -- Usually manipulate the Viewer width, then take a screenshot
+# TODO: How to get this into an image or something with the right shape: number of rows?
+#       -- Usually manipulate the Viewer width, then take a screenshot
+#
 # TODO: make_tile() generates an interactive HTML file. How to use this in my blog?
+#       See: https://github.com/luisDVA/hexsession/issues/9
+#            https://github.com/aleksanderbl29/hexsession/tree/feat/quarto-website-embed
+#
 # TODO: Can we make the background transparent? NB: make_tile() has a`dark_mode` arg, but this just paints the bkgrnd black
+#       Answer: Use Imagemagick on the result
 
 snap_tile(here::here("images", "hexsession-mypkgs2.png"))
 
