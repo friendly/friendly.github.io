@@ -12,24 +12,27 @@ open-graph:
 
 ::: {.column-page}
 
+<!-- Static fallback image, superseded by the live interactive hex tile below.
 <img src="images/hexsession-mypkgs2-2row.png" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">
+-->
 
-<!-- Experiment: live interactive hex tile via hexsession::make_tile(), embedded directly -->
+<!-- Live interactive hex tile via hexsession::make_tile(). -->
 ```{r}
 #| echo: false
 #| message: false
+#| results: asis
 
 library(hexsession)
 
 # "twoway" omitted: its installed package has no man/figures/logo.png,
-# so hexsession can't auto-discover a logo for it (prompts interactively).
+# so hexsession can't auto-discover a logo for it (prompts interactively). [FIXED]
 pkgs <- c("heplots", "candisc", "mvinfluence", "genridge", "VisCollin",
-          "matlib", "gellipsoid", "ggbiplot", "vcdExtra", "nestedLogit",
+          "matlib", "gellipsoid", "twoway", "ggbiplot", "vcdExtra", "nestedLogit",
           "HistData", "Guerry", "Lahman", "WordPools")
 
 # Some packages ship multiple logo-like images (e.g. logo.png + logo-old.png),
 # which makes hexsession's auto-picker prompt interactively. Resolve those
-# ourselves -- preferring a file literally named "logo.png" -- so make_tile()
+# ourselves -- preferring a file literally named `"logo.png"` -- so make_tile()
 # never needs to ask.
 resolve_logo <- function(pkg) {
   files <- list.files(system.file(package = pkg),
@@ -47,15 +50,77 @@ urls <- vapply(pkgs, function(p) {
   if (is.null(url)) paste0("https://cran.r-project.org/package=", p) else strsplit(url, ",")[[1]][1]
 }, character(1))
 
-htmltools::div(
-  style = "max-width: 600px; margin: 20px auto;",
-  make_tile(local_images = logos, local_urls = urls)
-)
+# Original approach -- kept for reference. This embeds make_tile()'s HTML
+# fragment directly into the page, which caused two display bugs:
+# 1. make_tile() emits a self-contained mini-page (own <style>/<script>,
+#    including a global `body { background-color; color }` rule for its
+#    own baked-in light/dark toggle). Embedded raw, that rule collided
+#    with the site's own dark-mode CSS: body background got stuck light,
+#    and card description text went white-on-white when the site's dark
+#    mode was on.
+# 2. The tile grid picked up an unwanted vertical scrollbar/clipped height,
+#    from Quarto's `.cell-output-display { overflow-x: auto }` interacting
+#    with the widget's absolutely-positioned `.attribution` element.
+#
+# htmltools::div(
+#   style = "max-width: 600px; margin: 20px auto;",
+#   make_tile(local_images = logos, local_urls = urls)
+# )
+
+# Fix: render make_tile()'s HTML into an <iframe srcdoc>, so its own
+# <style>/<script> are scoped to the iframe's document and can't leak into
+# (or be affected by) the site's page. The iframe's height isn't known up
+# front (it depends on how many packages are tiled), so the iframe posts
+# its rendered height back to the parent window via postMessage, and we
+# resize the iframe to fit once that message arrives.
+widget_html <- as.character(make_tile(local_images = logos, local_urls = urls))
+
+doc <- sprintf('<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+html, body { margin: 0; padding: 0; background: transparent !important; }
+.main { padding-bottom: 8px; }
+.attribution {
+  position: static !important;
+  display: block;
+  text-align: right;
+  color: #888 !important;
+  background: transparent !important;
+}
+</style></head><body>%s
+<script>
+function hexsessionReportHeight() {
+  var h = document.documentElement.scrollHeight;
+  window.parent.postMessage({ hexsessionHeight: h }, "*");
+}
+window.addEventListener("load", function() {
+  hexsessionReportHeight();
+  setTimeout(hexsessionReportHeight, 50);
+});
+window.addEventListener("resize", hexsessionReportHeight);
+</script>
+</body></html>', widget_html)
+
+cat(sprintf(
+  '<div style="max-width: 600px; margin: 20px auto;">
+<iframe id="hexsession-frame" srcdoc="%s" style="width: 100%%; height: 320px; border: none; display: block;" scrolling="no"></iframe>
+</div>
+<script>
+window.addEventListener("message", function(e) {
+  if (e.data && typeof e.data.hexsessionHeight === "number") {
+    var f = document.getElementById("hexsession-frame");
+    if (f) { f.style.height = e.data.hexsessionHeight + "px"; }
+  }
+});
+</script>',
+  htmltools::htmlEscape(doc, attribute = TRUE)
+))
 ```
 
-This page provides overview descriptions of my R packages and those I have contributed to. The package logos link to the GitHub repositories. Documentation buttons take you to the [pkgdown](https://pkgdown.r-lib.org/) sites with full documentation and rendered vignettes.
+This page provides overview descriptions of my R packages and those I have contributed to. The package logos in the interactive image above 
+(courtesy of the [hexsession package](https://cran.r-project.org/package=hexsession)) link to their GitHub repositories. Documentation (**Docs**) in the panel buttons take you to the [pkgdown](https://pkgdown.r-lib.org/) sites with full documentation and rendered vignettes. 
 
-For a complete list of all packages with full descriptions, see the GitHub [packages.md](https://github.com/friendly/friendly/blob/main/packages.md) page in my profile.
+Most of these are also available in daily builds of the latest version from [R-universe](https://friendly.r-universe.dev/builds).
+
+For a complete list of all packages with full descriptions, see the GitHub [packages.md](https://github.com/friendly/friendly/blob/main/packages.md) page in my [GitHub profile](https://github.com/friendly).
 
 ```{r}
 #| echo: false
@@ -162,7 +227,7 @@ card(
   text = "Carries out analyses of two-way tables with one observation per cell, together with graphical displays for an additive fit and a diagnostic plot for removable 'non-additivity'.",
   github_url = "https://github.com/friendly/twoway",
   doc_url = "https://friendly.github.io/twoway",
-  logo_url = "https://raw.githubusercontent.com/friendly/twoway/master/twoway-logo.png"
+  logo_url = "https://raw.githubusercontent.com/friendly/twoway/master/logo.png"
 )
 ```
 
@@ -256,6 +321,6 @@ card(
 
 ---
 
-*For a complete list of all packages with full descriptions, see the GitHub [packages.md](https://github.com/friendly/friendly/blob/main/packages.md) file in my profile.*
+*For a complete list of all packages with full descriptions, see the GitHub [packages.md](https://github.com/friendly/friendly/blob/main/packages.md) page in my [GitHub profile](https://github.com/friendly).*
 
 :::

@@ -22,6 +22,19 @@ body.quarto-dark code:not(.sourceCode) {
   box-shadow: 0 4px 12px rgba(0,0,0,.15);
 }
 
+/* Dark mode: the 4%-opacity blue tint above is invisible against darkly's
+   near-black (#222) body background, so cards disappear into the page.
+   Same blue tint, just stronger, so it actually shows up against a dark
+   background instead of a light one. */
+body.quarto-dark .card {
+  background-color: rgba(13, 110, 253, 0.16);
+  border-color: rgba(255,255,255,.125);
+}
+
+body.quarto-dark .card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,.4);
+}
+
 /* Card images */
 .card-img-top {
   display: block;
