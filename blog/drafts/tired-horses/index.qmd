@@ -21,14 +21,29 @@ if you're someone who thinks about graphical methods for data analysis *and* wan
 see how they actually work -- implementing them, explaining them, illustrating them
 -- writing is never just writing. It's a loop:
 
+TODO: make this into an actual diagram, perhaps using what worked in VisMLM for the
+part diagram
+
 ```
 writing --> graphic idea --> implement in software --> illustrate with example --> explain
 ```
+
 
 except it isn't really a straight line at all. Every stage loops back, usually to
 "implement" and often all the way back to "writing" itself, because what the software
 actually does doesn't match what you wanted to show. Think of each loop-back as a
 detour sign on the road from idea to finished post. This one has four of them.
+
+TODO: Mention kinds of writing-- an article, a book project, a blog post collection
+All a happy family in some regards, but each can be unhappy in their own way.
+  - the cognitive tasks and skills they share vs.
+  - those that are unique to that sort of writing
+
+TODO: The Tree of Thought or Garden of Forking Thoughts
+  - not just a linear sequence (with possible loops), but more like a tree (different projects or issues in a single one)
+  - multitasking, attention switching
+  - if tree, do you go depth-first or breadth-first?
+  
 
 ## Detour 1 — BRIDGE OUT: when the software doesn't do what you need
 
@@ -133,6 +148,7 @@ genuinely new kind of detour sign, one that didn't exist a couple of years ago.
 None of these four detours is a problem in isolation. The problem is running two or
 three of them at once, each with its own open window, its own half-finished thought.
 There's something genuinely high-dimensional about the state you're holding:
+
 *thought → find the window → edit*, except "the window" could be the manuscript, the
 package source, the reference manager, a terminal mid-commit, or now, an AI session
 that's three exchanges deep into a completely different topic. (Do you commit and
@@ -142,6 +158,18 @@ And that's before something *new* shows up uninvited -- a paper worth a second l
 that turns into an idea for a post, or an R package that looks worth trying, if it
 even fits how you already work. Four kinds of detour sign, all visible from the same
 stretch of road, is a lot of signs to read at once.
+
+[ADDED]
+However, with the idea of a garden of forking thoughts in mind you can think of pruning branches
+to keep the shape more orderly. 
+
+* I could give some task to an RA, as I very often did in writing Vis-MLM. This was often at a
+  high-level: Review chapter XX and find inconsistencies, writing or graphics that are inconsistent
+  or poorly done. Other tasks were more mundane: [examples here]
+
+* If using AI I could often seek information, guidance, or even suggestions and solutions for
+  technical stuff (generalizing a function, writing the documentation, ...)
+  
 
 ## How could AI help?
 
