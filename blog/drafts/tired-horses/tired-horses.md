@@ -20,6 +20,9 @@ TODO: the diagram should show a loops from illustrate back to implement, and fro
 because this is where the friction arises. 
 What you can do with the software doesn't match what you wanted to show.
 
+## Introduction
+
+What this post is about ...
 
 ## Where I'm starting from
   
@@ -63,6 +66,9 @@ the "devil is in the details" again.
 
 ## Examples
 
+Should describe some concrete examples of the competing cognitive tasks. This aspect should be brought out in
+the Intro.
+
 ### Packages
 
 * **heplots** -- not sure what I meant here, but perhaps a story of `noteworthy` or some other aspect used in the book
@@ -86,8 +92,11 @@ the "devil is in the details" again.
 
 ## How Could AI Help?
 
-Tasks AI is good at:
+### Tasks AI is good at:
   + searching: For images, code, ...
+  
+### Working with Claude on this post 
+describe the process in writing from these rough notes, to a polished post.
   
 ## Exploding Brain Syndrome
 
@@ -102,4 +111,22 @@ But also, you look at a reference paper or something else anew
   + idea for a blog post
   + a new R package to try; but see if it fits the workflow or thinking
   + ...
+
+## Pushes & Pull
+(should be earlier)
+
+With software development, there's another dimension: The different machines you work on, the collaborators in the project,
+and how you can all work together without serious clashes (`git blame`). There are several moving parts:
+
+* Syncing your work across machines: should be frictionless, so you always have the most recent version, on your laptop, home desktop
+  or office machine. Mention cloud alternatives: Dropbox / iClolud / OneDrive / GoogleDrive
+  
+* Using version control: SVN (old-school) and git. 
+  + How it works
+  + How it affects how you think and work
+    - who does what?
+    - how to comment on work? 
+    - branches (or does everyone work on `main`?), issues (on GH?), ...
+
+
 
