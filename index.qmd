@@ -27,7 +27,7 @@ I'm a Professor of Psychology at York University, specializing in **data visuali
 </div>
 :::
 
-<img src="images/hexsession-mypkgs.jpg" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">
+<img src="images/hexsession-mypkgs2-2row.png" class="img-fluid" style="max-width: 600px; margin: 20px auto; display: block;">
 
 ## Highlights
 
