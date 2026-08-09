@@ -72,7 +72,8 @@
       "Bash(gh issue *)",
       "Bash(gh api *)",
       "Bash(C:/R/R-4.6.1/bin/Rscript.exe *)",
-      "Bash(where Rscript)"
+      "Bash(where Rscript)",
+      "Bash(npx --version)"
     ]
   }
 }

@@ -1,51 +1,121 @@
 ---
 title: "All the Tired Horses"
 subtitle: "How Am I Supposed to Get Any Writing Done? The Curses and Blessings of Writing While Developing and Researching"
-description: "Writing pulls you into legitimate detours -- fixing a package, chasing a citation, syncing across machines, juggling AI sessions -- and each detour can spawn its own. A look at where the friction actually comes from."
+description: "Writing technical, code-dependent material usually pulls you into necessary detours -- fixing a package, chasing a citation, syncing across machines, juggling AI sessions -- and each detour can spawn its own. A look at where the friction actually comes from."
 author: "Michael Friendly"
-date: ""
+date: today
 categories: [writing, workflow, R packages]
 draft: true
 ---
 
-<!-- TODO: banner image -- the AI-generated one posted on X, someone writing at a
-     desk with wild horses running through it -->
+![A writer working at two computer screens as a herd of horses rushes past his desk.](figures/tired-horses-header-v1.png){fig-align="center" width="100%"}
 
-> All the tired horses in the sun / How am I supposed to get any riding done? /
-> Mm-mm, mm-mm
+> 🎵 All the tired horses in the sun /
+>    How am I supposed to get any riding done? /
+>    Mm-mm, mm-mm 🎵
 >
 > --- Bob Dylan, 1970
 
-Riding, writing -- close enough for a title. The real question underneath the pun:
-if you're someone who thinks about graphical methods for data analysis *and* wants to
-see how they actually work -- implementing them, explaining them, illustrating them
--- writing is never just writing. It's a loop:
+When I write my books or articles, my subconscious often thinks about the **writing process**: what it takes to "Get Some Writing Done".
+It's not simply about putting words down on a page, or typing them into an editor
+or word processor window.
 
-TODO: make this into an actual diagram, perhaps using what worked in VisMLM for the
-part diagram
+Over the years that's meant journal articles, book projects, and, now, this blog --
+a happy family in some ways, the way siblings share a last name and a few
+mannerisms. In writing, they call on the same core skills: organizing an argument, drafting,
+revising, cutting what doesn't earn its place. 
 
+But each is unhappy, or at least
+difficult, in its own particular way -- an article has to survive reviewers looking
+for the hole in it, a book has to hold together across three hundred pages and
+eighteen months, a blog post has to earn the reader's attention in the first
+paragraph or lose it. (John McPhee's [*Draft No. 4: On the Writing
+Process*](https://us.macmillan.com/books/9780374537975/draftno4/) is the best
+book-length treatment I know of this same restlessness about how writing actually
+gets done.) Different shapes, same underlying process.
+
+The core skills are probably fine for fiction or non-fiction, but,
+as in my [Vis-MLM book](https://friendly.github.io/Vis-MLM-book/), and others before it
+(e.g., [*Discrete Data Analysis with R*](http://ddar.datavis.ca)),
+I can't help but think about graphical methods I use for data analysis and
+see how they actually work in the context I'm writing about. Most often, I can just 
+recall how I did this before, or find a new package that does it better.
+But often in this work I have to wear a Developer hat, because these methods are
+new or existing ones suck: they don't allow me to do what I want to write about.
+This mean implementing and testing them, writing documentation, publishing to CRAN
+before I get back to "real work" and actually use them in my working draft.
+-- this writing process is never just "writing". It's more like a path of stages, perhaps looping backwards:
+
+
+```{mermaid}
+%%| label: fig-writing-straight-line
+%%| fig-cap: "The deceptively simple path from writing to explanation."
+%%| fig-align: center
+%%| fig-width: 10
+%%| fig-height: 2.2
+%%{init: {"flowchart": {"curve": "linear", "nodeSpacing": 22, "rankSpacing": 38}, "themeCSS": ".stage { filter: drop-shadow(2px 3px 2px #b8c2c2); }"}}%%
+flowchart LR
+  writing([Writing]) --> idea([Graphic idea]) --> implement([Implement in<br/>software]) --> illustrate([Illustrate with<br/>example]) --> explain([Explain])
+
+  classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  class writing,idea,implement,illustrate,explain stage;
 ```
-writing --> graphic idea --> implement in software --> illustrate with example --> explain
-```
 
 
-except it isn't really a straight line at all. Every stage loops back, usually to
+Except it isn't really a straight line at all. Every stage loops back, usually to
 "implement" and often all the way back to "writing" itself, because what the software
 actually does doesn't match what you wanted to show. Think of each loop-back as a
 detour sign on the road from idea to finished post. This one has four of them.
 
-TODO: Mention kinds of writing-- an article, a book project, a blog post collection
-All a happy family in some regards, but each can be unhappy in their own way.
-  - the cognitive tasks and skills they share vs.
-  - those that are unique to that sort of writing
+```{mermaid}
+%%| label: fig-writing-detours
+%%| fig-cap: "The actual route: each later stage can force a return to earlier work."
+%%| fig-align: center
+%%| fig-width: 10
+%%| fig-height: 4.2
+%%{init: {"flowchart": {"curve": "basis", "nodeSpacing": 25, "rankSpacing": 55}, "themeCSS": ".stage { filter: drop-shadow(2px 3px 2px #b8c2c2); }"}}%%
+flowchart LR
+  writing([Writing]) --> idea([Graphic idea]) --> implement([Implement in<br/>software]) --> illustrate([Illustrate with<br/>example]) --> explain([Explain])
 
+  idea ==> writing
+  implement ==> writing
+  illustrate ==> implement
+  explain ==> implement
+
+  classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  class writing,idea,implement,illustrate,explain stage;
+  linkStyle 4,5,6,7 stroke:#b04a3f,stroke-width:3px;
+```
+
+<!--
 TODO: The Tree of Thought or Garden of Forking Thoughts
-  - not just a linear sequence (with possible loops), but more like a tree (different projects or issues in a single one)
+  - not just a linear sequence (with possible loops), but maybe more like a tree (different projects or issues in a single one)
   - multitasking, attention switching
-  - if tree, do you go depth-first or breadth-first?
-  
+  - if a tree, do you go depth-first or breadth-first?
+    - example: writing a `vcdExtra` function to plot logistic regression results with the marginal distribution of X shown as
+      points, histograms, density curves-- when to stop, promote the function from `dev/` to `R/` and release to CRAN? 
+      vs. The Rabbit Hole: Continue to make it more general / useful / beautiful in search of dataviz Bunny Gold.
 
-## Detour 1 — BRIDGE OUT: when the software doesn't do what you need
+Here's the email to Gavin that triggered this:
+
+I thought `dev/loghistplot()` was getting nearly ready to move to R/, but then a bunch of synapses spontaneously fired as I was thinking about how this could be made more general/useful/beautiful.
+
+Some of these are in `dev/loghistplot-extensions.md` . One was the idea of allowing `marginal="density"` in the function. I actually like
+this best of all. Take a look. There's also a testing script for some of these ideas.
+
+Maybe we've done enough for now on this, and I'll put this into a new vcdExtra v 0.9.8 or even leap to v 1.0.0. The alternative is to keep creeping down the
+rabbit hole in search of a golden bunny.
+-->
+
+<!--
+TODO: Mention how other R datviz books have done things -- but maybe that's another rabbit hole for this post??
+
+- Claus Wilke: Fundamentals of Data Visualization -- no code in the book, great figures
+- Kieran Haley:
+- Antony Unwin: Graphical Data Analysis with R
+-->
+
+## 🚧 Detour 1 — BRIDGE OUT: when the software doesn't do what you need
 
 Most of the time the loop closes quietly -- existing packages do what you need, you
 make the figure, you move on. *Vis-MLM* wasn't like that. Working up examples for the
@@ -58,6 +128,8 @@ have a limitation, or worse, a bug. Then there's a decision to make:
 * fix it myself (then re-build the package, ...) vs. file an issue or PR for the
   package author (and wait for follow-up).
 
+### `ggbiplot`: The Fork Taken
+
 The clearest example is `ggbiplot`. Biplots show a 2D view of $n$-dimensional data in
 a single display, observations and variables together -- exactly the kind of thing
 that shows up constantly in the book. The existing package didn't do quite what I
@@ -67,14 +139,41 @@ maintainer. What started as "make one figure for one chapter" ended as an ongoin
 maintenance commitment. That's the shape of this kind of detour: it doesn't stay the
 size it started at.
 
-<!-- TODO: heplots example -- what was the "noteworthy" story here? recover or cut.
-     also: which datasets (peng, ...) are worth naming? -->
+### Noteworthy points
 
-## Detour 2 — SLOW: MERGING TRAFFIC: chasing the perfect citation and the perfect image
+A smaller but more consequential example is the idea of a general mechanism for flagging and
+labeling "noteworthy" observations in a fitted model or a graphic display -- outliers, large
+residuals, influential points, and so on -- often crucial to understanding and explaining what
+a plot is showing. You get a hint of this already in the diagnostic panels produced by
+`plot(lm(y ~ x1 + x2 + ...))`, where unusual points get automatically labeled by case name --
+but only if your data frame actually has `rownames()`.
 
-Historical papers -- Guerry, van Langren, Minard -- run into a different kind of
-detour. There's a general theme and structure going in, but the devil is in the
-details of two recurring tasks.
+This is one of the most endearing aspects of the `car` package. Its plotting functions --
+`scatterplot()`, `residualPlots()`, `influencePlot()`, and others -- all accept an
+`id = list(n=, method=, ...)` argument that handles this consistently. `method=` can be `"x"`
+or `"y"` (the points furthest from the mean of that coordinate), `"r"` (furthest from zero, as
+in a residual plot), `"mahal"` (furthest from the bivariate centroid by Mahalanobis distance),
+or your own numeric vector -- Cook's distance, say -- with the largest `n` values labeled.
+
+None of that existed for `ggplot2`, though, where labeling unusual points is just another geom
+you have to wire up yourself, one plot at a time. `heplots::noteworthy()`, and its `ggplot2`
+layer `stat_noteworthy()` (still sitting in `dev/`), ports the same vocabulary -- `"mahal"`,
+`"x"`, `"y"`, `"r"`, or a Cook's-distance-style numeric vector -- into the grammar of graphics,
+so any `ggplot`, not just `car`'s own base-graphics functions, gets the same treatment. It's
+been tested against `peng`, heplots' Palmer-Penguins-style dataset, flagging multivariate
+outliers by Mahalanobis distance across the measured variables.
+
+<!-- TODO(Michael): fill in where this actually mattered for the book, or whether it's still
+     purely a "would be nice" -- I only have the code and what it does, not the story of why
+     it came up or whether it's shipping. -->
+
+## 🚧 Detour 2 — SLOW: MERGING TRAFFIC: chasing the perfect citation and the perfect image
+
+Historical papers -- [Guerry](https://www.datavis.ca/papers/guerry-STS241.pdf),
+[van Langren](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html),
+[Minard](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) -- run into a different kind
+of detour. There's a general theme and structure going in, but the devil is in the details
+of two recurring tasks.
 
 Finding reference images:
 
@@ -98,9 +197,7 @@ Tracking down citations -- often difficult in history:
 Same tension either way: the detour is legitimate and necessary, and it still pulls
 you out of the sentence you were writing.
 
-<!-- TODO: fill in actual paper refs/links for Guerry, van Langren, Minard here -->
-
-## Detour 3 — MERGE CONFLICT AHEAD: keeping it all in sync
+## 🚧 Detour 3 — MERGE CONFLICT AHEAD: keeping it all in sync
 
 The third kind of friction isn't about content at all -- it's about *where* the work
 lives.
@@ -119,7 +216,7 @@ lives.
 "Merge conflict" is the right sign for this detour twice over -- it's what git calls
 it, and it's exactly what it feels like.
 
-## Detour 4 — SEVERAL CREWS WORKING, NO COORDINATION: writing with AI across several sessions at once
+## 🚧 Detour 4 — SEVERAL CREWS WORKING, NO COORDINATION: writing with AI across several sessions at once
 
 This one's new, and it's the one I lived through writing *this very post*. Today
 alone: one AI session working through a statistics bug in `vcdExtra`, a second
@@ -145,19 +242,65 @@ genuinely new kind of detour sign, one that didn't exist a couple of years ago.
 
 ## Exploding Brain Syndrome
 
-None of these four detours is a problem in isolation. The problem is running two or
-three of them at once, each with its own open window, its own half-finished thought.
-There's something genuinely high-dimensional about the state you're holding:
+![A brain crowded with interconnected writing, coding, graphics, scheduling, and communication tasks.](figures/brain-many-tasks-v1.png){fig-align="center" width="70%"}
 
-*thought → find the window → edit*, except "the window" could be the manuscript, the
-package source, the reference manager, a terminal mid-commit, or now, an AI session
-that's three exchanges deep into a completely different topic. (Do you commit and
-push here, before switching context, or is that its own kind of detour?)
+None of these four detours is a problem in isolation. The problem is your brain running two or
+three of them at once, each with its own open window, a half-finished thought,
+marking something as a **TODO**, etc.
+There's something genuinely high-dimensional about the state you're holding.
+This is itself an interesting problem in cognition. I don't know if this has been studied,
+but I'd be willing to donate my brain to science, when I'm done with it. 
+(Just hope it wouldn't travel around in a wooden box for as long as Einstein's)
+
+Here's the simplest example: have a thought, find the window that holds it on your computer, edit, or change it.
+But "the window" could be the
+manuscript text, an RStudio console, the package source, your reference manager, a `bash` terminal `git` session,
+and now--- a Claude/Codex AI session that's three exchanges deep into a completely different topic you started earlier.
+And there are also forks in the process. The diagram shows just one built into the loop itself: do you commit and push your work here, before
+switching context? And, is that its own kind of detour?
+
+```{mermaid}
+%%| label: fig-thought-window-edit
+%%| fig-cap: "The thought -> window -> edit loop, and how many windows there are to pick from."
+%%| fig-align: center
+%%| fig-width: 10
+%%| fig-height: 6
+%%{init: {"flowchart": {"curve": "basis", "nodeSpacing": 22, "rankSpacing": 45}, "themeCSS": ".stage { filter: drop-shadow(2px 3px 2px #b8c2c2); } .window { filter: drop-shadow(2px 3px 2px #b8c2c2); }"}}%%
+flowchart LR
+  thought([Thought]) --> findw{Find the<br/>window}
+
+  findw --> manuscript([Manuscript])
+  findw --> pkg([Package source])
+  findw --> refs([Reference<br/>manager])
+  findw --> terminal([Terminal,<br/>mid-commit])
+  findw --> ai([AI session,<br/>mid-topic])
+
+  manuscript --> edit([Edit])
+  pkg --> edit
+  refs --> edit
+  terminal --> edit
+  ai --> edit
+
+  edit --> commit{Commit &<br/>push first?}
+  commit -- yes --> push([Commit,<br/>push])
+  push ==> thought
+  commit == no ==> thought
+
+  classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  classDef window fill:#f5e6c8,stroke:#a3781f,stroke-width:1.5px,color:#4a3a10;
+  class thought,findw,edit,commit,push stage;
+  class manuscript,pkg,refs,terminal,ai window;
+  linkStyle 13,14 stroke:#b04a3f,stroke-width:3px;
+```
 
 And that's before something *new* shows up uninvited -- a paper worth a second look
 that turns into an idea for a post, or an R package that looks worth trying, if it
 even fits how you already work. Four kinds of detour sign, all visible from the same
 stretch of road, is a lot of signs to read at once.
+
+### What this looked like while writing Vis-MLM
+
+![The Vis-MLM book, active blog posts, and R package projects connected inside a stylized brain.](figures/brain-many-projects-v4.png){fig-align="center" width="90%"}
 
 [ADDED]
 However, with the idea of a garden of forking thoughts in mind you can think of pruning branches
