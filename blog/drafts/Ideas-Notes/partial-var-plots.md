@@ -52,7 +52,7 @@ directly on a data frame rather than a fitted model.
 
 ### Code notes
 
-- `pvPlot()` uses `car::dataEllipse()` under the hood; patched version in `test/Ellipse.R`
+- In Vis-MLM, `pvPlot()` uses `car::dataEllipse()` under the hood; patched version in `test/Ellipse.R`
   fixes a duplicate-`cex` bug in `label.ellipse()` — worth a brief aside or footnote.
 - `ellipse = FALSE` implemented via `levels = numeric(0)` (not an `ellipse` arg to
   dataEllipse, which doesn't have one).

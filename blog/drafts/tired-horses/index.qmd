@@ -1,7 +1,7 @@
 ---
 title: "All the Tired Horses"
 subtitle: "How Am I Supposed to Get Any Writing Done? The Curses and Blessings of Writing While Developing and Researching"
-description: "Writing technical, code-dependent material usually pulls you into necessary detours -- fixing a package, chasing a citation, syncing across machines, juggling AI sessions -- and each detour can spawn its own. A look at where the friction actually comes from."
+description: "Writing technical, code-dependent material usually pulls you into necessary detours -- fixing a package, chasing a citation, syncing across machines, juggling AI sessions -- and each detour can spawn its own. A cognitive look at where the friction actually comes from."
 author: "Michael Friendly"
 date: today
 categories: [writing, workflow, R packages]
@@ -16,31 +16,50 @@ draft: true
 >
 > --- Bob Dylan, 1970
 
-When I write my books or articles, my subconscious often thinks about the **writing process**: what it takes to "Get Some Writing Done".
+When I write, my subconscious often thinks about the **writing process**: what it takes to "Get Some Writing Done".
 It's not simply about putting words down on a page, or typing them into an editor
-or word processor window.
+or word processor window. Your cognitive focus (your **attention**) on the task often has to deal
+with interruptions in the flow of ideas -> final product. The interruptions are like Bob Dylan's Wild Horses;
+they are detours along the path to getting it done, DONE, DONE!!!.
 
-Over the years that's meant journal articles, book projects, and, now, this blog --
-a happy family in some ways, the way siblings share a last name and a few
-mannerisms. In writing, they call on the same core skills: organizing an argument, drafting,
+Over the years that's meant for me writing [journal articles](https://datavis.ca/papers)  on novel [graphical methods](https://www.datavis.ca/papers/#methods) and the [history of data visualization](https://www.datavis.ca/papers/#history)
+[book projects](https://friendly.github.io/books.html), and, now, this [blog](https://friendly.github.io/blog/).
+This body of work-- and what I had to do to "Get some writing done"--
+is all a happy cognitive family in some ways, the way siblings share a last name and a few
+mannerisms. In writing, they call on the same high-level core cognitive skills: organizing an argument, drafting,
 revising, cutting what doesn't earn its place. 
 
-But each is unhappy, or at least
+But each type of writing is unhappy, or at least
 difficult, in its own particular way -- an article has to survive reviewers looking
 for the hole in it, a book has to hold together across three hundred pages and
 eighteen months, a blog post has to earn the reader's attention in the first
-paragraph or lose it. (John McPhee's [*Draft No. 4: On the Writing
-Process*](https://us.macmillan.com/books/9780374537975/draftno4/) is the best
-book-length treatment I know of this same restlessness about how writing actually
-gets done.) Different shapes, same underlying process.
+paragraph or lose it. But more to my main point, each form of writing in my work
+involves a somewhat different cognitive skill-set, and often different set of software tools,
+each one a new wild horse needing to be tamed (understood) and put to work.[^RStuff]
 
-The core skills are probably fine for fiction or non-fiction, but,
+[^RStuff]: In an R environment, this includes R language changes (the `magrittr` pipe `%>%`
+giving way to the native pipe `|>`), tidyverse updates (`dplyr` and friends), `ggplot2`
+enhancements, and statistical modeling developments (HLMs, Bayesian methods) -- each with its
+own learning curve before it earns a place in the workflow.
+
+In this "thinking-about-my-writing-thinking", I'm drawn toJohn McPhee's [*Draft No. 4: On the Writing
+Process*](https://us.macmillan.com/books/9780374537975/draftno4/). It is the best
+book-length treatment I know of behind this same restlessness about how writing actually
+gets done. It takes different shapes in various modes of expression, but there striking similarities.
+It's about the tension and friction to move your writing (and software, graphics) closer to
+what satisfies you as work well done.
+
+The core skills are probably fine for fiction or non-technical non-fiction. But,
 as in my [Vis-MLM book](https://friendly.github.io/Vis-MLM-book/), and others before it
 (e.g., [*Discrete Data Analysis with R*](http://ddar.datavis.ca)),
 I can't help but think about graphical methods I use for data analysis and
-see how they actually work in the context I'm writing about. Most often, I can just 
-recall how I did this before, or find a new package that does it better.
-But often in this work I have to wear a Developer hat, because these methods are
+see how they actually work in the context I'm writing about. 
+
+Usually, I can just recall how I did this before, or find a new package that does it better.
+The latter involves a small detour: install the package, read the documentation, understand
+how to use it, incorporate into my writing and workflow.
+
+But often in this work I have to also wear a Developer hat, because these methods are
 new or existing ones suck: they don't allow me to do what I want to write about.
 This mean implementing and testing them, writing documentation, publishing to CRAN
 before I get back to "real work" and actually use them in my working draft.
@@ -155,9 +174,9 @@ or `"y"` (the points furthest from the mean of that coordinate), `"r"` (furthest
 in a residual plot), `"mahal"` (furthest from the bivariate centroid by Mahalanobis distance),
 or your own numeric vector -- Cook's distance, say -- with the largest `n` values labeled.
 
-None of that existed for `ggplot2`, though. Finding and labeling unusual points is another data step and `geom_*()`s
-you have to wire up yourself, one plot at a time--- every single time!
-heplots::noteworthy()`, and its `ggplot2`
+None of that existed for `ggplot2`, though. Finding and labeling unusual points is another data
+step and `geom_*()` you have to wire up yourself, one plot at a time -- every single time!
+`heplots::noteworthy()`, and its `ggplot2`
 layer `stat_noteworthy()` (still sitting in `dev/`), ports the same vocabulary -- `"mahal"`,
 `"x"`, `"y"`, `"r"`, or a Cook's-distance-style numeric vector -- into the grammar of graphics,
 so any `ggplot`, not just `car`'s own base-graphics functions, gets the same treatment. It's
@@ -168,23 +187,49 @@ outliers by Mahalanobis distance across the measured variables.
      purely a "would be nice" -- I only have the code and what it does, not the story of why
      it came up or whether it's shipping. -->
 
-## 🚧 Detour 2 — SLOW: MERGING TRAFFIC: chasing the perfect citation and the perfect image
+## 🚧 Detour 2 — SLOW: MERGING TRAFFIC: chasing the data, the perfect image or correct citation
 
-Historical papers -- [Guerry](https://www.datavis.ca/papers/guerry-STS241.pdf),
-[van Langren](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html),
-[Minard](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) -- run into a different kind
+My papers on data visualization history, for example on [Andre-Michel Guerry](https://www.datavis.ca/papers/guerry-STS241.pdf),
+[Michael Florent van Langren](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html), and
+[under-recognized heroes](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) -- run into a different kind
 of detour. There's a general theme and structure going in, but the devil is in the details
-of two recurring tasks.
+of several recurring tasks, each its' own kind of detour.
 
+### Data
+
+My philosophy of historical research often entails tracking down the data behind some great example.
+That could mean scraping from an historical document, or digitizing an image, itself implying another set of
+skills and tools to learn.
+
+Once I have the data, what should I do with it? I could just make it a dataset in my project, but if it is
+also worthwhile to others, I feel a push to put it into an R package, document it and include runnable examples.
+Many interesting historical data sets have found their way into the
+[`HistData` package](https://friendly.github.io/HistData/).
+
+Datasets related to graphical methods for multivariate data and my Vis-MLM book are included in
+the [`heplots`](https://friendly.github.io/heplots/), [`candisc`](https://friendly.github.io/candisc/),
+[`genridge`](https://friendly.github.io/genridge/) packages, and those related to categorical
+data analysis (and my `psy6136` course) are in [`vcdExtra`](https://friendly.github.io/vcdExtra/)
+and its parent [`vcd`](https://cran.r-project.org/package=vcd).
+
+To make these even easier to find and use, a number of these now use
+[`@concept`](https://roxygen2.r-lib.org/reference/tags-index-crossref.html) tags in the
+documentation, to make them searchable by content topics.
+
+
+
+### Images
 Finding reference images:
 
 * find the best reference images available;
 * make sure of sufficient resolution (online vs. print);
 * make careful note of the actual image source, for attribution, but also for
   licensing/permission. (This is tied to how the images you find are curated --
-  davidrumsey.com images, for instance, ship with files describing the exact source,
-  reference, and other attributes. Not every source is that considerate.)
+  [davidrumsey.com](https://www.davidrumsey.com/) images, for instance, ship with files
+  describing the exact source, reference, and other attributes. Not every source is that
+  considerate.)
 
+### Citations
 Tracking down citations -- often difficult in history:
 
 * see/find something worth citing;
@@ -201,21 +246,31 @@ you out of the sentence you were writing.
 ## 🚧 Detour 3 — MERGE CONFLICT AHEAD: keeping it all in sync
 
 The third kind of friction isn't about content at all -- it's about *where* the work
-lives.
+lives. I work on several computers: home and office desktops and a laptop. But
+also with students, research assistants and collaborators. The main points are:
 
-* Syncing work across machines should be frictionless, so you always have the most
-  recent version -- laptop, home desktop, office machine. Cloud alternatives (Dropbox,
-  iCloud, OneDrive, Google Drive) handle the simple case.
-* Using version control -- SVN, old-school, or git, which won by attrition -- is the
-  harder case, because it changes how you *think* about the work, not just where the
+* Syncing work across machines should be _frictionless_, so you always have the most
+  recent version, laptop, home desktop, office machine and with collaborators. 
+  Cloud alternatives (Dropbox,
+  iCloud, OneDrive, Google Drive) handle simple cases, but often introduce another source of friction.
+  
+* Using version control is one answer. In earlier days R development was centered on SVN and a lot of packages
+  were developed and maintained on [R-Forge](https://r-forge.r-project.org/), shortly to be retired. `git` became the answer,
+  but it is also cognitively somewhat harder,
+  because it changes how you *think* about the work, not just where the
   files sit:
   - who does what?
   - how do you comment on someone else's changes?
   - branches, or does everyone work on `main`?
-  - issues tracked on GitHub, or somewhere else?
+  - issues tracked directly on GitHub, or somewhere else (e.g, an `issues/` folder inside the repo)
 
 "Merge conflict" is the right sign for this detour twice over -- it's what git calls
-it, and it's exactly what it feels like.
+it, and it's exactly what it feels like. One way to handle
+
+<!--
+TODO: Find / create image of a sticky note attached to a monitor screen saying: "Did you commit & push?"
+  and another saying "Did you pull first?"
+-->  
 
 ## 🚧 Detour 4 — SEVERAL CREWS WORKING, NO COORDINATION: writing with AI across several sessions at once
 
@@ -303,8 +358,18 @@ stretch of road, is a lot of signs to read at once.
 
 ![The Vis-MLM book, active blog posts, and R package projects connected inside a stylized brain.](figures/brain-many-projects-v4.png){fig-align="center" width="90%"}
 
-[ADDED]
-However, with the idea of a garden of forking thoughts in mind you can think of pruning branches
+## Taming the horses
+
+
+What those detours and all those wild horses do in your head is to split your attention into
+possibly many pieces. Your attention is what you can give thought to and push further along the assembly line to **DONE** check mark somewhere. It is a finite mental resource, so all those pieces compete, like a bunch of toddlers
+in a childcare center asking: "Where's my snack?", "When can I play alone, just myself?"
+
+<!--
+[NOTES on this]
+
+The exploding brain metaphor suggests:
+With the idea of a garden of forking thoughts in mind you can think of pruning branches
 to keep the shape more orderly. 
 
 * I could give some task to an RA, as I very often did in writing Vis-MLM. This was often at a
@@ -313,7 +378,11 @@ to keep the shape more orderly.
 
 * If using AI I could often seek information, guidance, or even suggestions and solutions for
   technical stuff (generalizing a function, writing the documentation, ...)
-  
+-->
+
+
+
+
 
 ## How could AI help?
 
