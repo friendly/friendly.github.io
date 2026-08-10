@@ -10,9 +10,9 @@ draft: true
 
 ![A writer working at two computer screens as a herd of horses rushes past his desk.](figures/tired-horses-header-v1.png){fig-align="center" width="100%"}
 
-> 🎵 All the tired horses in the sun /
->    How am I supposed to get any riding done? /
->    Mm-mm, mm-mm 🎵
+> | 🎵 All the tired horses in the sun
+> |    How am I supposed to get any riding done?
+> |    Mm-mm, mm-mm 🎵
 >
 > --- Bob Dylan, 1970
 
@@ -155,8 +155,9 @@ or `"y"` (the points furthest from the mean of that coordinate), `"r"` (furthest
 in a residual plot), `"mahal"` (furthest from the bivariate centroid by Mahalanobis distance),
 or your own numeric vector -- Cook's distance, say -- with the largest `n` values labeled.
 
-None of that existed for `ggplot2`, though, where labeling unusual points is just another geom
-you have to wire up yourself, one plot at a time. `heplots::noteworthy()`, and its `ggplot2`
+None of that existed for `ggplot2`, though. Finding and labeling unusual points is another data step and `geom_*()`s
+you have to wire up yourself, one plot at a time--- every single time!
+heplots::noteworthy()`, and its `ggplot2`
 layer `stat_noteworthy()` (still sitting in `dev/`), ports the same vocabulary -- `"mahal"`,
 `"x"`, `"y"`, `"r"`, or a Cook's-distance-style numeric vector -- into the grammar of graphics,
 so any `ggplot`, not just `car`'s own base-graphics functions, gets the same treatment. It's
