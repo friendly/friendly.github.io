@@ -1,6 +1,8 @@
-# Ridgeline commit-activity timeline (superseded "option B" small-multiples --
-# same underlying idea, one row per project on a shared week axis, but drawn
-# as overlapping ridges instead of separate panels).
+# Ridgeline commit-activity timeline, weighted by files changed instead of
+# commit count -- companion to commits-vis.R. Same chart shape and reading,
+# different metric: a single big-diff commit (e.g. an image/PDF-heavy commit
+# in Vis-MLM-book) counts for a lot more here than in the commit-count
+# version, where it's just one commit like any other.
 #
 # HistData is excluded: only active at the very start and very end of the
 # window, not part of the ongoing juggling act this chart is about. Row order
@@ -19,11 +21,6 @@ library(here)
 infile <- here("blog/drafts/tired-horses/data/commit-history.rds")
 commits <- readRDS(infile) |>
   filter(repo != "HistData")
-
-# what's there?
-names(commits)
-
-# files_changed-weighted version: commits-vis-files.R
 
 # Chrome from the dataviz skill's reference instance (palette.md); categorical
 # fill order (slots 1-6) so overlapping ridges stay tellable apart -- this is
@@ -46,43 +43,40 @@ ink_muted   <- "#898781"
 grid_line   <- "#e1e0d9"
 surface     <- "#fcfcfb"
 
-# Weekly commit count per repo, with explicit zeros for silent weeks -- a
-# missing row and a zero-commit week must look different (a real gap, not a
-# hole in the data).
+# Weekly files-changed total per repo (sum, not count), with explicit zeros
+# for silent weeks -- a missing row and a zero-activity week must look
+# different (a real gap, not a hole in the data).
 weekly <- commits %>%
   mutate(week_start = as.Date(week_start)) %>%
-  count(repo, week_start, name = "n")
+  group_by(repo, week_start) %>%
+  summarise(n = sum(files_changed), .groups = "drop")
 
 all_weeks <- seq(min(weekly$week_start), max(weekly$week_start), by = "week")
 
 weekly <- weekly %>%
   complete(repo = row_order, week_start = all_weeks, fill = list(n = 0))
 
-# Ridge height is normalized per repo (0-1, own max = 1): raw counts range
-# from ~20/week (heplots) to ~70/week (vcdExtra, Vis-MLM-book), and plotting
-# those directly would flatten the quieter projects to invisible slivers.
-# The point of a ridgeline here is *when*, not relative volume -- that's
-# still carried by the per-row total-commits label, as in the small-multiples
-# version.
+# Ridge height is normalized per repo (0-1, own max = 1), same reasoning as
+# commits-vis.R: raw weekly files-changed totals vary far more here than raw
+# commit counts do (a single big commit can dwarf a whole quiet week
+# elsewhere), so plotting un-normalized would flatten everything but the one
+# tallest spike. The point of a ridgeline here is still *when*, not relative
+# volume -- that's carried by the per-row total-files label instead.
 #
-# Total commits per repo goes into the row label itself, not a floating text
-# layer -- a tall peak can cover an overlaid label, but it can't cover the
-# axis. Row colors are keyed to the plain repo name so they still line up
+# Total files changed per repo goes into the row label itself, not a floating
+# text layer -- a tall peak can cover an overlaid label, but it can't cover
+# the axis. Row colors are keyed to the plain repo name so they still line up
 # after the label gets the count appended.
 #
-totals <- commits %>% count(repo, name = "total")
+totals <- commits %>% group_by(repo) %>% summarise(total = sum(files_changed), .groups = "drop")
 total_by_repo <- setNames(totals$total[match(row_order, totals$repo)], row_order)
 
-# Plain element_text (not ggtext::element_markdown -- tried it, but ggtext
-# 0.1.2 predates ggplot2 4.0's theme-element rewrite and silently drops the
-# markdown class whenever the element is merged/inherited, e.g. via
-# `theme_minimal() + theme(axis.text.y = element_markdown())`; it rendered
-# literal "**...**"/"&nbsp;" instead of parsing them). Plain text preserves
-# leading spaces fine, so indentation alone -- no bold -- carries the
-# hierarchy: top-level flush left, nested packages indented under their
-# parent project.
+# Plain element_text (not ggtext::element_markdown -- see commits-vis.R for
+# why: ggtext 0.1.2 silently drops the markdown class under ggplot2 4.0's
+# theme-element rewrite). Indentation alone carries the hierarchy: top-level
+# flush left, nested packages indented under their parent project.
 row_labels <- setNames(vapply(row_order, function(r) {
-  label <- paste0(short_name[[r]], "  (", total_by_repo[[r]], ")")
+  label <- paste0(short_name[[r]], "  (", format(total_by_repo[[r]], big.mark = ","), ")")
   if (r %in% top_level) label else paste0("    ", label)
 }, character(1)), row_order)
 
@@ -97,15 +91,14 @@ weekly <- weekly %>%
 
 p <- ggplot(weekly, aes(x = week_start, y = repo, height = height, fill = fill_key)) +
   # alpha < 1 on fill only (outline stays solid) so overlap between adjacent
-  # rows -- e.g. heplots' peak bleeding into candisc's row -- reads as a
-  # blend instead of one ridge silently occluding the other.
+  # rows reads as a blend instead of one ridge silently occluding the other.
   geom_ridgeline(scale = 1.4, color = surface, linewidth = 0.5, alpha = 0.7) +
   scale_fill_manual(values = row_fill, guide = "none") +
   scale_x_date(date_breaks = "2 months", date_labels = "%b %Y", expand = expansion(mult = c(0.01, 0.02))) +
   scale_y_discrete(expand = expansion(add = c(0.3, 1.1))) +
   labs(
-    title = "All the Wild Repos",
-    subtitle = "Weekly commit activity, 2025-09-01 to present -- grouped by project",
+    title = "All the Wild Repos, by Files Touched",
+    subtitle = "Weekly files-changed volume, 2025-09-01 to present -- grouped by project",
     x = NULL, y = NULL
   ) +
   theme_minimal(base_size = 12) +
@@ -123,7 +116,7 @@ p <- ggplot(weekly, aes(x = week_start, y = repo, height = height, fill = fill_k
     plot.margin       = margin(t = 10, r = 16, b = 8, l = 8)
   )
 
-outfile <- here("blog/drafts/tired-horses/figures/commits-ridgeline.png")
+outfile <- here("blog/drafts/tired-horses/figures/commits-ridgeline-files.png")
 dir.create(dirname(outfile), showWarnings = FALSE)
 ggsave(outfile, p, width = 9, height = 7, dpi = 150, bg = surface)
 

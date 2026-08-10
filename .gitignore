@@ -3,6 +3,7 @@
 .Rdata
 .httr-oauth
 .DS_Store
+Rplots.pdf
 .quarto
 /.quarto/
 *.knit.md
