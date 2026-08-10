@@ -131,6 +131,14 @@ as annotation (e.g., a thin marker row at the bottom showing "which project
 was most active this week") could reinforce the post's point without a second
 full chart.
 
+## Public gist
+
+`pull-commit-history.R` published as a standalone public gist (2026-08-10):
+<https://gist.github.com/friendly/22b0ce148eaa2318fafd74526a155eea> -- link to
+use for a BlueSky mention and/or to cite from the tired-horses post itself
+alongside the ridgeline figures (`figures/commits-ridgeline.png`,
+`figures/commits-ridgeline-files.png`).
+
 ## Still to decide / do
 
 - Granularity: weekly, confirmed.
