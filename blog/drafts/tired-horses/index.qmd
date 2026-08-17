@@ -250,7 +250,7 @@ To make these even easier to find and use, a number of these now use
 [`@concept`](https://roxygen2.r-lib.org/reference/tags-index-crossref.html) tags in the
 documentation, to make them searchable by content topics.
 
-In a minor way, this problem also found its way into `Vis-MLM`. I use the (`palmerpenguins`)[]
+In a minor way, this problem also found its way into `Vis-MLM`. I use the [`palmerpenguins`](https://allisonhorst.github.io/palmerpenguins/)
 dataset for many examples throughout the book. But this is flawed by having variable
 names like `bill_length_mm` that include units I wouldn't want to use in graphs; and also 
 missing cases that needed to be excluded in every example. My solution was to create
@@ -271,7 +271,7 @@ involves another set of tasks.
 This is tied to how the images you find are curated:
 [davidrumsey.com](https://www.davidrumsey.com/) images, for instance, ship with files describing the exact source, reference, and other attributes. I can download one as a `.zip` file with everything there. 
 
-Not every source is that considerate. I frequently find French material on [`Gallica`](),
+Not every source is that considerate. I frequently find French material on [`Gallica`](https://gallica.bnf.fr/),
 but also in ...
 
 ### Citations
