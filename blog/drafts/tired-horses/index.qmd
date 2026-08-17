@@ -11,7 +11,7 @@ draft: true
 ![A writer working at two computer screens as a herd of horses rushes past his desk.](figures/tired-horses-header-v1.png){fig-align="center" width="100%"}
 
 > | 🎵 All the tired horses in the sun
-> |    How am I supposed to get any riding done?
+> |    How'm I supposed to get any riding done?
 > |    Mm-mm, mm-mm 🎵
 >
 > --- Bob Dylan, 1970
@@ -19,13 +19,13 @@ draft: true
 When I write, my subconscious often thinks about the **writing process**: what it takes to "Get Some Writing Done".
 It's not simply about putting words down on a page, or typing them into an editor
 or word processor window. Your cognitive focus (your **attention**) on the task often has to deal
-with interruptions in the flow of ideas -> final product. The interruptions are like Bob Dylan's Wild Horses;
+with interruptions in the flow of ideas -> tasks-to-do -> final product. The interruptions are like Bob Dylan's Wild Horses;
 they are detours along the path to getting it done, DONE, DONE!!!.
 
 Over the years that's meant for me writing [journal articles](https://datavis.ca/papers)  on novel [graphical methods](https://www.datavis.ca/papers/#methods) and the [history of data visualization](https://www.datavis.ca/papers/#history)
 [book projects](https://friendly.github.io/books.html), and, now, this [blog](https://friendly.github.io/blog/).
 This body of work-- and what I had to do to "Get some writing done"--
-is all a happy cognitive family in some ways, the way siblings share a last name and a few
+is all a happy cognitive family, all alike in some ways, the way siblings share a last name and a few
 mannerisms. In writing, they call on the same high-level core cognitive skills: organizing an argument, drafting,
 revising, cutting what doesn't earn its place. 
 
@@ -33,7 +33,9 @@ But each type of writing is unhappy, or at least
 difficult, in its own particular way -- an article has to survive reviewers looking
 for the hole in it, a book has to hold together across three hundred pages and
 eighteen months, a blog post has to earn the reader's attention in the first
-paragraph or lose it. But more to my main point, each form of writing in my work
+paragraph or lose it. 
+
+But more to my main point, each form of writing in _my_ work
 involves a somewhat different cognitive skill-set, and often different set of software tools,
 each one a new wild horse needing to be tamed (understood) and put to work.[^RStuff]
 
@@ -42,17 +44,17 @@ giving way to the native pipe `|>`), tidyverse updates (`dplyr` and friends), `g
 enhancements, and statistical modeling developments (HLMs, Bayesian methods) -- each with its
 own learning curve before it earns a place in the workflow.
 
-In this "thinking-about-my-writing-thinking", I'm drawn toJohn McPhee's [*Draft No. 4: On the Writing
+In this "thinking-about-my-writing-thinking", I'm drawn to John McPhee's [*Draft No. 4: On the Writing
 Process*](https://us.macmillan.com/books/9780374537975/draftno4/). It is the best
-book-length treatment I know of behind this same restlessness about how writing actually
-gets done. It takes different shapes in various modes of expression, but there striking similarities.
+book-length treatment I know of behind this same restlessness and occasional frustration about how writing actually
+gets done. It takes different shapes in various modes of expression, but there are striking similarities.
 It's about the tension and friction to move your writing (and software, graphics) closer to
-what satisfies you as work well done.
+what satisfies you as work well done and can be proud of.
 
 The core skills are probably fine for fiction or non-technical non-fiction. But,
 as in my [Vis-MLM book](https://friendly.github.io/Vis-MLM-book/), and others before it
 (e.g., [*Discrete Data Analysis with R*](http://ddar.datavis.ca)),
-I can't help but think about graphical methods I use for data analysis and
+I can't help but think about the *graphical methods* I use for data analysis and
 see how they actually work in the context I'm writing about. 
 
 Usually, I can just recall how I did this before, or find a new package that does it better.
@@ -62,8 +64,8 @@ how to use it, incorporate into my writing and workflow.
 But often in this work I have to also wear a Developer hat, because these methods are
 new or existing ones suck: they don't allow me to do what I want to write about.
 This mean implementing and testing them, writing documentation, publishing to CRAN
-before I get back to "real work" and actually use them in my working draft.
--- this writing process is never just "writing". It's more like a path of stages, perhaps looping backwards:
+before I get back to "real work" and actually use them in my working draft --
+this writing process is never just "writing". It's more like a path of stages, perhaps looping backwards:
 
 
 ```{mermaid}
@@ -158,17 +160,45 @@ maintainer. What started as "make one figure for one chapter" ended as an ongoin
 maintenance commitment. That's the shape of this kind of detour: it doesn't stay the
 size it started at.
 
-### Noteworthy points
+### `tinyplot`: A Road Not Taken
 
-A smaller but more consequential example is the idea of a general mechanism for flagging and
+In *Vis-MLM*, I've been somewhat graphic-core-agnostic: I use both base R graphics
+included in my packages, and notably the excellent [`car` package](https://cran.r-project.org/package=car) for its
+rich linear model graphics, but also `ggplot2`-based methods which I generally prefer
+for its coherent structure and extensibility.
+However, base R graphics are still a considerable chore for things I want to do, but
+are quite awkward--- small things like composing a legend with different point symbols
+and colors.
+<!-- TODO: small example of setting `pch` and `clr` in a `plot()` via indexing vectors. -->
+
+About half-way through writing, a new base-R kid arrived on the block: [`tinyplot`](https://grantmcdermott.com/tinyplot/), a lightweight,
+zero-dependency alternative from Grant McDermott that offers automatic grouping (`y ~ x | group`),
+easy built-in legends, built-in themes and small-multiples faceting akin to `ggplot2`. 
+The [`tinyplot` Gallery](https://grantmcdermott.com/tinyplot/vignettes/gallery.html)
+gives some sense of what it can do.
+
+It is now nearly everything I could have wanted for the base-R graphics in the book,
+but alas too late to consider. This would have entailed revising roughly ~70 example scripts,
+and all the text across many chapters that used those. That detour would have set me back
+a long way, so I bid goodbye to that otherwise attractive road. That road will have to  wait
+until a 2$^{nd}$ edition.
+
+
+### Noteworthy Points: A Path Delayed
+
+A smaller but more consequential example is the idea of a _general mechanism_ for flagging and
 labeling "noteworthy" observations in a fitted model or a graphic display -- outliers, large
 residuals, influential points, and so on -- often crucial to understanding and explaining what
-a plot is showing. You get a hint of this already in the diagnostic panels produced by
-`plot(lm(y ~ x1 + x2 + ...))`, where unusual points get automatically labeled by case name --
-but only if your data frame actually has `rownames()`.
+a plot is showing. 
 
-This is one of the most endearing aspects of the `car` package. Its plotting functions --
-`scatterplot()`, `residualPlots()`, `influencePlot()`, and others -- all accept an
+You get a hint of this already in the diagnostic panels produced by
+`plot(lm(y ~ x1 + x2 + ...))`, where unusual points get _automatically_ labeled by case name
+(but only if your data frame actually has `rownames()`). `plot.lm()` isn't beautiful, but it gets the job done
+and you don't have to think much about it, other than select `which` plot types to show,
+and the `id.n` number of points to identify.
+
+This facility is one of the most endearing aspects of the [`car` package](https://cran.r-project.org/package=car). Its plotting functions --
+`scatterplot()`, `residualPlots()`, `influencePlot()`, and others -- *all* accept an
 `id = list(n=, method=, ...)` argument that handles this consistently. `method=` can be `"x"`
 or `"y"` (the points furthest from the mean of that coordinate), `"r"` (furthest from zero, as
 in a residual plot), `"mahal"` (furthest from the bivariate centroid by Mahalanobis distance),
@@ -176,16 +206,20 @@ or your own numeric vector -- Cook's distance, say -- with the largest `n` value
 
 None of that existed for `ggplot2`, though. Finding and labeling unusual points is another data
 step and `geom_*()` you have to wire up yourself, one plot at a time -- every single time!
-`heplots::noteworthy()`, and its `ggplot2`
-layer `stat_noteworthy()` (still sitting in `dev/`), ports the same vocabulary -- `"mahal"`,
+And worse: because I generally want to explain to the reader how such plots are constructed,
+so they can use them in their work, it takes another loop in the cognitive diagram @fig-writing-detours.
+
+I wrote some code for this in `heplots::noteworthy()`, and its `ggplot2`
+layer `stat_noteworthy()`. It ports the same vocabulary -- `"mahal"`,
 `"x"`, `"y"`, `"r"`, or a Cook's-distance-style numeric vector -- into the grammar of graphics,
-so any `ggplot`, not just `car`'s own base-graphics functions, gets the same treatment. It's
+so any `ggplot`, similar to `car`'s own base-graphics functions, could get the same treatment. It's
 been tested against `peng`, heplots' Palmer-Penguins-style dataset, flagging multivariate
 outliers by Mahalanobis distance across the measured variables.
 
-<!-- TODO(Michael): fill in where this actually mattered for the book, or whether it's still
-     purely a "would be nice" -- I only have the code and what it does, not the story of why
-     it came up or whether it's shipping. -->
+But getting this generally right-- so it worked in situations with a grouping variable,
+and in faceted displays turned out to be more difficult than my ggplot skills could satisfy.
+Another path put on hold, for the sake of "getting it DONE!"
+
 
 ## 🚧 Detour 2 — SLOW: MERGING TRAFFIC: chasing the data, the perfect image or correct citation
 
@@ -193,7 +227,7 @@ My papers on data visualization history, for example on [Andre-Michel Guerry](ht
 [Michael Florent van Langren](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html), and
 [under-recognized heroes](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) -- run into a different kind
 of detour. There's a general theme and structure going in, but the devil is in the details
-of several recurring tasks, each its' own kind of detour.
+of several recurring tasks, each its own kind of detour.
 
 ### Data
 
@@ -216,18 +250,29 @@ To make these even easier to find and use, a number of these now use
 [`@concept`](https://roxygen2.r-lib.org/reference/tags-index-crossref.html) tags in the
 documentation, to make them searchable by content topics.
 
+In a minor way, this problem also found its way into `Vis-MLM`. I use the (`palmerpenguins`)[]
+dataset for many examples throughout the book. But this is flawed by having variable
+names like `bill_length_mm` that include units I wouldn't want to use in graphs; and also 
+missing cases that needed to be excluded in every example. My solution was to create
+a clean version, `heplot::peng` to rid myself of this wild pony.
+In the meantime, some of this has been cleaned-up, now as `datasets::penguins`.
+
 
 
 ### Images
-Finding reference images:
+For historical work, finding suitable reference images to comment on or try to reproduce,
+involves another set of tasks.
 
-* find the best reference images available;
+* find the best reference images available; there are often a bunch available online;
 * make sure of sufficient resolution (online vs. print);
 * make careful note of the actual image source, for attribution, but also for
-  licensing/permission. (This is tied to how the images you find are curated --
-  [davidrumsey.com](https://www.davidrumsey.com/) images, for instance, ship with files
-  describing the exact source, reference, and other attributes. Not every source is that
-  considerate.)
+  licensing/permission.
+  
+This is tied to how the images you find are curated:
+[davidrumsey.com](https://www.davidrumsey.com/) images, for instance, ship with files describing the exact source, reference, and other attributes. I can download one as a `.zip` file with everything there. 
+
+Not every source is that considerate. I frequently find French material on [`Gallica`](),
+but also in ...
 
 ### Citations
 Tracking down citations -- often difficult in history:
@@ -265,7 +310,7 @@ also with students, research assistants and collaborators. The main points are:
   - issues tracked directly on GitHub, or somewhere else (e.g, an `issues/` folder inside the repo)
 
 "Merge conflict" is the right sign for this detour twice over -- it's what git calls
-it, and it's exactly what it feels like. One way to handle
+it, and it's exactly what it feels like.
 
 <!--
 TODO: Find / create image of a sticky note attached to a monitor screen saying: "Did you commit & push?"
