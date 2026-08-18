@@ -8,7 +8,7 @@ categories: [writing, workflow, R packages]
 draft: true
 ---
 
-![A writer working at two computer screens as a herd of horses rushes past his desk.](figures/tired-horses-header-v1.png){fig-align="center" width="100%"}
+![A writer working at two computer screens as a herd of horses rushes past his desk, distracting him from the task at hand.](figures/tired-horses-header-v1.png){fig-align="center" width="100%"}
 
 > | 🎵 All the tired horses in the sun
 > |    How'm I supposed to get any riding done?
@@ -151,6 +151,8 @@ have a limitation, or worse, a bug. Then there's a decision to make:
 
 ### `ggbiplot`: The Fork Taken
 
+![ Enhanced `ggbiplot` of the crime data, grouping the states by region and adding data ellipses.](figures/fig-crime-biplot3-1.png){fig-align="right" width="40%"}
+
 The clearest example is `ggbiplot`. Biplots show a 2D view of $n$-dimensional data in
 a single display, observations and variables together -- exactly the kind of thing
 that shows up constantly in the book. The existing package didn't do quite what I
@@ -168,8 +170,24 @@ rich linear model graphics, but also `ggplot2`-based methods which I generally p
 for its coherent structure and extensibility.
 However, base R graphics are still a considerable chore for things I want to do, but
 are quite awkward--- small things like composing a legend with different point symbols
-and colors.
-<!-- TODO: small example of setting `pch` and `clr` in a `plot()` via indexing vectors. -->
+and colors. To plot points colored and shaped by group, you build the `col` and `pch`
+values passed to `plot()`
+by indexing a small vector with the grouping factor -- and then repeat the same
+two vectors, in the same order but without indexing, to build the legend by hand:
+
+```r
+grp <- factor(iris$Species)
+clr <- c("steelblue", "darkorange", "forestgreen")
+pch <- c(16, 17, 15)
+
+plot(iris$Sepal.Length, iris$Sepal.Width,
+     col = clr[grp], pch = pch[grp],
+     xlab = "Sepal Length", ylab = "Sepal Width")
+legend("topright", legend = levels(grp), col = clr, pch = pch)
+```
+
+Get the order of `levels(grp)` wrong relative to `clr`/`pch` and the legend quietly lies
+about which color goes with which group.
 
 About half-way through writing, a new base-R kid arrived on the block: [`tinyplot`](https://grantmcdermott.com/tinyplot/), a lightweight,
 zero-dependency alternative from Grant McDermott that offers automatic grouping (`y ~ x | group`),
@@ -185,6 +203,8 @@ until a 2$^{nd}$ edition.
 
 
 ### Noteworthy Points: A Path Delayed
+
+![Biplot of dimensions 3-4 of the Penguin data. Three outliers---noteworthy birds---stand out in this view.](figures/peng-out-biplot-34.png){fig-align="right" width="40%"}
 
 A smaller but more consequential example is the idea of a _general mechanism_ for flagging and
 labeling "noteworthy" observations in a fitted model or a graphic display -- outliers, large
@@ -216,16 +236,18 @@ so any `ggplot`, similar to `car`'s own base-graphics functions, could get the s
 been tested against `peng`, heplots' Palmer-Penguins-style dataset, flagging multivariate
 outliers by Mahalanobis distance across the measured variables.
 
-But getting this generally right-- so it worked in situations with a grouping variable,
+But getting this _generally right_-- so it worked in situations with a grouping variable,
 and in faceted displays turned out to be more difficult than my ggplot skills could satisfy.
 Another path put on hold, for the sake of "getting it DONE!"
 
 
 ## 🚧 Detour 2 — SLOW: MERGING TRAFFIC: chasing the data, the perfect image or correct citation
 
+
 My papers on data visualization history, for example on [Andre-Michel Guerry](https://www.datavis.ca/papers/guerry-STS241.pdf),
-[Michael Florent van Langren](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html), and
-[under-recognized heroes](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) -- run into a different kind
+[Michael Florent van Langren](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html), 
+[Florence Nightingale](https://www.idescat.cat/sort/sort451/45.1.0.friendly-andrews.pdf) and
+[under-recognized heroes](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) run into a different kind
 of detour. There's a general theme and structure going in, but the devil is in the details
 of several recurring tasks, each its own kind of detour.
 
@@ -236,9 +258,10 @@ That could mean scraping from an historical document, or digitizing an image, it
 skills and tools to learn.
 
 Once I have the data, what should I do with it? I could just make it a dataset in my project, but if it is
-also worthwhile to others, I feel a push to put it into an R package, document it and include runnable examples.
-Many interesting historical data sets have found their way into the
-[`HistData` package](https://friendly.github.io/HistData/).
+also worthwhile to others, I feel an urge to put it into an R package, document it and include runnable examples, perhaps as a challenge to do it better.
+Many interesting historical data sets from this found their way into the
+[`HistData` package](https://friendly.github.io/HistData/). I was pleased when John Russell
+chose a number of these for his [30DayChartChallenge](https://github.com/drjohnrussell/30DayChartChallenge) submissions in 2025.
 
 Datasets related to graphical methods for multivariate data and my Vis-MLM book are included in
 the [`heplots`](https://friendly.github.io/heplots/), [`candisc`](https://friendly.github.io/candisc/),
@@ -257,33 +280,67 @@ missing cases that needed to be excluded in every example. My solution was to cr
 a clean version, `heplot::peng` to rid myself of this wild pony.
 In the meantime, some of this has been cleaned-up, now as `datasets::penguins`.
 
-
-
 ### Images
+
+![Initial design of Nightingale’s rose diagram of deaths in the Crimean war, using a linear scale for deaths.
+The two diagrams at the top show
+relative deaths from zymotic diseases, wounds (in red) and other causes (black). The bottom left diagram
+shows the annual rate of mortality at Scutari from October 1854 to June 1855. _Source_: Nightingale (1858b,
+Diagram K, p. 47](figures/Nightingale-1858b-K.png){fig-align="center" width="70%"}
+
 For historical work, finding suitable reference images to comment on or try to reproduce,
-involves another set of tasks.
+involves another set of tasks. Some of these are mundane that could be given to a research assistant
+(human or otherwise), but others are more challenging. The conceptually simple, but often
+time-consuming ones are:
 
 * find the best reference images available; there are often a bunch available online;
-* make sure of sufficient resolution (online vs. print);
+* make sure they are of sufficient resolution (online vs. print);
 * make careful note of the actual image source, for attribution, but also for
   licensing/permission.
   
-This is tied to how the images you find are curated:
+The work for me is closely tied to how the images I  find are curated: The wonderful collection of
 [davidrumsey.com](https://www.davidrumsey.com/) images, for instance, ship with files describing the exact source, reference, and other attributes. I can download one as a `.zip` file with everything there. 
 
 Not every source is that considerate. I frequently find French material on [`Gallica`](https://gallica.bnf.fr/),
-but also in ...
+but also in the German
+[Staatsbibliothek, Berlin](https://digital.staatsbibliothek-berlin.de/) digital collection, the
+[British Library](https://www.bl.uk/collection), and occasionally the
+[Library of Congress](https://www.loc.gov/collections/).
+
+
+But there is another delicious but labor-intensive
+aspect here: trying to find earlier sources, "drafts", of an important
+data graphic, to trace an author's development of the data shown and its representation
+as an image in order to answer perhaps the most important question, "What were they thinking?"
+
+In [joint work with RJ Andrews](https://www.idescat.cat/sort/sort451/45.1.0.friendly-andrews.pdf), we tracked down the ideas that led Florence Nightingale to construct her famous 1859 radial diagram of deaths of
+British soldiers in the Crimean War of 1853--1856. We discovered that this graphic form 
+actually originated with André-Michel Guerry's 1829 depiction of
+meteorological (temperature, barometric pressure) and medical (causes of hospital admissions)  phenomena.
+He used this form to show how these could be portrayed as cyclical phenomena, over months of the year,
+hours of the day, days of the week and so forth.
+
+But her first 1858 version of this iconic graph, shown above (the "bat wing diagram")
+was a graphic failure. She used a linear scale for deaths here.
+She quickly realized that although the data were correct, this graph was deceptive,
+because the eye tends to perceive the _area_ rather than _length_ in such displays.
+Consequently, the well-known version used a square-root scale for the number of deaths
+in each month, so that the area of the wedges would proportional to deaths, and
+represent the data more faithfully to our eyes and brains.
 
 ### Citations
-Tracking down citations -- often difficult in history:
+A minor aspect here, but one that relates to the concurrent, attention-consuming tasks
+is that of tracking down citations, which pervades academic writing:
 
-* see/find something worth citing;
-* open the reference manager (Jabref, Zotero, ...) to check whether it's already
+* Search online for the reference. There are often several sources,
+* Find something worth citing;
+* Open the reference manager ([`Jabref`](https://www.jabref.org/), [`Zotero`](https://www.zotero.org/), ...) to check whether it's already
   there;
 * if not, back to search, find it, import it;
 * copy the BibTeX entry and merge it into the project's working `references.bib`.
   (A LaTeX workflow can shortcut this by pointing at several system-wide BibTeX
   databases at once; Zotero may make the merge step unnecessary altogether.)
+
 
 Same tension either way: the detour is legitimate and necessary, and it still pulls
 you out of the sentence you were writing.
