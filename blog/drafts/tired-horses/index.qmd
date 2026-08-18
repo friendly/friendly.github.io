@@ -526,11 +526,17 @@ in a childcare center asking: "Where's my snack?", "When can I play alone, just 
 Think of it less as a single line of stages and more as a tree: every open thought is a
 branch, and every detour -- a package bug, a citation chase, a merge conflict, a fourth AI
 window -- is a branch off a branch. The examples earlier in this post are really examples of
-what happens to a branch once it's grown. `ggbiplot` was a small branch (fix one figure for
+what happens to a branch once it's grown. 
+
+* `ggbiplot` was a small branch (fix all figures for
 one chapter) that I kept watering until it became a permanent limb of the tree -- ongoing
-maintenance, not a detour anymore. `tinyplot` was a branch I looked at, admired, and cut, not
+maintenance, not a detour anymore. 
+
+* `tinyplot` was a branch I looked at, admired, and cut, not
 because it was a bad branch but because keeping it alive meant re-growing seventy other
-branches around it. `heplots::noteworthy()`'s `ggplot2` layer is a branch still on the tree,
+branches around it. 
+
+* `heplots::noteworthy()`'s `ggplot2` layer is a branch still on the tree,
 leafed out partway, just dormant.
 
 ```{mermaid}
