@@ -16,15 +16,15 @@ draft: true
 >
 > --- Bob Dylan, 1970
 
-## The Witing Process
+## The Writing Process
 
 When I write, my subconscious often thinks about the **writing process**: what it takes to "Get Some Writing Done".
 It's not simply about putting words down on a page, or typing them into an editor
 or word processor window. Your cognitive focus (your **attention**) on the task often has to deal
-with interruptions in the flow of ideas -> tasks-to-do -> final product. The interruptions are like Bob Dylan's Wild Horses;
-they are detours along the path to getting it on the path draft -> done -> DONE -> FINALLY DONE!!!.
+with interruptions in the flow of ideas → tasks-to-do → final product. The interruptions are like Bob Dylan's Wild Horses;
+they are detours along the path to getting it on the path draft → done → DONE → FINALLY DONE!!!.
 
-Over the years that's meant for me writing [journal articles](https://datavis.ca/papers)  on novel [graphical methods](https://www.datavis.ca/papers/#methods) and the [history of data visualization](https://www.datavis.ca/papers/#history)
+Over the years that's meant for me writing [journal articles](https://datavis.ca/papers)  on novel [graphical methods](https://www.datavis.ca/papers/#methods), the [history of data visualization](https://www.datavis.ca/papers/#history), also
 [book projects](https://friendly.github.io/books.html), and, now, this [blog](https://friendly.github.io/blog/).
 This body of work-- and what I had to do to "Get some writing done"--
 is all a happy cognitive family, all alike in some ways, the way siblings share a last name and a few
@@ -316,6 +316,8 @@ and also in the German
 figure out how to get what I want.
 
 
+### What were they thinking?
+
 ![Initial design of Nightingale’s rose diagram of deaths in the Crimean war, using a linear scale for deaths.
 The two diagrams at the top show
 relative deaths from zymotic diseases, wounds (in red) and other causes (black). The bottom left diagram
@@ -361,39 +363,46 @@ you out of the sentence you were writing.
 
 ## 🚧 Detour 3 — MERGE CONFLICT AHEAD: keeping it all in sync
 
+![Still from Heaven King video](figures/watch-me-diff.png){fig-align="center" width="60%"}
+
 The third kind of friction isn't about content at all -- it's about *where* the work
 lives. I work on several computers: home and office desktops and a laptop. But
 also with students, research assistants and collaborators. The main points are:
 
 * Syncing work across machines should be _frictionless_, so you always have the most
   recent version, laptop, home desktop, office machine and with collaborators. 
-  Cloud alternatives (Dropbox,
+  Cloud alternatives (such as Dropbox,
   iCloud, OneDrive, Google Drive) handle simple cases, but often introduce another source of friction.
+  For example in my Vis-MLM book (and this website), I found these projects couldn't live on 
+  Dropbox, because of a [clash with Quarto](https://friendly.github.io/blog/posts/2026-04-making-vis-mlm/) over permissions. 
   
-* Using version control is one answer. In earlier days R development was centered on SVN and a lot of packages
-  were developed and maintained on [R-Forge](https://r-forge.r-project.org/), shortly to be retired. `git` became the answer,
-  but it is also cognitively somewhat harder,
+::: {.float-right style="width: 30%;"}
+![](figures/git-sticky-notes-monitor-v2.png)
+:::
+
+* Using **version control** is one answer. In earlier days R development was centered on SVN and a lot of packages
+  were developed and maintained on [R-Forge](https://r-forge.r-project.org/), shortly to be retired. `git`
+  became the answer, but it is also cognitively somewhat harder,
   because it changes how you *think* about the work, not just where the
   files sit:
   - who does what?
   - how do you comment on someone else's changes?
-  - branches, or does everyone work on `main`?
-  - issues tracked directly on GitHub, or somewhere else (e.g, an `issues/` folder inside the repo)
+  - should you use branches, or does everyone work on `main`?
+  - should issues tracked directly on GitHub, or somewhere else (e.g, an `issues/` folder inside the repo)
+  - how do you mark work **DONE**, or take it off a **TODO** list?
 
 "Merge conflict" is the right sign for this detour twice over -- it's what git calls
-it, and it's exactly what it feels like.
-
-<!--
-TODO: Find / create image of a sticky note attached to a monitor screen saying: "Did you commit & push?"
-  and another saying "Did you pull first?"
--->  
+it, and it's exactly what it feels like. Jenny Bryan's [Happy Git and GitHub for the useR](https://happygitwithr.com/)
+provides a suite of learnable skills for key workflows that cover your most common tasks.
 
 ## 🚧 Detour 4 — SEVERAL CREWS WORKING, NO COORDINATION: writing with AI across several sessions at once
 
+![](figures/powershell-tabs.png){fig-align="center" width="90%"}
+
 This one's new, and it's the one I lived through writing *this very post*. Today
 alone: one AI session working through a statistics bug in `vcdExtra`, a second
-recording the derivation behind it in a separate project folder, a third -- this one
--- drafting a blog post about a stray idea the first two sessions produced. Three
+recording the mathematical derivation behind it in a separate project folder, then this one
+-- drafting a blog post about a stray idea the first two sessions produced. Three Claude tabs or
 windows, three separate conversations, none of them aware of the other two unless I
 carry the context across myself.
 
