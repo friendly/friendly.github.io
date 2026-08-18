@@ -4,7 +4,7 @@ subtitle: "How Am I Supposed to Get Any Writing Done? The Curses and Blessings o
 description: "Writing technical, code-dependent material usually pulls you into necessary detours -- fixing a package, chasing a citation, syncing across machines, juggling AI sessions -- and each detour can spawn its own. A cognitive look at where the friction actually comes from."
 author: "Michael Friendly"
 date: today
-categories: [writing, workflow, R packages]
+categories: [writing, workflow, R packages, attention]
 draft: true
 ---
 
@@ -16,11 +16,13 @@ draft: true
 >
 > --- Bob Dylan, 1970
 
+## The Witing Process
+
 When I write, my subconscious often thinks about the **writing process**: what it takes to "Get Some Writing Done".
 It's not simply about putting words down on a page, or typing them into an editor
 or word processor window. Your cognitive focus (your **attention**) on the task often has to deal
 with interruptions in the flow of ideas -> tasks-to-do -> final product. The interruptions are like Bob Dylan's Wild Horses;
-they are detours along the path to getting it done, DONE, DONE!!!.
+they are detours along the path to getting it on the path draft -> done -> DONE -> FINALLY DONE!!!.
 
 Over the years that's meant for me writing [journal articles](https://datavis.ca/papers)  on novel [graphical methods](https://www.datavis.ca/papers/#methods) and the [history of data visualization](https://www.datavis.ca/papers/#history)
 [book projects](https://friendly.github.io/books.html), and, now, this [blog](https://friendly.github.io/blog/).
@@ -38,6 +40,9 @@ paragraph or lose it.
 But more to my main point, each form of writing in _my_ work
 involves a somewhat different cognitive skill-set, and often different set of software tools,
 each one a new wild horse needing to be tamed (understood) and put to work.[^RStuff]
+From a cognitive perspective, this falls within the span of understanding _attention_
+mechanisms: what are the constraints? how to solve them?
+From a CS perspective, that can be construed as just a  "workflow" problem hiding inside what looks like a writing problem. Both of these aspects are the real subject of what follows.
 
 [^RStuff]: In an R environment, this includes R language changes (the `magrittr` pipe `%>%`
 giving way to the native pipe `|>`), tidyverse updates (`dplyr` and friends), `ggplot2`
@@ -151,7 +156,9 @@ have a limitation, or worse, a bug. Then there's a decision to make:
 
 ### `ggbiplot`: The Fork Taken
 
-![ Enhanced `ggbiplot` of the crime data, grouping the states by region and adding data ellipses.](figures/fig-crime-biplot3-1.png){fig-align="right" width="40%"}
+::: {.float-right style="width: 40%;"}
+![Enhanced `ggbiplot` of the crime data, grouping the states by region and adding data ellipses.](figures/fig-crime-biplot3-1.png)
+:::
 
 The clearest example is `ggbiplot`. Biplots show a 2D view of $n$-dimensional data in
 a single display, observations and variables together -- exactly the kind of thing
@@ -204,7 +211,9 @@ until a 2$^{nd}$ edition.
 
 ### Noteworthy Points: A Path Delayed
 
-![Biplot of dimensions 3-4 of the Penguin data. Three outliers---noteworthy birds---stand out in this view.](figures/peng-out-biplot-34.png){fig-align="right" width="40%"}
+::: {.float-right style="width: 40%;"}
+![Biplot of dimensions 3-4 of the Penguin data. Three outliers---noteworthy birds---stand out in this view.](figures/peng-out-biplot-34.png)
+:::
 
 A smaller but more consequential example is the idea of a _general mechanism_ for flagging and
 labeling "noteworthy" observations in a fitted model or a graphic display -- outliers, large
@@ -282,11 +291,6 @@ In the meantime, some of this has been cleaned-up, now as `datasets::penguins`.
 
 ### Images
 
-![Initial design of Nightingale’s rose diagram of deaths in the Crimean war, using a linear scale for deaths.
-The two diagrams at the top show
-relative deaths from zymotic diseases, wounds (in red) and other causes (black). The bottom left diagram
-shows the annual rate of mortality at Scutari from October 1854 to June 1855. _Source_: Nightingale (1858b,
-Diagram K, p. 47](figures/Nightingale-1858b-K.png){fig-align="center" width="70%"}
 
 For historical work, finding suitable reference images to comment on or try to reproduce,
 involves another set of tasks. Some of these are mundane that could be given to a research assistant
@@ -298,15 +302,25 @@ time-consuming ones are:
 * make careful note of the actual image source, for attribution, but also for
   licensing/permission.
   
-The work for me is closely tied to how the images I  find are curated: The wonderful collection of
-[davidrumsey.com](https://www.davidrumsey.com/) images, for instance, ship with files describing the exact source, reference, and other attributes. I can download one as a `.zip` file with everything there. 
+The work for me is closely tied to how the images I  find are curated: From the wonderful collection of
+[davidrumsey.com](https://www.davidrumsey.com/) images, for instance, I can download items with files describing the exact source, reference, and other attributes. I can download one as a `.zip` file with everything there. 
+This is the work of a master, a pioneering effort in digital philanthropy and open-access curation
+to historical data visualzation. Hey, you can now even search the images for a term, like "data",
+and find all those containing that somewhere.
 
 Not every source is that considerate. I frequently find French material on [`Gallica`](https://gallica.bnf.fr/),
-but also in the German
+and also in the German
 [Staatsbibliothek, Berlin](https://digital.staatsbibliothek-berlin.de/) digital collection, the
 [British Library](https://www.bl.uk/collection), and occasionally the
-[Library of Congress](https://www.loc.gov/collections/).
+[Library of Congress](https://www.loc.gov/collections/). But each one has its own quirks, to 
+figure out how to get what I want.
 
+
+![Initial design of Nightingale’s rose diagram of deaths in the Crimean war, using a linear scale for deaths.
+The two diagrams at the top show
+relative deaths from zymotic diseases, wounds (in red) and other causes (black). The bottom left diagram
+shows the annual rate of mortality at Scutari from October 1854 to June 1855. _Source_: Nightingale (1858b,
+Diagram K, p. 47)](figures/Nightingale-1858b-K.png){fig-align="center" width="70%"}
 
 But there is another delicious but labor-intensive
 aspect here: trying to find earlier sources, "drafts", of an important
@@ -402,12 +416,13 @@ genuinely new kind of detour sign, one that didn't exist a couple of years ago.
 
 ![A brain crowded with interconnected writing, coding, graphics, scheduling, and communication tasks.](figures/brain-many-tasks-v1.png){fig-align="center" width="70%"}
 
-None of these four detours is a problem in isolation. The problem is your brain running two or
-three of them at once, each with its own open window, a half-finished thought,
-marking something as a **TODO**, etc.
-There's something genuinely high-dimensional about the state you're holding.
+None of these four detours is a problem _in isolation_. The problem comes from your brain running two or
+three of them at once, each with its own open window(s) on your screen(s), a half-finished thought
+jotted down on a notepad,
+marking something in your text as a **TODO**, etc.
+There's something cognitively high-dimensional about the state your brain is holding.
 This is itself an interesting problem in cognition. I don't know if this has been studied,
-but I'd be willing to donate my brain to science, when I'm done with it. 
+so I'd be willing to donate my brain to science, when I'm done with it. 
 (Just hope it wouldn't travel around in a wooden box for as long as Einstein's)
 
 Here's the simplest example: have a thought, find the window that holds it on your computer, edit, or change it.
@@ -455,6 +470,15 @@ And that's before something *new* shows up uninvited -- a paper worth a second l
 that turns into an idea for a post, or an R package that looks worth trying, if it
 even fits how you already work. Four kinds of detour sign, all visible from the same
 stretch of road, is a lot of signs to read at once.
+
+Step back far enough and this is also a workflow problem, more than just a writing one. Each of the
+four detours is content-specific on the surface -- a package bug, a citation, a git
+conflict, an AI session mid-topic -- but what actually drains attention is the same
+underneath: keeping track of where a piece of work lives, what state it's in, and whether
+you already dealt with it in some other window ten minutes ago. 
+
+Call this "context management", "task switching", or just "workflow". It's a problem in its own right, distinct from the writing and distinct from the graphics, and it deserves to be treated as one
+instead of being absorbed silently into "the cost of doing the work."
 
 ### What this looked like while writing Vis-MLM
 

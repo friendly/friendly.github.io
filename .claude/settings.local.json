@@ -73,7 +73,12 @@
       "Bash(gh api *)",
       "Bash(C:/R/R-4.6.1/bin/Rscript.exe *)",
       "Bash(where Rscript)",
-      "Bash(npx --version)"
+      "Bash(npx --version)",
+      "Read(//c/Dropbox/incoming/Python/**)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Users/friendly/AppData/Local/Programs/**)",
+      "Bash(where python *)",
+      "PowerShell(& \"C:\\\\Program Files\\\\Python314\\\\python.exe\" -m pip --version)"
     ]
   }
 }

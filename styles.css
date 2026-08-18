@@ -181,6 +181,33 @@ img.center {
   margin: 1em auto;
 }
 
+/* Quarto wraps captioned images in a <figure>, which is block-level, so
+   fig-align alone only shifts the figure within its own line -- it doesn't
+   let body text flow beside it. Wrap the image in a fenced div (`::: {.float-right}`)
+   to float the whole figure+caption unit and let text wrap beside it. */
+.float-right {
+  float: right;
+  margin: 0 0 1em 1.5em;
+}
+
+.float-left {
+  float: left;
+  margin: 0 1.5em 1em 0;
+}
+
+/* Headings shouldn't run alongside a floated figure from the section above */
+h2, h3 {
+  clear: both;
+}
+
+@media (max-width: 768px) {
+  .float-right,
+  .float-left {
+    float: none;
+    margin: 1em auto;
+  }
+}
+
 /* Profile photo styling */
 .profile-section {
   display: flex;
