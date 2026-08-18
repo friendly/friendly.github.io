@@ -523,24 +523,54 @@ What those detours and all those wild horses do in your head is to split your at
 possibly many pieces. Your attention is what you can give thought to and push further along the assembly line to **DONE** check mark somewhere. It is a finite mental resource, so all those pieces compete, like a bunch of toddlers
 in a childcare center asking: "Where's my snack?", "When can I play alone, just myself?"
 
-<!--
-[NOTES on this]
+Think of it less as a single line of stages and more as a tree: every open thought is a
+branch, and every detour -- a package bug, a citation chase, a merge conflict, a fourth AI
+window -- is a branch off a branch. The examples earlier in this post are really examples of
+what happens to a branch once it's grown. `ggbiplot` was a small branch (fix one figure for
+one chapter) that I kept watering until it became a permanent limb of the tree -- ongoing
+maintenance, not a detour anymore. `tinyplot` was a branch I looked at, admired, and cut, not
+because it was a bad branch but because keeping it alive meant re-growing seventy other
+branches around it. `heplots::noteworthy()`'s `ggplot2` layer is a branch still on the tree,
+leafed out partway, just dormant.
 
-The exploding brain metaphor suggests:
-With the idea of a garden of forking thoughts in mind you can think of pruning branches
-to keep the shape more orderly. 
+```{mermaid}
+%%| label: fig-pruning-tree
+%%| fig-cap: "Taming the horses: what happens to a branch once it's grown."
+%%| fig-align: center
+%%| fig-width: 10
+%%| fig-height: 4.5
+%%{init: {"flowchart": {"curve": "basis", "nodeSpacing": 25, "rankSpacing": 50}, "themeCSS": ".stage, .kept, .cut, .delegated { filter: drop-shadow(2px 3px 2px #b8c2c2); }"}}%%
+flowchart LR
+  root([Open thread]) --> b1([ggbiplot fix]) --> k1([Kept & grown:<br/>ongoing maintenance])
+  root --> b2([tinyplot detour]) -.-> c1([Cut for now:<br/>2nd edition, maybe])
+  root --> b3([noteworthy for ggplot2]) -.-> c2([Left dormant])
+  root --> b4([Fourth AI window]) --> d1([Delegated:<br/>AI or RA holds context])
 
-* I could give some task to an RA, as I very often did in writing Vis-MLM. This was often at a
-  high-level: Review chapter XX and find inconsistencies, writing or graphics that are inconsistent
-  or poorly done. Other tasks were more mundane: [examples here]
+  classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  classDef kept fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  classDef cut fill:#f5e6c8,stroke:#b04a3f,stroke-width:1.5px,color:#4a3a10,stroke-dasharray:4 3;
+  classDef delegated fill:#f5e6c8,stroke:#a3781f,stroke-width:1.5px,color:#4a3a10;
+  class root,b1,b4 stage;
+  class k1 kept;
+  class b2,b3,c1,c2 cut;
+  class d1 delegated;
+```
 
-* If using AI I could often seek information, guidance, or even suggestions and solutions for
-  technical stuff (generalizing a function, writing the documentation, ...)
--->
+Taming the horses, then, isn't about stopping the branching -- new branches show up whether
+you invite them or not, as Detour 4 makes clear. It's about pruning: deciding, deliberately
+and out loud, which branches get water and light right now, which get grafted onto someone
+else's tree, and which get cut clean so they stop drawing on the same limited attention as
+everything else. Two kinds of pruning worked for me writing Vis-MLM:
 
+* **Delegate the branch.** Hand it to an RA -- often at a high level ("read Chapter 6 for
+  figures that don't match the text"), sometimes as a specific, bounded task. The branch
+  keeps growing; it just isn't on my tree for a while.
+* **Ask AI to hold the branch.** Not necessarily to finish it, but to carry its context --
+  what state it's in, what the next step was going to be -- so I don't have to keep it warm
+  in my own head between visits.
 
-
-
+Either way, the point of pruning isn't to end up with fewer branches. It's to end up with
+fewer branches *you're* personally responsible for watering at the same time.
 
 ## How could AI help?
 
