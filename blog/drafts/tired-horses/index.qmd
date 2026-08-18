@@ -8,6 +8,24 @@ categories: [writing, workflow, R packages, attention]
 draft: true
 ---
 
+```{=html}
+<!-- Post-scoped: muted green figure captions. Promote to styles.css
+     site-wide once settled. -->
+<style>
+.quarto-figure figcaption,
+figure figcaption {
+  color: #2f6b46;
+  font-style: italic;
+  font-size: 0.92em;
+}
+
+body.quarto-dark .quarto-figure figcaption,
+body.quarto-dark figure figcaption {
+  color: #86d1a4;
+}
+</style>
+```
+
 ![A writer working at two computer screens as a herd of horses rushes past his desk, distracting him from the task at hand.](figures/tired-horses-header-v1.png){fig-align="center" width="100%"}
 
 > | 🎵 All the tired horses in the sun
@@ -361,9 +379,9 @@ is that of tracking down citations, which pervades academic writing:
 Same tension either way: the detour is legitimate and necessary, and it still pulls
 you out of the sentence you were writing.
 
-## 🚧 Detour 3 — MERGE CONFLICT AHEAD: keeping it all in sync
+## 🚧 Detour 3 — MERGE CONFLICT AHEAD: Keeping it all in sync
 
-![Still from Heaven King video](figures/watch-me-diff.png){fig-align="center" width="60%"}
+![Still from [Heaven King video](https://www.youtube.com/watch?v=uBWrpVrazzA) used by Jenny Bryan](figures/watch-me-diff.png){fig-align="center" width="60%"}
 
 The third kind of friction isn't about content at all -- it's about *where* the work
 lives. I work on several computers: home and office desktops and a laptop. But
@@ -395,7 +413,7 @@ also with students, research assistants and collaborators. The main points are:
 it, and it's exactly what it feels like. Jenny Bryan's [Happy Git and GitHub for the useR](https://happygitwithr.com/)
 provides a suite of learnable skills for key workflows that cover your most common tasks.
 
-## 🚧 Detour 4 — SEVERAL CREWS WORKING, NO COORDINATION: writing with AI across several sessions at once
+## 🚧 Detour 4 — SEVERAL CREWS WORKING, NO COORDINATION: Working with AI across several sessions at once
 
 ![](figures/powershell-tabs.png){fig-align="center" width="90%"}
 
@@ -419,13 +437,14 @@ What that actually costs:
   something new turned out to be the thing I forgot to do.
 
 None of this is a reason not to work this way -- it's clearly worth it -- but it's a
-genuinely new kind of detour sign, one that didn't exist a couple of years ago.
+genuinely new kind of detour sign, and another aspect of cognitive load, one that didn't exist a couple of years ago.
 
 ## Exploding Brain Syndrome
 
-![A brain crowded with interconnected writing, coding, graphics, scheduling, and communication tasks.](figures/brain-many-tasks-v1.png){fig-align="center" width="70%"}
+![A brain crowded with interconnected writing, coding, graphics, scheduling, and communication tasks, all competing for attention](figures/brain-many-tasks-v1.png){fig-align="center" width="70%"}
 
-None of these four detours is a problem _in isolation_. The problem comes from your brain running two or
+None of these four detours is much of a problem _in isolation_; it is generally manageable.
+The real problem comes from your brain running two or
 three of them at once, each with its own open window(s) on your screen(s), a half-finished thought
 jotted down on a notepad,
 marking something in your text as a **TODO**, etc.
@@ -492,6 +511,10 @@ instead of being absorbed silently into "the cost of doing the work."
 ### What this looked like while writing Vis-MLM
 
 ![The Vis-MLM book, active blog posts, and R package projects connected inside a stylized brain.](figures/brain-many-projects-v4.png){fig-align="center" width="90%"}
+
+This image is something of an artist's rendering of my brain over the last year, working mainly on Vis-MLM
+but, as this required, on some of my packages. When there was a lull (book sent to copy editing),
+or as time allowed I also worked on developing this website and some blog posts.
 
 ## Taming the horses
 
