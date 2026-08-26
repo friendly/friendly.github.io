@@ -456,6 +456,7 @@ so I'd be willing to donate my brain to science, when I'm done with it.
 Here's the simplest example: have a thought, find the window that holds it on your computer, edit, or change it.
 But "the window" could be the
 manuscript text, an RStudio console, the package source, your reference manager, a `bash` terminal `git` session,
+an external LaTeX equation editor for the one formula that's too gnarly to compose inline,
 and now--- a Claude/Codex AI session that's three exchanges deep into a completely different topic you started earlier.
 And there are also forks in the process. The diagram shows just one built into the loop itself: do you commit and push your work here, before
 switching context? And, is that its own kind of detour?
@@ -475,12 +476,14 @@ flowchart LR
   findw --> refs([Reference<br/>manager])
   findw --> terminal([Terminal,<br/>mid-commit])
   findw --> ai([AI session,<br/>mid-topic])
+  findw --> latex([LaTeX equation<br/>editor])
 
   manuscript --> edit([Edit])
   pkg --> edit
   refs --> edit
   terminal --> edit
   ai --> edit
+  latex --> edit
 
   edit --> commit{Commit &<br/>push first?}
   commit -- yes --> push([Commit,<br/>push])
@@ -490,8 +493,8 @@ flowchart LR
   classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
   classDef window fill:#f5e6c8,stroke:#a3781f,stroke-width:1.5px,color:#4a3a10;
   class thought,findw,edit,commit,push stage;
-  class manuscript,pkg,refs,terminal,ai window;
-  linkStyle 13,14 stroke:#b04a3f,stroke-width:3px;
+  class manuscript,pkg,refs,terminal,ai,latex window;
+  linkStyle 15,16 stroke:#b04a3f,stroke-width:3px;
 ```
 
 And that's before something *new* shows up uninvited -- a paper worth a second look
