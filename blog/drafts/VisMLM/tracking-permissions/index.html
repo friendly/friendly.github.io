@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael Friendly">
-<meta name="dcterms.date" content="2026-08-26">
+<meta name="dcterms.date" content="2026-08-27">
 <meta name="description" content="Turning a publisher’s six-step permissions process into something a working author can actually track, delegate, and trust – with the tools I used that made it possible">
 
 <title>Getting Permissions Right (or at Least Honest)</title>
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">August 26, 2026</p>
+        <p class="date">August 27, 2026</p>
       </div>
     </div>
     
@@ -129,9 +129,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#the-setup" id="toc-the-setup" class="nav-link active" data-scroll-target="#the-setup">The setup</a></li>
-  <li><a href="#step-1-finding-the-candidates" id="toc-step-1-finding-the-candidates" class="nav-link" data-scroll-target="#step-1-finding-the-candidates">Step 1: finding the candidates</a></li>
-  <li><a href="#step-2-classifying-skeptically" id="toc-step-2-classifying-skeptically" class="nav-link" data-scroll-target="#step-2-classifying-skeptically">Step 2: classifying, skeptically</a></li>
-  <li><a href="#step-3-from-prose-audit-to-trackable-spreadsheet" id="toc-step-3-from-prose-audit-to-trackable-spreadsheet" class="nav-link" data-scroll-target="#step-3-from-prose-audit-to-trackable-spreadsheet">Step 3: from prose audit to trackable spreadsheet</a></li>
+  <li><a href="#step-1-finding-the-candidates" id="toc-step-1-finding-the-candidates" class="nav-link" data-scroll-target="#step-1-finding-the-candidates">Step 1: Finding the candidates</a></li>
+  <li><a href="#step-2-classifying-images-skeptically" id="toc-step-2-classifying-images-skeptically" class="nav-link" data-scroll-target="#step-2-classifying-images-skeptically">Step 2: Classifying images, skeptically</a>
+  <ul class="collapse">
+  <li><a href="#when-in-doubt-re-draw" id="toc-when-in-doubt-re-draw" class="nav-link" data-scroll-target="#when-in-doubt-re-draw">When in doubt, re-draw</a></li>
+  <li><a href="#the-audit-file" id="toc-the-audit-file" class="nav-link" data-scroll-target="#the-audit-file">The audit file</a></li>
+  </ul></li>
+  <li><a href="#step-3-from-prose-audit-to-trackable-spreadsheet" id="toc-step-3-from-prose-audit-to-trackable-spreadsheet" class="nav-link" data-scroll-target="#step-3-from-prose-audit-to-trackable-spreadsheet">Step 3: From prose audit to trackable spreadsheet</a>
+  <ul class="collapse">
+  <li><a href="#keeping-track" id="toc-keeping-track" class="nav-link" data-scroll-target="#keeping-track">Keeping track</a></li>
+  </ul></li>
   <li><a href="#the-handoff" id="toc-the-handoff" class="nav-link" data-scroll-target="#the-handoff">The handoff</a></li>
   </ul>
 </nav>
@@ -143,10 +150,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This is another post in the <a href="../../../posts/2026-04-making-vis-mlm/index.qmd">Making of Vis-MLM</a> series, alongside <a href="../quarto-is-not-latex/index.qmd">Quarto Is Not LaTeX, However Hard It Tries</a> and <a href="../mind-your-chunks/index.qmd">Mind Your Chunks</a>. Those were about the writing and rendering pipeline.</p>
-<p>This one is about a problem that has nothing to do with Quarto or the writing process at all: what do you actually do when your book is heading into production and your publisher hands you a permissions checklist and you have several hundred figures in the book?</p>
+<p>This one is about a problem that has nothing to do with Quarto or the writing process at all: what do you actually do when your book is heading into production, your publisher hands you a permissions checklist and you have several hundred figures in the book?</p>
 <section id="the-setup" class="level2">
 <h2 class="anchored" data-anchor-id="the-setup">The setup</h2>
-<p>A statistics and data visualization like <a href="https://friendly.github.io/Vis-MLM-book/"><em>Voisualizing Multivariate Data and Models in R</em></a> book uses images from a lot of places. Most of mine are generated straight from data by my own R code – a scatterplot, a biplot, an HE plot. The copyright status of those is not in question: copyright protects creative expression, not the raw output of running a well-known method on a dataset. But a book like this also picks up figures the ordinary way any writer does: a diagram from a blog post that explained an idea more clearly than I could draw it myself, a journal figure I wanted to show my own past work through, a couple of historical images, a book cover or two, even a hand-drawn sketch. None of those are mine to just use.</p>
+<p>A statistics and data visualization book like <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> uses images from a variety of sources. Most of mine are generated straight from data by my own R code – a scatterplot, a biplot, an HE plot and even a couple I developed during the writing process (partial variable plots, now in <code>heplots::pvPlot()</code>). The copyright status of those is not in question: copyright protects creative expression, not the raw output of running a well-known method on a dataset. But a book like this also picks up figures the ordinary way any writer does: a diagram from a blog post that explained an idea more clearly than I could draw it myself, a journal figure I wanted to show my own past work through, a couple of historical images, a book cover or two, even a hand-drawn sketch. None of those are mine to just use.</p>
 <p>My publisher’s permissions guide lays out six steps:</p>
 <ol type="1">
 <li>identify third-party material,</li>
@@ -156,12 +163,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>document what you got,</li>
 <li>submit it all with the manuscript files for printing</li>
 </ol>
-<p>That’s a perfectly reasonable process on paper. It is also completely unworkable as a mental checklist once you’re past a handful of images. There’s no way to hold “which of my 300+ figures are even ‘third-party’ (and who is the second party?) and what’s the status of each” in your head. Email threads or notes you made along the way are a terrible database. The interesting part of this project wasn’t the permissions law – that’s the publisher’s job to specify. It was figuring out how to turn a fuzzy compliance obligation into something with an actual state you can query, hand off, and trust.</p>
+<p>That’s a perfectly reasonable process on paper. It is also completely unworkable as an actionable checklist once you’re past a handful of images. There’s no way to hold “which of my 300+ figures are even ‘third-party’ (and who is the second party?) and what’s the status of each” in your head. Notes you made along the way are often incomplete, but in any case they are a terrible database. The interesting part of this project wasn’t the permissions law – that’s the publisher’s job to specify. It was figuring out how to turn a fuzzy compliance obligation into something with an actual state you can query, hand off, and trust.</p>
+<p>Translating the publisher’s requirements into an actionable process collapsed those six steps into three real phases: finding every candidate image, classifying each one against the guide’s rules – which folds in confirming it’s actually necessary for the exposition along with pinning down its copyright status – and building the infrastructure to track requests and evidence through to submission.</p>
 </section>
 <section id="step-1-finding-the-candidates" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-finding-the-candidates">Step 1: finding the candidates</h2>
-<p>The first real question is embarrassingly basic: which images in the book are <em>not</em> generated by my own hand or code? Most figures are produced inline by a chunk of R, and figure captions in this book carry a comment[^fig-comment] pointing back to the generating script when the code itself isn’t shown in the printed text. So the “third-party candidate” list might be: every figure-labeled chunk with no matching source script.</p>
-<p><code>&lt;!-- fig.code: R/workers-pca.R --&gt;</code>. This also allowed me to compile an <a href="https://friendly.github.io/Vis-MLM-book/30-Rcode.html">R Code Appendix</a> in the HTML version, helping readers to explored the code I used in developing an image.</p>
+<h2 class="anchored" data-anchor-id="step-1-finding-the-candidates">Step 1: Finding the candidates</h2>
+<p>The first real question is embarrassingly basic: which images in the book are <em>not</em> generated by my own hand or code? Most figures are produced inline by a chunk of R, and figure captions in this book carry a comment<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> pointing back to the generating script when the code itself isn’t shown in the printed text. So the “third-party candidate” list might be: every figure-labeled chunk with no matching source script.</p>
 <p>That sounds like a job for <code>grep</code>, and it almost is, except a book accumulates more than one way to embed an image over a couple of years of writing. Some figures come in through the normal <code>knitr::include_graphics()</code> path, some are inserted directly as markdown images (“<code>![caption](fig-path)</code>”), and a few older ones are plain HTML <code>&lt;img&gt;</code> tags left over from an early draft. A scanner that only catches one of these will quietly miss a third of the candidates. The actual detection logic ended up needing all three patterns:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Three different ways a chapter can embed a static image</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">str_detect</span>(line, <span class="st">"include_graphics"</span>)) {</span>
@@ -175,46 +182,129 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Running this against every chapter file and diffing against the set of figures with a known generating script produced the real candidate list – around twenty images, once historical illustrations and author-generated diagrams (a PowerPoint export, a hand-traced diagram) were set aside as clearly not requiring anyone else’s permission.</p>
 </section>
-<section id="step-2-classifying-skeptically" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-classifying-skeptically">Step 2: classifying, skeptically</h2>
-<p>Here’s where most of the actual thinking happened, and where the publisher’s guide turned out to be stricter than intuition. A few rules that reshaped how I looked at my own image folder:</p>
+<section id="step-2-classifying-images-skeptically" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-classifying-images-skeptically">Step 2: Classifying images, skeptically</h2>
+<p>Here’s where most of the actual thinking happened, and where the publisher’s guide turned out to be stricter than my intuition. These are a few rules that reshaped how I looked at my own <code>images/</code> folder:</p>
 <ul>
-<li><strong>Not watermarked is not the same as public domain.</strong> An image circulating online without a visible copyright notice tells you nothing about its license – it just means nobody’s stamped it. “I found it on the internet” is not proof of anything.</li>
-<li><strong>Your own previous work still counts as third-party material.</strong> A figure I’d published in an earlier journal article is not automatically mine to reuse in a new book – the <em>journal</em> usually holds reproduction rights, and the right move is to check that publisher’s specific author-reuse policy rather than assume authorship settles it.</li>
-<li><strong>A redraw is still third-party, unless it’s genuinely transformed.</strong> Recreating someone else’s diagram in your own style doesn’t launder the copyright unless what survives is the underlying idea, not their specific expression of it.</li>
-<li><strong>Copyright doesn’t apply to raw data.</strong> This one cuts the other way – if you can rebuild a graphic from the underlying data yourself, the result is yours, even if someone else’s chart originally gave you the idea to make it.</li>
+<li><strong>Not watermarked is not the same as public domain.</strong> An image circulating online without a visible copyright notice tells you nothing about its license – it just means nobody’s stamped it. “I found it on the internet” is not proof of anything but laziness.</li>
+<li><strong>My own previous work still counts as third-party material.</strong> A figure I’d published in an earlier journal article is not automatically mine to reuse in a new book – the <em>journal</em> usually holds reproduction rights, and the right move is to check that publisher’s specific author-reuse policy rather than assume authorship settles it.</li>
+<li><strong>A redraw is still third-party, unless it’s genuinely transformed.</strong> Recreating someone else’s diagram in your own style doesn’t launder the copyright unless what survives just is the underlying idea, not their specific expression of it. But any doctrine of fair use requires you to always cite the original author, as in “<em>Source</em>: Redrawn from an image by …”.</li>
+<li><strong>Copyright doesn’t apply to raw data.</strong> This one cuts the other way: if you can rebuild a graphic from the underlying data yourself, the result is yours, even if someone else’s chart originally gave you the idea to make it.</li>
 </ul>
-<p>That last rule turned out to be the most useful move in the whole project: for a couple of images sourced from other people’s visualizations of a well-known public dataset (the “Datasaurus Dozen” – a set of wildly different-looking scatterplots that all share the same summary statistics, released as open data), the cleanest resolution wasn’t to request permission at all, it was to just regenerate the graphic from the data myself. No request, no waiting, no ambiguity – and it’s a good general instinct: before you ask permission to reuse someone’s picture, ask whether you can just make your own from the same numbers.</p>
-<p>Not everything resolves that cleanly, though. One image – a small illustrative composite assembled years earlier from stock clipart – had no recorded source, no watermark, and no way to trace the individual elements back to a license. Claiming “probably public domain” would have been exactly the unsupported assumption the guide warns against. But stalling on it indefinitely wasn’t a real option either. The resolution was to add a third classification, alongside “cleared” and “needs a permission request”: a status meaning, roughly, <em>I’ve done what diligence I can, and this genuinely needs the publisher to make the call</em> – flagged clearly, with the history of what was tried, rather than either guessing or blocking. Sometimes the honest answer to “does this need permission?” is “I can’t tell, and that’s worth saying out loud” instead of quietly picking whichever answer is more convenient.</p>
+<p>The first rule turned out to be the most useful move in the whole project: chasing down provenance for an anonymous web graphic is a rabbit hole that can eat unlimited time with no guarantee of an answer at the end. For example, a diagram I used of geometrical objects in 1 through 4 dimensions had been circulating online since at least 2015 – no watermark, no credited artist, and a reverse image search<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> turned up nothing conclusive about where it actually came from.</p>
+<section id="when-in-doubt-re-draw" class="level3">
+<h3 class="anchored" data-anchor-id="when-in-doubt-re-draw">When in doubt, re-draw</h3>
+<p>Rather than keep searching for a rightsholder who might not exist, or worse, treating “I can’t find an owner” as license to just use it, the cleanest resolution was to stop depending on someone else’s picture at all: redraw it myself, in this case as a TikZ figure that now generates both the print PDF and the HTML version directly from source. No request, no waiting, no unresolved provenance question – and it’s a good general instinct: when a third-party image is more trouble to trace than to just remake, remake it.</p>
+<p>Not everything resolves that cleanly, though. One image – a small illustrative composite assembled years earlier from stock clipart – had no recorded source, no watermark, and no way to trace the individual elements back to a license. Claiming “probably public domain” would have been exactly the unsupported assumption the guide warns against. But stalling on it indefinitely wasn’t a real option either.</p>
+<p>The resolution was to add a third classification, alongside “cleared” and “needs a permission request”: a status meaning, roughly, <em>I’ve done what diligence I can, and this genuinely needs the publisher to make the call</em> – flagged clearly, with the history of what was tried, rather than either guessing or blocking. Sometimes the honest answer to “does this need permission?” is “I can’t tell, and that’s worth saying out loud” instead of quietly picking whichever answer is more convenient.</p>
+</section>
+<section id="the-audit-file" class="level3">
+<h3 class="anchored" data-anchor-id="the-audit-file">The audit file</h3>
+<p>The working document behind all of this is a single markdown file, <code>fig-permission-list.md</code>, organized by chapter with one bullet per candidate image. Untagged entries still need a decision. A <code>[NPR]</code> (“no permission required”) or <code>[TFQ]</code> (“question for T&amp;F”) tag means a decision has been reached, followed by an italicized paragraph making the actual case – not just the verdict, but the reasoning and evidence behind it. That distinction mattered more than it sounds: “no permission required” is a claim a publisher can challenge, and “I decided it was probably fine” isn’t a defense. The italics exist so that six months later – or when an editor asks – the <em>why</em> is still sitting right there next to the <em>what</em>.</p>
+<p>The redrawn tesseract-style diagram from earlier resolves like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">NPR</span><span class="co">]</span> <span class="in">`images/1D-4D.png`</span> -- diagram of geometrical objects in 1-4 dimensions -- *NPR as of</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  2026-07-10: the old raster (an unattributed web graphic, found circulating online since at</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  least 2015 via reverse image search) has been **replaced by an author-drawn TikZ figure**;</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  source <span class="in">`latex/diagrams/fig-1D-4D.tex`</span> in the repo (proof of authorship), which now generates</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  both <span class="in">`images/1D-4D.pdf`</span> (print) and <span class="in">`images/1D-4D.png`</span> (HTML). No third-party artwork remains.*</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The MV Juicer composite – the one that ended up needing the third classification – carries its whole diligence trail the same way:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">TFQ</span><span class="co">]</span> <span class="in">`images/MV-juicer.png`</span> -- "MV Juicer" illustration; appears to be a composite of stock</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  clipart (fruit-head, juicer line art, gear-brain head) assembled in <span class="in">`images/MV-juicer.pptx`</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  (T&amp;F Appendix A explicitly lists ClipArt as potentially copyrighted) -- *TFQ: resolved</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  2026-08-23 (MF) -- the individual clipart elements can't be traced (no watermarks, but per</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  guide rule 2 that doesn't establish public domain; MF has no record of the original source,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  and a reverse image search is the only remaining option, with no guarantee of a conclusive</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  answer). Rather than block on an unresolvable search or wrongly claim NPR, this is flagged as</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  a question for T&amp;F to rule on.*</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And an untagged entry – still just a plain description, waiting on Step 4 – looks like this, no verdict attached yet:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`images/ReavenMiller-3d-annotated.png`</span> -- "artist's rendition" of data from @ReavenMiller:79</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  (if reproduced from the 1979 *Diabetologia* article, the rightsholder is Springer; the STM</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  Permission Guidelines route may apply since CRC and Springer are both signatories)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Three bullets, three different amounts of resolved thinking behind them – and that unevenness is exactly the point of keeping this as prose first. A spreadsheet cell wants one value; this document wants to hold a verdict, an untagged open question, and a paragraph of due diligence side by side, in whatever state each one is actually in.</p>
+</section>
 </section>
 <section id="step-3-from-prose-audit-to-trackable-spreadsheet" class="level2">
-<h2 class="anchored" data-anchor-id="step-3-from-prose-audit-to-trackable-spreadsheet">Step 3: from prose audit to trackable spreadsheet</h2>
+<h2 class="anchored" data-anchor-id="step-3-from-prose-audit-to-trackable-spreadsheet">Step 3: From prose audit to trackable spreadsheet</h2>
 <p>The classification pass produces something that reads well but doesn’t track well: a written audit, one entry per figure, with the reasoning spelled out in prose. That document is real work and shouldn’t be thrown away – it’s the evidence trail a publisher will eventually want. But you can’t hand a prose document to an assistant and ask “what’s still outstanding?” without them re-reading the whole thing every time.</p>
-<p>So the audit became the <em>source</em>, and a small script turned it into a working spreadsheet – one row per image, regenerated from the markdown tables rather than hand-copied, so the two can never quietly drift apart:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the "needs permission" table out of the markdown audit and</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># turn it into one tracking-spreadsheet row per figure</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>required_rows <span class="ot">&lt;-</span> <span class="fu">parse_markdown_table</span>(audit_doc, <span class="at">heading =</span> <span class="st">"Permission required"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>tracking <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(required_rows, <span class="cf">function</span>(row) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename    =</span> <span class="fu">extract_image_path</span>(row<span class="sc">$</span>figure),</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">rightsholder =</span> row<span class="sc">$</span>rightsholder,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">status      =</span> <span class="st">"permission_required"</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">route       =</span> <span class="cn">NA_character_</span>,   <span class="co"># filled in by hand once researched</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">applied_on  =</span> <span class="cn">NA_character_</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">received_on =</span> <span class="cn">NA_character_</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Re-running that script after editing the audit regenerates the whole tracking file – which is exactly the property you want (no possibility of a stale row nobody remembers to update), and exactly the property that made a “don’t run this while requests are in flight” rule necessary, since a couple of columns (who was actually contacted, what came back) are filled in by hand and aren’t derivable from the audit at all.</p>
-<p>The last piece was working out <em>how</em> to actually reach each rightsholder, since “email them” isn’t one thing – a large publisher usually runs requests through a formal clearance system, while an individual blogger or academic just wants a direct email. Sorting the tracking rows into a small number of routes (formal publisher system, direct contact, “raise this internally since it’s the same publisher,” “no contact found yet”) turned a flat list of twenty unknowns into something with a clear next action attached to each one.</p>
+<p>So the audit became the <em>source</em>, and a small script turned it into a <em>working spreadsheet</em> – one row per image, regenerated from the markdown tables rather than hand-copied, so the two can never quietly drift apart. The script pulls from both status tables, not just the “needs permission” one – otherwise the third classification from Step 2 would exist only in prose, exactly the kind of thing this spreadsheet was supposed to make trackable:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse each status table out of the markdown audit and turn it into</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># one tracking-spreadsheet row per figure, keeping the two apart</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>required_rows <span class="ot">&lt;-</span> <span class="fu">parse_markdown_table</span>(audit_doc, <span class="at">heading =</span> <span class="st">"Permission required"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>tfq_rows      <span class="ot">&lt;-</span> <span class="fu">parse_markdown_table</span>(audit_doc, <span class="at">heading =</span> <span class="st">"Flagged for T&amp;F"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>to_rows <span class="ot">&lt;-</span> <span class="cf">function</span>(rows, status) {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(rows, <span class="cf">function</span>(row) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename     =</span> <span class="fu">extract_image_path</span>(row<span class="sc">$</span>figure),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">rightsholder =</span> row<span class="sc">$</span>rightsholder,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">status       =</span> status,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">route        =</span> <span class="cn">NA_character_</span>,   <span class="co"># filled in by hand once researched</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">applied_on   =</span> <span class="cn">NA_character_</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">received_on  =</span> <span class="cn">NA_character_</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>tracking <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">to_rows</span>(required_rows, <span class="st">"permission_required"</span>),</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">to_rows</span>(tfq_rows,      <span class="st">"flagged_for_publisher"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Re-running that script after editing the audit regenerates the whole tracking file – which is exactly the property you want (no possibility of a stale row nobody remembers to update), and exactly the property that made a “don’t run this while requests are in flight” rule necessary, since a couple of columns (who was actually contacted, what came back) are filled in by hand and aren’t derivable from the audit at all. A flagged-for-publisher row carries the same shape as a permission-required row, just a different <code>status</code> – so “still waiting on a publisher decision” shows up right next to “still needs a request sent,” instead of living only in the prose audit where the last section left it.</p>
+<p>The last piece was working out <em>how</em> to actually reach each rightsholder, since “email them” isn’t one thing – a large publisher usually runs requests through a formal clearance system, while an individual blogger or academic usually just wants a direct email. Sorting the tracking rows into a small number of routes (formal publisher system, direct contact, “raise this internally since it’s the same publisher,” “no contact found yet”) turned a flat list of twenty unknowns into something with a clear next action attached to each one.</p>
+<p>What actually landed in the spreadsheet, <code>permissions-tracking.csv</code>, is eighteen columns wide, tracing each image all the way from “where does this appear in the manuscript” through “have we heard back?” to mark an image as resolved.</p>
+<ul>
+<li><code>chapter</code>, <code>qmd_file</code>, <code>qmd_line</code> – where the image lives in the source, down to the line</li>
+<li><code>fig_label</code>, <code>filename</code>, <code>source</code> – the Quarto figure label, the image path, and the caption-derived attribution text</li>
+<li><code>copyright_status</code> – <code>permission_required</code>, <code>verify</code>, or <code>TFQ</code> (flagged for the publisher, per Step 2)</li>
+<li><code>rightsholder_or_route</code>, <code>necessary</code> – who holds the rights (or the route to find out), and Step 2’s necessity check</li>
+<li><code>route</code> – how to actually reach them: <code>CCC</code>, <code>publisher-page</code>, <code>direct-contact</code>, <code>internal-T&amp;F</code>, <code>manual-followup-needed</code>, <code>nearly-ready</code>, or <code>n/a</code></li>
+<li><code>applied_date</code>, <code>applied_by</code>, <code>contact</code> – filled in by hand once a request actually goes out</li>
+<li><code>received_date</code>, <code>doc_path</code> – filled in once permission comes back, with a path to the saved evidence</li>
+<li><code>submitted_date</code>, <code>status</code>, <code>notes</code> – overall progress and the research trail behind it</li>
+</ul>
+<p>Most of that first block is derivable from the audit and the <code>.qmd</code> chapter sources; everything from <code>applied_date</code> onward is exactly the part that can’t be, which is the whole reason this needed to be a spreadsheet and not just a nicer-looking document.</p>
+<p>A random peek at a few rows (real data, restricted here to the columns that don’t carry anyone’s contact details) gives a sense of what “trackable” actually looks like in practice:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tracking <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(chapter, fig_label, filename, copyright_status, route, necessary, status) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  car<span class="sc">::</span><span class="fu">some</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>#&gt;                   chapter           fig_label                             filename    copyright_status
+#&gt; 1          01-Prelude.qmd fig-ReavenMiller-3d images/ReavenMiller-3d-annotated.png permission_required
+#&gt; 2          01-Prelude.qmd       fig-tesseract          images/tesseract-frames.png permission_required
+#&gt; 4            02-intro.qmd       fig-cover-GEB                 images/Cover-GEB.png permission_required
+#&gt; 5  03-getting_started.qmd fig-datasaurus-html           images/DataSaurusDozen.gif permission_required
+#&gt; 10      05-pca-biplot.qmd       fig-MV-juicer                 images/MV-juicer.png                 TFQ
+#&gt; 17              index.qmd                &lt;NA&gt;        images/icons/Rennie-cover.png permission_required
+#&gt;                     route necessary          status
+#&gt; 1                     CCC         Y     not started
+#&gt; 2  manual-followup-needed         Y     not started
+#&gt; 4          publisher-page         Y     not started
+#&gt; 5            nearly-ready         Y     not started
+#&gt; 10                   &lt;NA&gt;         Y flagged for T&amp;F
+#&gt; 17           internal-T&amp;F         Y     not started</code></pre>
+<p>Row 17’s <code>&lt;NA&gt;</code> in <code>fig_label</code> is its own small honesty check: that image (a book-cover icon on the index page) isn’t sitting inside a labeled <code>{r}</code> chunk at all – just a plain markdown image – so the scanner has no label to attach. A reminder that “the spreadsheet says so” is only as good as what the scanner could actually see.</p>
+<section id="keeping-track" class="level3">
+<h3 class="anchored" data-anchor-id="keeping-track">Keeping track</h3>
+<p>Regenerating the spreadsheet from the audit is exactly the property you want – no possibility of a stale row nobody remembers to update – and exactly the property that makes it dangerous once requests are actually out the door: a naive re-run overwrites <em>every</em> column, including the ones nothing but a human reply can fill in.</p>
+<p>The fix wasn’t a rule about when it’s safe to re-run the script; it was a small function, <code>update_permissions()</code>, that owns writing to the tracking file, so the build script only has to <em>merge</em> around it instead of trusting that nobody touches the CSV at the wrong moment:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">update_permissions</span>(<span class="at">fig_label =</span> <span class="st">"fig-ReavenMiller-3d"</span>, <span class="at">status =</span> <span class="st">"applied"</span>, <span class="at">applied_by =</span> <span class="st">"Gavin"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That one line replaced a fragile discipline problem with a fixable code problem, in two smaller ways than I first expected. Identifying the row for an image sounds like it should just be the figure’s label, until I noticed that one label can cover two files – <code>fig-tesseract</code> labels both an animated <code>.gif</code> and its individual <code>.png</code> frames, so <code>fig_label</code> alone is ambiguous there. <code>update_permissions()</code> matches on <code>fig_label</code> plus <code>filename</code> together, and errors rather than guessing when only one is given and it’s still ambiguous.</p>
+<p>And a status transition wants more than the status word itself attached to it – marking a row <code>"applied"</code> is a lot less useful without <em>when</em>, so the function stamps <code>applied_date</code> (or <code>received_date</code>, for <code>"granted"</code>) to today unless you pass one explicitly. Small stuff, but it’s the kind of small stuff that a spreadsheet edited by hand quietly stops doing after the third or fourth update.</p>
+</section>
 </section>
 <section id="the-handoff" class="level2">
 <h2 class="anchored" data-anchor-id="the-handoff">The handoff</h2>
-<p>None of this was about clearing every permission myself. The point was to get to a state where someone else – in this case a research assistant – could pick up the tracking spreadsheet, a ready-to-use email template, and a short list of what’s still missing, and actually make progress without needing me in the loop for every step. The real deliverable of this whole exercise wasn’t “permissions cleared” – that takes weeks to months and isn’t something a few days of tooling can shortcut. It was “permissions <em>trackable</em>”: a state where anyone looking at the spreadsheet can answer “what’s outstanding, and what happens next” without having to ask.</p>
-<p>If there’s one thing worth taking from this beyond the specifics of image permissions: any compliance task that starts to feel unmanageable in your head is usually a sign you need a small data structure, not more discipline. The spreadsheet didn’t make the permissions process faster. It made it something you could actually finish.</p>
+<p>None of this was about clearing every permission myself. The point was to get to a state where someone else – in this case a wonderful research assistant – could pick up the tracking spreadsheet, create a ready-to-use email template, and a short list of what’s still missing. Then actually make progress without needing me in the loop for every step. The real deliverable of this whole exercise wasn’t a final “permissions cleared” report – that takes weeks to months and isn’t something a few days of tooling can shortcut. It was “permissions <em>trackable</em>”: a state where anyone looking at the spreadsheet can see “what’s outstanding, and what happens next” without having to ask.</p>
+<p>If there’s one thing worth taking from this beyond the specifics of image permissions: any compliance task that starts to feel unmanageable in your head is usually a sign you need a small data structure, not more discipline. The spreadsheet didn’t make the permissions process faster. It made it something I could actually finish and be confident of the result.</p>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>These were manually inserted in the <code>.qmd</code> text as markdown comments of the form <code>&lt;!-- fig.code: R/workers-pca.R --&gt;</code>. This also allowed me to compile an <a href="https://friendly.github.io/Vis-MLM-book/30-Rcode.html">R Code Appendix</a> in the HTML version, helping readers to explore the code I used in developing an image.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Searching <em>by</em> an image instead of by text: you upload or paste in the picture itself, and the search engine looks for visually similar or identical images elsewhere online, which can reveal an original source, an earlier appearance, or a photographer/artist credit that the copy you found never carried. I used <a href="https://images.google.com/">Google Images</a> (the camera icon in the search bar) and <a href="https://tineye.com/">TinEye</a>, which specializes in exactly this and is often better at turning up the earliest indexed appearance of a given image.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
