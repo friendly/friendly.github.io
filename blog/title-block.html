@@ -1,0 +1,43 @@
+<!-- Custom banner title-block partial. Opt in per-post with:
+       format:
+         html:
+           template-partials:
+             - ../../title-block.html   (adjust ../ depth to reach blog/)
+     Moves description + categories out of the banner image area so they
+     render on the normal page background (correct light/dark-mode text
+     color automatically) instead of fighting a busy background image.
+     Paired with the .tp-banner styles in styles.css, which add the
+     aspect-ratio + permanent scrim treatment. See that file for the
+     target banner image size (2.5:1, e.g. 2000x800px). -->
+<header id="title-block-header" class="quarto-title-block default tp-banner$if(quarto-template-params.banner-header-class)$ $quarto-template-params.banner-header-class$$endif$">
+  <div class="quarto-title-banner">
+    <div class="quarto-title column-body">
+      $if(title)$<h1 class="title">$title$</h1>$endif$
+      $if(subtitle)$
+      <p class="subtitle lead">$subtitle$</p>
+      $endif$
+    </div>
+  </div>
+
+  $if(description)$
+  <div class="quarto-title-banner-description page-columns page-full">
+    <div class="description column-body">
+      $description$
+    </div>
+  </div>
+  $endif$
+  $if(categories)$
+    $if(quarto-template-params.title-block-categories)$
+  <div class="page-columns page-full">
+    <div class="quarto-categories column-body">
+      $for(categories)$
+      <div class="quarto-category">$categories$</div>
+      $endfor$
+    </div>
+  </div>
+    $endif$
+  $endif$
+
+  $title-metadata.html()$
+
+  </header>

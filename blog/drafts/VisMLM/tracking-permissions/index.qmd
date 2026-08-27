@@ -5,7 +5,7 @@ description: "Turning a publisher's six-step permissions process into something 
 author: "Michael Friendly"
 date: today
 draft: true
-title-block-banner: true
+title-block-banner: images/permissions-banner.png
 execute:
   eval: false
   warning: false
@@ -15,6 +15,8 @@ format:
   html:
     toc: true
     toc-depth: 3
+    template-partials:
+      - ../../../title-block.html
 ---
 
 This is another post in the [Making of Vis-MLM](../../../posts/2026-04-making-vis-mlm/index.qmd) series,
@@ -155,10 +157,9 @@ chapter with one bullet per candidate image. Untagged entries still need a decis
 permission required") or `[TFQ]` ("question for T&F") tag means a decision has been reached, followed by an
 italicized paragraph making the actual case -- not just the verdict, but the reasoning and evidence behind
 it. That distinction mattered more than it sounds: "no permission required" is a claim a publisher can
-challenge, and "I decided it was probably fine" isn't a defense. The italics exist so that six months later
--- or when an editor asks -- the *why* is still sitting right there next to the *what*.
+challenge, and "I decided it was probably fine" isn't a defense. The italics text exists so that six months later, or when an editor asks, the *why* is still sitting right there next to the *what*.
 
-The redrawn tesseract-style diagram from earlier resolves like this:
+The redrawn tesseract-style diagram from earlier is described like this in the audit file:
 
 ```markdown
 - [NPR] `images/1D-4D.png` -- diagram of geometrical objects in 1-4 dimensions -- *NPR as of

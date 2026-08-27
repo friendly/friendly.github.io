@@ -269,3 +269,66 @@ h2, h3 {
     margin-top: 1rem;
   }
 }
+
+/* Standardized blog-post banner treatment ------------------------------
+   Opt in per-post via `template-partials: [.../title-block.html]`
+   pointing at blog/title-block.html (see that file). Solves two
+   recurring problems every banner post used to hand-tune separately:
+
+   1. Cropping: Quarto's own banner CSS only sets background-size:cover
+      with no background-position, so it defaults to top-left, and the
+      container's natural height rarely matches a wide banner image's
+      aspect ratio -- the excess silently gets cropped off the bottom.
+      Fix: give the container a fixed aspect-ratio matching the target
+      export size below, so cover-sizing never needs to crop vertically
+      for a correctly-sized image (any horizontal crop is centered).
+
+      Target banner image size: 2.5:1 aspect ratio, e.g. 2000x800px.
+
+   2. Text legibility: the theme's default banner text color assumes a
+      dark solid-color background (title-block-banner: true); dropped
+      onto an arbitrary image, that assumption breaks unpredictably.
+      Fix: a permanent dark gradient scrim behind the text area, so
+      white title/subtitle text is always legible regardless of the
+      image's own colors -- no more per-post title-block-banner-color
+      tuning. The description (moved below the banner by the custom
+      partial) isn't on the image at all, so it just inherits the
+      normal page text color in both light and dark mode automatically.
+*/
+.quarto-title-block.tp-banner .quarto-title-banner {
+  aspect-ratio: 2.5 / 1;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.quarto-title-block.tp-banner .quarto-title-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, .8) 0%, rgba(0, 0, 0, .45) 55%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+}
+
+.quarto-title-block.tp-banner .quarto-title-banner .quarto-title {
+  position: relative;
+  z-index: 1;
+}
+
+.quarto-title-block.tp-banner .quarto-title-banner h1.title,
+.quarto-title-block.tp-banner .quarto-title-banner .subtitle {
+  color: #ffffff;
+}
+
+.quarto-title-block.tp-banner .quarto-title-banner-description {
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .quarto-title-block.tp-banner .quarto-title-banner {
+    aspect-ratio: 4 / 3;
+  }
+}

@@ -75,32 +75,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background-image: url(images/permissions-banner.png);
+background-size: cover;
+      }
+</style>
 <meta name="quarto:status" content="draft">
 
 
+<link rel="stylesheet" href="../../../../styles.css">
 </head>
 
 <body class="quarto-light"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
 
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+<header id="title-block-header" class="quarto-title-block default tp-banner page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Getting Permissions Right (or at Least Honest)</h1>
             <p class="subtitle lead">Field Notes on Tracking Down Image Permissions</p>
-                  <div>
-        <div class="description">
-          Turning a publisher’s six-step permissions process into something a working author can actually track, delegate, and trust – with the tools I used that made it possible
-        </div>
-      </div>
-                          <div class="quarto-categories">
-                <div class="quarto-category">Vis-MLM</div>
-                <div class="quarto-category">publishing</div>
-                <div class="quarto-category">copyright</div>
-                <div class="quarto-category">books</div>
-              </div>
-                  </div>
+          </div>
   </div>
-    
+
+    <div class="quarto-title-banner-description page-columns page-full">
+    <div class="description column-body">
+      Turning a publisher’s six-step permissions process into something a working author can actually track, delegate, and trust – with the tools I used that made it possible
+    </div>
+  </div>
+          <div class="page-columns page-full">
+    <div class="quarto-categories column-body">
+            <div class="quarto-category">Vis-MLM</div>
+            <div class="quarto-category">publishing</div>
+            <div class="quarto-category">copyright</div>
+            <div class="quarto-category">books</div>
+          </div>
+  </div>
+      
   
   <div class="quarto-title-meta">
 
@@ -121,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       
     </div>
     
-  
+
   </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
   <nav id="TOC" role="doc-toc" class="toc-active">
@@ -145,7 +156,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
-
+<!-- Custom banner title-block partial. Opt in per-post with:
+       format:
+         html:
+           template-partials:
+             - ../../title-block.html   (adjust ../ depth to reach blog/)
+     Moves description + categories out of the banner image area so they
+     render on the normal page background (correct light/dark-mode text
+     color automatically) instead of fighting a busy background image.
+     Paired with the .tp-banner styles in styles.css, which add the
+     aspect-ratio + permanent scrim treatment. See that file for the
+     target banner image size (2.5:1, e.g. 2000x800px). -->
 
 
 
@@ -200,8 +221,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-audit-file" class="level3">
 <h3 class="anchored" data-anchor-id="the-audit-file">The audit file</h3>
-<p>The working document behind all of this is a single markdown file, <code>fig-permission-list.md</code>, organized by chapter with one bullet per candidate image. Untagged entries still need a decision. A <code>[NPR]</code> (“no permission required”) or <code>[TFQ]</code> (“question for T&amp;F”) tag means a decision has been reached, followed by an italicized paragraph making the actual case – not just the verdict, but the reasoning and evidence behind it. That distinction mattered more than it sounds: “no permission required” is a claim a publisher can challenge, and “I decided it was probably fine” isn’t a defense. The italics exist so that six months later – or when an editor asks – the <em>why</em> is still sitting right there next to the <em>what</em>.</p>
-<p>The redrawn tesseract-style diagram from earlier resolves like this:</p>
+<p>The working document behind all of this is a single markdown file, <code>fig-permission-list.md</code>, organized by chapter with one bullet per candidate image. Untagged entries still need a decision. A <code>[NPR]</code> (“no permission required”) or <code>[TFQ]</code> (“question for T&amp;F”) tag means a decision has been reached, followed by an italicized paragraph making the actual case – not just the verdict, but the reasoning and evidence behind it. That distinction mattered more than it sounds: “no permission required” is a claim a publisher can challenge, and “I decided it was probably fine” isn’t a defense. The italics text exists so that six months later, or when an editor asks, the <em>why</em> is still sitting right there next to the <em>what</em>.</p>
+<p>The redrawn tesseract-style diagram from earlier is described like this in the audit file:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">NPR</span><span class="co">]</span> <span class="in">`images/1D-4D.png`</span> -- diagram of geometrical objects in 1-4 dimensions -- *NPR as of</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  2026-07-10: the old raster (an unattributed web graphic, found circulating online since at</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  least 2015 via reverse image search) has been **replaced by an author-drawn TikZ figure**;</span>
