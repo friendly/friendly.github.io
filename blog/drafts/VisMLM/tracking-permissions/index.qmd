@@ -5,7 +5,6 @@ description: "Turning a publisher's six-step permissions process into something 
 author: "Michael Friendly"
 date: today
 draft: true
-title-block-banner: images/permissions-banner.png
 execute:
   eval: false
   warning: false
@@ -15,9 +14,9 @@ format:
   html:
     toc: true
     toc-depth: 3
-    template-partials:
-      - ../../../title-block.html
 ---
+
+![](images/permissions-banner.png){fig-align="center" width="90%"}
 
 This is another post in the [Making of Vis-MLM](../../../posts/2026-04-making-vis-mlm/index.qmd) series,
 alongside [Quarto Is Not LaTeX, However Hard It Tries](../quarto-is-not-latex/index.qmd) and
@@ -30,14 +29,34 @@ your publisher hands you a permissions checklist and you have several hundred fi
 
 A statistics and data visualization book like [_Visualizing Multivariate Data and Models in R_](https://friendly.github.io/Vis-MLM-book/)
 uses images from a variety of sources. Most of mine are generated straight from
-data by my own R code -- a scatterplot, a biplot, an HE plot and even a couple I developed
+data by **my own R code** -- a scatterplot, a biplot, an HE plot and even a couple I developed
 during the writing process (partial variable plots, now in `heplots::pvPlot()`).
 The copyright status of those is
-not in question: copyright protects creative expression, not the raw output of running a
-well-known method on a dataset. But a book like this also picks up figures the ordinary way any writer
-does: a diagram from a blog post that explained an idea more clearly than I could draw it myself, a
-journal figure I wanted to show my own past work through, a couple of historical images, a book cover
-or two, even a hand-drawn sketch. None of those are mine to just use.
+not in question: copyright protects _creative expression_, not the output of running a
+well-known method on a dataset.[^dataset]
+
+[^dataset]: ⚠️ There's a caution here: Not every dataset you want to use is **free**, in the sense of beer:
+That means a copyrighted work costs no money to use, but you still must follow all of the owner's strict legal rules. A case in point is the data from the
+[Framingham Heart Study](https://www.framinghamheartstudy.org/), which I wanted to use in my [`HistData` package](https://friendly.github.io/HistData/). It's one of the most historically important
+studies in epidemiology -- it coined the term "risk factor" and pioneered multivariate logistic
+regression for disease risk -- so it seemed like an obvious fit. The catch: the `framingham.csv` file
+that's everywhere -- Kaggle, DataCamp, half the textbooks that teach logistic regression -- turns out
+to be an NHLBI BioLINCC "Teaching Dataset" release, not freely redistributable. Even the one CRAN
+package that legitimately uses it, `riskCommunicator`, does so under its own specific NHLBI approval
+request, a permission that doesn't transfer to anyone else's package. A safer route -- and, honestly,
+the more historically apt one for `HistData` -- is to build the dataset from the small
+tables published directly in the original 1961 and 1967 papers instead, which carries no licensing
+question at all. But that's a lot of work.
+
+But a book like this also picks up figures the ordinary way any writer
+does: 
+
+* a diagram from a blog post that explained an idea more clearly than I could draw it myself, 
+* a journal figure I wanted to use to show my own past work, 
+* a couple of historical images, 
+* some book covers to show my recommendations, even a hand-drawn sketch. 
+
+None of those are mine to just use willy-nilly, without thought.
 
 My publisher's permissions guide lays out six steps: 
 
