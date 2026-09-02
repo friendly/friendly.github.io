@@ -148,6 +148,12 @@ As I write them up, they will become links to full posts.
   treating `.qmd` files as data: parsing ~670 code chunks into a data frame to audit
   code-folding status and catch lines that overflow the printed page
 
+**Production and permissions**
+
+- [*Getting permissions right (or at least honest)*](../2026-09-tracking-permissions/index.qmd) —
+  turning a publisher's six-step image-permissions process into something you can actually track,
+  from finding every candidate figure to a spreadsheet an assistant can pick up
+
 ## Things Quarto does well
 
 In fairness: Quarto's HTML output is excellent (and PDF output is pretty decent, when properly configured in your `_quarto.yml` file):
