@@ -5,6 +5,7 @@ description: "Turning a publisher's six-step permissions process into something 
 author: "Michael Friendly"
 date: today
 draft: true
+image: images/permissions-banner.png
 execute:
   eval: false
   warning: false
@@ -353,9 +354,10 @@ of small stuff that a spreadsheet edited by hand quietly stops doing after the t
 None of this was about clearing every permission myself. The point was to get to a state where someone
 else -- in this case a wonderful research assistant -- could pick up the tracking spreadsheet, create a ready-to-use
 email template, and a short list of what's still missing. Then actually make progress without needing me
-in the loop for every step. The real deliverable of this whole exercise wasn't a final "permissions cleared" report --
-that takes weeks to months and isn't something a few days of tooling can shortcut. It was "permissions
-*trackable*": a state where anyone looking at the spreadsheet can see "what's outstanding, and what
+in the loop for every step. 
+
+The real product of this whole exercise wasn't a final "permissions cleared" report --
+that takes weeks to months and isn't something a few days of tooling can shortcut. It was "permissions *trackable*": a state where anyone looking at the spreadsheet can see "what's outstanding, and what
 happens next" without having to ask.
 
 If there's one thing worth taking from this beyond the specifics of image permissions: any compliance
