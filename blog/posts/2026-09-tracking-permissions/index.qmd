@@ -4,7 +4,6 @@ subtitle: "Field Notes on Tracking Down Image Permissions"
 description: "Turning a publisher's six-step permissions process into something a working author can actually track, delegate, and trust -- with the tools I used that made it possible"
 author: "Michael Friendly"
 date: today
-draft: true
 image: images/permissions-banner.png
 execute:
   eval: false
@@ -19,9 +18,9 @@ format:
 
 ![](images/permissions-banner.png){fig-align="center" width="90%"}
 
-This is another post in the [Making of Vis-MLM](../../../posts/2026-04-making-vis-mlm/index.qmd) series,
-alongside [Quarto Is Not LaTeX, However Hard It Tries](../quarto-is-not-latex/index.qmd) and
-[Mind Your Chunks](../mind-your-chunks/index.qmd). Those were about the writing and rendering pipeline.
+This is another post in the [Making of Vis-MLM](../2026-04-making-vis-mlm/index.qmd) series,
+alongside "Quarto Is Not LaTeX, However Hard It Tries" (still a draft, not yet published) and
+[Mind Your Chunks](../2026-07-mind-your-chunks/index.qmd). Those were about the writing and rendering pipeline.
 
 This one is about a problem that has nothing to do with Quarto or the writing process at all: what do you actually do when your book is heading into production,
 your publisher hands you a permissions checklist and you have several hundred figures in the book?
