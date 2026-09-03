@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-08-18">
+<meta name="description" content="Writing technical, code-dependent material usually pulls you into necessary detours – fixing a package, chasing a citation, syncing across machines, juggling AI sessions – and each detour can spawn its own. A cognitive look at where the friction actually comes from.">
+
+<title>All the Tired Horses</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="index_files/libs/quarto-diagram/mermaid.min.js"></script>
+<script src="index_files/libs/quarto-diagram/mermaid-init.js"></script>
+<link href="index_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<meta name="quarto:status" content="draft">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="fullcontent quarto-light"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">All the Tired Horses</h1>
+<p class="subtitle lead">How Am I Supposed to Get Any Writing Done? The Curses and Blessings of Writing While Developing and Researching</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">writing</div>
+    <div class="quarto-category">workflow</div>
+    <div class="quarto-category">R packages</div>
+    <div class="quarto-category">attention</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Writing technical, code-dependent material usually pulls you into necessary detours – fixing a package, chasing a citation, syncing across machines, juggling AI sessions – and each detour can spawn its own. A cognitive look at where the friction actually comes from.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 18, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- Post-scoped: muted green figure captions. Promote to styles.css
+     site-wide once settled. -->
+<style>
+.quarto-figure figcaption,
+figure figcaption {
+  color: #2f6b46;
+  font-style: italic;
+  font-size: 0.92em;
+}
+
+body.quarto-dark .quarto-figure figcaption,
+body.quarto-dark figure figcaption {
+  color: #86d1a4;
+}
+</style>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/tired-horses-header-v1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>A writer working at two computer screens as a herd of horses rushes past his desk, distracting him from the task at hand.</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<div class="line-block">🎵 All the tired horses in the sun<br>
+&nbsp;&nbsp;&nbsp;How’m I supposed to get any riding done?<br>
+&nbsp;&nbsp;&nbsp;Mm-mm, mm-mm 🎵</div>
+<p>— Bob Dylan, 1970</p>
+</blockquote>
+<section id="the-writing-process" class="level2">
+<h2 class="anchored" data-anchor-id="the-writing-process">The Writing Process</h2>
+<p>When I write, my subconscious often thinks about the <strong>writing process</strong>: what it takes to “Get Some Writing Done”. It’s not simply about putting words down on a page, or typing them into an editor or word processor window. Your cognitive focus (your <strong>attention</strong>) on the task often has to deal with interruptions in the flow of ideas → tasks-to-do → final product. The interruptions are like Bob Dylan’s Wild Horses; they are detours along the path to getting it on the path draft → done → DONE → FINALLY DONE!!!.</p>
+<p>Over the years that’s meant for me writing <a href="https://datavis.ca/papers">journal articles</a> on novel <a href="https://www.datavis.ca/papers/#methods">graphical methods</a>, the <a href="https://www.datavis.ca/papers/#history">history of data visualization</a>, also <a href="https://friendly.github.io/books.html">book projects</a>, and, now, this <a href="https://friendly.github.io/blog/">blog</a>. This body of work– and what I had to do to “Get some writing done”– is all a happy cognitive family, all alike in some ways, the way siblings share a last name and a few mannerisms. In writing, they call on the same high-level core cognitive skills: organizing an argument, drafting, revising, cutting what doesn’t earn its place.</p>
+<p>But each type of writing is unhappy, or at least difficult, in its own particular way – an article has to survive reviewers looking for the hole in it, a book has to hold together across three hundred pages and eighteen months, a blog post has to earn the reader’s attention in the first paragraph or lose it.</p>
+<p>But more to my main point, each form of writing in <em>my</em> work involves a somewhat different cognitive skill-set, and often different set of software tools, each one a new wild horse needing to be tamed (understood) and put to work.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> From a cognitive perspective, this falls within the span of understanding <em>attention</em> mechanisms: what are the constraints? how to solve them? From a CS perspective, that can be construed as just a “workflow” problem hiding inside what looks like a writing problem. Both of these aspects are the real subject of what follows.</p>
+<p>In this “thinking-about-my-writing-thinking”, I’m drawn to John McPhee’s <a href="https://us.macmillan.com/books/9780374537975/draftno4/"><em>Draft No.&nbsp;4: On the Writing Process</em></a>. It is the best book-length treatment I know of behind this same restlessness and occasional frustration about how writing actually gets done. It takes different shapes in various modes of expression, but there are striking similarities. It’s about the tension and friction to move your writing (and software, graphics) closer to what satisfies you as work well done and can be proud of.</p>
+<p>The core skills are probably fine for fiction or non-technical non-fiction. But, as in my <a href="https://friendly.github.io/Vis-MLM-book/">Vis-MLM book</a>, and others before it (e.g., <a href="http://ddar.datavis.ca"><em>Discrete Data Analysis with R</em></a>), I can’t help but think about the <em>graphical methods</em> I use for data analysis and see how they actually work in the context I’m writing about.</p>
+<p>Usually, I can just recall how I did this before, or find a new package that does it better. The latter involves a small detour: install the package, read the documentation, understand how to use it, incorporate into my writing and workflow.</p>
+<p>But often in this work I have to also wear a Developer hat, because these methods are new or existing ones suck: they don’t allow me to do what I want to write about. This mean implementing and testing them, writing documentation, publishing to CRAN before I get back to “real work” and actually use them in my working draft – this writing process is never just “writing”. It’s more like a path of stages, perhaps looping backwards:</p>
+<div class="cell" data-fig-width="10" data-fig-height="2.2" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-writing-straight-line" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-writing-straight-line-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-writing-straight-line">%%{init: {"flowchart": {"curve": "linear", "nodeSpacing": 22, "rankSpacing": 38}, "themeCSS": ".stage { filter: drop-shadow(2px 3px 2px #b8c2c2); }"}}%%
+flowchart LR
+  writing([Writing]) --&gt; idea([Graphic idea]) --&gt; implement([Implement in&lt;br/&gt;software]) --&gt; illustrate([Illustrate with&lt;br/&gt;example]) --&gt; explain([Explain])
+
+  classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  class writing,idea,implement,illustrate,explain stage;
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-writing-straight-line-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The deceptively simple path from writing to explanation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Except it isn’t really a straight line at all. Every stage loops back, usually to “implement” and often all the way back to “writing” itself, because what the software actually does doesn’t match what you wanted to show. Think of each loop-back as a detour sign on the road from idea to finished post. This one has four of them.</p>
+<div class="cell" data-fig-width="10" data-fig-height="4.2" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-writing-detours" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-writing-detours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-writing-detours">%%{init: {"flowchart": {"curve": "basis", "nodeSpacing": 25, "rankSpacing": 55}, "themeCSS": ".stage { filter: drop-shadow(2px 3px 2px #b8c2c2); }"}}%%
+flowchart LR
+  writing([Writing]) --&gt; idea([Graphic idea]) --&gt; implement([Implement in&lt;br/&gt;software]) --&gt; illustrate([Illustrate with&lt;br/&gt;example]) --&gt; explain([Explain])
+
+  idea ==&gt; writing
+  implement ==&gt; writing
+  illustrate ==&gt; implement
+  explain ==&gt; implement
+
+  classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  class writing,idea,implement,illustrate,explain stage;
+  linkStyle 4,5,6,7 stroke:#b04a3f,stroke-width:3px;
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-writing-detours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The actual route: each later stage can force a return to earlier work.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<!--
+TODO: The Tree of Thought or Garden of Forking Thoughts
+  - not just a linear sequence (with possible loops), but maybe more like a tree (different projects or issues in a single one)
+  - multitasking, attention switching
+  - if a tree, do you go depth-first or breadth-first?
+    - example: writing a `vcdExtra` function to plot logistic regression results with the marginal distribution of X shown as
+      points, histograms, density curves-- when to stop, promote the function from `dev/` to `R/` and release to CRAN? 
+      vs. The Rabbit Hole: Continue to make it more general / useful / beautiful in search of dataviz Bunny Gold.
+
+Here's the email to Gavin that triggered this:
+
+I thought `dev/loghistplot()` was getting nearly ready to move to R/, but then a bunch of synapses spontaneously fired as I was thinking about how this could be made more general/useful/beautiful.
+
+Some of these are in `dev/loghistplot-extensions.md` . One was the idea of allowing `marginal="density"` in the function. I actually like
+this best of all. Take a look. There's also a testing script for some of these ideas.
+
+Maybe we've done enough for now on this, and I'll put this into a new vcdExtra v 0.9.8 or even leap to v 1.0.0. The alternative is to keep creeping down the
+rabbit hole in search of a golden bunny.
+-->
+<!--
+TODO: Mention how other R datviz books have done things -- but maybe that's another rabbit hole for this post??
+
+- Claus Wilke: Fundamentals of Data Visualization -- no code in the book, great figures
+- Kieran Haley:
+- Antony Unwin: Graphical Data Analysis with R
+-->
+</section>
+<section id="detour-1-bridge-out-when-the-software-doesnt-do-what-you-need" class="level2">
+<h2 class="anchored" data-anchor-id="detour-1-bridge-out-when-the-software-doesnt-do-what-you-need">🚧 Detour 1 — BRIDGE OUT: when the software doesn’t do what you need</h2>
+<p>Most of the time the loop closes quietly – existing packages do what you need, you make the figure, you move on. <em>Vis-MLM</em> wasn’t like that. Working up examples for the book meant a lot of these breaks from the actual writing, and sometimes the break had a second break nested inside it: one of my packages, or someone else’s, turned out to have a limitation, or worse, a bug. Then there’s a decision to make:</p>
+<ul>
+<li>track down my or their code;</li>
+<li>discover where it was wrong or could be made more general;</li>
+<li>fix it myself (then re-build the package, …) vs.&nbsp;file an issue or PR for the package author (and wait for follow-up).</li>
+</ul>
+<section id="ggbiplot-the-fork-taken" class="level3">
+<h3 class="anchored" data-anchor-id="ggbiplot-the-fork-taken"><code>ggbiplot</code>: The Fork Taken</h3>
+<div class="float-right" style="width: 40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-crime-biplot3-1.png" class="img-fluid figure-img"></p>
+<figcaption>Enhanced <code>ggbiplot</code> of the crime data, grouping the states by region and adding data ellipses.</figcaption>
+</figure>
+</div>
+</div>
+<p>The clearest example is <code>ggbiplot</code>. Biplots show a 2D view of <span class="math inline">\(n\)</span>-dimensional data in a single display, observations and variables together – exactly the kind of thing that shows up constantly in the book. The existing package didn’t do quite what I needed, so I forked it, extended it to produce the plots I actually wanted, and eventually negotiated with the original author to merge the work in and take over as maintainer. What started as “make one figure for one chapter” ended as an ongoing maintenance commitment. That’s the shape of this kind of detour: it doesn’t stay the size it started at.</p>
+</section>
+<section id="tinyplot-a-road-not-taken" class="level3">
+<h3 class="anchored" data-anchor-id="tinyplot-a-road-not-taken"><code>tinyplot</code>: A Road Not Taken</h3>
+<p>In <em>Vis-MLM</em>, I’ve been somewhat graphic-core-agnostic: I use both base R graphics included in my packages, and notably the excellent <a href="https://cran.r-project.org/package=car"><code>car</code> package</a> for its rich linear model graphics, but also <code>ggplot2</code>-based methods which I generally prefer for its coherent structure and extensibility. However, base R graphics are still a considerable chore for things I want to do, but are quite awkward— small things like composing a legend with different point symbols and colors. To plot points colored and shaped by group, you build the <code>col</code> and <code>pch</code> values passed to <code>plot()</code> by indexing a small vector with the grouping factor – and then repeat the same two vectors, in the same order but without indexing, to build the legend by hand:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">factor</span>(iris<span class="sc">$</span>Species)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>clr <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"steelblue"</span>, <span class="st">"darkorange"</span>, <span class="st">"forestgreen"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pch <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">15</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Sepal.Length, iris<span class="sc">$</span>Sepal.Width,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> clr[grp], <span class="at">pch =</span> pch[grp],</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Sepal Length"</span>, <span class="at">ylab =</span> <span class="st">"Sepal Width"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">levels</span>(grp), <span class="at">col =</span> clr, <span class="at">pch =</span> pch)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Get the order of <code>levels(grp)</code> wrong relative to <code>clr</code>/<code>pch</code> and the legend quietly lies about which color goes with which group.</p>
+<p>About half-way through writing, a new base-R kid arrived on the block: <a href="https://grantmcdermott.com/tinyplot/"><code>tinyplot</code></a>, a lightweight, zero-dependency alternative from Grant McDermott that offers automatic grouping (<code>y ~ x | group</code>), easy built-in legends, built-in themes and small-multiples faceting akin to <code>ggplot2</code>. The <a href="https://grantmcdermott.com/tinyplot/vignettes/gallery.html"><code>tinyplot</code> Gallery</a> gives some sense of what it can do.</p>
+<p>It is now nearly everything I could have wanted for the base-R graphics in the book, but alas too late to consider. This would have entailed revising roughly ~70 example scripts, and all the text across many chapters that used those. That detour would have set me back a long way, so I bid goodbye to that otherwise attractive road. That road will have to wait until a 2<span class="math inline">\(^{nd}\)</span> edition.</p>
+</section>
+<section id="noteworthy-points-a-path-delayed" class="level3">
+<h3 class="anchored" data-anchor-id="noteworthy-points-a-path-delayed">Noteworthy Points: A Path Delayed</h3>
+<div class="float-right" style="width: 40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/peng-out-biplot-34.png" class="img-fluid figure-img"></p>
+<figcaption>Biplot of dimensions 3-4 of the Penguin data. Three outliers—noteworthy birds—stand out in this view.</figcaption>
+</figure>
+</div>
+</div>
+<p>A smaller but more consequential example is the idea of a <em>general mechanism</em> for flagging and labeling “noteworthy” observations in a fitted model or a graphic display – outliers, large residuals, influential points, and so on – often crucial to understanding and explaining what a plot is showing.</p>
+<p>You get a hint of this already in the diagnostic panels produced by <code>plot(lm(y ~ x1 + x2 + ...))</code>, where unusual points get <em>automatically</em> labeled by case name (but only if your data frame actually has <code>rownames()</code>). <code>plot.lm()</code> isn’t beautiful, but it gets the job done and you don’t have to think much about it, other than select <code>which</code> plot types to show, and the <code>id.n</code> number of points to identify.</p>
+<p>This facility is one of the most endearing aspects of the <a href="https://cran.r-project.org/package=car"><code>car</code> package</a>. Its plotting functions – <code>scatterplot()</code>, <code>residualPlots()</code>, <code>influencePlot()</code>, and others – <em>all</em> accept an <code>id = list(n=, method=, ...)</code> argument that handles this consistently. <code>method=</code> can be <code>"x"</code> or <code>"y"</code> (the points furthest from the mean of that coordinate), <code>"r"</code> (furthest from zero, as in a residual plot), <code>"mahal"</code> (furthest from the bivariate centroid by Mahalanobis distance), or your own numeric vector – Cook’s distance, say – with the largest <code>n</code> values labeled.</p>
+<p>None of that existed for <code>ggplot2</code>, though. Finding and labeling unusual points is another data step and <code>geom_*()</code> you have to wire up yourself, one plot at a time – every single time! And worse: because I generally want to explain to the reader how such plots are constructed, so they can use them in their work, it takes another loop in the cognitive diagram <a href="#fig-writing-detours" class="quarto-xref">Figure&nbsp;2</a>.</p>
+<p>I wrote some code for this in <code>heplots::noteworthy()</code>, and its <code>ggplot2</code> layer <code>stat_noteworthy()</code>. It ports the same vocabulary – <code>"mahal"</code>, <code>"x"</code>, <code>"y"</code>, <code>"r"</code>, or a Cook’s-distance-style numeric vector – into the grammar of graphics, so any <code>ggplot</code>, similar to <code>car</code>‘s own base-graphics functions, could get the same treatment. It’s been tested against <code>peng</code>, heplots’ Palmer-Penguins-style dataset, flagging multivariate outliers by Mahalanobis distance across the measured variables.</p>
+<p>But getting this <em>generally right</em>– so it worked in situations with a grouping variable, and in faceted displays turned out to be more difficult than my ggplot skills could satisfy. Another path put on hold, for the sake of “getting it DONE!”</p>
+</section>
+</section>
+<section id="detour-2-slow-merging-traffic-chasing-the-data-the-perfect-image-or-correct-citation" class="level2">
+<h2 class="anchored" data-anchor-id="detour-2-slow-merging-traffic-chasing-the-data-the-perfect-image-or-correct-citation">🚧 Detour 2 — SLOW: MERGING TRAFFIC: chasing the data, the perfect image or correct citation</h2>
+<p>My papers on data visualization history, for example on <a href="https://www.datavis.ca/papers/guerry-STS241.pdf">Andre-Michel Guerry</a>, <a href="https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html">Michael Florent van Langren</a>, <a href="https://www.idescat.cat/sort/sort451/45.1.0.friendly-andrews.pdf">Florence Nightingale</a> and <a href="https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf">under-recognized heroes</a> run into a different kind of detour. There’s a general theme and structure going in, but the devil is in the details of several recurring tasks, each its own kind of detour.</p>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data</h3>
+<p>My philosophy of historical research often entails tracking down the data behind some great example. That could mean scraping from an historical document, or digitizing an image, itself implying another set of skills and tools to learn.</p>
+<p>Once I have the data, what should I do with it? I could just make it a dataset in my project, but if it is also worthwhile to others, I feel an urge to put it into an R package, document it and include runnable examples, perhaps as a challenge to do it better. Many interesting historical data sets from this found their way into the <a href="https://friendly.github.io/HistData/"><code>HistData</code> package</a>. I was pleased when John Russell chose a number of these for his <a href="https://github.com/drjohnrussell/30DayChartChallenge">30DayChartChallenge</a> submissions in 2025.</p>
+<p>Datasets related to graphical methods for multivariate data and my Vis-MLM book are included in the <a href="https://friendly.github.io/heplots/"><code>heplots</code></a>, <a href="https://friendly.github.io/candisc/"><code>candisc</code></a>, <a href="https://friendly.github.io/genridge/"><code>genridge</code></a> packages, and those related to categorical data analysis (and my <code>psy6136</code> course) are in <a href="https://friendly.github.io/vcdExtra/"><code>vcdExtra</code></a> and its parent <a href="https://cran.r-project.org/package=vcd"><code>vcd</code></a>.</p>
+<p>To make these even easier to find and use, a number of these now use <a href="https://roxygen2.r-lib.org/reference/tags-index-crossref.html"><code>@concept</code></a> tags in the documentation, to make them searchable by content topics.</p>
+<p>In a minor way, this problem also found its way into <code>Vis-MLM</code>. I use the <a href="https://allisonhorst.github.io/palmerpenguins/"><code>palmerpenguins</code></a> dataset for many examples throughout the book. But this is flawed by having variable names like <code>bill_length_mm</code> that include units I wouldn’t want to use in graphs; and also missing cases that needed to be excluded in every example. My solution was to create a clean version, <code>heplot::peng</code> to rid myself of this wild pony. In the meantime, some of this has been cleaned-up, now as <code>datasets::penguins</code>.</p>
+</section>
+<section id="images" class="level3">
+<h3 class="anchored" data-anchor-id="images">Images</h3>
+<p>For historical work, finding suitable reference images to comment on or try to reproduce, involves another set of tasks. Some of these are mundane that could be given to a research assistant (human or otherwise), but others are more challenging. The conceptually simple, but often time-consuming ones are:</p>
+<ul>
+<li>find the best reference images available; there are often a bunch available online;</li>
+<li>make sure they are of sufficient resolution (online vs.&nbsp;print);</li>
+<li>make careful note of the actual image source, for attribution, but also for licensing/permission.</li>
+</ul>
+<p>The work for me is closely tied to how the images I find are curated: From the wonderful collection of <a href="https://www.davidrumsey.com/">davidrumsey.com</a> images, for instance, I can download items with files describing the exact source, reference, and other attributes. I can download one as a <code>.zip</code> file with everything there. This is the work of a master, a pioneering effort in digital philanthropy and open-access curation to historical data visualzation. Hey, you can now even search the images for a term, like “data”, and find all those containing that somewhere.</p>
+<p>Not every source is that considerate. I frequently find French material on <a href="https://gallica.bnf.fr/"><code>Gallica</code></a>, and also in the German <a href="https://digital.staatsbibliothek-berlin.de/">Staatsbibliothek, Berlin</a> digital collection, the <a href="https://www.bl.uk/collection">British Library</a>, and occasionally the <a href="https://www.loc.gov/collections/">Library of Congress</a>. But each one has its own quirks, to figure out how to get what I want.</p>
+</section>
+<section id="what-were-they-thinking" class="level3">
+<h3 class="anchored" data-anchor-id="what-were-they-thinking">What were they thinking?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/Nightingale-1858b-K.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Initial design of Nightingale’s rose diagram of deaths in the Crimean war, using a linear scale for deaths. The two diagrams at the top show relative deaths from zymotic diseases, wounds (in red) and other causes (black). The bottom left diagram shows the annual rate of mortality at Scutari from October 1854 to June 1855. <em>Source</em>: Nightingale (1858b, Diagram K, p.&nbsp;47)</figcaption>
+</figure>
+</div>
+<p>But there is another delicious but labor-intensive aspect here: trying to find earlier sources, “drafts”, of an important data graphic, to trace an author’s development of the data shown and its representation as an image in order to answer perhaps the most important question, “What were they thinking?”</p>
+<p>In <a href="https://www.idescat.cat/sort/sort451/45.1.0.friendly-andrews.pdf">joint work with RJ Andrews</a>, we tracked down the ideas that led Florence Nightingale to construct her famous 1859 radial diagram of deaths of British soldiers in the Crimean War of 1853–1856. We discovered that this graphic form actually originated with André-Michel Guerry’s 1829 depiction of meteorological (temperature, barometric pressure) and medical (causes of hospital admissions) phenomena. He used this form to show how these could be portrayed as cyclical phenomena, over months of the year, hours of the day, days of the week and so forth.</p>
+<p>But her first 1858 version of this iconic graph, shown above (the “bat wing diagram”) was a graphic failure. She used a linear scale for deaths here. She quickly realized that although the data were correct, this graph was deceptive, because the eye tends to perceive the <em>area</em> rather than <em>length</em> in such displays. Consequently, the well-known version used a square-root scale for the number of deaths in each month, so that the area of the wedges would proportional to deaths, and represent the data more faithfully to our eyes and brains.</p>
+</section>
+<section id="citations" class="level3">
+<h3 class="anchored" data-anchor-id="citations">Citations</h3>
+<p>A minor aspect here, but one that relates to the concurrent, attention-consuming tasks is that of tracking down citations, which pervades academic writing:</p>
+<ul>
+<li>Search online for the reference. There are often several sources,</li>
+<li>Find something worth citing;</li>
+<li>Open the reference manager (<a href="https://www.jabref.org/"><code>Jabref</code></a>, <a href="https://www.zotero.org/"><code>Zotero</code></a>, …) to check whether it’s already there;</li>
+<li>if not, back to search, find it, import it;</li>
+<li>copy the BibTeX entry and merge it into the project’s working <code>references.bib</code>. (A LaTeX workflow can shortcut this by pointing at several system-wide BibTeX databases at once; Zotero may make the merge step unnecessary altogether.)</li>
+</ul>
+<p>Same tension either way: the detour is legitimate and necessary, and it still pulls you out of the sentence you were writing.</p>
+</section>
+</section>
+<section id="detour-3-merge-conflict-ahead-keeping-it-all-in-sync" class="level2">
+<h2 class="anchored" data-anchor-id="detour-3-merge-conflict-ahead-keeping-it-all-in-sync">🚧 Detour 3 — MERGE CONFLICT AHEAD: Keeping it all in sync</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/watch-me-diff.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Still from <a href="https://www.youtube.com/watch?v=uBWrpVrazzA">Heaven King video</a> used by Jenny Bryan</figcaption>
+</figure>
+</div>
+<p>The third kind of friction isn’t about content at all – it’s about <em>where</em> the work lives. I work on several computers: home and office desktops and a laptop. But also with students, research assistants and collaborators. The main points are:</p>
+<ul>
+<li>Syncing work across machines should be <em>frictionless</em>, so you always have the most recent version, laptop, home desktop, office machine and with collaborators. Cloud alternatives (such as Dropbox, iCloud, OneDrive, Google Drive) handle simple cases, but often introduce another source of friction. For example in my Vis-MLM book (and this website), I found these projects couldn’t live on Dropbox, because of a <a href="https://friendly.github.io/blog/posts/2026-04-making-vis-mlm/">clash with Quarto</a> over permissions.</li>
+</ul>
+<div class="float-right" style="width: 30%;">
+<p><img src="figures/git-sticky-notes-monitor-v2.png" class="img-fluid"></p>
+</div>
+<ul>
+<li>Using <strong>version control</strong> is one answer. In earlier days R development was centered on SVN and a lot of packages were developed and maintained on <a href="https://r-forge.r-project.org/">R-Forge</a>, shortly to be retired. <code>git</code> became the answer, but it is also cognitively somewhat harder, because it changes how you <em>think</em> about the work, not just where the files sit:
+<ul>
+<li>who does what?</li>
+<li>how do you comment on someone else’s changes?</li>
+<li>should you use branches, or does everyone work on <code>main</code>?</li>
+<li>should issues tracked directly on GitHub, or somewhere else (e.g, an <code>issues/</code> folder inside the repo)</li>
+<li>how do you mark work <strong>DONE</strong>, or take it off a <strong>TODO</strong> list?</li>
+</ul></li>
+</ul>
+<p>“Merge conflict” is the right sign for this detour twice over – it’s what git calls it, and it’s exactly what it feels like. Jenny Bryan’s <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a> provides a suite of learnable skills for key workflows that cover your most common tasks.</p>
+</section>
+<section id="detour-4-several-crews-working-no-coordination-working-with-ai-across-several-sessions-at-once" class="level2">
+<h2 class="anchored" data-anchor-id="detour-4-several-crews-working-no-coordination-working-with-ai-across-several-sessions-at-once">🚧 Detour 4 — SEVERAL CREWS WORKING, NO COORDINATION: Working with AI across several sessions at once</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/powershell-tabs.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+<p>This one’s new, and it’s the one I lived through writing <em>this very post</em>. Today alone: one AI session working through a statistics bug in <code>vcdExtra</code>, a second recording the mathematical derivation behind it in a separate project folder, then this one – drafting a blog post about a stray idea the first two sessions produced. Three Claude tabs or windows, three separate conversations, none of them aware of the other two unless I carry the context across myself.</p>
+<p>What that actually costs:</p>
+<ul>
+<li>each session’s context is local to it – a fresh window starts from zero and has to be re-briefed, even on work from an hour ago in a different window;</li>
+<li>deciding <em>which</em> window a given thought belongs in is its own small tax – is this idea part of the current task, or does it want to be its own conversation (a blog post, say, spun out of a debugging session);</li>
+<li>the git version of this problem is real, not hypothetical – more than once today, a push from one line of work got rejected because another session (or an automated build) had already pushed to the same branch, and pulling first before starting something new turned out to be the thing I forgot to do.</li>
+</ul>
+<p>None of this is a reason not to work this way – it’s clearly worth it – but it’s a genuinely new kind of detour sign, and another aspect of cognitive load, one that didn’t exist a couple of years ago.</p>
+</section>
+<section id="exploding-brain-syndrome" class="level2">
+<h2 class="anchored" data-anchor-id="exploding-brain-syndrome">Exploding Brain Syndrome</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/brain-many-tasks-v1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>A brain crowded with interconnected writing, coding, graphics, scheduling, and communication tasks, all competing for attention</figcaption>
+</figure>
+</div>
+<p>None of these four detours is much of a problem <em>in isolation</em>; it is generally manageable. The real problem comes from your brain running two or three of them at once, each with its own open window(s) on your screen(s), a half-finished thought jotted down on a notepad, marking something in your text as a <strong>TODO</strong>, etc. There’s something cognitively high-dimensional about the state your brain is holding. This is itself an interesting problem in cognition. I don’t know if this has been studied, so I’d be willing to donate my brain to science, when I’m done with it. (Just hope it wouldn’t travel around in a wooden box for as long as Einstein’s)</p>
+<p>Here’s the simplest example: have a thought, find the window that holds it on your computer, edit, or change it. But “the window” could be the manuscript text, an RStudio console, the package source, your reference manager, a <code>bash</code> terminal <code>git</code> session, an external LaTeX equation editor for the one formula that’s too gnarly to compose inline, and now— a Claude/Codex AI session that’s three exchanges deep into a completely different topic you started earlier. And there are also forks in the process. The diagram shows just one built into the loop itself: do you commit and push your work here, before switching context? And, is that its own kind of detour?</p>
+<div class="cell" data-fig-width="10" data-fig-height="6" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-thought-window-edit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-thought-window-edit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-thought-window-edit">%%{init: {"flowchart": {"curve": "basis", "nodeSpacing": 22, "rankSpacing": 45}, "themeCSS": ".stage { filter: drop-shadow(2px 3px 2px #b8c2c2); } .window { filter: drop-shadow(2px 3px 2px #b8c2c2); }"}}%%
+flowchart LR
+  thought([Thought]) --&gt; findw{Find the&lt;br/&gt;window}
+
+  findw --&gt; manuscript([Manuscript])
+  findw --&gt; pkg([Package source])
+  findw --&gt; refs([Reference&lt;br/&gt;manager])
+  findw --&gt; terminal([Terminal,&lt;br/&gt;mid-commit])
+  findw --&gt; ai([AI session,&lt;br/&gt;mid-topic])
+  findw --&gt; latex([LaTeX equation&lt;br/&gt;editor])
+
+  manuscript --&gt; edit([Edit])
+  pkg --&gt; edit
+  refs --&gt; edit
+  terminal --&gt; edit
+  ai --&gt; edit
+  latex --&gt; edit
+
+  edit --&gt; commit{Commit &amp;&lt;br/&gt;push first?}
+  commit -- yes --&gt; push([Commit,&lt;br/&gt;push])
+  push ==&gt; thought
+  commit == no ==&gt; thought
+
+  classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  classDef window fill:#f5e6c8,stroke:#a3781f,stroke-width:1.5px,color:#4a3a10;
+  class thought,findw,edit,commit,push stage;
+  class manuscript,pkg,refs,terminal,ai,latex window;
+  linkStyle 15,16 stroke:#b04a3f,stroke-width:3px;
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-thought-window-edit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The thought -&gt; window -&gt; edit loop, and how many windows there are to pick from.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>And that’s before something <em>new</em> shows up uninvited – a paper worth a second look that turns into an idea for a post, or an R package that looks worth trying, if it even fits how you already work. Four kinds of detour sign, all visible from the same stretch of road, is a lot of signs to read at once.</p>
+<p>Step back far enough and this is also a workflow problem, more than just a writing one. Each of the four detours is content-specific on the surface – a package bug, a citation, a git conflict, an AI session mid-topic – but what actually drains attention is the same underneath: keeping track of where a piece of work lives, what state it’s in, and whether you already dealt with it in some other window ten minutes ago.</p>
+<p>Call this “context management”, “task switching”, or just “workflow”. It’s a problem in its own right, distinct from the writing and distinct from the graphics, and it deserves to be treated as one instead of being absorbed silently into “the cost of doing the work.”</p>
+<section id="what-this-looked-like-while-writing-vis-mlm" class="level3">
+<h3 class="anchored" data-anchor-id="what-this-looked-like-while-writing-vis-mlm">What this looked like while writing Vis-MLM</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/brain-many-projects-v4.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>The Vis-MLM book, active blog posts, and R package projects connected inside a stylized brain.</figcaption>
+</figure>
+</div>
+<p>This image is something of an artist’s rendering of my brain over the last year, working mainly on Vis-MLM but, as this required, on some of my packages. When there was a lull (book sent to copy editing), or as time allowed I also worked on developing this website and some blog posts.</p>
+</section>
+</section>
+<section id="taming-the-horses" class="level2">
+<h2 class="anchored" data-anchor-id="taming-the-horses">Taming the horses</h2>
+<p>What those detours and all those wild horses do in your head is to split your attention into possibly many pieces. Your attention is what you can give thought to and push further along the assembly line to <strong>DONE</strong> check mark somewhere. It is a finite mental resource, so all those pieces compete, like a bunch of toddlers in a childcare center asking: “Where’s my snack?”, “When can I play alone, just myself?”</p>
+<p>Think of it less as a single line of stages and more as a tree: every open thought is a branch, and every detour – a package bug, a citation chase, a merge conflict, a fourth AI window – is a branch off a branch. The examples earlier in this post are really examples of what happens to a branch once it’s grown.</p>
+<ul>
+<li><p><code>ggbiplot</code> was a small branch (fix all figures for one chapter) that I kept watering until it became a permanent limb of the tree – ongoing maintenance, not a detour anymore.</p></li>
+<li><p><code>tinyplot</code> was a branch I looked at, admired, and cut, not because it was a bad branch but because keeping it alive meant re-growing seventy other branches around it.</p></li>
+<li><p><code>heplots::noteworthy()</code>’s <code>ggplot2</code> layer is a branch still on the tree, leafed out partway, just dormant.</p></li>
+</ul>
+<div class="cell" data-fig-width="10" data-fig-height="4.5" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-pruning-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pruning-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-pruning-tree">%%{init: {"flowchart": {"curve": "basis", "nodeSpacing": 25, "rankSpacing": 50}, "themeCSS": ".stage, .kept, .cut, .delegated { filter: drop-shadow(2px 3px 2px #b8c2c2); }"}}%%
+flowchart LR
+  root([Open thread]) --&gt; b1([ggbiplot fix]) --&gt; k1([Kept &amp; grown:&lt;br/&gt;ongoing maintenance])
+  root --&gt; b2([tinyplot detour]) -.-&gt; c1([Cut for now:&lt;br/&gt;2nd edition, maybe])
+  root --&gt; b3([noteworthy for ggplot2]) -.-&gt; c2([Left dormant])
+  root --&gt; b4([Fourth AI window]) --&gt; d1([Delegated:&lt;br/&gt;AI or RA holds context])
+
+  classDef stage fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  classDef kept fill:#d7eeee,stroke:#276b6b,stroke-width:1.5px,color:#173f3f;
+  classDef cut fill:#f5e6c8,stroke:#b04a3f,stroke-width:1.5px,color:#4a3a10,stroke-dasharray:4 3;
+  classDef delegated fill:#f5e6c8,stroke:#a3781f,stroke-width:1.5px,color:#4a3a10;
+  class root,b1,b4 stage;
+  class k1 kept;
+  class b2,b3,c1,c2 cut;
+  class d1 delegated;
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pruning-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Taming the horses: what happens to a branch once it’s grown.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Taming the horses, then, isn’t about stopping the branching – new branches show up whether you invite them or not, as Detour 4 makes clear. It’s about pruning: deciding, deliberately and out loud, which branches get water and light right now, which get grafted onto someone else’s tree, and which get cut clean so they stop drawing on the same limited attention as everything else. Two kinds of pruning worked for me writing Vis-MLM:</p>
+<ul>
+<li><strong>Delegate the branch.</strong> Hand it to an RA – often at a high level (“read Chapter 6 for figures that don’t match the text”), sometimes as a specific, bounded task. The branch keeps growing; it just isn’t on my tree for a while.</li>
+<li><strong>Ask AI to hold the branch.</strong> Not necessarily to finish it, but to carry its context – what state it’s in, what the next step was going to be – so I don’t have to keep it warm in my own head between visits.</li>
+</ul>
+<p>Either way, the point of pruning isn’t to end up with fewer branches. It’s to end up with fewer branches <em>you’re</em> personally responsible for watering at the same time.</p>
+</section>
+<section id="how-could-ai-help" class="level2">
+<h2 class="anchored" data-anchor-id="how-could-ai-help">How could AI help?</h2>
+<p>Some of this is squarely in AI’s wheelhouse – searching for images, searching code, tracking down a reference. Detour 4 above is the more interesting, unresolved question: if AI sessions are themselves now a source of friction, can AI also help manage the friction between its own sessions – carrying context across windows, noticing when two conversations are circling the same idea? Genuinely don’t know yet.</p>
+<p>What I do know: this post is itself an example of the good version of Detour 4. It started as a page of fragments – half a Dylan lyric, a diagram sketched in ASCII arrows, “not sure what I meant here” next to a bullet point – and turning that into what you’re reading now happened in real time, in one of today’s three windows, without needing yet another detour of its own.</p>
+<!-- Draft notes / raw fragments for this post are kept in tired-horses.md
+     alongside this file, for whatever gets added next. -->
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>In an R environment, this includes R language changes (the <code>magrittr</code> pipe <code>%&gt;%</code> giving way to the native pipe <code>|&gt;</code>), tidyverse updates (<code>dplyr</code> and friends), <code>ggplot2</code> enhancements, and statistical modeling developments (HLMs, Bayesian methods) – each with its own learning curve before it earns a place in the workflow.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
