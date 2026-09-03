@@ -1,0 +1,82 @@
+---
+title: "Battle of the Agents: My Claude Against the World"
+subtitle: "A spam email, a takedown that never got sent, and what that says about fighting bots with bots"
+description: "An AI-generated pitch to 'help' publicize a book turns into a small experiment in sicking my own AI assistant on someone else's -- and a lesson in why the smart reply is no reply at all."
+author: "Michael Friendly"
+date: "2026-09-03"
+draft: true
+execute:
+  eval: false
+categories: [AI, agents, spam, humor]
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+<!-- SKETCH DRAFT -- rough narrative pass, not polished. TODO markers below flag spots to revisit. -->
+
+Out of the blue today, I got an email offering help with my Vis-MLM book. Not a review, not a
+question about the content -- a pitch. "Quick question," it began. "I came across Vis-MLM-book
+today and ended up reading through the whole thing. Has anyone ever looked at it from the outside
+and told you what they noticed first?"
+
+It went on like that for a few paragraphs: a folksy theory about five-second first impressions, my
+repo's 21 GitHub stars offered up as proof that "not enough of the right people are getting past
+those five seconds," and a free offer to send me a plan for fixing my README. "I am not trying to
+sell you anything in this email," it assured me, which is the kind of sentence that only shows up
+in emails that are, in fact, building up to selling you something.
+
+The sender's address was `bodassss3456@gmail.com`. Not a company. Not even a plausible person.
+Just a handle with the specific gravity of a bulk-mail template behind it.
+
+### Sicking my agent on their agent
+
+Vis-MLM-book is a Quarto repo for a book manuscript I'm writing with Claude Code's help --
+which meant that, when this landed, I had an AI assistant sitting right there. So I did the
+obvious, slightly juvenile thing: I asked Claude to read the pitch and tell me what it thought,
+then draft a reply. My agent versus -- presumably -- theirs.
+
+It didn't take much prompting. Claude clocked the email as templated outreach almost immediately:
+the "quick question" opener, the manufactured personalization (a star count is not an insight),
+the pre-emptive "I'm not selling anything." I asked for something blunt, and got back a genuinely
+well-constructed dismissal -- something like:
+
+> No.
+>
+> This is a form email... My assistant flagged it as templated outreach in about two seconds,
+> which is roughly the "five seconds" you claim decides whether something's worth attention...
+> Please don't darken my inbox again.
+
+<!-- TODO: decide whether to quote the reply in full here, or just this flavor excerpt -->
+
+It was sharp. It was fun to read. I was, for about thirty seconds, ready to send it.
+
+### The swerve
+
+Then I asked Claude one more question before hitting send: was there anything about this account
+that should worry me enough to just let it go?
+
+The answer was the actual point of this whole exercise, and it wasn't the one I expected. The
+email itself was harmless -- no link, no attachment, nothing to click. But replying, even with a
+witty takedown, does something the spammer wants: it confirms the mailbox is real, live, and
+read by a human who responds to cold outreach. That's valuable information, and it's the kind of
+thing that gets sold, reused, and acted on -- more outreach, not less. A clever rebuttal doesn't
+punish a bulk-mail operation. It feeds it a signal.
+
+So the reply I was proud of is the reply that never got sent. I marked the email as junk in
+Outlook instead, and it vanished immediately -- no confirmation screen, no "are you sure," just
+gone. Oddly satisfying, in a way that a perfect comeback never would have been.
+
+### Who actually won
+
+There's something a little absurd about setting up a "battle of the agents" and then having the
+battle consist of my agent talking me out of fighting. But I think that's the real shape of this
+particular fight: against automated, at-scale outreach, the winning move isn't a better sword,
+it's not showing up to the duel. My assistant didn't beat theirs by writing something clever. It
+won by telling me the clever thing wasn't worth using.
+
+Which leaves an odd question hanging over the whole exercise: what does it even mean to win a
+fight the other side never knew happened?
+
+<!-- TODO: closing line needs work -- want something wry, not a moral. Revisit once the body settles. -->
