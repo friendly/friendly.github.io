@@ -1,0 +1,21 @@
+// Model formulas: Wilkinson-Rogers notation and computational equivalence
+// Same visual vocabulary as sem-cycle.dot
+digraph formula {
+  graph [layout=neato, splines=true, bgcolor="transparent", fontname="Helvetica", pad=0.25, overlap=false];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=13, penwidth=1.2, color="#555555", margin="0.18,0.10"];
+  edge  [fontname="Helvetica", fontsize=10, color="#333333", arrowsize=0.8];
+
+  math    [label="Model\ny = Xb + e",         fillcolor="#FDF1DC", pos="0,1.2!"];
+  formula [label="Formula\ny ~ x1 + A*B",      fillcolor="#FDF1DC", pos="2.8,1.2!"];
+  data    [label="Data",                       fillcolor="#E6F2E0", shape=cylinder, style="filled", pos="2.8,-0.4!"];
+  fit     [label="Fitted object\nlm(), glm()", fillcolor="#E3EEF8", pos="5.4,0.4!"];
+  summ    [label="summary()\nanova()",         fillcolor="#E3EEF8", style="filled", pos="8,1.2!"];
+  plots   [label="plot()\neffects",            fillcolor="#E3EEF8", style="filled", pos="8,-0.4!"];
+
+  math    -> formula [style=dashed, dir=both, label="same model\n "];
+  formula -> fit     [penwidth=2];
+  data    -> fit     [penwidth=2];
+  fit     -> summ    [penwidth=2];
+  fit     -> plots   [penwidth=2];
+  summ    -> formula [color="#C0392B", fontcolor="#C0392B", penwidth=1.6, label="revise: update()\n "];
+}

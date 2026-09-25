@@ -1,0 +1,39 @@
+// SEM: the representation cycle
+// Visual vocabulary (shared by all diagrams here):
+//   cream rounded box = representations people think in
+//   blue box          = what the computer works with (square corners = output)
+//   green cylinder    = data
+//   solid arrow       = translation done by software
+//   dashed arrow      = translation done in your head
+//   red arrow         = revision loop (look at output, change the model)
+//   grey dotted "?"   = translation the notation does not (yet) support
+digraph sem {
+  graph [layout=neato, splines=true, bgcolor="transparent", fontname="Helvetica", pad=0.25, overlap=false];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=13, penwidth=1.2, color="#555555", margin="0.18,0.10"];
+  edge  [fontname="Helvetica", fontsize=10, color="#333333", arrowsize=0.8];
+
+  diagram   [label="Path\ndiagram",            fillcolor="#FDF1DC", pos="0,2.4!"];
+  equations [label="Equations",                fillcolor="#FDF1DC", pos="3.4,2.4!"];
+  code      [label="Code\n(sem, lavaan)",      fillcolor="#E3EEF8", pos="3.4,0.8!"];
+  R         [label="R",                        fillcolor="#E3EEF8", shape=ellipse, pos="5.6,0.8!"];
+  output    [label="Output\n(estimates, fit)", fillcolor="#E3EEF8", style="filled", pos="7.9,0.8!"];
+  data      [label="Data",                     fillcolor="#E6F2E0", shape=cylinder, style="filled", pos="5.6,-0.9!"];
+
+  // mental translations
+  diagram   -> equations [style=dashed, dir=both, label="equivalent\n(Bollen §2.3.3)"];
+  equations -> code      [style=dashed, label="     transcribe"];
+
+  // software translations
+  code -> R      [penwidth=2];
+  R    -> output [penwidth=2];
+  data -> R      [label="     reduced to\n     means, S", fontcolor="#555555"];
+
+  // revision loop
+  output -> equations [color="#C0392B", fontcolor="#C0392B", penwidth=1.6, label="revise              
+ "];
+  output -> diagram   [color="#C0392B", penwidth=1.6];
+
+  // missing
+  diagram -> code   [style=dotted, color="#A0A0A0", fontcolor="#909090", label="?   "];
+  data    -> output [style=dotted, color="#A0A0A0", fontcolor="#909090", label="     ?  data analysis"];
+}

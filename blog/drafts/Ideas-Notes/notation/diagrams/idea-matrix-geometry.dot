@@ -1,0 +1,21 @@
+// Linear models: statistical idea <-> matrix notation <-> geometry
+// Same visual vocabulary as sem-cycle.dot
+digraph img {
+  graph [layout=neato, splines=true, bgcolor="transparent", fontname="Helvetica", pad=0.25, overlap=false];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=13, penwidth=1.2, color="#555555", margin="0.18,0.10"];
+  edge  [fontname="Helvetica", fontsize=10, color="#333333", arrowsize=0.8];
+
+  idea     [label="Statistical\nidea",         fillcolor="#FDF1DC", pos="0,2.2!"];
+  matrix   [label="Matrix\nnotation",          fillcolor="#FDF1DC", pos="3.6,2.2!"];
+  geometry [label="Geometry",                  fillcolor="#FDF1DC", pos="1.8,0!"];
+  R        [label="R",                         fillcolor="#E3EEF8", shape=ellipse, pos="6.2,2.2!"];
+  plot     [label="Plot\n(ellipses, HE plots)", fillcolor="#E3EEF8", style="filled", pos="6.2,0!"];
+
+  idea     -> matrix   [style=dashed, dir=both, label="b = (XᵀX)⁻¹Xᵀy\n "];
+  matrix   -> geometry [style=dashed, dir=both, label="            projection,\n            ellipsoid"];
+  geometry -> idea     [style=dashed, dir=both, label="insight            "];
+
+  matrix -> R        [penwidth=2, label="solve()\n "];
+  R      -> plot     [penwidth=2];
+  plot   -> geometry [style=dashed, label="see it\n "];
+}
