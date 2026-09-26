@@ -262,3 +262,10 @@ Open questions from the diagram round:
 3. **Next diagrams**: data verbs, graphics (base/tinyplot vs. grammar), and a
    DAG, where the new element is an arrow that *queries* the diagram
    (dagitty -> adjustment sets).
+
+## Companion piece idea (2026-09-25)
+
+The 2010 QM talk (see `QM-tools.md`) has far more APL and Logo material than this
+post can use. Keep APL here to the hook and the Iverson section; save the rest
+(APL2/APL2STAT with John Fox, Logo turtle geometry, Hilbert curves) for a possible
+companion post.
