@@ -1,14 +1,15 @@
-# Notation as a Tool for Thought
+# Notation as a Tool of Thought
 
 * Resurrects Ken Iverson's 1979 Turing Award Address, of the same title
 
 In 1979, Kenneth Iverson received the Turing Award from the Association for Computing Machinery for
 his invention of the array-oriented computing language APL ("A Programming Language").
 His acceptance address, on Oct. 29, 1979 had the same title as this post,
-"Notation as a Tool for Thought", and focused on the ideas for efficicient expression of computing in APL
+"Notation as a Tool of Thought", and focused on the ideas for efficient expression of computing in APL
 that 
 
 https://www.eecg.utoronto.ca/~jzhu/csc326/readings/iverson.pdf
+(Now in papers/Iverson1979, but note Postscript for this article is available at www.acm.org/awards/ps/a1979-iverson_ps.pdf )
 
 * Quotes:
 By relieving the brain of all unnecessary work, a good notation sets it free to
@@ -33,7 +34,7 @@ of the race.
 * Wilkinson, Rogers -> GLIM -> R lm(y ~ x1 + x2 + A*B, data=, subset=, na.action=)
   Allowed easy translation of math notation directly into a computation
 
-## Data processing: titdyverse
+## Data processing: tidyverse
 
 * plyr: split, ..., combine
 * dplyr: verbs
@@ -51,7 +52,7 @@ TODO: diagram here, showing ellipses for "SEM diagram", "Equations", "Code", wit
   Code --> "R (sem, lavaan)" --> Output
   Add loops back to the diagram and Equations
   
-* Equivalents between SEM diagrams & equations (Bollen, \S 2.3.3)
+* Equivalences between SEM diagrams & equations (Bollen, \S 2.3.3)
 * sem, lavaan -> different ways of translating into code
 * How does this help you think about a data problem?
   - what's connected to what?
@@ -79,8 +80,8 @@ TODO: diagram here, showing ellipses for "SEM diagram", "Equations", "Code", wit
 * Not a post *about* SEM. SEM is the **case study** where the general ideas
   from the earlier sections get applied.
 * Live R examples: yes, but only after the structure is settled.
-* Use **conceptual diagrams** to show how representations relate (like the
-  hand sketches), and use a consistent visual style for all of them.
+* Use **conceptual diagrams** to show how representations relate (like MF's
+  hand sketches in `Notation-tool-for-thought.pdf`), and use a consistent visual style for all of them.
 * The loop back from Output to Diagram/Equations = **model revision**: you
   look at the output and go back and change the model.
 
@@ -100,7 +101,7 @@ can't make, or one you can make in only one direction.
    complex statistical models. MF: I reach back to what I learned from the programming language
    APL, where matrix inversion was a single symbol, "quad-divide" and what I've learned since ....
    
-2. **Iverson and "Notation as a Tool for Thought"**: the Whitehead quote, plus
+2. **Iverson and "Notation as a Tool of Thought"**: the Whitehead quote, plus
    Iverson's properties of good notation:
    - ease of expressing constructs
    - suggestivity
@@ -113,7 +114,7 @@ can't make, or one you can make in only one direction.
    musical notation. Keep it brief, but it should be a section, with brief examples.
     (Images from the HistData book, `numbers/`?)
    MF: Should mention how each of these solved some problems of thinking about phenomena,
-   and using this productively e.g., Newton's fluxions were largely opaque; Leibnitz notation made the ideas clearer. 
+   and using this productively e.g., Newton's fluxions were largely opaque; Leibniz's notation made the ideas clearer. 
    
 4. **General cases**, each with a small representation diagram:
    - Matrix algebra: statistical idea <-> matrix notation <-> geometry
@@ -145,6 +146,7 @@ can't make, or one you can make in only one direction.
    legitimate (colliders, back-door paths, instrumental variables).
    Tools: dagitty, ggdag. Maybe paired with SEM (a DAG is an SEM with the
    distributional assumptions removed?), or kept as its own short section.
+   
 7. **Coda**: what would a grammar of structural models look like? 
   MF: Maybe something fanciful like "The SEM Machine" -- yes, work from a verbal theory
   to an explanatory, structural model. But the machine is powered by an LLM, "Bollen 3.0 <name of some star>"
@@ -153,8 +155,7 @@ can't make, or one you can make in only one direction.
     - It can spot equivalent models, whose interpretation is different.
     - It can propose data plots and model plots to shed light on assumptions or other model defects.
     - ...
-    
-  </name>"
+  
 
 ## Conceptual diagram style (proposal)
 
@@ -174,7 +175,7 @@ summary figure placing all the domains side by side.
 
 ## References to track down
 
-* Iverson, K. E. (1980). Notation as a tool for thought. *CACM*, 23(8), 444-465.
+* Iverson, K. E. (1980). Notation as a tool of thought. *CACM*, 23(8), 444-465.
 * Bollen, K. A. *Elements of Structural Equation Models* (new edition), §2.3.3.
   (Check the full citation.)
 * Wilkinson & Rogers (1973), symbolic description of factorial models.
@@ -190,7 +191,7 @@ summary figure placing all the domains side by side.
 * Use Iverson's properties as an explicit scorecard, or just in the background? -- MF: Just in the background, but keep the idea of a scorecard in mind
 * How long should the history section be? MF: Can easily be a few paragraphs, because I want to get the more general ideas across
 * DAGs: standalone section, or folded into the SEM case study? MF: DAGs in a separate section, 
-  because tools for DAGs (`daggity`) allow you to "ask questions" of a diagram
+  because tools for DAGs (`dagitty`) allow you to "ask questions" of a diagram
 * For live code: one dataset carried through all sections, or the best
   example for each? One dataset would be better, but this will depend on what is written
 
@@ -217,8 +218,7 @@ summary figure placing all the domains side by side.
   you; it asks questions that make your theory explicit, spots equivalent
   models, and proposes data plots and model plots.
 
-Note: Iverson's actual title is "Notation as a Tool **of** Thought". The post
-can still use "for" as its own title, but quote his correctly.
+Decided: the post uses Iverson's own title, "Notation as a Tool **of** Thought".
 
 ## Local bibliography: `notation.bib`
 
@@ -256,10 +256,9 @@ DiagrammeRsvg -> rsvg). Note: DiagrammeR chokes on apostrophes in labels.
 
 Open questions from the diagram round:
 
-1. **Look**: keep the clean Graphviz style, or aim for a hand-drawn look closer
-   to the original sketches?
-2. **SEM revise loop**: arrows back to both diagram *and* equations (as now; the
-   diagram arrow crosses "transcribe"), or just one?
+1. **Look**: DECIDED, stay with Graphviz for now. (SEM diagram uses splines=curved; its
+   long revise arc still crosses the "equivalent" label. Minor, leave for later.)
+2. **SEM revise loop**: DECIDED, arrows back to both diagram *and* equations.
 3. **Next diagrams**: data verbs, graphics (base/tinyplot vs. grammar), and a
    DAG, where the new element is an arrow that *queries* the diagram
    (dagitty -> adjustment sets).

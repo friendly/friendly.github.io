@@ -8,7 +8,7 @@
 //   red arrow         = revision loop (look at output, change the model)
 //   grey dotted "?"   = translation the notation does not (yet) support
 digraph sem {
-  graph [layout=neato, splines=true, bgcolor="transparent", fontname="Helvetica", pad=0.25, overlap=false];
+  graph [layout=neato, splines=curved, bgcolor="transparent", fontname="Helvetica", pad=0.25, overlap=false];
   node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=13, penwidth=1.2, color="#555555", margin="0.18,0.10"];
   edge  [fontname="Helvetica", fontsize=10, color="#333333", arrowsize=0.8];
 
@@ -21,7 +21,7 @@ digraph sem {
 
   // mental translations
   diagram   -> equations [style=dashed, dir=both, label="equivalent\n(Bollen §2.3.3)"];
-  equations -> code      [style=dashed, label="     transcribe"];
+  equations -> code      [style=dashed, label="transcribe     "];
 
   // software translations
   code -> R      [penwidth=2];

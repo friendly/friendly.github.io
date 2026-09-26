@@ -6,8 +6,8 @@ digraph formula {
   edge  [fontname="Helvetica", fontsize=10, color="#333333", arrowsize=0.8];
 
   math    [label="Model\ny = Xb + e",         fillcolor="#FDF1DC", pos="0,1.2!"];
-  formula [label="Formula\ny ~ x1 + A*B",      fillcolor="#FDF1DC", pos="2.8,1.2!"];
-  data    [label="Data",                       fillcolor="#E6F2E0", shape=cylinder, style="filled", pos="2.8,-0.4!"];
+  formula [label="Formula\ny ~ x1 + A*B",      fillcolor="#FDF1DC", pos="3.3,1.2!"];
+  data    [label="Data",                       fillcolor="#E6F2E0", shape=cylinder, style="filled", pos="3.3,-0.4!"];
   fit     [label="Fitted object\nlm(), glm()", fillcolor="#E3EEF8", pos="5.4,0.4!"];
   summ    [label="summary()\nanova()",         fillcolor="#E3EEF8", style="filled", pos="8,1.2!"];
   plots   [label="plot()\neffects",            fillcolor="#E3EEF8", style="filled", pos="8,-0.4!"];

@@ -1,0 +1,156 @@
+---
+title: "Notation as a Tool of Thought"
+description: "What a good notation does for statistical thinking, from APL to model formulas to structural equation models"
+author: "Michael Friendly"
+date: today
+draft: true
+categories: [notation, SEM, statistical thinking, R]
+bibliography: notation.bib
+---
+
+<!-- DRAFT: hook + Iverson section only. Later sections: see notation-notes.md -->
+
+## Two ways of writing the same model
+
+I've been reading Ken Bollen's new edition of *Elements of Structural Equation Models*
+<!-- TODO: full citation; add Bollen entry to notation.bib -->
+and was stopped short by a passage in §2.3.3, which looks almost too obvious to need saying:
+a path diagram and a set of structural equations are *equivalent*. Any
+[structural equation model](https://en.wikipedia.org/wiki/Structural_equation_modeling) (SEM)
+can be written either way, and you can go from one to the other and back
+again without losing anything.
+
+Every single-headed arrow in the diagram is a coefficient in some equation.
+Every equation is the set of arrows pointing into one variable.
+A curved, double-headed arrow is a covariance, usually between two error terms that the
+equations would otherwise leave as a footnote.
+Draw the picture and you have written the equations; write the equations and you could
+draw the picture.
+
+So far, so textbook. What caught me was the question underneath. If the two
+forms say exactly the same thing, why do we need both? And why do I *think* differently
+depending on which one is in front of me?
+
+With the diagram, I see structure at a glance: what's connected to what, which
+variables are observed (boxes) and which are latent (circles), where measurement error
+comes in. With the equations, I see what gets estimated, what's constrained, and
+whether the whole thing is even [identified](https://en.wikipedia.org/wiki/Parameter_identification_problem).
+Then there's a third form, the code I type into `sem` or `lavaan`, and a fourth, the
+output that comes back. The model lives in all of these at once, and a good part
+of the thinking seems to happen in the *translation* from one to another.
+
+That's the thread I want to pull on here. A good notation makes these translations easy,
+suggestive and (ideally) reversible. A weak or missing notation shows up as a translation
+you can't make, or can make only in one direction.
+
+### A single symbol
+
+This isn't a new thought for me. It goes back to my first serious programming language,
+[APL](https://en.wikipedia.org/wiki/APL_(programming_language)).
+<!-- MF: when/where you used APL; what you used it for -->
+
+APL had a symbol, `⌹` ("quad-divide", or "domino"), for matrix inversion. Given a
+square matrix `A`, `⌹A` was its inverse. So far, just a compact way to write $\mathbf{A}^{-1}$.
+But used between two arguments, `Y ⌹ X` meant "divide `Y` by the matrix `X`", and when `X`
+had more rows than columns, it gave the least squares solution. The whole of
+multiple regression, $\mathbf{b} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}$,
+was
+
+```
+B ← Y ⌹ X
+```
+
+That one line did something the textbook formula didn't. It made regression feel like
+*division*: finding the $\mathbf{b}$ that best solves $\mathbf{y} \approx \mathbf{X} \mathbf{b}$, just as $y / x$
+solves $y = x b$ for numbers. The formula with its transposes and inverse tells you how to compute
+the answer. The APL version told me what the answer *was*.
+
+I've carried that idea around ever since, through matrix algebra, model formulas in R, data
+ellipses and, now, SEM diagrams. It turns out someone had given it a name long before I thought about it.
+
+## Iverson: Notation as a tool of thought
+
+APL was invented by [Kenneth E. Iverson](https://en.wikipedia.org/wiki/Kenneth_E._Iverson),
+a Canadian from Alberta who did his doctorate at Harvard, taught there, and then spent the
+1960s and '70s at IBM developing the language. He later moved to I. P. Sharp Associates in
+Toronto, a company built largely on APL time-sharing, just down the road from me.
+
+In 1979 Iverson received the [ACM Turing Award](https://en.wikipedia.org/wiki/Turing_Award)
+"for his pioneering effort in programming languages and mathematical notation resulting in
+what the computing field now knows as APL." His award lecture, delivered on October 29, 1979, and
+published the following year [@Iverson:1980], was titled
+[*Notation as a Tool of Thought*](https://www.eecg.utoronto.ca/~jzhu/csc326/readings/iverson.pdf).
+I've borrowed his title for this post, with gratitude.
+
+A detail that's easy to miss: APL did not start as a programming language. It began as a
+*notation*, a way for Iverson to write about algorithms clearly when teaching, and was
+used on paper for several years before anyone implemented it on a computer. The notation
+came first; being able to run it came later.
+
+Iverson opens with the claim that notation matters to thinking, not just to writing thoughts
+down. He cites the systems of nomenclature of [Lavoisier](https://en.wikipedia.org/wiki/Antoine_Lavoisier)
+in chemistry and [Linnaeus](https://en.wikipedia.org/wiki/Carl_Linnaeus) in botany,
+and then turns to mathematicians, by way of Florian Cajori's
+*A History of Mathematical Notations*.
+Two quotations set the tone:
+
+> By relieving the brain of all unnecessary work, a good notation sets it free to
+> concentrate on more advanced problems, and in effect increases the mental power
+> of the race.
+>
+> --- [A. N. Whitehead](https://en.wikipedia.org/wiki/Alfred_North_Whitehead)
+
+> The quantity of meaning compressed into small space by algebraic signs, is another
+> circumstance that facilitates the reasonings we are accustomed to carry on by their aid.
+>
+> --- [Charles Babbage](https://en.wikipedia.org/wiki/Charles_Babbage)
+
+"Increases the mental power of the race" is a big claim, even for Whitehead. But anyone who
+has tried to do long division in Roman numerals knows what he meant.
+
+Iverson's argument is that mathematical notation, for all its power, has two serious
+weaknesses. It isn't universal: it has to be read differently by topic, by author, even
+from one page to the next. And it can't be executed. Programming languages have the opposite
+profile: universal and unambiguous, and you can run them, so you can *experiment* with an
+idea. But they are, he says, "decidedly inferior to mathematical notation" as tools of
+thought. His thesis is that you can have both in one language.
+
+### What makes a notation good?
+
+Iverson lists five characteristics of a good notation:
+
+* ease of expressing constructs arising in problems
+* suggestivity
+* ability to subordinate detail
+* economy
+* amenability to formal proofs
+
+His examples are small and charming. In APL, `⍳5` is the vector `1 2 3 4 5`, and
+`+/` means "sum over", so `+/⍳5` is 15. Stack up rows of 1, 2, ..., 5 atoms and you
+have a triangle; `+/⍳5` counts them. Put a second, upside-down triangle beside the first
+and every row now has 6 atoms, 5 rows of them, so twice the sum is $5 \times 6$.
+The notation all but writes the general result for you:
+
+```
++/⍳N  ↔  ((N+1)×N)÷2
+```
+
+This is the sum that the young [Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)
+supposedly found in his head in primary school.
+But in Iverson's hands the point is less the answer than the way the notation led to it.
+Once you've written `+/⍳5`, it's natural to ask about `×/⍳5` (the factorial, 120),
+or `+\⍳5`, the running sums `1 3 6 10 15` (the triangular numbers), and on to
+the tetrahedral ones. That's *suggestivity*: the form of one expression
+suggests others worth trying.
+
+I won't use Iverson's list as a formal scorecard for everything that follows. It works
+better as a set of questions to keep in the back of your mind. When I look at a path diagram,
+a model formula, or a `ggplot()` call, what does it make easy to say? What does it suggest?
+What detail does it let me ignore, and what does it hide that I shouldn't have ignored?
+
+<!-- NEXT: A short history (numbers, arithmetic symbols, Newton vs. Leibniz, matrices, music) -->
+
+## References {.unnumbered}
+
+::: {#refs}
+:::
