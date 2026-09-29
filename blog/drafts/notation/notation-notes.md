@@ -269,3 +269,21 @@ The 2010 QM talk (see `QM-tools.md`) has far more APL and Logo material than thi
 post can use. Keep APL here to the hook and the Iverson section; save the rest
 (APL2/APL2STAT with John Fox, Logo turtle geometry, Hilbert curves) for a possible
 companion post.
+
+## Diagram tool option: draw.io (2026-09-28)
+
+Graphviz fights us on layout (e.g., the SEM revise arc crossing the "equivalent"
+label). Alternative for the few *conceptual* diagrams where the look matters:
+**draw.io** (diagrams.net). Free desktop app for Windows, or in the browser at
+app.diagrams.net; the VS Code extension (hediet.vscode-drawio) is optional, not needed.
+
+* Pros: manual placement and curved connectors with draggable waypoints; a
+  **Sketch** style gives a hand-drawn look close to the original sketches;
+  saving as `.drawio.svg` / `.drawio.png` embeds the diagram, so Quarto uses it as
+  a normal image and draw.io can still reopen it for editing; the shared visual
+  vocabulary (cream/blue/green boxes, solid/dashed/red arrows) can be saved as styles.
+* Cons: not plain text (less useful diffs; Claude can't easily edit it); layout
+  changes are manual.
+* Possible split: draw.io for `sem-cycle` and `idea-matrix-geometry`; Graphviz for
+  anything generated from code (e.g., DAGs from `dagitty`).
+* Test: redraw `sem-cycle` in draw.io from the current PNG and compare.
