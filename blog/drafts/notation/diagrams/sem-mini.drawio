@@ -1,0 +1,56 @@
+<mxfile host="drawio">
+  <diagram name="sem-mini" id="sem-mini">
+    <mxGraphModel grid="1" gridSize="10" page="0">
+      <root>
+        <!-- cells 0 and 1 are required boilerplate: the root and the default layer -->
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- nodes (vertex="1"): value = label, style = look, geometry = position/size -->
+        <mxCell id="code" value="Code&lt;br&gt;(sem, lavaan)" vertex="1" parent="1"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3EEF8;strokeColor=#555555;fontFamily=Helvetica;fontSize=13;">
+          <mxGeometry x="40" y="40" width="120" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="R" value="R" vertex="1" parent="1"
+          style="ellipse;whiteSpace=wrap;html=1;fillColor=#E3EEF8;strokeColor=#555555;fontFamily=Helvetica;fontSize=13;">
+          <mxGeometry x="220" y="40" width="70" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="output" value="Output&lt;br&gt;(estimates, fit)" vertex="1" parent="1"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3EEF8;strokeColor=#555555;fontFamily=Helvetica;fontSize=13;">
+          <mxGeometry x="350" y="40" width="130" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="data" value="Data" vertex="1" parent="1"
+          style="shape=cylinder3;boundedLbl=1;size=8;whiteSpace=wrap;html=1;fillColor=#E6F2E0;strokeColor=#555555;fontFamily=Helvetica;fontSize=13;">
+          <mxGeometry x="220" y="150" width="70" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- edges (edge="1"): connect source and target ids; draw.io routes them -->
+        <mxCell id="e1" edge="1" parent="1" source="code" target="R"
+          style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#333333;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e2" edge="1" parent="1" source="R" target="output"
+          style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#333333;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e3" value="reduced to means, S" edge="1" parent="1" source="data" target="R"
+          style="endArrow=classic;html=1;strokeColor=#333333;fontSize=10;fontColor=#555555;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- revision loop: red, dashed, curved back over the top -->
+        <mxCell id="e4" value="revise" edge="1" parent="1" source="output" target="code"
+          style="endArrow=classic;html=1;dashed=1;curved=1;strokeWidth=1.6;strokeColor=#C0392B;fontColor=#C0392B;fontSize=10;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="260" y="-10"/></Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
