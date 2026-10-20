@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-10-20">
+<meta name="description" content="Re-expressing penguin bill length and depth as size and shape makes Simpson’s paradox disappear, and shows how an equivalent model can tell a simpler story">
+
+<title>Thinking about Penguin Variables – Michael Friendly</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/MF-face.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="penguins.css">
+</head>
+
+<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Michael Friendly</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> <i class="bi bi-house" role="img">
+</i> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../packages.html"> <i class="bi bi-box-seam" role="img">
+</i> 
+<span class="menu-text">R Packages</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../books.html"> <i class="bi bi-book" role="img">
+</i> 
+<span class="menu-text">Books</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../courses.html"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../software.html"> <i class="bi bi-code-slash" role="img">
+</i> 
+<span class="menu-text">Other Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> <i class="bi bi-pencil" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/friendly"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bsky.app/profile/datavisfriendly.bsky.social"> 
+<span class="menu-text"><img src="../../../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#variables-we-record-vs.-variables-we-mean" id="toc-variables-we-record-vs.-variables-we-mean" class="nav-link active" data-scroll-target="#variables-we-record-vs.-variables-we-mean">Variables we record vs.&nbsp;variables we mean</a>
+  <ul class="collapse">
+  <li><a href="#an-equivalent-not-a-different-model" id="toc-an-equivalent-not-a-different-model" class="nav-link" data-scroll-target="#an-equivalent-not-a-different-model">An equivalent, not a different, model</a></li>
+  </ul></li>
+  <li><a href="#data-and-setup" id="toc-data-and-setup" class="nav-link" data-scroll-target="#data-and-setup">Data and setup</a></li>
+  <li><a href="#two-views-of-the-same-beaks" id="toc-two-views-of-the-same-beaks" class="nav-link" data-scroll-target="#two-views-of-the-same-beaks">Two views of the same beaks</a></li>
+  <li><a href="#seeing-the-rotation" id="toc-seeing-the-rotation" class="nav-link" data-scroll-target="#seeing-the-rotation">Seeing the rotation</a></li>
+  <li><a href="#do-the-data-agree" id="toc-do-the-data-agree" class="nav-link" data-scroll-target="#do-the-data-agree">Do the data agree?</a></li>
+  <li><a href="#one-variable-at-a-time" id="toc-one-variable-at-a-time" class="nav-link" data-scroll-target="#one-variable-at-a-time">One variable at a time</a></li>
+  <li><a href="#sex-differences-bigger-not-different" id="toc-sex-differences-bigger-not-different" class="nav-link" data-scroll-target="#sex-differences-bigger-not-different">Sex differences: bigger, not different</a></li>
+  <li><a href="#he-plots" id="toc-he-plots" class="nav-link" data-scroll-target="#he-plots">HE plots</a></li>
+  <li><a href="#size-shape-and-body-mass" id="toc-size-shape-and-body-mass" class="nav-link" data-scroll-target="#size-shape-and-body-mass">Size, shape, and body mass</a></li>
+  <li><a href="#sums-and-differences-the-tukey-trick" id="toc-sums-and-differences-the-tukey-trick" class="nav-link" data-scroll-target="#sums-and-differences-the-tukey-trick">Sums and differences: the Tukey trick</a></li>
+  <li><a href="#lessons" id="toc-lessons" class="nav-link" data-scroll-target="#lessons">Lessons</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Thinking about Penguin Variables</h1>
+<p class="subtitle lead">Bill size and shape as an alternative view of bill length and depth</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Vis-MLM</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">multivariate</div>
+    <div class="quarto-category">penguins</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Re-expressing penguin bill length and depth as size and shape makes Simpson’s paradox disappear, and shows how an equivalent model can tell a simpler story
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 20, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="variables-we-record-vs.-variables-we-mean" class="level2">
+<h2 class="anchored" data-anchor-id="variables-we-record-vs.-variables-we-mean">Variables we record vs.&nbsp;variables we mean</h2>
+<p>Data analysis usually starts with the variables as they were recorded. But the way a variable was <em>measured</em> is not necessarily the way it is best <em>thought about</em>:</p>
+<ul>
+<li>A researcher records height and weight because those are easy to measure. But a physician may care more about body mass index, an expression of weight relative to height.</li>
+<li>A chemist records concentrations of compounds, but the meaningful quantities may be their ratios.</li>
+<li>Two raters assess a collection of patients on several measures of outcome in therapy, but our main interest might be in how these agree or disagree.</li>
+</ul>
+<p>The Palmer penguins data (Gorman, Williams &amp; Fraser, 2014) have recently become a familiar example in multivariate analysis. Penguins of three species on islands near Palmer Station in Antarctica were measured on four aspects of their bodies. Two of the variables, <code>bill_length</code> and <code>bill_depth</code>, describe the penguin’s bill (technically, the <em>culmen</em>, the upper ridge of the bill): its length from the base to the tip, and its depth, top to bottom, at the base (<a href="#fig-culmen" class="quarto-xref">Figure&nbsp;1</a>).</p>
+<div id="fig-culmen" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-culmen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/culmen_depth-notext.png" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-culmen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The two bill measurements: length, from the base of the bill to its tip, and depth, top to bottom at the base. Artwork by Allison Horst.
+</figcaption>
+</figure>
+</div>
+<p>Plotted against each other, they produce one of the best known examples of Simpson’s paradox (<a href="#fig-simpsons" class="quarto-xref">Figure&nbsp;2</a>): within each species, longer bills are deeper, but across the species, the relation is negative. But maybe, there’s a simple re-framing of the variables <em>recorded</em> into ones better <em>thought about</em>, that makes Simpson disappear.</p>
+<div id="fig-simpsons" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-simpsons-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/peng-simpsons.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simpsons-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Simpson’s paradox in the penguin bills. Left: ignoring species, longer bills are shallower. Middle: by species, the relation is positive for each. Right: shifting each species to the grand means shows the within-species relations, with differences in slopes and covariances.
+</figcaption>
+</figure>
+</div>
+<p>This post asks a simple question: <strong>what do these two measurements really represent for penguins?</strong> Length and depth are not biologically two separate traits of a bill; together they describe one object: its <strong>beak</strong>. Two natural questions about any such object are:</p>
+<ul>
+<li>How <em>big</em> is it? — its <strong>size</strong></li>
+<li>What <em>proportions</em> does it have? — its <strong>shape</strong>: is it long and slender, or short and stubby?</li>
+</ul>
+<p>This suggests replacing (length, depth) with:</p>
+<p><span class="math display">\[
+\text{Size} = L \times D \qquad \text{Shape} = L / D \; ,
+\]</span></p>
+<p>or, more conveniently, their logarithms which are additive rather than multiplicative:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\log \text{Size}  &amp;= \log L + \log D \\
+\log \text{Shape} &amp;= \log L - \log D \; .
+\end{aligned}
+\]</span></p>
+<p>The <strong>units matter</strong> here: Size is (proportional to) the area of the bill’s profile, is in mm<sup>2</sup>; but shape is a <strong>dimensionless</strong> ratio, about 2 for a bill twice as long as it is deep. That’s easy to think about!</p>
+<p>The size and shape idea goes back to the early days of multivariate morphometrics (Jolicoeur &amp; Mosimann, 1960; Mosimann, 1970), where the first principal component of log measurements was often interpreted as “size” and the remaining ones as “shape”. Here we take a simpler, more direct route, defining size and shape from what the variables <em>mean</em>, and then asking whether the data agree in these two different representations.</p>
+<section id="an-equivalent-not-a-different-model" class="level3">
+<h3 class="anchored" data-anchor-id="an-equivalent-not-a-different-model">An equivalent, not a different, model</h3>
+<p>In matrix terms, the log size–shape variables are a linear transformation of the log length–depth variables,</p>
+<p><span class="math display">\[
+\begin{pmatrix} \log \text{Size} \\ \log \text{Shape} \end{pmatrix}
+=
+\begin{pmatrix} 1 &amp; \phantom{-}1 \\ 1 &amp; -1 \end{pmatrix}
+\begin{pmatrix} \log L \\ \log D \end{pmatrix}
+= \mathbf{T} \begin{pmatrix} \log L \\ \log D \end{pmatrix} \; .
+\]</span></p>
+<p>The columns of <span class="math inline">\(\mathbf{T}\)</span> are orthogonal and of equal length (<span class="math inline">\(\sqrt{2}\)</span>), so <span class="math inline">\(\mathbf{T}\)</span> is just a <strong>rotation</strong> by 45° (and a rescaling by <span class="math inline">\(\sqrt{2}\)</span>). Nothing about the data has changed; we are simply looking at the same point cloud from a different angle. Consequently:</p>
+<ul>
+<li>Every <strong>multivariate</strong> test (MANOVA, Hotelling’s <span class="math inline">\(T^2\)</span>, canonical discriminant analysis) gives <em>identical</em> results in the two coordinate systems, because these are invariant under nonsingular linear transformations of the responses.</li>
+<li><strong>Univariate</strong> analyses, and <strong>plots</strong>, are not invariant. They depend on which directions we choose as our axes.</li>
+</ul>
+<p>The payoff, if there is one, is in interpretation: in the right coordinates, the story may be simpler.</p>
+</section>
+</section>
+<section id="data-and-setup" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-setup">Data and setup</h2>
+<p>The data used here is <code>heplots::peng</code>, a cleaned version of <code>palmerpenguins::penguins</code> (Gorman, Williams &amp; Fraser, 2014) with the 333 complete cases and shorter variable names. Load the data and calculate the new size and shape variables.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(heplots)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(peng, <span class="at">package =</span> <span class="st">"heplots"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>peng <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">size       =</span> bill_length <span class="sc">*</span> bill_depth,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape      =</span> bill_length <span class="sc">/</span> bill_depth,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_length =</span> <span class="fu">log</span>(bill_length),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_depth  =</span> <span class="fu">log</span>(bill_depth),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_size   =</span> log_length <span class="sc">+</span> log_depth,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_shape  =</span> log_length <span class="sc">-</span> log_depth,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_mass   =</span> <span class="fu">log</span>(body_mass)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Throughout, the species are shown in the colors of Allison Horst’s penguin artwork: <span class="adelie">orange</span> for Adelie, <span class="chinstrap">purple</span> for Chinstrap, <span class="gentoo">green</span> for Gentoo.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>peng_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Adelie =</span> <span class="st">"#F37A00"</span>, <span class="at">Chinstrap =</span> <span class="st">"#6A3D9A"</span>, <span class="at">Gentoo =</span> <span class="st">"#33a02c"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>scale_penguins <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> peng_cols, <span class="at">aesthetics =</span> <span class="fu">c</span>(<span class="st">"colour"</span>, <span class="st">"fill"</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Rather than legends, the plots label the species directly. Two small helpers do the work: <code>species_labels()</code> places a label at each species’ mean, and <code>peng_plot()</code> draws a scatterplot with points, 68% and 95% data ellipses, the within-species regression lines and (optionally) the dashed regression line for all penguins pooled, ignoring species.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>species_labels <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">data =</span> peng, <span class="at">by =</span> <span class="cn">NULL</span>, <span class="at">size =</span> <span class="dv">5</span>) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  means <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(species, <span class="fu">across</span>(<span class="fu">all_of</span>(by))) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">x =</span> <span class="fu">mean</span>({{ x }}), <span class="at">y =</span> <span class="fu">mean</span>({{ y }}), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> means, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> species, <span class="at">color =</span> species),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">size =</span> size, <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>peng_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">data =</span> peng, <span class="at">pooled =</span> <span class="cn">TRUE</span>, <span class="at">by =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> {{ x }}, <span class="at">y =</span> {{ y }},</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">color =</span> species, <span class="at">shape =</span> species, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_ellipse</span>(<span class="at">geom =</span> <span class="st">"polygon"</span>, <span class="at">level =</span> <span class="fl">0.68</span>, <span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_ellipse</span>(<span class="at">geom =</span> <span class="st">"polygon"</span>, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">alpha =</span> <span class="fl">0.10</span>) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    scale_penguins <span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (pooled)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> p <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> {{ x }}, <span class="at">y =</span> {{ y }}), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                         <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>                         <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                         <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  p <span class="sc">+</span> <span class="fu">species_labels</span>({{ x }}, {{ y }}, <span class="at">data =</span> data, <span class="at">by =</span> by)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="two-views-of-the-same-beaks" class="level2">
+<h2 class="anchored" data-anchor-id="two-views-of-the-same-beaks">Two views of the same beaks</h2>
+<p><a href="#fig-two-views" class="quarto-xref">Figure&nbsp;3</a> shows the familiar view on the left and the size–shape view on the right.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(bill_length, bill_depth) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Bill length (mm)"</span>, <span class="at">y =</span> <span class="st">"Bill depth (mm)"</span>, <span class="at">title =</span> <span class="st">"Length &amp; depth"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(log_size, log_shape) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Size = log(L x D)"</span>, <span class="at">y =</span> <span class="st">"log Shape = log(L / D)"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Size &amp; shape"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-two-views" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-views-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-two-views-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-views-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Left: bill depth vs.&nbsp;bill length, showing Simpson’s paradox: positive slopes within species, a negative slope (dashed) overall. Right: the same data as log shape vs.&nbsp;log size. The species now differ mainly in the vertical direction, and size and shape are nearly unrelated within each species.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Several things change in the size–shape view:</p>
+<ul>
+<li><strong>The paradox disappears.</strong> The within-species regression lines are nearly flat and the pooled line is nearly flat too. There is no longer a conflict between the within-group and between-group relations to explain.</li>
+<li><strong>The ellipses are nearly circular</strong> and their axes are roughly parallel to the coordinate axes. Within a species, size and shape vary nearly independently.</li>
+<li><strong>The species separate along one axis.</strong> Shape alone distinguishes all three species: Adelie have the stubbiest bills, Gentoo the most slender, with Chinstrap in between. Size adds a second, smaller distinction: Chinstrap bills are larger than those of the other two.</li>
+</ul>
+<p>The species means tell the same story in natural units. Chinstrap bills are about 25% larger than the other species. A Gentoo bill is, on average, over three times as long as it is deep; an Adelie bill only about twice. That’s the relationship between the measured variable that makes the means appear in a triangular shape in (<span class="math inline">\(L, D\)</span>)-space with correlated variables, and shows the pattern we observed in (<span class="math inline">\(\text{Size}, \text{Shape}\)</span>)-space, where there is no correlation within-species and the interpretation is simpler.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">length =</span> <span class="fu">mean</span>(bill_length), <span class="at">depth =</span> <span class="fu">mean</span>(bill_depth),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="fu">mean</span>(size), <span class="at">shape =</span> <span class="fu">mean</span>(shape))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 3 × 6
+#&gt;   species       n length depth  size shape
+#&gt;   &lt;fct&gt;     &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 Adelie      146   38.8  18.3  714.  2.12
+#&gt; 2 Chinstrap    68   48.8  18.4  902.  2.65
+#&gt; 3 Gentoo      119   47.6  15.0  715.  3.18</code></pre>
+</div>
+</div>
+</section>
+<section id="seeing-the-rotation" class="level2">
+<h2 class="anchored" data-anchor-id="seeing-the-rotation">Seeing the rotation</h2>
+<p>Because the size–shape coordinates are a 45<span class="math inline">\(^o\)</span> rotation of the log length–depth coordinates, we can draw them directly on a plot of the logs. In <a href="#fig-rotation" class="quarto-xref">Figure&nbsp;4</a> the solid gray lines connect bills of the same size <span class="math inline">\((\log L + \log D = \text{constant})\)</span> and the dashed lines connect bills of the same shape <span class="math inline">\((\log L - \log D = \text{constant})\)</span>. The lines are drawn at round values of <span class="math inline">\(L \times D\)</span> (in steps of 100 mm<sup>2</sup>) and of <span class="math inline">\(L / D\)</span> (in steps of 0.5), a few of which are labeled. With an aspect ratio of 1, the two sets of lines meet at right angles.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>iso_size  <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">size  =</span> <span class="fu">seq</span>(<span class="dv">400</span>, <span class="dv">1200</span>, <span class="at">by =</span> <span class="dv">100</span>), <span class="at">k =</span> <span class="fu">log</span>(size))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>iso_shape <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">shape =</span> <span class="fu">seq</span>(<span class="fl">1.5</span>, <span class="dv">4</span>, <span class="at">by =</span> <span class="fl">0.5</span>),   <span class="at">k =</span> <span class="fu">log</span>(shape))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># label a couple of lines of each kind, in empty space</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>lab_size  <span class="ot">&lt;-</span> iso_size  <span class="sc">|&gt;</span> <span class="fu">filter</span>(size <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">800</span>, <span class="dv">1000</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> <span class="fl">3.06</span>, <span class="at">x =</span> k <span class="sc">-</span> y, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"L x D = "</span>, size))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>lab_shape <span class="ot">&lt;-</span> iso_shape <span class="sc">|&gt;</span> <span class="fu">filter</span>(shape <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="dv">3</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> <span class="fu">c</span>(<span class="fl">2.60</span>, <span class="fl">2.55</span>), <span class="at">x =</span> k <span class="sc">+</span> y, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"L / D = "</span>, shape))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">peng_plot</span>(log_length, log_depth, <span class="at">pooled =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data =</span> iso_size, <span class="fu">aes</span>(<span class="at">intercept =</span> k, <span class="at">slope =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data =</span> iso_shape, <span class="fu">aes</span>(<span class="at">intercept =</span> <span class="sc">-</span>k, <span class="at">slope =</span> <span class="dv">1</span>),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> lab_size, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label), <span class="at">angle =</span> <span class="sc">-</span><span class="dv">45</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="dv">0</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> lab_shape, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label), <span class="at">angle =</span> <span class="dv">45</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="dv">0</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">3.44</span>, <span class="fl">4.12</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">2.50</span>, <span class="fl">3.10</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Bill length"</span>, <span class="at">y =</span> <span class="st">"log Bill depth"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-rotation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-rotation-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Log bill depth vs.&nbsp;log bill length, with lines of constant size (solid gray, slope -1) and constant shape (dashed, slope +1). The within-species ellipses are elongated along the size direction; the species are separated along the shape direction.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Read this way, the Simpson’s paradox in the original plot has a simple explanation. <em>Within</em> a species, bills vary mostly in size: big birds have bills that are both longer and deeper, so the within-species slopes are positive. <em>Between</em> species, the main difference is in shape: going from Adelie to Gentoo, bills get longer but shallower, so the between-species relation is negative.</p>
+</section>
+<section id="do-the-data-agree" class="level2">
+<h2 class="anchored" data-anchor-id="do-the-data-agree">Do the data agree?</h2>
+<p>I chose size and shape on <em>substantive</em> grounds, not from the <em>data</em>. Two quick checks show the choice is well supported, in that there is a natural translation of statistical ideas from (L, D) space to (Size, Shape) space.</p>
+<p><strong>Within-species correlations.</strong> If size and shape are natural dimensions for variation within a species, they should be close to uncorrelated there.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>within_r <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  peng <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">r =</span> <span class="fu">cor</span>({{ x }}, {{ y }})) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(<span class="fu">tibble</span>(<span class="at">species =</span> <span class="st">"(pooled)"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">r =</span> <span class="fu">cor</span>(<span class="fu">pull</span>(peng, {{ x }}), <span class="fu">pull</span>(peng, {{ y }}))))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">full_join</span>(<span class="fu">within_r</span>(bill_length, bill_depth) <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">r_length_depth =</span> r),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>          <span class="fu">within_r</span>(log_size, log_shape)     <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">r_size_shape =</span> r),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="st">"species"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 4 × 3
+#&gt;   species   r_length_depth r_size_shape
+#&gt;   &lt;chr&gt;              &lt;dbl&gt;        &lt;dbl&gt;
+#&gt; 1 Adelie             0.386       0.0398
+#&gt; 2 Chinstrap          0.654       0.144 
+#&gt; 3 Gentoo             0.654      -0.0188
+#&gt; 4 (pooled)          -0.229       0.0727</code></pre>
+</div>
+</div>
+<p>The within-species correlations of length and depth are moderate to large, and differ in sign from the pooled correlation. Those of size and shape are all quite small.</p>
+<p><strong>Within-species principal components.</strong> The first principal component of the within-species covariance matrix of (log L, log D) is the direction of greatest variation within a species. If this is “size”, it should point at 45°, along the vector <span class="math inline">\((1, 1)/\sqrt{2}\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    e <span class="ot">&lt;-</span> <span class="fu">eigen</span>(<span class="fu">cov</span>(<span class="fu">cbind</span>(.x<span class="sc">$</span>log_length, .x<span class="sc">$</span>log_depth)))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> e<span class="sc">$</span>vectors[, <span class="dv">1</span>] <span class="sc">*</span> <span class="fu">sign</span>(e<span class="sc">$</span>vectors[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">PC1_length =</span> v[<span class="dv">1</span>], <span class="at">PC1_depth =</span> v[<span class="dv">2</span>],</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">pct_var =</span> <span class="dv">100</span> <span class="sc">*</span> e<span class="sc">$</span>values[<span class="dv">1</span>] <span class="sc">/</span> <span class="fu">sum</span>(e<span class="sc">$</span>values),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle   =</span> <span class="fu">atan2</span>(v[<span class="dv">2</span>], v[<span class="dv">1</span>]) <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  })</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 3 × 5
+#&gt; # Groups:   species [3]
+#&gt;   species   PC1_length PC1_depth pct_var angle
+#&gt;   &lt;fct&gt;          &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 Adelie         0.739     0.673    69.7  42.3
+#&gt; 2 Chinstrap      0.763     0.647    83.2  40.3
+#&gt; 3 Gentoo         0.699     0.715    82.8  45.6</code></pre>
+</div>
+</div>
+<p>For each species the first component lies within a few degrees of 45° and accounts for 70–83% of the within-species variance. The dominant direction of variation within each species is, almost exactly, size.</p>
+<p><a href="#fig-pc1" class="quarto-xref">Figure&nbsp;5</a> shows this directly. Each species has been shifted to its own means, which removes the differences <em>between</em> species (mostly in shape) and leaves only the variation <em>within</em> species. Each species’ first principal component axis is drawn through the origin, ±2 standard deviations long, against the size direction (slope +1, dashed, as in <a href="#fig-rotation" class="quarto-xref">Figure&nbsp;4</a>) and the perpendicular shape direction (slope −1, solid).</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>peng_c <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">c_length =</span> log_length <span class="sc">-</span> <span class="fu">mean</span>(log_length),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">c_depth  =</span> log_depth  <span class="sc">-</span> <span class="fu">mean</span>(log_depth)) <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>pc1 <span class="ot">&lt;-</span> peng_c <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> {</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    e <span class="ot">&lt;-</span> <span class="fu">eigen</span>(<span class="fu">cov</span>(<span class="fu">cbind</span>(.x<span class="sc">$</span>c_length, .x<span class="sc">$</span>c_depth)))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> e<span class="sc">$</span>vectors[, <span class="dv">1</span>] <span class="sc">*</span> <span class="fu">sign</span>(e<span class="sc">$</span>vectors[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sqrt</span>(e<span class="sc">$</span>values[<span class="dv">1</span>])</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">x =</span> <span class="sc">-</span>r <span class="sc">*</span> v[<span class="dv">1</span>], <span class="at">y =</span> <span class="sc">-</span>r <span class="sc">*</span> v[<span class="dv">2</span>], <span class="at">xend =</span> r <span class="sc">*</span> v[<span class="dv">1</span>], <span class="at">yend =</span> r <span class="sc">*</span> v[<span class="dv">2</span>],</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="fu">atan2</span>(v[<span class="dv">2</span>], v[<span class="dv">1</span>]) <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%s: %.0f°"</span>, species, angle),</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>         <span class="co"># the PC1 axes nearly coincide, so stack their labels on the right</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">lab_x =</span> <span class="fl">0.15</span>, <span class="at">lab_y =</span> <span class="sc">-</span><span class="fl">0.04</span> <span class="sc">-</span> <span class="fl">0.035</span> <span class="sc">*</span> (<span class="fu">row_number</span>() <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(peng_c, <span class="fu">aes</span>(<span class="at">x =</span> c_length, <span class="at">y =</span> c_depth, <span class="at">color =</span> species, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span>  <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>              <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.15</span>, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.15</span>, <span class="at">label =</span> <span class="st">"size direction"</span>, <span class="at">angle =</span> <span class="dv">45</span>,</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.13</span>, <span class="at">y =</span> <span class="fl">0.13</span>, <span class="at">label =</span> <span class="st">"shape direction"</span>, <span class="at">angle =</span> <span class="sc">-</span><span class="dv">45</span>,</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ellipse</span>(<span class="at">geom =</span> <span class="st">"polygon"</span>, <span class="at">level =</span> <span class="fl">0.68</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data =</span> pc1, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend),</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>               <span class="at">linewidth =</span> <span class="fl">1.5</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> peng_cols[<span class="fu">as.character</span>(pc1<span class="sc">$</span>species)]) <span class="sc">+</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> pc1, <span class="fu">aes</span>(<span class="at">x =</span> lab_x, <span class="at">y =</span> lab_y, <span class="at">label =</span> label, <span class="at">color =</span> species),</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">4.5</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>             <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.15</span>, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.04</span> <span class="sc">+</span> <span class="fl">0.035</span>, <span class="at">label =</span> <span class="st">"PC1 angle"</span>,</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.25</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>  scale_penguins <span class="sc">+</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Bill length (centered within species)"</span>,</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"log Bill depth (centered within species)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-pc1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pc1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pc1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pc1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Within-species variation in log bill length and depth, with each species centered at its means. Ellipses are 68% data ellipses; the thick lines are each species’ first principal component axis. All three lie close to the size direction (dashed). The Adelie ellipse is the least elongated, so its first component is less dominant.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Two features of the plot carry the argument. First, the three first component axes very nearly coincide with each other and with the size diagonal: the species share a common pattern of within-species variation, and that pattern is variation in size. Second, the ellipses are elongated along this diagonal and shorter across it: within a species, penguins differ much more in how big their bills are than in their proportions. The Adelie ellipse is the roundest of the three, which matches its smaller share of variance on the first component (70%, against about 83% for the other two).</p>
+<p>This is also why the size and shape coordinates make the within-species correlations vanish. Rotating the coordinate axes to lie (nearly) along the long and short axes of these ellipses is what makes the two new variables nearly uncorrelated.</p>
+</section>
+<section id="one-variable-at-a-time" class="level2">
+<h2 class="anchored" data-anchor-id="one-variable-at-a-time">One variable at a time</h2>
+<p>A multivariate view is not always on authors’ minds. Some readers of a paper, on multivariate data like the penguins, may only be shown tables or plots for one variable at a time. Here the size–shape representation does even better, because it concentrates the species differences in a single variable (<a href="#fig-densities" class="quarto-xref">Figure&nbsp;6</a>).</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>peng_long <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, bill_length, bill_depth, log_size, log_shape) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>species, <span class="at">names_to =</span> <span class="st">"variable"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="fu">factor</span>(variable,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"bill_length"</span>, <span class="st">"bill_depth"</span>, <span class="st">"log_size"</span>, <span class="st">"log_shape"</span>)))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>dens_peaks <span class="ot">&lt;-</span> peng_long <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(variable, species) <span class="sc">|&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">d =</span> <span class="fu">list</span>(<span class="fu">density</span>(value)), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">sapply</span>(d, \(d) d<span class="sc">$</span>x[<span class="fu">which.max</span>(d<span class="sc">$</span>y)]),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="fu">sapply</span>(d, \(d) <span class="fu">max</span>(d<span class="sc">$</span>y)))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(peng_long, <span class="fu">aes</span>(<span class="at">x =</span> value, <span class="at">fill =</span> species, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> dens_peaks, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> species, <span class="at">color =</span> species),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">vjust =</span> <span class="dv">0</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">"free"</span>, <span class="at">nrow =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.02</span>, <span class="fl">0.15</span>))) <span class="sc">+</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  scale_penguins <span class="sc">+</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-densities" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-densities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-densities-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-densities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Densities of the four bill variables by species. Neither bill length nor bill depth separates all three species; log shape does, with little overlap.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The proportion of variance accounted for by species, <span class="math inline">\(\eta^2\)</span>, in a one-way ANOVA of each variable puts numbers on this:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>eta2 <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">anova</span>(<span class="fu">lm</span>(<span class="fu">reformulate</span>(<span class="st">"species"</span>, v), <span class="at">data =</span> peng))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  a[<span class="dv">1</span>, <span class="st">"Sum Sq"</span>] <span class="sc">/</span> <span class="fu">sum</span>(a[, <span class="st">"Sum Sq"</span>])</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="st">"bill_length"</span>, <span class="st">"bill_depth"</span>, <span class="st">"log_size"</span>, <span class="st">"log_shape"</span>), eta2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; bill_length  bill_depth    log_size   log_shape 
+#&gt;      0.7066      0.6764      0.3986      0.8900</code></pre>
+</div>
+</div>
+<p>Shape accounts for nearly 90% of the variance; neither length nor depth reaches 75%.</p>
+</section>
+<section id="sex-differences-bigger-not-different" class="level2">
+<h2 class="anchored" data-anchor-id="sex-differences-bigger-not-different">Sex differences: bigger, not different</h2>
+<p>Male penguins are larger than females. Does this extend to the shape of their bills? <a href="#fig-sex" class="quarto-xref">Figure&nbsp;7</a> suggests not.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">peng_plot</span>(log_size, log_shape, <span class="at">pooled =</span> <span class="cn">FALSE</span>, <span class="at">by =</span> <span class="st">"sex"</span>) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> sex, <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="at">f =</span> <span class="st">"Female"</span>, <span class="at">m =</span> <span class="st">"Male"</span>))) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Size"</span>, <span class="at">y =</span> <span class="st">"log Shape"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-sex" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-sex-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Log size and log shape by species, separately for females and males. The configuration of the species is the same in both panels, but shifted to the right for males: males have larger bills of the same shape.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A two-way MANOVA model confirms this. As promised, the multivariate tests are the same whichever pair of variables we use:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mod_LD <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(log_length, log_depth) <span class="sc">~</span> species <span class="sc">+</span> sex, <span class="at">data =</span> peng)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>mod_SS <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(log_size, log_shape)   <span class="sc">~</span> species <span class="sc">+</span> sex, <span class="at">data =</span> peng)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(mod_LD)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Type II MANOVA Tests: Pillai test statistic
+#&gt;         Df test stat approx F num Df den Df Pr(&gt;F)    
+#&gt; species  2     1.491      482      4    658 &lt;2e-16 ***
+#&gt; sex      1     0.562      210      2    328 &lt;2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(mod_SS)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Type II MANOVA Tests: Pillai test statistic
+#&gt;         Df test stat approx F num Df den Df Pr(&gt;F)    
+#&gt; species  2     1.491      482      4    658 &lt;2e-16 ***
+#&gt; sex      1     0.562      210      2    328 &lt;2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>But the univariate tests now separate the two effects cleanly. Species differ strongly in both size and shape; the sexes differ strongly in size and not at all in shape.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(mod_SS))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;  Response log_size :
+#&gt;              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+#&gt; species       2   2.94   1.467     246 &lt;2e-16 ***
+#&gt; sex           1   2.47   2.470     415 &lt;2e-16 ***
+#&gt; Residuals   329   1.96   0.006                   
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt;  Response log_shape :
+#&gt;              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+#&gt; species       2  10.85    5.43 1333.21 &lt;2e-16 ***
+#&gt; sex           1   0.00    0.00    0.42   0.52    
+#&gt; Residuals   329   1.34    0.00                   
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>In the original variables, the sex effect is spread over both length and depth, and the reader has to work out that the two increases are in proportion.</p>
+</section>
+<section id="he-plots" class="level2">
+<h2 class="anchored" data-anchor-id="he-plots">HE plots</h2>
+<p>Hypothesis–error (HE) plots show these models directly. In each panel of <a href="#fig-heplots" class="quarto-xref">Figure&nbsp;8</a>, the <strong>E</strong> ellipse shows the within-group (residual) covariance, and the <strong>H</strong> ellipses show the variation of the species means and the sex means, scaled here so that their size is comparable to the error ellipse (<code>size = "effect"</code>).</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(mod_LD, <span class="at">size =</span> <span class="st">"effect"</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>, <span class="at">asp =</span> <span class="dv">1</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"log Bill length"</span>, <span class="at">ylab =</span> <span class="st">"log Bill depth"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(mod_SS, <span class="at">size =</span> <span class="st">"effect"</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>, <span class="at">asp =</span> <span class="dv">1</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"log Size"</span>, <span class="at">ylab =</span> <span class="st">"log Shape"</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-heplots" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-heplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-heplots-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: HE plots for the MANOVA of bill measures on species and sex. Left: log length and log depth. Right: log size and log shape. The two plots are the same picture rotated by 45 degrees. In the right panel, the sex effect is a horizontal line (size only) and the error ellipse is aligned with the axes.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In the size–shape version:</p>
+<ul>
+<li>The <strong>error ellipse</strong> has its axes parallel to the coordinate axes: residual size and shape are uncorrelated.</li>
+<li>The <strong>sex effect</strong> degenerates to a line (one degree of freedom) that is almost exactly horizontal: a pure size difference.</li>
+<li>The <strong>species</strong> ellipse is tall and narrow: species differ mostly in shape, with Chinstrap displaced to the right by its larger bills.</li>
+</ul>
+<p>The within-species data ellipses (<a href="#fig-covellipses" class="quarto-xref">Figure&nbsp;9</a>) show the same alignment, with the pooled within-group ellipse in black.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(peng_cols, <span class="st">"black"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">covEllipses</span>(<span class="fu">cbind</span>(log_length, log_depth) <span class="sc">~</span> species, <span class="at">data =</span> peng,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">pooled =</span> <span class="cn">TRUE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>, <span class="at">col =</span> cols,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlab =</span> <span class="st">"log Bill length"</span>, <span class="at">ylab =</span> <span class="st">"log Bill depth"</span>, <span class="at">asp =</span> <span class="dv">1</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">covEllipses</span>(<span class="fu">cbind</span>(log_size, log_shape) <span class="sc">~</span> species, <span class="at">data =</span> peng,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">pooled =</span> <span class="cn">TRUE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>, <span class="at">col =</span> cols,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlab =</span> <span class="st">"log Size"</span>, <span class="at">ylab =</span> <span class="st">"log Shape"</span>, <span class="at">asp =</span> <span class="dv">1</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-covellipses" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-covellipses-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-covellipses-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-covellipses-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Within-species 68% data ellipses and the pooled within-group ellipse (black), in log length–depth coordinates (left) and log size–shape coordinates (right).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="size-shape-and-body-mass" class="level2">
+<h2 class="anchored" data-anchor-id="size-shape-and-body-mass">Size, shape, and body mass</h2>
+<p>Thinking of bill size as an <em>area</em> suggests one more question. If bills simply scaled with the rest of the body (isometric growth), bill area would grow as body mass to the 2/3 power, since mass is proportional to volume. On log scales, this means a slope of 2/3 for log size on log mass, and a slope of 0 for log shape (<a href="#fig-allometry" class="quarto-xref">Figure&nbsp;10</a>).</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(log_mass, log_size) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Body mass"</span>, <span class="at">y =</span> <span class="st">"log Bill size"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(log_mass, log_shape) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Body mass"</span>, <span class="at">y =</span> <span class="st">"log Bill shape"</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>p3 <span class="sc">+</span> p4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-allometry" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-allometry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-allometry-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-allometry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Bill size (left) and bill shape (right) vs.&nbsp;body mass, on log scales. Bill size increases with body mass within each species; bill shape does not depend on body mass within any species, although the pooled line (dashed) suggests that it does.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The within-species slopes are:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>slopes <span class="ot">&lt;-</span> <span class="cf">function</span>(y) {</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(<span class="fu">reformulate</span>(<span class="st">"species / log_mass - 1"</span>, y), <span class="at">data =</span> peng))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  b[<span class="fu">grep</span>(<span class="st">":log_mass"</span>, <span class="fu">names</span>(b))]</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">log_size =</span> <span class="fu">slopes</span>(<span class="st">"log_size"</span>), <span class="at">log_shape =</span> <span class="fu">slopes</span>(<span class="st">"log_shape"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">levels</span>(peng<span class="sc">$</span>species))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;             Adelie Chinstrap   Gentoo
+#&gt; log_size   0.61816   0.70792  0.91315
+#&gt; log_shape -0.01608  -0.01493 -0.04532</code></pre>
+</div>
+</div>
+<p>Shape is unrelated to body mass within all three species. The positive pooled slope in the right panel is another between-species effect, not a within-species one: Gentoo are both the heaviest penguins and the ones with the most slender bills. The size slopes for Adelie and Chinstrap are close to the isometric value of 2/3; Gentoo bills grow faster than isometry would predict. These are rough, descriptive slopes (mass and bill measures both contain measurement error, so ordinary least squares slopes are attenuated), but they illustrate that thinking about <em>what a variable measures</em> can suggest a baseline to compare against, here the value 2/3, that the raw variables would not.</p>
+</section>
+<section id="sums-and-differences-the-tukey-trick" class="level2">
+<h2 class="anchored" data-anchor-id="sums-and-differences-the-tukey-trick">Sums and differences: the Tukey trick</h2>
+<p>Here’s a trick I learned from John Tukey. When two variables <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are <em>commensurable</em>, measured in the same units and on comparable scales, and are positively correlated, you can always replace them by their sum (or mean) and their difference without losing information, and often with <em>a gain in interpretability</em>:</p>
+<p><span class="math display">\[
+s = x_1 + x_2 \qquad d = x_1 - x_2 \; .
+\]</span></p>
+<p>This is the same 45° rotation used above for size and shape. As a graphical method, the plot of the difference <span class="math inline">\(d\)</span> against the mean <span class="math inline">\(s/2\)</span> is known as the <strong>Tukey mean-difference plot</strong> (Cleveland, 1993, pp.&nbsp;22–23). In medicine, where it is the standard way to compare two methods of measuring the same quantity, it is called the <strong>Bland–Altman plot</strong> (Bland &amp; Altman, 1986); see the <a href="https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot">Wikipedia article</a> for a description and variants.</p>
+<p>As we did for the penguins, that article recommends taking logs first when the two measurements differ by a <em>ratio</em> rather than an <em>amount</em>. Stated more directly, the diagram of penguin bills (<a href="#fig-culmen" class="quarto-xref">Figure&nbsp;1</a>), suggested that the product, <span class="math inline">\(L \times D = \text{area}\)</span> was a natural measure of bill <strong>size</strong>, while the ratio <span class="math inline">\(L / D\)</span> could be interpreted as <strong>shape</strong>.</p>
+<p>Two things make the Tukey trick work:</p>
+<ul>
+<li>First, the new variables are nearly uncorrelated. The covariance of the sum and the difference is</li>
+</ul>
+<p><span class="math display">\[
+\text{Cov}(s, d) = \text{Var}(x_1) - \text{Var}(x_2) \; ,
+\]</span></p>
+<p>whatever the correlation between <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>. When the two variables have about the same variance, <span class="math inline">\(s\)</span> and <span class="math inline">\(d\)</span> are almost uncorrelated, <em>no matter how strongly <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are correlated</em>. If both have variance <span class="math inline">\(\sigma^2\)</span>, the variances of the sum and difference are <span class="math inline">\(2\sigma^2 (1 + r)\)</span> and <span class="math inline">\(2\sigma^2 (1 - r)\)</span>, which shows where the variation went: the larger the correlation <span class="math inline">\(r\)</span>, the more of it is carried by the sum and the less by the difference.</p>
+<ul>
+<li>Second, sums and differences usually <em>mean</em> something. The sum (or average) is the overall level or amount the two variables share; the difference is the contrast between them. For the penguins, these are size and shape. For two test scores, they are overall ability and a profile difference; for two measurement methods, they are the average reading and the disagreement between methods.</li>
+</ul>
+<p>“Commensurable” is doing real work here. On the raw scale, bill length has two to three times the standard deviation of bill depth, so their sum and difference would still be correlated. On the log scale, each standard deviation is roughly a <em>coefficient of variation</em>, a relative spread, and these are nearly equal:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sd_length     =</span> <span class="fu">sd</span>(bill_length),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_depth      =</span> <span class="fu">sd</span>(bill_depth),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_log_length =</span> <span class="fu">sd</span>(log_length),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_log_depth  =</span> <span class="fu">sd</span>(log_depth),</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">r_size_shape  =</span> <span class="fu">cor</span>(log_size, log_shape))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 3 × 6
+#&gt;   species   sd_length sd_depth sd_log_length sd_log_depth r_size_shape
+#&gt;   &lt;fct&gt;         &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+#&gt; 1 Adelie         2.66    1.22         0.0686       0.0661       0.0398
+#&gt; 2 Chinstrap      3.34    1.14         0.0690       0.0618       0.144 
+#&gt; 3 Gentoo         3.11    0.986        0.0644       0.0654      -0.0188</code></pre>
+</div>
+</div>
+<p>Taking logs is what makes length and depth commensurable, and that, in turn, is why log size and log shape are so nearly uncorrelated within each species.</p>
+<p>The same trick is a simple cure for <strong>collinearity</strong> among predictors in a regression. If <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are highly correlated, their separate coefficients are poorly determined; replacing them by <span class="math inline">\(s\)</span> and <span class="math inline">\(d\)</span> gives nearly uncorrelated predictors and an equivalent model. The coefficients are just re-expressed, as the average and the half-difference of the original ones:</p>
+<p><span class="math display">\[
+b_s = (b_1 + b_2) / 2 \qquad b_d = (b_1 - b_2) / 2 \; .
+\]</span></p>
+<p>For example, predicting log body mass from the log bill measurements (and species):</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>m_LD <span class="ot">&lt;-</span> <span class="fu">lm</span>(log_mass <span class="sc">~</span> species <span class="sc">+</span> log_length <span class="sc">+</span> log_depth, <span class="at">data =</span> peng)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>m_SS <span class="ot">&lt;-</span> <span class="fu">lm</span>(log_mass <span class="sc">~</span> species <span class="sc">+</span> log_size   <span class="sc">+</span> log_shape, <span class="at">data =</span> peng)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">coef</span>(m_LD)[<span class="fu">c</span>(<span class="st">"log_length"</span>, <span class="st">"log_depth"</span>)]</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">from_LD =</span> <span class="fu">c</span>(<span class="at">log_size  =</span> <span class="fu">mean</span>(b), <span class="at">log_shape =</span> <span class="fu">unname</span>(<span class="sc">-</span><span class="fu">diff</span>(b)) <span class="sc">/</span> <span class="dv">2</span>),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">m_SS    =</span> <span class="fu">coef</span>(m_SS)[<span class="fu">c</span>(<span class="st">"log_size"</span>, <span class="st">"log_shape"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;           from_LD    m_SS
+#&gt; log_size   0.6641  0.6641
+#&gt; log_shape -0.1215 -0.1215</code></pre>
+</div>
+</div>
+<p>This doesn’t create information that wasn’t in the data. When <span class="math inline">\(r\)</span> is large, the difference has little variance, and its coefficient is still estimated imprecisely. What the rotation does is put that imprecision where it belongs, in one interpretable contrast, rather than spreading it over both of the original coefficients.</p>
+</section>
+<section id="lessons" class="level2">
+<h2 class="anchored" data-anchor-id="lessons">Lessons</h2>
+<ul>
+<li><p><strong>Look at what the variables mean before you analyze them.</strong> Length and depth are two measurements of one object. Re-expressing them as size and shape is a choice made on substantive grounds, not by fitting the data.</p></li>
+<li><p><strong>Equivalent models can tell different stories.</strong> Because the transformation is linear (in the logs) and nonsingular, nothing in the multivariate model changes: the fitted values, residuals and tests are the same. What changes is which questions are easy to answer and which plots are easy to read.</p></li>
+<li><p><strong>A good re-expression simplifies.</strong> In the size–shape coordinates, within-species variation is nearly uncorrelated, species differences are concentrated in one variable, the sex effect is confined to the other, and Simpson’s paradox goes away.</p></li>
+<li><p><strong>Check the choice against the data.</strong> Here the within-species principal components point almost exactly in the size direction, so the substantive choice and the empirical one agree.</p></li>
+<li><p><strong>Sums and differences are a general tool.</strong> For positively correlated, commensurable variables, rotating to their sum and difference gives nearly uncorrelated variables that are usually easier to interpret, and is a simple remedy for collinearity.</p></li>
+</ul>
+<p>The same reasoning applies to the other penguin variables. Flipper length and body mass are also, in part, measures of overall size; one might go on to define an overall body size (for example, the mean of the four log measurements) and express each variable relative to it. That is a story for another post.</p>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
+<ul>
+<li>Bland, J. M., &amp; Altman, D. G. (1986). Statistical methods for assessing agreement between two methods of clinical measurement. <em>The Lancet</em>, 327(8476), 307–310. https://doi.org/10.1016/S0140-6736(86)90837-8</li>
+<li>Cleveland, W. S. (1993). <em>Visualizing Data</em>. Hobart Press. pp.&nbsp;22–23. ISBN 978-0-9634884-0-4.</li>
+<li>Gorman, K. B., Williams, T. D., &amp; Fraser, W. R. (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus <em>Pygoscelis</em>). <em>PLoS ONE</em>, 9(3), e90081.</li>
+<li>Jolicoeur, P., &amp; Mosimann, J. E. (1960). Size and shape variation in the painted turtle. A principal component analysis. <em>Growth</em>, 24, 339–354.</li>
+<li>Mosimann, J. E. (1970). Size allometry: Size and shape variables with characterizations of the lognormal and generalized gamma distributions. <em>Journal of the American Statistical Association</em>, 65(330), 930–945.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/friendly\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Michael Friendly</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://friendly.github.io/">
+<p>friendly.github.io/</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
