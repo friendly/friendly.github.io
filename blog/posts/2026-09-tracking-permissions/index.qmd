@@ -3,7 +3,7 @@ title: "Getting Permissions Right (or at Least Honest)"
 subtitle: "Field Notes on Tracking Down Image Permissions"
 description: "Turning a publisher's six-step permissions process into something a working author can actually track, delegate, and trust -- with the tools I used that made it possible"
 author: "Michael Friendly"
-date: today
+date: 2026-09-01
 image: images/permissions-banner.png
 execute:
   eval: false

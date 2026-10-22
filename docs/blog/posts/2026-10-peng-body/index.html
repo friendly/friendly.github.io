@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-10-22">
+<meta name="description" content="Flipper length and body mass, re-expressed as body size and stoutness: penguins scale up roughly in proportion, a puzzling year effect turns out to be in the flippers, and Gentoo have small bills for their size">
+
+<title>Penguin Bodies: Size and Stoutness – Michael Friendly</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/MF-face.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="penguins.css">
+</head>
+
+<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Michael Friendly</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> <i class="bi bi-house" role="img">
+</i> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../packages.html"> <i class="bi bi-box-seam" role="img">
+</i> 
+<span class="menu-text">R Packages</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../books.html"> <i class="bi bi-book" role="img">
+</i> 
+<span class="menu-text">Books</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../courses.html"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../software.html"> <i class="bi bi-code-slash" role="img">
+</i> 
+<span class="menu-text">Other Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> <i class="bi bi-pencil" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/friendly"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bsky.app/profile/datavisfriendly.bsky.social"> 
+<span class="menu-text"><img src="../../../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-question" id="toc-the-question" class="nav-link active" data-scroll-target="#the-question">The question</a></li>
+  <li><a href="#putting-mass-and-length-on-the-same-footing" id="toc-putting-mass-and-length-on-the-same-footing" class="nav-link" data-scroll-target="#putting-mass-and-length-on-the-same-footing">Putting mass and length on the same footing</a></li>
+  <li><a href="#data-and-helpers" id="toc-data-and-helpers" class="nav-link" data-scroll-target="#data-and-helpers">Data and helpers</a></li>
+  <li><a href="#two-views-of-the-same-bodies" id="toc-two-views-of-the-same-bodies" class="nav-link" data-scroll-target="#two-views-of-the-same-bodies">Two views of the same bodies</a></li>
+  <li><a href="#does-the-cube-law-hold" id="toc-does-the-cube-law-hold" class="nav-link" data-scroll-target="#does-the-cube-law-hold">Does the cube law hold?</a></li>
+  <li><a href="#one-variable-at-a-time" id="toc-one-variable-at-a-time" class="nav-link" data-scroll-target="#one-variable-at-a-time">One variable at a time</a></li>
+  <li><a href="#sex-differences" id="toc-sex-differences" class="nav-link" data-scroll-target="#sex-differences">Sex differences</a></li>
+  <li><a href="#does-stoutness-vary-by-year" id="toc-does-stoutness-vary-by-year" class="nav-link" data-scroll-target="#does-stoutness-vary-by-year">Does stoutness vary by year?</a>
+  <ul class="collapse">
+  <li><a href="#a-measurement-artifact" id="toc-a-measurement-artifact" class="nav-link" data-scroll-target="#a-measurement-artifact">A measurement artifact?</a></li>
+  </ul></li>
+  <li><a href="#body-and-bill" id="toc-body-and-bill" class="nav-link" data-scroll-target="#body-and-bill">Body and bill</a>
+  <ul class="collapse">
+  <li><a href="#four-variables-together" id="toc-four-variables-together" class="nav-link" data-scroll-target="#four-variables-together">Four variables together</a></li>
+  <li><a href="#compared-with-the-original-variables" id="toc-compared-with-the-original-variables" class="nav-link" data-scroll-target="#compared-with-the-original-variables">Compared with the original variables</a></li>
+  </ul></li>
+  <li><a href="#what-was-found" id="toc-what-was-found" class="nav-link" data-scroll-target="#what-was-found">What was found</a>
+  <ul class="collapse">
+  <li><a href="#still-to-do" id="toc-still-to-do" class="nav-link" data-scroll-target="#still-to-do">Still to do</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Penguin Bodies: Size and Stoutness</h1>
+<p class="subtitle lead">Is there a re-expression of flipper length and body mass, like bill size and shape?</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Vis-MLM</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">multivariate</div>
+    <div class="quarto-category">penguins</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Flipper length and body mass, re-expressed as body size and stoutness: penguins scale up roughly in proportion, a puzzling year effect turns out to be in the flippers, and Gentoo have small bills for their size
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 22, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/penguin-station-bodies.jpg" class="img-fluid figure-img"></p>
+<figcaption>The Palmer Penguin Statistical Research Station. The bulletin board shows the story of this post: flipper &amp; mass, size &amp; stoutness, and the canonical plot. Scene generated with ChatGPT; plots drawn from the data.</figcaption>
+</figure>
+</div>
+<section id="the-question" class="level2">
+<h2 class="anchored" data-anchor-id="the-question">The question</h2>
+<p>Data analysis usually starts with the variables as they were recorded, but what is easy to <em>measure</em> is not always what is best to <em>think about</em>. A physician records height and weight, but body mass index, weight relative to height, says more about a patient. Re-expressing the measured variables as combinations with clear meanings (ratios, or sums and differences of logs, which rotate the original axes) can make plots easier to read and models easier to interpret, without changing what the data say to a multivariate model. The statistics are equivalent under such transformations, but our understanding can be better grounded in what the variables mean.</p>
+<p>In a first pass at this topic for the penguins data <a href="https://friendly.github.io/blog/posts/2026-10-peng-altviews/">Thinking about Penguin Variables</a>, it was natural to think of re-expressing bill length (<span class="math inline">\(L\)</span>) and bill depth (<span class="math inline">\(D\)</span>) as bill <strong>size</strong> and <strong>shape</strong>,</p>
+<p><span class="math display">\[
+\log \text{Size} = \log L + \log D \qquad \log \text{Shape} = \log L - \log D \; ,
+\]</span></p>
+<p>a 45° rotation of the log length–depth plane. The new axes had clear meanings, the within-species variation lay almost entirely along size, the species separated along shape, and Simpson’s paradox disappeared.</p>
+<p>That post ended by noting that flipper length and body mass are also, in part, measures of overall size, and left them as “a story for another post.” This is that follow-up. The other two penguin measurements are <code>flipper_length</code> (<span class="math inline">\(F\)</span>) and <code>body_mass</code> (<span class="math inline">\(M\)</span>).</p>
+<p>Is there a similar re-expression of these that makes more sense in terms of what matters to a penguin— <strong>allometry</strong>: the study of how the shape, anatomy, physiology, or behavior of an organism changes in proportion to its overall body size? This post describes what was tried and what came of it. In the process, I discovered some questions regarding the data itself: exactly how the data was recorded and whether there were any changes over time. The code is also in <a href="https://github.com/friendly/Vis-MLM-book/blob/master/R/penguin/body-flipper.R"><code>body-flipper.R</code></a>.</p>
+<div id="fig-khenry" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-khenry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/KHenry-penguins.jpg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-khenry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Two penguins: what makes one bigger, or stouter, than another? Drawing by Kristin Henry (<a href="https://vis.social/@kristinHenry">@kristinHenry@vis.social</a>).
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="putting-mass-and-length-on-the-same-footing" class="level2">
+<h2 class="anchored" data-anchor-id="putting-mass-and-length-on-the-same-footing">Putting mass and length on the same footing</h2>
+<p>For the bill, length and depth are both lengths, in mm, so their sum and difference on the log scale mean something directly. Flipper length (<span class="math inline">\(F\)</span>, in mm) and body mass (<span class="math inline">\(M\)</span>, in g) are not like that. (Here and throughout, <span class="math inline">\(F\)</span> and <span class="math inline">\(M\)</span> stand for <strong>flipper length</strong> and <strong>body mass</strong>, not female and male.) Mass goes with volume, and volume goes with the cube of length. A penguin that is 10% longer in every dimension, with the same proportions, is <span class="math inline">\(1.1^3 = 1.33\)</span> times as heavy.</p>
+<p>So the first step is to turn mass into a length-like quantity, its cube root, <span class="math inline">\(M^{1/3}\)</span>. On the log scale that is just <span class="math inline">\(\log M / 3\)</span>. Then the same 45° rotation of <span class="math inline">\((\log F, \; \log M / 3)\)</span> gives</p>
+<p><span class="math display">\[
+\begin{aligned}
+\log \text{Body size} &amp;= \log F + \tfrac{1}{3} \log M &amp;= \log\left(F \times M^{1/3}\right) \\
+\log \text{Stoutness} &amp;= \tfrac{1}{3} \log M - \log F &amp;= \log\left(M^{1/3} / F\right) \; .
+\end{aligned}
+\]</span></p>
+<p><strong>Body size</strong> is overall size. <strong>Stoutness</strong> says whether a penguin is heavy or light for its flipper length. Cubing it gives <span class="math inline">\(M / F^3\)</span>: stoutness is a penguin version of the condition factor <span class="math inline">\(K = W / L^3\)</span> used for fish, or of the ponderal index for people. Stoutness has no units; for these penguins <span class="math inline">\(M / F^3\)</span> is about 0.5 g/cm³.</p>
+<p>Because these are natural logs, small differences on either scale read as approximate proportions. A difference of 0.03 in log stoutness means that <span class="math inline">\(M^{1/3} / F\)</span> is about 3% larger; at the same flipper length, that is about 9% more mass (<span class="math inline">\(1.03^3 = 1.09\)</span>). Body size needs one more step, because it is the log of a <em>product</em> of two length-like quantities. A difference of <span class="math inline">\(d\)</span> in log body size means that <span class="math inline">\(F \times M^{1/3}\)</span> is larger by a factor of <span class="math inline">\(e^d\)</span>, or each of <span class="math inline">\(F\)</span> and <span class="math inline">\(M^{1/3}\)</span> by about <span class="math inline">\(d/2\)</span>. Gentoo and Adelie, for example, differ by 0.24 in log body size: <span class="math inline">\(F \times M^{1/3}\)</span> is 27% larger (<span class="math inline">\(e^{0.24} = 1.27\)</span>), or about 13% per linear dimension.</p>
+<p>This re-expression comes with a prediction. If penguins scale up <strong>isometrically</strong>, keeping their proportions as they get bigger, then <span class="math inline">\(\log M\)</span> increases by 3 for each unit increase in <span class="math inline">\(\log F\)</span>. Bigger penguins and smaller ones then differ only in size, so variation within a species lies along the body-size axis and stoutness does not depend on body size. Whether that is so is something the data can tell us.</p>
+</section>
+<section id="data-and-helpers" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-helpers">Data and helpers</h2>
+<p>The data are <code>heplots::peng</code> (Gorman, Williams &amp; Fraser, 2014), the 333 complete cases of <code>palmerpenguins::penguins</code>. The bill variables from the earlier post are computed too, for comparisons later.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(heplots)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(candisc)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(peng, <span class="at">package =</span> <span class="st">"heplots"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>peng <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_flipper =</span> <span class="fu">log</span>(flipper_length),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_mass3   =</span> <span class="fu">log</span>(body_mass) <span class="sc">/</span> <span class="dv">3</span>,                   <span class="co"># log of the cube root of mass</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">body_size   =</span> log_flipper <span class="sc">+</span> log_mass3,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">stoutness   =</span> log_mass3 <span class="sc">-</span> log_flipper,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">K           =</span> body_mass <span class="sc">/</span> (flipper_length <span class="sc">/</span> <span class="dv">10</span>)<span class="sc">^</span><span class="dv">3</span>,  <span class="co"># raw stoutness, g / cm^3</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_length  =</span> <span class="fu">log</span>(bill_length),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_depth   =</span> <span class="fu">log</span>(bill_depth),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_size   =</span> log_length <span class="sc">+</span> log_depth,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_shape  =</span> log_length <span class="sc">-</span> log_depth,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">fyear       =</span> <span class="fu">factor</span>(year)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>The species colors, <span class="adelie">orange</span> for Adelie, <span class="chinstrap">purple</span> for Chinstrap and <span class="gentoo">green</span> for Gentoo, and the plotting helpers are the ones from the earlier post. <code>species_labels()</code> now takes an optional <code>nudge</code> table to move labels that would otherwise overlap.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Show the helpers</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>peng_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Adelie =</span> <span class="st">"#F37A00"</span>, <span class="at">Chinstrap =</span> <span class="st">"#6A3D9A"</span>, <span class="at">Gentoo =</span> <span class="st">"#33a02c"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>scale_penguins <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> peng_cols, <span class="at">aesthetics =</span> <span class="fu">c</span>(<span class="st">"colour"</span>, <span class="st">"fill"</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># `nudge`: optional data frame of species, dx, dy, to move labels that would overlap</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>species_labels <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">data =</span> peng, <span class="at">by =</span> <span class="cn">NULL</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">nudge =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  means <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(species, <span class="fu">across</span>(<span class="fu">all_of</span>(by))) <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">x =</span> <span class="fu">mean</span>({{ x }}), <span class="at">y =</span> <span class="fu">mean</span>({{ y }}), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(nudge))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    means <span class="ot">&lt;-</span> means <span class="sc">|&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">left_join</span>(nudge, <span class="at">by =</span> <span class="st">"species"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">x =</span> x <span class="sc">+</span> <span class="fu">coalesce</span>(dx, <span class="dv">0</span>), <span class="at">y =</span> y <span class="sc">+</span> <span class="fu">coalesce</span>(dy, <span class="dv">0</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> means, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> species, <span class="at">color =</span> species),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">size =</span> size, <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>peng_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">data =</span> peng, <span class="at">pooled =</span> <span class="cn">TRUE</span>, <span class="at">by =</span> <span class="cn">NULL</span>, <span class="at">nudge =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> {{ x }}, <span class="at">y =</span> {{ y }},</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                        <span class="at">color =</span> species, <span class="at">shape =</span> species, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_ellipse</span>(<span class="at">geom =</span> <span class="st">"polygon"</span>, <span class="at">level =</span> <span class="fl">0.68</span>, <span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_ellipse</span>(<span class="at">geom =</span> <span class="st">"polygon"</span>, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">alpha =</span> <span class="fl">0.10</span>) <span class="sc">+</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    scale_penguins <span class="sc">+</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (pooled)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> p <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> {{ x }}, <span class="at">y =</span> {{ y }}), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                         <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>                         <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                         <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  p <span class="sc">+</span> <span class="fu">species_labels</span>({{ x }}, {{ y }}, <span class="at">data =</span> data, <span class="at">by =</span> by, <span class="at">nudge =</span> nudge)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="two-views-of-the-same-bodies" class="level2">
+<h2 class="anchored" data-anchor-id="two-views-of-the-same-bodies">Two views of the same bodies</h2>
+<p><a href="#fig-two-views" class="quarto-xref">Figure&nbsp;2</a> shows flipper length and body mass as recorded (left) and as body size and stoutness (right).</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(flipper_length, body_mass,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge =</span> <span class="fu">tibble</span>(<span class="at">species =</span> <span class="fu">c</span>(<span class="st">"Adelie"</span>, <span class="st">"Chinstrap"</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dx =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="dv">7</span>), <span class="at">dy =</span> <span class="fu">c</span>(<span class="dv">450</span>, <span class="sc">-</span><span class="dv">500</span>))) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Flipper length (mm)"</span>, <span class="at">y =</span> <span class="st">"Body mass (g)"</span>, <span class="at">title =</span> <span class="st">"Flipper &amp; mass"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(body_size, stoutness,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge =</span> <span class="fu">tibble</span>(<span class="at">species =</span> <span class="fu">c</span>(<span class="st">"Adelie"</span>, <span class="st">"Chinstrap"</span>),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dx =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.04</span>, <span class="fl">0.03</span>), <span class="at">dy =</span> <span class="fu">c</span>(<span class="fl">0.07</span>, <span class="sc">-</span><span class="fl">0.07</span>))) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.70</span>, <span class="sc">-</span><span class="fl">2.32</span>)) <span class="sc">+</span>   <span class="co"># equal scales, with room so the panel isn't flat</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Body size = log(F x M^(1/3))"</span>, <span class="at">y =</span> <span class="st">"log Stoutness</span><span class="sc">\n</span><span class="st">= log(M^(1/3) / F)"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Body size &amp; stoutness (log scale)"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># match p1's aspect ratio to p2's, so patchwork doesn't squash either panel</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>) <span class="sc">|</span> p2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-two-views" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-views-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-two-views-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-views-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Left: body mass vs.&nbsp;flipper length. Mass increases with flipper length both within species and across them, so there is no Simpson’s paradox here. Right: the same data as log stoutness vs.&nbsp;log size, with equal scales on the two axes. The species are spread out along size; within each species, the variation is mainly in size too.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Two things stand out, one different from the bill and one the same.</p>
+<ul>
+<li><strong>No paradox to resolve.</strong> For the bill, the within-species and pooled relations had opposite signs. Here, mass increases with flipper length within every species and across all of them (pooled <span class="math inline">\(r\)</span> = 0.873). The rotation has no dramatic reversal to undo.</li>
+<li><strong>The species differ in body size, not stoutness.</strong> On equal scales (right panel), the three species are strung out along the body-size axis, Gentoo far to the right (about 13% larger than Adelie per linear dimension), while their stoutness overlaps almost completely (the species means are within 0.03, under 3%). To a first approximation, a Gentoo is a scaled-up Adelie.</li>
+</ul>
+</section>
+<section id="does-the-cube-law-hold" class="level2">
+<h2 class="anchored" data-anchor-id="does-the-cube-law-hold">Does the cube law hold?</h2>
+<p>The isometric prediction is that, within a species, <span class="math inline">\(\log M\)</span> increases by 3 for each unit of <span class="math inline">\(\log F\)</span>. The ordinary regression slope of <span class="math inline">\(\log M\)</span> on <span class="math inline">\(\log F\)</span> is the wrong estimate of this. Flipper length has its own measurement error and natural variation, and the regression slope is pulled toward zero by it (the same attenuation as in measurement error in a predictor). Studies of allometry instead use the <strong>standardized major axis</strong> (SMA) slope, <span class="math inline">\(\text{sd}(\log M) / \text{sd}(\log F)\)</span>, which treats the two variables symmetrically (Warton et al., 2006). An equivalent check is the angle of the first principal component in the <span class="math inline">\((\log F, \log M / 3)\)</span> plane, which is 45° under isometry.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>allometry <span class="ot">&lt;-</span> <span class="cf">function</span>(data)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">r     =</span> <span class="fu">cor</span>(log_flipper, log_mass3),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">b_ols =</span> <span class="fu">coef</span>(<span class="fu">lm</span>(<span class="fu">I</span>(<span class="dv">3</span> <span class="sc">*</span> log_mass3) <span class="sc">~</span> log_flipper))[<span class="dv">2</span>],</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">b_sma =</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">sd</span>(log_mass3) <span class="sc">/</span> <span class="fu">sd</span>(log_flipper),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">angle =</span> {</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                v <span class="ot">&lt;-</span> <span class="fu">eigen</span>(<span class="fu">cov</span>(<span class="fu">cbind</span>(log_flipper, log_mass3)))<span class="sc">$</span>vectors[, <span class="dv">1</span>]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                v <span class="ot">&lt;-</span> v <span class="sc">*</span> <span class="fu">sign</span>(v[<span class="dv">1</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                <span class="fu">atan2</span>(v[<span class="dv">2</span>], v[<span class="dv">1</span>]) <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>              },</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span> <span class="fu">allometry</span>() <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">species</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">r</th>
+<th style="text-align: right;">b_ols</th>
+<th style="text-align: right;">b_sma</th>
+<th style="text-align: right;">angle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: right;">146</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">1.66</td>
+<td style="text-align: right;">3.60</td>
+<td style="text-align: right;">55.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chinstrap</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">1.77</td>
+<td style="text-align: right;">2.83</td>
+<td style="text-align: right;">42.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gentoo</td>
+<td style="text-align: right;">119</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">2.34</td>
+<td style="text-align: right;">3.29</td>
+<td style="text-align: right;">48.6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The SMA slopes (2.8 to 3.6) are close to 3, and the PC1 angles (42° to 56°) close to 45°. The OLS slopes, at 1.7 to 2.3, show how much attenuation there is. <a href="#fig-pc1" class="quarto-xref">Figure&nbsp;3</a> shows the within-species variation, with each species centered at its means.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>peng_c <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">c_flipper =</span> log_flipper <span class="sc">-</span> <span class="fu">mean</span>(log_flipper),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">c_mass3   =</span> log_mass3   <span class="sc">-</span> <span class="fu">mean</span>(log_mass3)) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>pc1 <span class="ot">&lt;-</span> peng_c <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> {</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    e <span class="ot">&lt;-</span> <span class="fu">eigen</span>(<span class="fu">cov</span>(<span class="fu">cbind</span>(.x<span class="sc">$</span>c_flipper, .x<span class="sc">$</span>c_mass3)))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> e<span class="sc">$</span>vectors[, <span class="dv">1</span>] <span class="sc">*</span> <span class="fu">sign</span>(e<span class="sc">$</span>vectors[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sqrt</span>(e<span class="sc">$</span>values[<span class="dv">1</span>])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">x =</span> <span class="sc">-</span>r <span class="sc">*</span> v[<span class="dv">1</span>], <span class="at">y =</span> <span class="sc">-</span>r <span class="sc">*</span> v[<span class="dv">2</span>], <span class="at">xend =</span> r <span class="sc">*</span> v[<span class="dv">1</span>], <span class="at">yend =</span> r <span class="sc">*</span> v[<span class="dv">2</span>],</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="fu">atan2</span>(v[<span class="dv">2</span>], v[<span class="dv">1</span>]) <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%s: %.0f°"</span>, species, angle),</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">lab_x =</span> <span class="fl">0.05</span>, <span class="at">lab_y =</span> <span class="sc">-</span><span class="fl">0.06</span> <span class="sc">-</span> <span class="fl">0.01</span> <span class="sc">*</span> (<span class="fu">row_number</span>() <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(peng_c, <span class="fu">aes</span>(<span class="at">x =</span> c_flipper, <span class="at">y =</span> c_mass3, <span class="at">color =</span> species, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span>  <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>              <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.07</span>, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.07</span>, <span class="at">label =</span> <span class="st">"size direction"</span>, <span class="at">angle =</span> <span class="dv">45</span>,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.065</span>, <span class="at">y =</span> <span class="fl">0.065</span>, <span class="at">label =</span> <span class="st">"stoutness direction"</span>, <span class="at">angle =</span> <span class="sc">-</span><span class="dv">45</span>,</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ellipse</span>(<span class="at">geom =</span> <span class="st">"polygon"</span>, <span class="at">level =</span> <span class="fl">0.68</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data =</span> pc1, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend),</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>               <span class="at">linewidth =</span> <span class="fl">1.5</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> peng_cols[<span class="fu">as.character</span>(pc1<span class="sc">$</span>species)]) <span class="sc">+</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> pc1, <span class="fu">aes</span>(<span class="at">x =</span> lab_x, <span class="at">y =</span> lab_y, <span class="at">label =</span> label, <span class="at">color =</span> species),</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">4.5</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>             <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.05</span>, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.06</span> <span class="sc">+</span> <span class="fl">0.01</span>, <span class="at">label =</span> <span class="st">"PC1 angle"</span>,</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>)) <span class="sc">+</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  scale_penguins <span class="sc">+</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Flipper length (centered within species)"</span>,</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"log Body mass / 3 (centered within species)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-pc1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pc1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pc1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pc1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Within-species variation in log flipper length and log mass / 3, each species centered at its means. Ellipses are 68% data ellipses; the thick lines are each species’ first principal component axis. All three lie near the size direction (dashed).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>There is a catch. Each species includes both sexes, and males are larger in every dimension. Part of the within-species “body size” axis is simply males vs.&nbsp;females. Within each species–sex group, the correlations are much weaker and the angles scatter more widely:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">group_by</span>(species, sex) <span class="sc">|&gt;</span> <span class="fu">allometry</span>() <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">species</th>
+<th style="text-align: left;">sex</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">r</th>
+<th style="text-align: right;">b_ols</th>
+<th style="text-align: right;">b_sma</th>
+<th style="text-align: right;">angle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: left;">f</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">2.69</td>
+<td style="text-align: right;">33.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">2.50</td>
+<td style="text-align: right;">31.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chinstrap</td>
+<td style="text-align: left;">f</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: right;">2.77</td>
+<td style="text-align: right;">35.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chinstrap</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">2.07</td>
+<td style="text-align: right;">3.08</td>
+<td style="text-align: right;">46.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gentoo</td>
+<td style="text-align: left;">f</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.63</td>
+<td style="text-align: right;">3.33</td>
+<td style="text-align: right;">51.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gentoo</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">2.23</td>
+<td style="text-align: right;">23.8</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>With correlations of 0.23 to 0.67, the PC1 direction is poorly determined, and several of the angles fall well below 45°. So the cube law describes the differences between the sexes and species reasonably well, but within a group of same-sex adults, flipper length and mass vary fairly independently.</p>
+</section>
+<section id="one-variable-at-a-time" class="level2">
+<h2 class="anchored" data-anchor-id="one-variable-at-a-time">One variable at a time</h2>
+<p>How much of the variation in each variable is due to species, how much to sex, and how much is left over? <a href="#tbl-eta2" class="quarto-xref">Table&nbsp;1</a> gives the proportions of the total sum of squares in a model with species and sex.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>eta2 <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">anova</span>(<span class="fu">lm</span>(<span class="fu">reformulate</span>(<span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"sex"</span>), v), <span class="at">data =</span> peng))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(a[, <span class="st">"Sum Sq"</span>] <span class="sc">/</span> <span class="fu">sum</span>(a[, <span class="st">"Sum Sq"</span>]), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"sex"</span>, <span class="st">"residual"</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="st">"log_flipper"</span>, <span class="st">"log_mass3"</span>, <span class="st">"body_size"</span>, <span class="st">"stoutness"</span>), eta2) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-eta2" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-eta2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Proportion of variance due to species, sex and residual, for each body variable.
+</figcaption>
+<div aria-describedby="tbl-eta2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">log_flipper</th>
+<th style="text-align: right;">log_mass3</th>
+<th style="text-align: right;">body_size</th>
+<th style="text-align: right;">stoutness</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">species</td>
+<td style="text-align: right;">0.768</td>
+<td style="text-align: right;">0.654</td>
+<td style="text-align: right;">0.761</td>
+<td style="text-align: right;">0.139</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sex</td>
+<td style="text-align: right;">0.059</td>
+<td style="text-align: right;">0.179</td>
+<td style="text-align: right;">0.116</td>
+<td style="text-align: right;">0.075</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">residual</td>
+<td style="text-align: right;">0.172</td>
+<td style="text-align: right;">0.168</td>
+<td style="text-align: right;">0.123</td>
+<td style="text-align: right;">0.785</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Body size carries the species differences (<span class="math inline">\(\eta^2\)</span> = 0.76), as much as flipper length alone does. Stoutness carries little of them (0.14): about 79% of its variance is individual variation. That is what one would want from a measure of <strong>body condition</strong>: something that varies from bird to bird, rather than from species to species.</p>
+</section>
+<section id="sex-differences" class="level2">
+<h2 class="anchored" data-anchor-id="sex-differences">Sex differences</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sex_fill <span class="ot">&lt;-</span> <span class="fu">scale_fill_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="at">f =</span> <span class="st">"Female"</span>, <span class="at">m =</span> <span class="st">"Male"</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(peng, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> body_size, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  sex_fill <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"log Body size"</span>, <span class="at">title =</span> <span class="st">"Body size"</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(peng, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> stoutness, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  sex_fill <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"log Stoutness"</span>, <span class="at">title =</span> <span class="st">"Stoutness"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"inside"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.98</span>, <span class="fl">0.02</span>),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.justification =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"gray70"</span>))</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>p3 <span class="sc">+</span> p4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-sex" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-sex-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Log body size and log stoutness by species and sex. Males are larger in every species. Only for Adelie are the males also stouter.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As for the bill, sexual dimorphism is mainly a matter of body size: males are bigger in every species (<a href="#fig-sex" class="quarto-xref">Figure&nbsp;4</a>). The exception is Adelie, where the males are also heavier for their flipper length. That is a species <span class="math inline">\(\times\)</span> sex interaction for stoutness, which also explains why the Adelie ellipse in <a href="#fig-two-views" class="quarto-xref">Figure&nbsp;2</a> is the tallest.</p>
+</section>
+<section id="does-stoutness-vary-by-year" class="level2">
+<h2 class="anchored" data-anchor-id="does-stoutness-vary-by-year">Does stoutness vary by year?</h2>
+<p>If stoutness is body condition, it should be sensitive to how good the feeding was, and so might differ between years. The data cover three seasons, 2007 to 2009.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(stoutness <span class="sc">~</span> species <span class="sc">*</span> sex, <span class="at">data =</span> peng)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(stoutness <span class="sc">~</span> species <span class="sc">*</span> sex <span class="sc">+</span> fyear, <span class="at">data =</span> peng)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(stoutness <span class="sc">~</span> (species <span class="sc">+</span> sex) <span class="sc">*</span> fyear <span class="sc">+</span> species<span class="sc">:</span>sex, <span class="at">data =</span> peng)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m0, m1, m2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Analysis of Variance Table
+#&gt; 
+#&gt; Model 1: stoutness ~ species * sex
+#&gt; Model 2: stoutness ~ species * sex + fyear
+#&gt; Model 3: stoutness ~ (species + sex) * fyear + species:sex
+#&gt;   Res.Df   RSS Df Sum of Sq     F  Pr(&gt;F)    
+#&gt; 1    327 0.305                               
+#&gt; 2    325 0.270  2    0.0347 21.05 2.6e-09 ***
+#&gt; 3    319 0.263  6    0.0071  1.43     0.2    
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Adding year clearly helps (<span class="math inline">\(F\)</span> = 21, <span class="math inline">\(R^2\)</span> from 0.268 to 0.352), and the year effect is the same for all species and both sexes (the interactions add nothing). Stoutness declined from 2007 to 2009. But stoutness is a ratio, so the question is which part of it changed.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>year_long <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, fyear, flipper_length, body_mass, stoutness) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(flipper_length, body_mass, stoutness), <span class="at">names_to =</span> <span class="st">"variable"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="fu">factor</span>(variable, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"flipper_length"</span>, <span class="st">"body_mass"</span>, <span class="st">"stoutness"</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Flipper length (mm)"</span>, <span class="st">"Body mass (g)"</span>, <span class="st">"log Stoutness"</span>)))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(year_long, <span class="fu">aes</span>(<span class="at">x =</span> fyear, <span class="at">y =</span> value, <span class="at">color =</span> species, <span class="at">group =</span> species)) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.data =</span> mean_se, <span class="at">geom =</span> <span class="st">"pointrange"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.3</span>)) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"line"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.3</span>)) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  scale_penguins <span class="sc">+</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean (+/- 1 SE)"</span>, <span class="at">color =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-year" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-year-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-year-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-year-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Means (+/- 1 SE) of flipper length, body mass and log stoutness by year and species. Body mass did not change; flipper length increased from 2007 to 2008 in all three species, and stoutness fell as a result.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>year_F <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">Anova</span>(<span class="fu">lm</span>(<span class="fu">reformulate</span>(<span class="st">"(species + sex) * fyear + species:sex"</span>, v), <span class="at">data =</span> peng))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>(a[<span class="st">"fyear"</span>, <span class="fu">c</span>(<span class="st">"F value"</span>, <span class="st">"Pr(&gt;F)"</span>)])</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="st">"flipper_length"</span>, <span class="st">"body_mass"</span>, <span class="st">"body_size"</span>, <span class="st">"stoutness"</span>), year_F) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>), <span class="at">caption =</span> <span class="st">"Year effects, from a model with species, sex and their interactions with year"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Year effects, from a model with species, sex and their interactions with year</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">F value</th>
+<th style="text-align: right;">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">flipper_length</td>
+<td style="text-align: right;">25.02</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">body_mass</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.9828</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">body_size</td>
+<td style="text-align: right;">9.83</td>
+<td style="text-align: right;">0.0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stoutness</td>
+<td style="text-align: right;">21.05</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><a href="#fig-year" class="quarto-xref">Figure&nbsp;5</a> gives a clear answer. <strong>Body mass shows no year effect at all</strong> (<span class="math inline">\(F\)</span> = 0.02). <strong>Flipper length increased</strong> from 2007 to 2008 in every species, by about 4 mm (Adelie), 6 mm (Chinstrap) and 3 mm (Gentoo), and then changed little. The decline in stoutness is entirely due to flipper length.</p>
+<p>That makes it hard to read as a change in body condition, which would show up in mass. Flipper length in adult penguins should not change by several mm from one season to the next.</p>
+<section id="a-measurement-artifact" class="level3">
+<h3 class="anchored" data-anchor-id="a-measurement-artifact">A measurement artifact?</h3>
+<p>The documentation says nothing about a change. Gorman, Williams &amp; Fraser (2014) measured the right flipper “using a ruler ±1 mm” and body mass with Pesola spring scales (±25 or ±50 g). They pool all three years for their size analyses, and mention no change in methods, instruments or people across 2007–2009. The documentation of <code>palmerpenguins::penguins_raw</code> (Horst, Hill &amp; Gorman, 2020) defines the variables but does not discuss methods, and its <code>Comments</code> column has only notes on sampling (missing blood samples, incomplete clutches). The full methods are in the metadata of the three EDI data packages (Palmer Station Antarctica LTER &amp; Gorman, 2020a, b, c), which I have not accessed yet.</p>
+<p>The raw data give two clues. First, the 2007–2008 increase in flipper length appears at once in every species on every island where it was measured:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pr <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins_raw <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year    =</span> <span class="fu">format</span>(<span class="st">`</span><span class="at">Date Egg</span><span class="st">`</span>, <span class="st">"%Y"</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">species =</span> <span class="fu">sub</span>(<span class="st">" .*"</span>, <span class="st">""</span>, Species),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">flipper =</span> <span class="st">`</span><span class="at">Flipper Length (mm)</span><span class="st">`</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">mass    =</span> <span class="st">`</span><span class="at">Body Mass (g)</span><span class="st">`</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>pr <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, Island, year) <span class="sc">|&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">flipper =</span> <span class="fu">mean</span>(flipper, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> flipper) <span class="sc">|&gt;</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">species</th>
+<th style="text-align: left;">Island</th>
+<th style="text-align: right;">2007</th>
+<th style="text-align: right;">2008</th>
+<th style="text-align: right;">2009</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: left;">Biscoe</td>
+<td style="text-align: right;">182</td>
+<td style="text-align: right;">190</td>
+<td style="text-align: right;">192</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: left;">Dream</td>
+<td style="text-align: right;">186</td>
+<td style="text-align: right;">192</td>
+<td style="text-align: right;">191</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Adelie</td>
+<td style="text-align: left;">Torgersen</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">192</td>
+<td style="text-align: right;">193</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chinstrap</td>
+<td style="text-align: left;">Dream</td>
+<td style="text-align: right;">192</td>
+<td style="text-align: right;">198</td>
+<td style="text-align: right;">198</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gentoo</td>
+<td style="text-align: left;">Biscoe</td>
+<td style="text-align: right;">215</td>
+<td style="text-align: right;">218</td>
+<td style="text-align: right;">218</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Simultaneous increases of 3 to 8 mm in adult birds of three species on three islands look more like a change in how the flippers were measured than like biology.</p>
+<p>Second, the measurements show <strong>digit preference</strong>, which changed over the years. With a ruler read to the nearest mm, about 20% of values should end in 0 or 5; masses read to the nearest 25 g should end in 00 about 25% of the time.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pr <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">flipper_0_or_5 =</span> <span class="fu">mean</span>(flipper <span class="sc">%%</span> <span class="dv">5</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">mass_00        =</span> <span class="fu">mean</span>(mass <span class="sc">%%</span> <span class="dv">100</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">year</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">flipper_0_or_5</th>
+<th style="text-align: right;">mass_00</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2007</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2008</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">0.60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2009</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.34</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In 2007 and 2008, more than a third of the flipper lengths end in 0 or 5 (about twice the expected rate): someone was often rounding to the nearest 5 mm. Masses were often rounded to the nearest 100 g (50% and 60% end in 00). In 2009 the flipper rate is at the expected 20%, and the mass rate falls to 34%. So the measuring practice did change, but between 2008 and 2009, not between 2007 and 2008 where the jump in flipper length is. The rounding is evidence that measurement practice varied over the study, not an explanation of the jump itself.</p>
+<p>The data could settle this if the same birds had been measured in different years. Some <code>Individual ID</code>s do appear in more than one year, but they appear to be nest-based labels that may be reused each season, so they cannot be taken to identify the same bird.</p>
+<p>The conclusion stands: the year effect on stoutness is a flipper-length effect, and a change in measurement is the most likely reason, though not a documented one. If it is, flipper length should be adjusted for year before computing stoutness (and body size, which has a smaller year effect for the same reason).</p>
+</section>
+</section>
+<section id="body-and-bill" class="level2">
+<h2 class="anchored" data-anchor-id="body-and-bill">Body and bill</h2>
+<p>How do the two body variables relate to bill size and shape? The within-species correlations, with species (and then species and sex) removed:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>within_cor <span class="ot">&lt;-</span> <span class="cf">function</span>(groups)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(<span class="fu">resid</span>(<span class="fu">lm</span>(<span class="fu">reformulate</span>(groups, <span class="st">"cbind(bill_size, bill_shape, body_size, stoutness)"</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> peng)))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">within_cor</span>(<span class="st">"species"</span>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">bill_size</th>
+<th style="text-align: right;">bill_shape</th>
+<th style="text-align: right;">body_size</th>
+<th style="text-align: right;">stoutness</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">bill_size</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bill_shape</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">-0.03</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">body_size</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stoutness</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">within_cor</span>(<span class="st">"species * sex"</span>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">bill_size</th>
+<th style="text-align: right;">bill_shape</th>
+<th style="text-align: right;">body_size</th>
+<th style="text-align: right;">stoutness</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">bill_size</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bill_shape</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">-0.03</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">body_size</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">-0.12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stoutness</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">-0.12</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(body_size, bill_size)  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Body size"</span>, <span class="at">y =</span> <span class="st">"log Bill size"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(stoutness, bill_size)  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Stoutness"</span>, <span class="at">y =</span> <span class="st">"log Bill size"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(body_size, bill_shape) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Body size"</span>, <span class="at">y =</span> <span class="st">"log Bill shape"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>p8 <span class="ot">&lt;-</span> <span class="fu">peng_plot</span>(stoutness, bill_shape) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log Stoutness"</span>, <span class="at">y =</span> <span class="st">"log Bill shape"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>(p5 <span class="sc">+</span> p6) <span class="sc">/</span> (p7 <span class="sc">+</span> p8)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-body-bill" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-body-bill-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-body-bill-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-body-bill-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Bill size (top) and bill shape (bottom) vs.&nbsp;body size (left) and stoutness (right). Bill size increases with body size within each species. Bill shape is unrelated to either body variable within species; it differs only between species.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The pattern is simple (<a href="#fig-body-bill" class="quarto-xref">Figure&nbsp;6</a>):</p>
+<ul>
+<li><strong>Bill size goes with body size</strong> (<span class="math inline">\(r\)</span> = 0.70 within species, 0.38 within species and sex). Bigger penguins have bigger bills.</li>
+<li><strong>Bill shape goes with nothing.</strong> Its within-species correlations with body size and stoutness are all near zero. Bill shape is a species trait, not something that varies with how big or how heavy a bird is. The pooled (dashed) lines suggest otherwise, but only because the species differ on both.</li>
+<li><strong>Stoutness is unrelated to the bill</strong> once sex is taken into account. How well fed a penguin is has nothing to do with its beak.</li>
+</ul>
+<section id="four-variables-together" class="level3">
+<h3 class="anchored" data-anchor-id="four-variables-together">Four variables together</h3>
+<p>With the four re-expressed variables, the MANOVA and the canonical discriminant analysis for species give a compact summary.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mod4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(bill_size, bill_shape, body_size, stoutness) <span class="sc">~</span> species <span class="sc">+</span> sex, <span class="at">data =</span> peng)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(mod4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Type II MANOVA Tests: Pillai test statistic
+#&gt;         Df test stat approx F num Df den Df Pr(&gt;F)    
+#&gt; species  2     1.656      394      8    654 &lt;2e-16 ***
+#&gt; sex      1     0.639      144      4    326 &lt;2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">candisc</span>(mod4, <span class="at">term =</span> <span class="st">"species"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># show structure coefficients, with the large ones (|r| &gt; 0.5) in bold</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>bold_large <span class="ot">&lt;-</span> <span class="cf">function</span>(s, <span class="at">cut =</span> <span class="fl">0.5</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(s, <span class="dv">2</span>, \(r) <span class="fu">ifelse</span>(<span class="fu">abs</span>(r) <span class="sc">&gt;</span> cut, <span class="fu">sprintf</span>(<span class="st">"**%.2f**"</span>, r), <span class="fu">sprintf</span>(<span class="st">"%.2f"</span>, r)))</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">bold_large</span>(cd<span class="sc">$</span>structure) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">"r"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Can1</th>
+<th style="text-align: right;">Can2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">bill_size</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;"><strong>0.85</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bill_shape</td>
+<td style="text-align: right;"><strong>-0.92</strong></td>
+<td style="text-align: right;">0.34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">body_size</td>
+<td style="text-align: right;"><strong>-0.92</strong></td>
+<td style="text-align: right;">0.03</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stoutness</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">-0.20</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cd, <span class="at">ellipse =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> peng_cols, <span class="at">var.col =</span> <span class="st">"black"</span>, <span class="at">var.lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-candisc" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-candisc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-candisc-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-candisc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Canonical discriminant plot for species, from the four re-expressed variables. The first dimension (87%) separates Gentoo, with large bodies and long, thin bills. The second (13%) separates Chinstrap from Adelie by bill size.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Each canonical dimension now has a meaning that can be named (<a href="#fig-candisc" class="quarto-xref">Figure&nbsp;7</a>). The first, accounting for 87% of the between-species variation, is Gentoo vs.&nbsp;the others: big body and long, thin bill (body size and bill shape). The second is Chinstrap vs.&nbsp;Adelie: two species of about the same body size, the Chinstrap with the bigger bill. Stoutness contributes little to either.</p>
+</section>
+<section id="compared-with-the-original-variables" class="level3">
+<h3 class="anchored" data-anchor-id="compared-with-the-original-variables">Compared with the original variables</h3>
+<p>What would the same analysis say in terms of the variables as recorded? To compare like with like, use their logs, <span class="math inline">\((\log L, \log D, \log F, \log M)\)</span>. The re-expressed variables are a nonsingular linear transformation of these, so the MANOVA tests, the canonical correlations, and the canonical scores (up to sign) are all <strong>identical</strong>. The only thing that changes is how each canonical dimension is described: the structure coefficients, the correlations of the variables with the canonical scores.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mod4_orig <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(log_length, log_depth, log_flipper, log_mass) <span class="sc">~</span> species <span class="sc">+</span> sex,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> peng <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">log_mass =</span> <span class="fu">log</span>(body_mass)))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>cd_orig <span class="ot">&lt;-</span> <span class="fu">candisc</span>(mod4_orig, <span class="at">term =</span> <span class="st">"species"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># same squared canonical correlations, and so the same % of between-species variation</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">reexpressed =</span> cd<span class="sc">$</span>canrsq, <span class="at">original =</span> cd_orig<span class="sc">$</span>canrsq,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">percent =</span> cd<span class="sc">$</span>pct[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]) <span class="sc">|&gt;</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(<span class="st">"Can1"</span>, <span class="st">"Can2"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;               Can1   Can2
+#&gt; reexpressed  0.942  0.714
+#&gt; original     0.942  0.714
+#&gt; percent     86.679 13.321</code></pre>
+</div>
+</div>
+<p>The structure coefficients for the original variables:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Show the code to match signs</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The canonical scores are the same up to sign. Make the signs of the canonical</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dimensions agree, so both plots have the species in the same places.</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># (ggbiplot::reflect() does this for PCA and lda objects, but not candisc.)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>reflect_candisc <span class="ot">&lt;-</span> <span class="cf">function</span>(cd, columns) {</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> columns) {</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    cd<span class="sc">$</span>scores[, <span class="fu">paste0</span>(<span class="st">"Can"</span>, j)] <span class="ot">&lt;-</span> <span class="sc">-</span>cd<span class="sc">$</span>scores[, <span class="fu">paste0</span>(<span class="st">"Can"</span>, j)]</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (el <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"structure"</span>, <span class="st">"coeffs.raw"</span>, <span class="st">"coeffs.std"</span>, <span class="st">"means"</span>))</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>      cd[[el]][, j] <span class="ot">&lt;-</span> <span class="sc">-</span>cd[[el]][, j]</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  cd</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>flip <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">cor</span>(cd<span class="sc">$</span>scores[, <span class="fu">c</span>(<span class="st">"Can1"</span>, <span class="st">"Can2"</span>)], cd_orig<span class="sc">$</span>scores[, <span class="fu">c</span>(<span class="st">"Can1"</span>, <span class="st">"Can2"</span>)]))</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>cd_orig <span class="ot">&lt;-</span> <span class="fu">reflect_candisc</span>(cd_orig, <span class="fu">which</span>(flip <span class="sc">&lt;</span> <span class="dv">0</span>))</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="fu">bold_large</span>(cd_orig<span class="sc">$</span>structure) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">"r"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Can1</th>
+<th style="text-align: right;">Can2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">log_length</td>
+<td style="text-align: right;"><strong>-0.64</strong></td>
+<td style="text-align: right;"><strong>0.76</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">log_depth</td>
+<td style="text-align: right;"><strong>0.82</strong></td>
+<td style="text-align: right;">0.27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">log_flipper</td>
+<td style="text-align: right;"><strong>-0.92</strong></td>
+<td style="text-align: right;">0.08</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">log_mass</td>
+<td style="text-align: right;"><strong>-0.85</strong></td>
+<td style="text-align: right;">-0.03</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># same vector scale in both panels, and room for their labels</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cd_orig, <span class="at">ellipse =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> peng_cols, <span class="at">var.col =</span> <span class="st">"black"</span>, <span class="at">var.lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">12</span>, <span class="dv">12</span>), <span class="at">scale =</span> <span class="dv">10</span>, <span class="at">var.cex =</span> <span class="fl">1.4</span>, <span class="at">main =</span> <span class="st">"Original (log) variables"</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cd, <span class="at">ellipse =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> peng_cols, <span class="at">var.col =</span> <span class="st">"black"</span>, <span class="at">var.lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">12</span>, <span class="dv">12</span>), <span class="at">scale =</span> <span class="dv">10</span>, <span class="at">var.cex =</span> <span class="fl">1.4</span>, <span class="at">main =</span> <span class="st">"Size, shape &amp; stoutness"</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-candisc-compare" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-candisc-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-candisc-compare-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1152">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-candisc-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Canonical discriminant plots for species from the original log variables (left) and the re-expressed variables (right). The points and ellipses are identical; only the variable vectors differ. On the left, the first dimension involves all four variables; on the right, it is mainly body size and bill shape.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The picture of the species is the same in both panels of <a href="#fig-candisc-compare" class="quarto-xref">Figure&nbsp;8</a>; what differs is the story the variable vectors tell.</p>
+<ul>
+<li><strong>With the original variables</strong>, the first dimension (Gentoo, on the left, vs.&nbsp;the others) is correlated with all four: flipper length (<span class="math inline">\(-0.92\)</span>), body mass (<span class="math inline">\(-0.85\)</span>) and bill length (<span class="math inline">\(-0.64\)</span>) in one direction, bill depth (<span class="math inline">\(0.82\)</span>) in the other. Gentoo have the longest flippers and the greatest mass, bills longer than Adelie’s (about as long as Chinstrap’s), but the shallowest bills. Describing this dimension needs all four variables and an explanation of why bill depth goes the other way.</li>
+<li><strong>With the re-expressed variables</strong>, the first dimension is two things: large body size and a long, thin bill (bill shape). This also accounts for the odd sign of bill depth. Gentoo bills are no bigger than Adelie bills (mean log bill size 6.57 vs.&nbsp;6.56, which is why bill size is nearly uncorrelated with Can1), but they are a different shape: long and thin, so shallow for their length. And because Gentoo are much bigger birds, their bills are actually <em>small for their bodies</em>, something the original variables do not show at all (see below).</li>
+<li><strong>The second dimension</strong> (Chinstrap vs.&nbsp;Adelie) is mainly bill length in the original variables (<span class="math inline">\(0.76\)</span>). In the re-expressed variables, it is mainly bill size (<span class="math inline">\(0.85\)</span>), with some bill shape (<span class="math inline">\(0.34\)</span>). Here the original variables are, if anything, simpler. Chinstrap and Adelie have about the same body size and the same bill depth; they differ in bill length alone. The re-expression splits that one difference in two, because a longer bill is both a bigger bill and a longer one for its depth.</li>
+</ul>
+<p>The small Gentoo bill is easy to check. Within species, log bill size increases with log body size, by about 1.3 for each unit (the slopes range from 1.1 to 1.65 across species, so this is an average). Comparing the species at the same body size:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(bill_size <span class="sc">~</span> species <span class="sc">+</span> body_size, <span class="at">data =</span> peng))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;      (Intercept) speciesChinstrap    speciesGentoo        body_size 
+#&gt;           -3.840            0.191           -0.311            1.303</code></pre>
+</div>
+</div>
+<p>At the same body size, Gentoo bills are smaller than Adelie bills by about 0.31 on the log scale: about 27% less bill area (<span class="math inline">\(e^{-0.31} = 0.73\)</span>), or about 14% smaller per linear dimension. Chinstrap bills are larger by 0.19, about 10% per linear dimension.</p>
+<p>So the re-expression does not change how the species are separated; it can’t, since the canonical space is the same. What it does is let the first dimension, which carries 87% of the separation, be described by two variables with clear meanings instead of a contrast among all four. The second dimension is about equally simple either way. And describing the species in terms of size and shape led to one observation that the original variables hide: Gentoo have small bills for their size.</p>
+</section>
+</section>
+<section id="what-was-found" class="level2">
+<h2 class="anchored" data-anchor-id="what-was-found">What was found</h2>
+<ul>
+<li><strong>The rotation works, but needs a cube root first.</strong> Flipper length and body mass are in different units; on the scale of <span class="math inline">\((\log F, \log M / 3)\)</span>, a 45° rotation gives body <strong>size</strong> and <strong>stoutness</strong>, mass relative to flipper length cubed: a penguin version of the condition factor <span class="math inline">\(K = W / L^3\)</span> used for fish.</li>
+<li><strong>Penguins scale roughly isometrically</strong>, across species and sexes: the SMA slopes of <span class="math inline">\(\log M\)</span> on <span class="math inline">\(\log F\)</span> are near 3. Within a single species and sex, the relation is weak.</li>
+<li><strong>Species differ in body size, hardly in stoutness.</strong> Gentoo are about 13% larger than Adelie per linear dimension; the species means of stoutness differ by under 3%. Stoutness is mostly individual variation, like a body condition index; sexes differ in body size, except that Adelie males are also stouter.</li>
+<li><strong>The year effect on stoutness is a flipper-length effect</strong>, most likely a measurement artifact rather than biology. No change in method is documented, but the jump appears in all species and islands at once, and digit preference shows that measuring practice varied between years.</li>
+<li><strong>Bill size tracks body size; bill shape tracks only species.</strong> Within species, bigger penguins have bigger bills, but bill shape doesn’t vary with body size or stoutness.</li>
+<li><strong>Same separation, simpler description.</strong> The canonical analysis of the original (log) variables separates the species in exactly the same way; only the description changes. The first dimension (87%) is a contrast among all four original variables, but in the re-expressed variables it is just large body size and a long, thin bill. The second (Chinstrap vs.&nbsp;Adelie) is equally simple either way: a longer bill.</li>
+<li><strong>Gentoo have small bills for their size.</strong> Their bills are no bigger than Adelie bills, although the birds are much bigger: at the same body size, a Gentoo bill has about 27% less area, about 14% smaller per linear dimension.</li>
+</ul>
+<section id="still-to-do" class="level3">
+<h3 class="anchored" data-anchor-id="still-to-do">Still to do</h3>
+<ul>
+<li>Isometry is only approximate. The observed within-species SMA slope (about 3.2) could define stoutness instead of the theoretical 3, as in the scaled mass index of Peig &amp; Green (2009).</li>
+<li>Check the methods in the EDI metadata (not accessed yet) for a change in flipper measurement after 2007, or ask K. Gorman. If confirmed, adjust flipper length for year before computing stoutness.</li>
+</ul>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>Unlike penguin bills, their body measurements do not hide a statistical paradox. What the re-expression gives here is interpretation: two variables whose names seem better to say what they mean— at least to me. It would be interesting to hear the views of biologists about the analysis here, and the more general topic of how they decide what are the meaningful transformations of the variables they measure into ones that more closely relate to biology.</p>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
+<ul>
+<li>Gorman, K. B., Williams, T. D., &amp; Fraser, W. R. (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus <em>Pygoscelis</em>). <em>PLoS ONE</em>, 9(3), e90081.</li>
+<li>Horst, A. M., Hill, A. P., &amp; Gorman, K. B. (2020). <em>palmerpenguins: Palmer Archipelago (Antarctica) penguin data</em>. R package version 0.1.0. <a href="https://doi.org/10.5281/zenodo.3960218" class="uri">https://doi.org/10.5281/zenodo.3960218</a></li>
+<li>Palmer Station Antarctica LTER, &amp; Gorman, K. (2020a). Structural size measurements and isotopic signatures of foraging among adult male and female Adélie penguins (<em>Pygoscelis adeliae</em>) nesting along the Palmer Archipelago near Palmer Station, 2007–2009 ver 5. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/98b16d7d563f265cb52372c8ca99e60f" class="uri">https://doi.org/10.6073/pasta/98b16d7d563f265cb52372c8ca99e60f</a></li>
+<li>Palmer Station Antarctica LTER, &amp; Gorman, K. (2020b). Structural size measurements and isotopic signatures of foraging among adult male and female Gentoo penguin (<em>Pygoscelis papua</em>) nesting along the Palmer Archipelago near Palmer Station, 2007–2009 ver 5. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/7fca67fb28d56ee2ffa3d9370ebda689" class="uri">https://doi.org/10.6073/pasta/7fca67fb28d56ee2ffa3d9370ebda689</a></li>
+<li>Palmer Station Antarctica LTER, &amp; Gorman, K. (2020c). Structural size measurements and isotopic signatures of foraging among adult male and female Chinstrap penguin (<em>Pygoscelis antarcticus</em>) nesting along the Palmer Archipelago near Palmer Station, 2007–2009 ver 6. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/c14dfcfada8ea13a17536e73eb6fbe9e" class="uri">https://doi.org/10.6073/pasta/c14dfcfada8ea13a17536e73eb6fbe9e</a></li>
+<li>Peig, J., &amp; Green, A. J. (2009). New perspectives for estimating body condition from mass/length data: the scaled mass index as an alternative method. <em>Oikos</em>, 118(12), 1883–1891.</li>
+<li>Warton, D. I., Wright, I. J., Falster, D. S., &amp; Westoby, M. (2006). Bivariate line-fitting methods for allometry. <em>Biological Reviews</em>, 81(2), 259–291.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/friendly\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Michael Friendly</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://friendly.github.io/">
+<p>friendly.github.io/</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

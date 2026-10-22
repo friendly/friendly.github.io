@@ -1,0 +1,9 @@
+/* Species colors in the text, matching the plots (Allison Horst's penguin palette).
+   Lighter variants for the dark theme, where the plot colors are too dark to read. */
+.adelie    { color: #F37A00; font-weight: bold; }
+.chinstrap { color: #6A3D9A; font-weight: bold; }
+.gentoo    { color: #33a02c; font-weight: bold; }
+
+body.quarto-dark .adelie    { color: #FF9F40; }
+body.quarto-dark .chinstrap { color: #B794E0; }
+body.quarto-dark .gentoo    { color: #5CC95A; }
