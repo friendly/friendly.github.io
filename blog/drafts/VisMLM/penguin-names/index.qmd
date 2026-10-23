@@ -113,6 +113,7 @@ they turn up in nearly every chapter.
 
 In [Chapter 4](https://friendly.github.io/Vis-MLM-book/04-multivariate_plots.html), I went looking
 for multivariate outliers. As in the Bob Marley song, I found "three little birds, at my doorstep."
+As I hope to say to my Palmer friends, "Don't worry about a thing, 'cause every little thing gonna be all right."
 
 The main tool is the squared Mahalanobis distance, $D^2$, of each bird from the
 centroid of all four measures (bill length and depth, flipper length, body mass), taking their
