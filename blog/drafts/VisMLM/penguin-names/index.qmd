@@ -1,0 +1,388 @@
+---
+title: "Palmer Penguins Cry Out: \"Call Me by My Name\""
+subtitle: "Who are the unusual penguins, what makes each one unusual, and do their nicknames fit?"
+author: "Michael Friendly"
+description: "Six Palmer penguins with nicknames, from Cara Thompson's useR! poster and my book. Re-expressing the measures as bill shape and stoutness shows what makes each bird stand out, and whether its name fits"
+date: "2026-10-XX"
+categories: [Vis-MLM, R, multivariate, penguins]
+# image: images/...   # TODO: banner, perhaps a penguin with a name tag on its flipper
+format:
+  html:
+    toc: true
+    css: penguins.css
+    code-fold: true
+    fig-width: 7
+    fig-height: 5
+execute:
+  message: false
+  warning: false
+---
+
+<!--
+DRAFT FRAMEWORK, 2026-10-23.
+Source notes, analysis and figures: Vis-MLM-book/R/penguin/names/
+  penguin-names.md      the analysis and name ideas
+  penguin-names.R       the numbers in the tables below
+  penguin-names-figs.R  the two figures (reproduced in the chunks here)
+Planning notes are in HTML comments like this one; delete as sections get written.
+Previous posts in this thread:
+  2026-10-peng-altviews  Thinking about Penguin Variables (bill size and shape)
+  2026-10-peng-body      Penguin Bodies: Size and Stoutness
+-->
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(comment = "#>", fig.align = "center")
+options(digits = 3)
+```
+
+```{r data}
+#| code-summary: "Data and the named birds"
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+
+data(peng, package = "heplots")    # palmerpenguins, 333 complete cases
+
+col <- c(Adelie = "#F37A00", Chinstrap = "#6A3D9A", Gentoo = "#33a02c")
+
+# the named birds, by row number in heplots::peng
+named <- tibble::tribble(
+  ~id, ~name,         ~namer,
+  283, "Cyrano",       "Thompson",
+  124, "The BFG",      "Thompson",
+  304, "Tinkerbell",   "Thompson",
+  166, "Average Joe",  "Thompson",
+   10, "Socrates?",    "Friendly",
+   35, "Falstaff?",    "Friendly"
+)
+
+peng <- peng |>
+  mutate(id         = row_number(),
+         bill_shape = log(bill_length) - log(bill_depth),
+         stoutness  = log(body_mass) / 3 - log(flipper_length)) |>
+  group_by(species) |>
+  mutate(z_shape = c(scale(bill_shape)),
+         z_stout = c(scale(stoutness))) |>
+  ungroup() |>
+  left_join(named, by = "id") |>
+  mutate(label = ifelse(is.na(name), NA, paste0(name, " (", id, ")")))
+birds <- filter(peng, !is.na(name))
+```
+
+## Overheard at Biscoe Point
+
+<!--
+MF's idea: open with a conversation among penguins, as a block quote. Rough draft from
+penguin-names.md, to be worked up. Keep it short: three or four exchanges, then pivot to
+"they have a point".
+-->
+
+> "Hey Bro, have you noticed? All these scientists measured us up the wazoo, published papers, and now our
+> data is famous, used to teach statistics and data graphics all over the world. And they don't even know
+> our names, even with those tags on our flippers."
+>
+> "And why didn't they bother to give us the Big Five personality scales? Those orange Adelies are often
+> narcissistic extroverts, not very open to experience."
+
+They have a point. The [Palmer penguins](https://allisonhorst.github.io/palmerpenguins/) are
+identified only by numbers: their row numbers in a data frame. Even those aren't stable. They
+depend on whether the few birds with missing measurements were dropped: Cyrano, whom you'll meet
+shortly, is number 294 in `palmerpenguins::penguins` and number 283 in `heplots::peng`. This post
+is an attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near
+Palmer Station who allowed themselves to be measured for science from 2007 to 2009.
+
+<!--
+Pivot: a few of them do have names. Name them here, briefly, as a teaser:
+Cyrano and Hook Nose (from my book), the BFG, Tinkerbell and Average Joe (from Cara Thompson).
+The question of the post: what makes each of them unusual, and do the names fit?
+-->
+
+A few of them do have names. Cara Thompson named four: Cyrano, the BFG, Tinkerbell and
+Average Joe. I borrowed Cyrano for my book, and added a Hook Nose of my own. So the questions for this
+post are: what makes each of these birds unusual, and do their names fit?
+
+## Naming names
+
+I first got to know the Palmer penguins when I found that they made good examples for methods of
+multivariate data visualization. I adopted them as a running example in my book,
+[_Visualizing Multivariate Data and Models in R_](https://friendly.github.io/Vis-MLM-book/), where
+they turn up in nearly every chapter.
+
+### Three noteworthy birds
+
+In [Chapter 4](https://friendly.github.io/Vis-MLM-book/04-multivariate_plots.html), I went looking
+for multivariate outliers. The tool is the squared Mahalanobis distance, $D^2$, of each bird from the
+centroid of all four measures (bill length and depth, flipper length, body mass), taking their
+variances and correlations into account. Three birds came out on top: cases 283, 10 and 35. A
+chi-square QQ plot showed that only one of them, 283, is a true outlier. The other two are just the
+most unusual of an ordinary lot.
+
+Plotting bill length against bill depth with those three labeled, two of them looked odd for their
+species. Case 283, a [Chinstrap]{.chinstrap}, has a remarkably long bill, so I called her "Cyrano",
+after the long-nosed hero of Edmond Rostand's play. Case 10, an [Adelie]{.adelie} with a short, deep
+bill, became "Hook Nose". Case 35 looked unremarkable in that view and stayed nameless.
+
+The names stuck, at least for me. Cyrano reappears throughout the book: dancing around the edges of a
+grand tour, at the extreme ends of a biplot, as the most influential case in a multivariate linear
+model, and finally getting a weight of zero in a robust fit. "Bye-bye Cyrano---it's been fun---but we
+can get along nicely without you." That is the point of a name: a reader can follow Cyrano from chapter
+to chapter in a way they can't follow "case 283".
+
+### Where "Cyrano" came from
+
+I thought I had made up the name. It turns out I hadn't. I'd seen it in
+[Cara Thompson](https://www.cararthompson.com/)'s poster for useR! 2022,
+[*Level Up Your Labels: Tips and Tricks for Annotating Plots*](https://www.cararthompson.com/talks/user2022/),
+filed it away, and forgotten where it came from. My code for the book still had a comment,
+`# From Cara Thompson`, above her lines that picked out the birds (with her name misspelled, which
+didn't help).
+
+Her poster is a lesson in annotation. Its plot, titled *"Perfectly proportional penguins---with a
+few exceptions!"*, shows flipper length against bill length, and replaces a legend and a lot of
+explanation with a few well-placed text boxes. Four birds get names and a sentence each:
+
+* **The BFG**: "Sitting comfortably within the cluster of Gentoos, this Adelie penguin defies the
+  predictions of his species."
+* **Tinkerbell**: "The smallest penguin in the set defies the odds on weight for her species and
+  flipper and bill length."
+* **Average Joes**: "The Gentoos tend to stick to their trend, with very few outliers."
+* **Cyrano**: "With an exceptionally long bill and the shortest flippers bar one among the
+  Chinstraps."
+
+She picked these birds by eye, from one plot. As we'll see, every one of her descriptions holds up.
+
+<!-- TODO: show her plot? Her page is CC BY 4.0, so it can be reused with attribution. -->
+
+### Who gets a label?
+
+Thompson's poster had a second effect on me. In her plot, and in mine in the book, the labeled
+birds were chosen by hand, and the labels were added by a small piece of `ggplot2` plumbing: compute
+something, make a logical variable for the cases to label, then add a `geom_text()` layer for just
+those rows. It works, but you have to do it again for every plot.
+
+Base R graphics handle this better than `ggplot2`, thanks to the `car` package. Nearly every plotting
+function in `car` takes an argument like `id = list(n = 3, method = "mahal")`, and labels the 3
+points furthest from the centroid, with no further work. The `method` can be `"x"`, `"y"`, `"r"` for
+residuals, or a vector such as Cook's distances. Labeling unusual points becomes a decision about
+*which criterion*, not a chore.
+
+I pulled that selection logic out into a function,
+[`heplots::noteworthy()`](https://friendly.github.io/heplots/reference/noteworthy.html), which takes
+`x`, `y`, `n` and a `method`, and returns the row numbers of the points to label. The criterion
+needn't come from the two variables on the axes. Here it finds the book's three birds, using $D^2$ on
+all four measures, for a plot of just two:
+
+```{r noteworthy}
+#| code-fold: show
+library(heplots)
+DSQ <- Mahalanobis(peng[, c("bill_length", "bill_depth", "flipper_length", "body_mass")])
+noteworthy(peng$bill_length, peng$flipper_length, n = 3, method = DSQ)
+```
+
+That isn't what Thompson would have found with a formula. The default, `method = "mahal"`, on the
+two variables in her plot picks out a different set:
+
+```{r noteworthy-2d}
+#| code-fold: show
+noteworthy(peng$bill_length, peng$flipper_length, n = 6, method = "mahal")
+```
+
+Cyrano (283) is first again, but the rest (179, 314, 272, ...) are birds on the edges of the overall
+cloud, which spans three species. None of the BFG, Tinkerbell or Average Joe is on that list. Her eye
+was doing something the formula wasn't: judging each bird *against its own species*. I'll come back to
+that.
+
+The next step was to make this a `ggplot2` layer, `stat_noteworthy()`, so that any plot could say
+which points to label in the same vocabulary. With help from the
+[ggplot2 extenders club](https://github.com/ggplot2-extenders/ggplot-extension-club/discussions/91),
+I got a working version. Getting it *generally* right turned out to be harder:
+
+<!-- MF: check/expand. From heplots/dev/noteworthy/ggextenders-noteworthy.md -->
+
+* **With groups**, should it pick the $n$ most unusual points overall, or $n$ in each group? The
+  usual `ggplot2` habit is per group. A statistician usually wants the most unusual points in the
+  plot as a whole. Both are reasonable, so it should probably be an option.
+* **With facets**, the selection should be done separately in each panel.
+* **Higher dimensions**: the penguins' case is the hardest. The criterion ($D^2$ over four variables)
+  lives in more dimensions than the plot shows. A `ggplot2` stat sees only the variables mapped to
+  aesthetics, so there's no clean way to hand it the others.
+
+So `stat_noteworthy()` is still in the development folder of `heplots`, a branch partly leafed out,
+waiting for another season. Meanwhile the penguins wait for their names.
+
+<!--
+NOTES FOR THIS SECTION from the framework, kept for reference:
+1. The book: Ch 4 found three "noteworthy" birds by Mahalanobis D² on the four measures
+   (cqplot). I named 283 "Cyrano" (long bill) and 10 "Hook Nose" (reading bill *depth* as
+   curvature); 35 stayed nameless. Link to the book chapter online.
+2. Where "Cyrano" really came from: Cara Thompson's useR! 2022 poster, "Level Up Your Labels"
+   https://www.cararthompson.com/talks/user2022/  Her plot: "Perfectly proportional penguins
+   - with a few exceptions!", four birds with text boxes. I had forgotten the source; credit her.
+   Her page is CC BY 4.0, so her plot image could be shown, with attribution. (TODO: decide)
+3. Why names work: a labeled point is remembered; a reader follows "Cyrano" through a chapter
+   (cqplot, grand tour, biplot, influence, robust weights: "Bye-bye Cyrano").
+4. The mechanics, MF's note: this was the impetus for thinking about a general way to label
+   "interesting" points in ggplot2, as car does throughout (id = list(method = ...)).
+   heplots::noteworthy() -> attempts at stat_noteworthy(); still not as general as car,
+   across the variety of plots car handles. A short code example of noteworthy() here?
+-->
+
+## One view in 2D
+
+<!--
+Thompson's view, with all six birds. Point: her four were picked by eye from this one plot,
+and every one of her labels checks out. But Socrates and Falstaff look ordinary here: what makes
+them unusual can't be seen in bill length and flipper length.
+The BFG "sits comfortably within the cluster of Gentoos": a discriminant analysis on these two
+variables calls him a Gentoo (p = 0.97), but not on all four, where his deep bill gives him away.
+-->
+
+```{r}
+#| label: fig-thompson-view
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Thompson's view of the penguins: flipper length against bill length, with point size showing body mass. Her four named birds are joined by two more from my book."
+ggplot(peng, aes(bill_length, flipper_length, colour = species)) +
+  geom_point(aes(size = body_mass), alpha = 0.5) +
+  geom_point(data = birds, aes(size = body_mass), shape = 21,
+             colour = "black", stroke = 1.1) +
+  geom_label_repel(data = birds, aes(label = label),
+                   size = 4, fontface = "bold", fill = alpha("white", 0.85),
+                   box.padding = 0.6, min.segment.length = 0, seed = 2022,
+                   show.legend = FALSE) +
+  scale_colour_manual(values = col) +
+  scale_size_area(max_size = 4, breaks = c(3000, 4500, 6000),
+                  labels = \(x) paste(x / 1000, "kg")) +
+  labs(x = "Bill length (mm)", y = "Flipper length (mm)",
+       colour = "Species", size = "Body mass") +
+  guides(size = guide_legend(override.aes = list(colour = "grey50")),
+         colour = guide_legend(override.aes = list(size = 3, alpha = 1))) +
+  theme_bw(base_size = 14) +
+  theme(legend.position = "inside", legend.position.inside = c(0.02, 0.98),
+        legend.justification = c(0, 1), legend.box = "horizontal",
+        legend.background = element_rect(colour = "grey80"))
+```
+
+## What makes a penguin unusual?
+
+<!--
+Recap of the two earlier posts in two short paragraphs, with links: bill size and shape
+(log L ± log D), body size and stoutness (log F ± log M/3). Within species these are nearly
+uncorrelated (except bill size with body size, r = 0.70), so a bird's oddity can be traced
+to one or two of them.
+"Unusual" means relative to its own species: z-scores within species. Explain why: a Gentoo
+bill on an Adelie is news; a Gentoo bill on a Gentoo isn't. Contrast with the book's D²,
+which ignores species: the BFG ranks 89th that way, 3rd within species.
+-->
+
+```{r}
+#| label: tbl-birds
+#| tbl-cap: "The named birds, as z-scores within their species on bill shape and stoutness."
+birds |>
+  select(name, id, species, sex, bill_length, bill_depth, flipper_length, body_mass,
+         z_shape, z_stout) |>
+  arrange(desc(abs(z_shape) + abs(z_stout))) |>
+  knitr::kable(digits = 2,
+               col.names = c("Name", "Case", "Species", "Sex", "Bill length", "Bill depth",
+                             "Flipper", "Mass", "z shape", "z stoutness"))
+```
+
+```{r}
+#| label: fig-shape-stoutness
+#| fig-width: 7.5
+#| fig-height: 7.5
+#| fig-cap: "Bill shape against stoutness, as z-scores within species. The ellipses hold 68% and 95% of all birds. Each named bird is extreme in a different direction."
+lim <- c(-4.2, 4.2)
+ggplot(peng, aes(z_shape, z_stout, colour = species)) +
+  geom_hline(yintercept = 0, colour = "grey70") +
+  geom_vline(xintercept = 0, colour = "grey70") +
+  stat_ellipse(aes(group = 1), level = 0.95, colour = "grey40",
+               linetype = "dashed", linewidth = 0.7) +
+  stat_ellipse(aes(group = 1), level = 0.68, colour = "grey40",
+               linewidth = 0.7) +
+  geom_point(alpha = 0.5, size = 2) +
+  geom_point(data = birds, shape = 21, size = 3.5, colour = "black",
+             aes(fill = species), stroke = 1.1, show.legend = FALSE) +
+  geom_label_repel(data = birds, aes(label = label),
+                   size = 4, fontface = "bold", fill = alpha("white", 0.85),
+                   box.padding = 0.7, min.segment.length = 0, seed = 2022,
+                   show.legend = FALSE) +
+  scale_colour_manual(values = col) +
+  scale_fill_manual(values = col) +
+  coord_equal(xlim = lim, ylim = lim) +
+  labs(x = "← stubby    Bill shape, log(length / depth)    slender →",
+       y = "← lean    Stoutness, log(mass^(1/3) / flipper)    stout →",
+       colour = "Species") +
+  guides(colour = guide_legend(override.aes = list(size = 3, alpha = 1))) +
+  theme_bw(base_size = 14) +
+  theme(legend.position = "inside", legend.position.inside = c(0.88, 0.14),
+        legend.background = element_rect(colour = "grey80"))
+```
+
+## A rogues' gallery
+
+<!--
+One short paragraph per bird, in the order of the figure, going around the compass.
+Each: what the data say, then whether the name fits. Use the species CSS classes:
+[Chinstrap]{.chinstrap}, [Adelie]{.adelie}, [Gentoo]{.gentoo}.
+Facts are in penguin-names.md, "Reading it" and "Reading her labels against the data".
+-->
+
+### Cyrano (283): the long nose
+
+<!-- Chinstrap female. L/D 3.26, above every other Chinstrap (next 2.93) and above the Gentoo means:
+a Gentoo's bill on a Chinstrap's body. Also stout (short flippers, tied 2nd shortest among Chinstraps).
+Thompson's label is exact. The name fits; the footnote about her being female ("Roxane"). -->
+
+### Hook Nose, or Socrates? (10): the snub nose
+
+<!-- Adelie male. The lowest raw L/D of all 333 (1.64). Bill short (4th percentile) and deep (97th).
+"Hook Nose" was my mistake: depth measures thickness at the base, not curvature; nothing in the data
+measures a hook. Socrates: the famous snub nose (Plato, Xenophon). The opposite of Cyrano.
+Caveat: within species, a Gentoo male (183) is stubbier still. Another unnamed bird. -->
+
+### Falstaff? (35): the stout one
+
+<!-- Adelie male. Ordinary bill. Stoutest bird of all 333 (M/F³ 0.75; next 0.69): 4650 g on 184 mm flippers.
+The book's Ch 5 guessed "much heavier than most, with short flippers", from a biplot of the smallest
+dimensions. Nameless until now. -->
+
+### Tinkerbell (304): the slight one
+
+<!-- Chinstrap female. Lightest of all 333 (2700 g; next 2850), on ordinary flippers and bill length:
+the least stout bird in the data. The mirror image of Falstaff. Thompson's name fits. -->
+
+### The BFG (124): the impostor
+
+<!-- Adelie male. Longest flippers of any Adelie (210 mm); long bill. Looks like a Gentoo in 2D.
+Within species, the 3rd most unusual bird (after Cyrano and Socrates), though the book's D² missed him (89th).
+Slender bill, lean body. "The BFG": big, long-limbed, gentle. -->
+
+### Average Joe (166): the control
+
+<!-- Gentoo male. Flipper length exactly the Gentoo male mean; within-species D² ranks 319 of 333.
+Thompson used him for the Gentoo trend. Every study needs one. -->
+
+## What's in a name?
+
+<!--
+Wrap-up.
+- The two families of names: Thompson's from children's fiction and Rostand (Dahl, Barrie);
+  mine continue the literary theme. The pairs: long nose and snub nose; stoutest and slightest.
+- The statistical point, in one paragraph: names help us remember points; good variables tell us
+  *why* a point is unusual. A 2D view of the raw measures picked out some birds and missed others.
+- Invite readers to name 183, or propose better names (Pug? Puffin?).
+- Back to the penguins: "Now they have names. The personality scales will have to wait."
+-->
+
+## Further reading
+
+<!--
+- Cara Thompson (2022), Level Up Your Labels: https://www.cararthompson.com/talks/user2022/
+- The two earlier posts in this thread.
+- The book, Ch 4 (outliers) and Ch 14 (influence, robust MLM), online.
+- palmerpenguins: Horst, Hill & Gorman (2020); Gorman, Williams & Fraser (2014).
+- heplots::noteworthy(); car's id argument.
+- Cyrano de Bergerac (Wikipedia); Socrates' nose; Falstaff; The BFG; Tinker Bell.
+-->
