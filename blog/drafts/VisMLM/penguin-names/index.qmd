@@ -91,8 +91,8 @@ named <- tibble::tribble(
   124, "The BFG",      "Thompson",
   304, "Tinkerbell",   "Thompson",
   166, "Average Joe",  "Thompson",
-   10, "Socrates?",    "Friendly",
-   35, "Falstaff?",    "Friendly"
+   10, "Socrates",     "Friendly",
+   35, "Falstaff",     "Friendly"
 )
 
 peng <- peng |>
