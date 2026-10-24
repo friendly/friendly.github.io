@@ -36,39 +36,6 @@ knitr::opts_chunk$set(comment = "#>", fig.align = "center")
 options(digits = 3)
 ```
 
-```{r data}
-#| code-summary: "Data and the named birds"
-library(dplyr)
-library(ggplot2)
-library(ggrepel)
-
-data(peng, package = "heplots")    # palmerpenguins, 333 complete cases
-
-col <- c(Adelie = "#F37A00", Chinstrap = "#6A3D9A", Gentoo = "#33a02c")
-
-# the named birds, by row number in heplots::peng
-named <- tibble::tribble(
-  ~id, ~name,         ~namer,
-  283, "Cyrano",       "Thompson",
-  124, "The BFG",      "Thompson",
-  304, "Tinkerbell",   "Thompson",
-  166, "Average Joe",  "Thompson",
-   10, "Socrates?",    "Friendly",
-   35, "Falstaff?",    "Friendly"
-)
-
-peng <- peng |>
-  mutate(id         = row_number(),
-         bill_shape = log(bill_length) - log(bill_depth),
-         stoutness  = log(body_mass) / 3 - log(flipper_length)) |>
-  group_by(species) |>
-  mutate(z_shape = c(scale(bill_shape)),
-         z_stout = c(scale(stoutness))) |>
-  ungroup() |>
-  left_join(named, by = "id") |>
-  mutate(label = ifelse(is.na(name), NA, paste0(name, " (", id, ")")))
-birds <- filter(peng, !is.na(name))
-```
 
 ## Overheard at Biscoe Point
 
@@ -102,7 +69,42 @@ A few of them do have names. Cara Thompson named four: Cyrano, the BFG, Tinkerbe
 Average Joe. I borrowed Cyrano for my book, and added a Hook Nose of my own. So the questions for this
 post are: what makes each of these birds unusual, and do their names fit?
 
+
 ## Naming names
+
+```{r data}
+#| code-summary: "Data and the named birds"
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+
+data(peng, package = "heplots")    # palmerpenguins, 333 complete cases
+
+col <- c(Adelie = "#F37A00", Chinstrap = "#6A3D9A", Gentoo = "#33a02c")
+
+# the named birds, by row number in heplots::peng
+named <- tibble::tribble(
+  ~id, ~name,         ~namer,
+  283, "Cyrano",       "Thompson",
+  124, "The BFG",      "Thompson",
+  304, "Tinkerbell",   "Thompson",
+  166, "Average Joe",  "Thompson",
+   10, "Socrates?",    "Friendly",
+   35, "Falstaff?",    "Friendly"
+)
+
+peng <- peng |>
+  mutate(id         = row_number(),
+         bill_shape = log(bill_length) - log(bill_depth),
+         stoutness  = log(body_mass) / 3 - log(flipper_length)) |>
+  group_by(species) |>
+  mutate(z_shape = c(scale(bill_shape)),
+         z_stout = c(scale(stoutness))) |>
+  ungroup() |>
+  left_join(named, by = "id") |>
+  mutate(label = ifelse(is.na(name), NA, paste0(name, " (", id, ")")))
+birds <- filter(peng, !is.na(name))
+```
 
 I first got to know the Palmer penguins when I found that they made good examples for methods of
 multivariate data visualization. I adopted them as a running example in my book,
