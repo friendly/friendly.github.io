@@ -446,18 +446,18 @@ Likewise, two Gentoo males, 160 and 253, are as stout among Gentoos as Falstaff 
 
 ## Do the names fit?
 
-Assigning a name to a Palmer penguin from afar is a data analysts one-word theory of what makes a bird unusual. 
+Assigning a name to a Palmer penguin from afar is a data analyst's one-word theory of what makes a bird unusual. 
 Here are the six, in relation to the data shown in plots,
- with their measurements and a verdict on each name. Comparisons in parentheses are with the
-mean for the bird's species and sex.
+ with their measurements and a verdict on each name. Means in parentheses are for birds of the
+same species and sex.
 
 ### Cyrano (283): the long nose
 
-Cyrano, a [Chinstrap]{.chinstrap} female, has the longest bill of any Chinstrap: 58.0 mm (46.6).
-But its depth is ordinary, 17.8 mm (17.6), so it is long *and* slender. At 3.26 times as long as it is
+Cyrano, a [Chinstrap]{.chinstrap} female, has the longest bill of any Chinstrap: 58.0 mm (mean 46.6).
+But its depth is ordinary, 17.8 mm (mean 17.6), so it is long *and* slender. At 3.26 times as long as it is
 deep, it is far beyond any other Chinstrap's (the next is 2.93), and more slender than the average
 [Gentoo]{.gentoo} bill. She has a Gentoo's bill on a Chinstrap's body. She is also stout, the
-second part of her story: a normal mass, 3700 g (3527), on flippers of 181 mm (192), among the
+second part of her story: a normal mass, 3700 g (mean 3527), on flippers of 181 mm (mean 192), among the
 shortest of the Chinstraps. Thompson's label, "an exceptionally long bill and the shortest flippers
 bar one among the Chinstraps", is exact.
 
@@ -469,8 +469,8 @@ doesn't matter. A nose like that transcends gender.
 
 ### Snub Nose ("Socrates") (10): formerly Hook Nose
 
-Case 10, an [Adelie]{.adelie} male, has the opposite bill: short, 34.6 mm (40.4), and deep,
-21.1 mm (19.1), at the 4th and 97th percentiles of the Adelies. Its ratio of 1.64 (2.12) is the
+Case 10, an [Adelie]{.adelie} male, has the opposite bill: short, 34.6 mm (mean 40.4), and deep,
+21.1 mm (mean 19.1), at the 4th and 97th percentiles of the Adelies. Its ratio of 1.64 (mean 2.12) is the
 lowest of all 333 penguins; the next is 1.76. The rest of him is a large but ordinary Adelie male.
 
 I called him "Hook Nose" in the book, describing "a very short and curved bill." That was my mistake:
@@ -488,8 +488,8 @@ species, the stubbiest bill belongs to Gentoo 183, still nameless.
 ### Falstaff (35): the stout one
 
 Case 35, another Adelie male, has a bill that is average in every respect: 39.8 by 19.1 mm, against
-means of 40.4 and 19.1. It is his body that stands out. At 4650 g (4043), he is one of the
-heaviest Adelies, 97th percentile, but his flippers are short, 184 mm (192). That makes him, on the
+means of 40.4 and 19.1. It is his body that stands out. At 4650 g (mean 4043), he is one of the
+heaviest Adelies, 97th percentile, but his flippers are short, 184 mm (mean 192). That makes him, on the
 raw index M/F³ = 0.75, the stoutest penguin in the data; the next is 0.69. (Within species, two
 Gentoos are as extreme, relative to other Gentoos.) In the book (Chapter 5), he showed up at
 the edge of a biplot of the smallest principal components, where I guessed that he was "probably much
@@ -501,7 +501,7 @@ though a fuller comparison takes some of the stuffing out of him (see [Going fur
 
 ### Tinkerbell (304): the slight one
 
-Tinkerbell, a Chinstrap female, is the lightest penguin in the data: 2700 g (3527); the next
+Tinkerbell, a Chinstrap female, is the lightest penguin in the data: 2700 g (mean 3527); the next
 lightest weighs 2850 g. But she is not simply small. Her flippers, 192 mm, are exactly the average
 for a Chinstrap female, and her bill is an ordinary length, if shallow. She is light *for her size*.
 On M/F³ = 0.38, she is the least stout bird of all 333, and the most extreme on stoutness within
@@ -515,9 +515,9 @@ to *embonpoint*", but we needn't tell her.)
 
 ### The BFG (124): the impostor
 
-The BFG is an Adelie male with the longest flippers of any Adelie: 210 mm (192); the next is 208. His
-bill is long for an Adelie, 44.1 mm (40.4), but shallower, 18.0 mm (19.1), so it is slender. He is
-not heavy: 4000 g (4043). Long flippers on an ordinary mass make him lean.
+The BFG is an Adelie male with the longest flippers of any Adelie: 210 mm (mean 192); the next is 208. His
+bill is long for an Adelie, 44.1 mm (mean 40.4), but shallower, 18.0 mm (mean 19.1), so it is slender. He is
+not heavy: 4000 g (mean 4043). Long flippers on an ordinary mass make him lean.
 
 In Thompson's view, flipper length against bill length, he sits "comfortably within the cluster of
 Gentoos". A discriminant analysis on just those two variables would call him a Gentoo, with a
@@ -533,7 +533,7 @@ smaller than the others. That's the BFG here: a giant among Adelies, but a small
 Thompson's text box was for the "Average Joes", plural: the [Gentoo]{.gentoo}s, who "tend to stick
 to their trend, with very few outliers." The bird her arrow points to is Gentoo male 166, and he is
 average indeed. His flippers, 222 mm, are exactly the mean for a Gentoo male. His bill, 48.7 by
-15.1 mm (49.5 by 15.7), and his mass, 5350 g (5485), are close to it. On the map, he sits near the
+15.1 mm (means 49.5 by 15.7), and his mass, 5350 g (mean 5485), are close to it. On the map, he sits near the
 center (z = 0.31 and −0.17). Among all 333 birds, by $D^2$ within species, he ranks 319th: only 14
 birds are more ordinary.
 
