@@ -53,11 +53,14 @@ penguin-names.md, to be worked up. Keep it short: three or four exchanges, then 
 > "And why didn't they bother to give us the Big Five personality scales? Those orange Adélies are often
 > narcissistic extroverts, not very open to experience. I'm a proud, average Joe Gentoo. Let's teach them a thing or two."
 
-They have a point. And moreover this creates an interesting data analysis challenge. The [Palmer penguins](https://allisonhorst.github.io/palmerpenguins/) are
+They have a point. It's also an interesting data-analysis challenge. The [Palmer penguins](https://allisonhorst.github.io/palmerpenguins/) are
 identified only by numbers: their row numbers in a data frame. Even those aren't stable. They
 depend on whether the few birds with missing measurements were dropped: Cyrano, whom you'll meet
-shortly, is number 294 in `palmerpenguins::penguins` and number 283 in `heplots::peng`. 
-This happened because our penguin friends were never given `rownames()` in the data.
+shortly, is number 294 in `palmerpenguins::penguins` and number 283 in `heplots::peng`.
+The original data, `palmerpenguins::penguins_raw`, does record an `Individual ID` for each bird
+(Cyrano is `N71A2`), but those codes are recycled: the 344 birds share just 190 of them. And they
+were dropped from the simplified data frames everyone uses, so our penguin friends never got
+`rownames()`.
 
 ### Sorry
 
@@ -73,7 +76,8 @@ The question of the post: what makes each of them unusual, and do the names fit?
 -->
 
 As it turns out, a few of them do have names. Cara Thompson named four: Cyrano, the BFG, Tinkerbell and
-Average Joe. I borrowed Cyrano for my book, and added a Hook Nose of my own. So the questions for this
+Average Joe. I borrowed Cyrano for my book, and added a Hook Nose of my own. This post renames him, and names
+one more. So the questions for this
 post are: what makes each of these birds unusual, and do their names fit?
 
 
@@ -122,7 +126,7 @@ they turn up in nearly every chapter.
 ### Three noteworthy birds
 
 In [Chapter 4](https://friendly.github.io/Vis-MLM-book/04-multivariate_plots.html), I went looking
-for multivariate outliers. As in the Bob Marley song, I found "three little birds, at my doorstep."
+for multivariate outliers. As in the Bob Marley song, I found "three little birds, pitch by my doorstep."
 As I hope to say to my Palmer friends, "Don't worry about a thing, 'cause every little thing gonna be all right."
 
 The first tool I usually use to identify possible outliers in multivariate data is a `heplots::cqplot()`,
@@ -131,8 +135,8 @@ centroid of all four measures (bill length and depth, flipper length, body mass)
 variances and correlations into account, plotted against their $\chi^2$ quantiles in a multivariate normal distribution. 
 
 Three birds came out on top: cases 283, 10 and 35. The
-chi-square QQ plot showed that only one of them, 283, is a true outlier. The other two are just the
-most unusual of an ordinary lot.
+chi-square QQ plot showed that only one of them, 283, falls outside the 95% envelope. The other two
+are just the most unusual of an ordinary lot.
 
 ```{r}
 #| label: fig-cqplot
@@ -156,7 +160,7 @@ cqplot(peng[, vars],
 Plotting bill length against bill depth with those three labeled, two of them looked odd for their
 species. Case 283, a [Chinstrap]{.chinstrap}, has a remarkably long bill, so I called her "Cyrano",
 after the long-nosed hero of Edmond Rostand's play. Case 10, an [Adélie]{.adelie} with a short, deep
-bill, became "Hook Nose". Case 35 looked unremarkable in that view and stayed nameless until today
+bill, became "Hook Nose". Case 35 looked unremarkable in that view and stayed nameless until today.
 
 ```{r}
 #| label: fig-bill-noteworthy
@@ -263,8 +267,6 @@ which points to label in the same vocabulary. With help from the
 [ggplot2 extenders club](https://github.com/ggplot2-extenders/ggplot-extension-club/discussions/91),
 I got a working version. Getting it *generally* right turned out to be harder:
 
-<!-- MF: check/expand. From heplots/dev/noteworthy/ggextenders-noteworthy.md -->
-
 * **With groups**, should it pick the $n$ most unusual points overall, or $n$ in each group? The
   usual `ggplot2` habit is per group. A statistician usually wants the most unusual points in the
   plot as a whole. Both are reasonable, so it should probably be an option.
@@ -352,14 +354,15 @@ birds are big all over.^[My consultant on this point, Big Bird of *Sesame Street
 plan, but cautioned that at 8 feet 2 inches he has never once been called stout. By my measures,
 he'd be the BFG of Sesame Street.] What gives a bird its character is its *proportions*, and those are what the
 names are about: a long nose, a snub nose, a stout body, a slight one. So here I use just the two
-ratios, bill shape and stoutness. Both are dimensionless, and they are almost exactly uncorrelated
-within species ($r = -0.03$).
+ratios, bill shape and stoutness. Bill shape is dimensionless; stoutness, as $M / F^3$, has units
+of density, but standardizing within species makes both free of units. The two are almost exactly
+uncorrelated within species ($r = -0.03$).
 
 ### Compared with whom?
 
-The second, and more important question for doing right by our penguin friends is: unusual *compared with whom?* 
+The second, and more important, question for doing right by our penguin friends is: unusual *compared with whom?* 
 What are the aspects of their measurements that we should take into account (control or adjust for)
-in declaring a bird *name worthy*?
+in declaring a bird *name-worthy*?
 
 Cyrano's bill, at 3.26 times as long as it is
 deep, would be unremarkable on a [Gentoo]{.gentoo}, whose bills average 3.18. On a
@@ -569,15 +572,15 @@ has been retired with thanks.
 That leaves birds that are just as unusual and still go by a row number. Gentoo male 183 has the
 stubbiest bill for his species, stubbier relative to other Gentoos than Snub Nose's is among the Adélies.
 "Pug" would do, or "Puffin", if naming a penguin after another bird isn't an insult. Gentoo males 160
-and 253 are as stout as Falstaff, relative to their species. Suggestions are welcome: in the
-comments, or wherever you found this post.
+and 253 are as stout as Falstaff, relative to their species. Suggestions are welcome: by email, or
+wherever you found this post.
 
 As for the penguins of Biscoe Point, a few of them can now be called by their names. The Big Five
 personality scales will have to wait for another field season.
 
 ## Going further
 
-The $z$-scores in this post are residuals from a model, though I didn't call them that: the simplest
+The $z$-scores in this post are standardized residuals from a model, though I didn't call them that: the simplest
 one, `~ species`, applied to one variable at a time. "Compared with whom?" has a fuller answer. A
 penguin is not only a member of its species; it is also male or female, and it was measured in a
 particular year. And the four re-expressed variables are not quite independent: bill size goes with
@@ -683,8 +686,8 @@ It's a caricature, and an instructive one. Cyrano's bill was doubled on purpose,
 at banner size. Average Joe was a different matter. The prompt described him, correctly, as having
 "the largest overall frame" of the six, as a Gentoo male should, and the image generator read
 "largest" as "much the largest": he stood half again as tall as Tinkerbell. In the data, he is only
-about 20% bigger in each linear dimension than she is (taking body size, $F \times M^{1/3}$, as the
-measure), and about 12% bigger than Falstaff. In fact, all six are within about 20% of each other.
+about 20% bigger in each linear dimension than she is (taking $\sqrt{F \times M^{1/3}}$, a length-like
+version of body size, as the measure), and about 12% bigger than Falstaff. In fact, all six are within about 20% of each other.
 Shrunk by about 10%, he is still a little large, but closer to the truth. Which makes, in its way, the
 point of the post: Average Joe is average *for a Gentoo*, and how unusual a bird looks depends on
 what you compare it with.
@@ -704,7 +707,7 @@ what you compare it with.
 * Thompson, C. (2022). *Level Up Your Labels: Tips and Tricks for Annotating Plots*. Poster, useR! 2022.
   <https://www.cararthompson.com/talks/user2022/>
 * Friendly, M. (in preparation). *Visualizing Multivariate Data and Models in R*. Chapman & Hall/CRC.
-  Online at <https://friendly.github.io/Vis-MLM-book/>. Cyrano and his companions first appear in
+  Online at <https://friendly.github.io/Vis-MLM-book/>. Cyrano and her companions first appear in
   [Chapter 4](https://friendly.github.io/Vis-MLM-book/04-multivariate_plots.html), and come back in
   the chapter on influence and robust estimation for multivariate models.
 * Friendly, M., Fox, J., & Monette, G. *heplots: Visualizing Tests in Multivariate Linear Models*.

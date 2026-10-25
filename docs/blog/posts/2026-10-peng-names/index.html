@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-10-25">
+<meta name="description" content="Six Palmer penguins with nicknames, from Cara Thompson’s useR! poster and my book. Re-expressing the measures as bill shape and stoutness shows what makes each bird stand out, and whether its name fits">
+
+<title>Palmer Penguins Cry Out: “Call Me by My Name” – Michael Friendly</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/MF-face.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="penguins.css">
+</head>
+
+<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Michael Friendly</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> <i class="bi bi-house" role="img">
+</i> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../packages.html"> <i class="bi bi-box-seam" role="img">
+</i> 
+<span class="menu-text">R Packages</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../books.html"> <i class="bi bi-book" role="img">
+</i> 
+<span class="menu-text">Books</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../courses.html"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../software.html"> <i class="bi bi-code-slash" role="img">
+</i> 
+<span class="menu-text">Other Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> <i class="bi bi-pencil" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/friendly"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bsky.app/profile/datavisfriendly.bsky.social"> 
+<span class="menu-text"><img src="../../../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overheard-at-biscoe-point" id="toc-overheard-at-biscoe-point" class="nav-link active" data-scroll-target="#overheard-at-biscoe-point">Overheard at Biscoe Point</a>
+  <ul class="collapse">
+  <li><a href="#sorry" id="toc-sorry" class="nav-link" data-scroll-target="#sorry">Sorry</a></li>
+  </ul></li>
+  <li><a href="#naming-names" id="toc-naming-names" class="nav-link" data-scroll-target="#naming-names">Naming names</a>
+  <ul class="collapse">
+  <li><a href="#three-noteworthy-birds" id="toc-three-noteworthy-birds" class="nav-link" data-scroll-target="#three-noteworthy-birds">Three noteworthy birds</a></li>
+  <li><a href="#where-cyrano-came-from" id="toc-where-cyrano-came-from" class="nav-link" data-scroll-target="#where-cyrano-came-from">Where “Cyrano” came from</a></li>
+  <li><a href="#who-gets-a-label" id="toc-who-gets-a-label" class="nav-link" data-scroll-target="#who-gets-a-label">Who gets a label?</a></li>
+  </ul></li>
+  <li><a href="#one-view-in-2d" id="toc-one-view-in-2d" class="nav-link" data-scroll-target="#one-view-in-2d">One view in 2D</a></li>
+  <li><a href="#what-makes-a-penguin-unusual" id="toc-what-makes-a-penguin-unusual" class="nav-link" data-scroll-target="#what-makes-a-penguin-unusual">What makes a penguin unusual?</a>
+  <ul class="collapse">
+  <li><a href="#compared-with-whom" id="toc-compared-with-whom" class="nav-link" data-scroll-target="#compared-with-whom">Compared with whom?</a></li>
+  </ul></li>
+  <li><a href="#do-the-names-fit" id="toc-do-the-names-fit" class="nav-link" data-scroll-target="#do-the-names-fit">Do the names fit?</a>
+  <ul class="collapse">
+  <li><a href="#cyrano-283-the-long-nose" id="toc-cyrano-283-the-long-nose" class="nav-link" data-scroll-target="#cyrano-283-the-long-nose">Cyrano (283): the long nose</a></li>
+  <li><a href="#snub-nose-socrates-10-formerly-hook-nose" id="toc-snub-nose-socrates-10-formerly-hook-nose" class="nav-link" data-scroll-target="#snub-nose-socrates-10-formerly-hook-nose">Snub Nose (“Socrates”) (10): formerly Hook Nose</a></li>
+  <li><a href="#falstaff-35-the-stout-one" id="toc-falstaff-35-the-stout-one" class="nav-link" data-scroll-target="#falstaff-35-the-stout-one">Falstaff (35): the stout one</a></li>
+  <li><a href="#tinkerbell-304-the-slight-one" id="toc-tinkerbell-304-the-slight-one" class="nav-link" data-scroll-target="#tinkerbell-304-the-slight-one">Tinkerbell (304): the slight one</a></li>
+  <li><a href="#the-bfg-124-the-impostor" id="toc-the-bfg-124-the-impostor" class="nav-link" data-scroll-target="#the-bfg-124-the-impostor">The BFG (124): the impostor</a></li>
+  <li><a href="#average-joe-166-the-reference-bird" id="toc-average-joe-166-the-reference-bird" class="nav-link" data-scroll-target="#average-joe-166-the-reference-bird">Average Joe (166): the reference bird</a></li>
+  </ul></li>
+  <li><a href="#whats-in-a-name" id="toc-whats-in-a-name" class="nav-link" data-scroll-target="#whats-in-a-name">What’s in a name?</a></li>
+  <li><a href="#going-further" id="toc-going-further" class="nav-link" data-scroll-target="#going-further">Going further</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Palmer Penguins Cry Out: “Call Me by My Name”</h1>
+<p class="subtitle lead">Who are the unusual penguins, what makes each one unusual, and do their nicknames fit?</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Vis-MLM</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">multivariate</div>
+    <div class="quarto-category">penguins</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Six Palmer penguins with nicknames, from Cara Thompson’s useR! poster and my book. Re-expressing the measures as bill shape and stoutness shows what makes each bird stand out, and whether its name fits
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 25, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+DRAFT FRAMEWORK, 2026-10-23.
+Source notes, analysis and figures: Vis-MLM-book/R/penguin/names/
+  penguin-names.md      the analysis and name ideas
+  penguin-names.R       the numbers in the tables below
+  penguin-names-figs.R  the two figures (reproduced in the chunks here)
+Planning notes are in HTML comments like this one; delete as sections get written.
+Previous posts in this thread:
+  2026-10-peng-altviews  Thinking about Penguin Variables (bill size and shape)
+  2026-10-peng-body      Penguin Bodies: Size and Stoutness
+-->
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/penguin-names-banner-v5.png" class="img-fluid figure-img"></p>
+<figcaption>Six Palmer penguins, wearing their names at last. Each is drawn to caricature what makes it unusual: Cyrano’s long bill, Snub Nose’s short, deep one (call him Socrates, after history’s most famous snub nose), Falstaff’s girth, Tinkerbell’s slight build, the BFG’s long flippers, and Average Joe, who is just a big Gentoo. Image generated by ChatGPT, from the author’s description of the six birds and their measurements; see <a href="#about-the-banner">About the banner</a> at the end.</figcaption>
+</figure>
+</div>
+<section id="overheard-at-biscoe-point" class="level2">
+<h2 class="anchored" data-anchor-id="overheard-at-biscoe-point">Overheard at Biscoe Point</h2>
+<!--
+MF's idea: open with a conversation among penguins, as a block quote. Rough draft from
+penguin-names.md, to be worked up. Keep it short: three or four exchanges, then pivot to
+"they have a point".
+-->
+<blockquote class="blockquote">
+<p>“Hey Bro, have you noticed? All these scientists measured us up the wazoo, published papers, and now our data is famous. They use us to teach statistics and data graphics all over the world. But sadly, they don’t even know our names, even with those tags on our flippers.”</p>
+<p>“And why didn’t they bother to give us the Big Five personality scales? Those orange Adélies are often narcissistic extroverts, not very open to experience. I’m a proud, average Joe Gentoo. Let’s teach them a thing or two.”</p>
+</blockquote>
+<p>They have a point. It’s also an interesting data-analysis challenge. The <a href="https://allisonhorst.github.io/palmerpenguins/">Palmer penguins</a> are identified only by numbers: their row numbers in a data frame. Even those aren’t stable. They depend on whether the few birds with missing measurements were dropped: Cyrano, whom you’ll meet shortly, is number 294 in <code>palmerpenguins::penguins</code> and number 283 in <code>heplots::peng</code>. The original data, <code>palmerpenguins::penguins_raw</code>, does record an <code>Individual ID</code> for each bird (Cyrano is <code>N71A2</code>), but those codes are recycled: the 344 birds share just 190 of them. And they were dropped from the simplified data frames everyone uses, so our penguin friends never got <code>rownames()</code>.</p>
+<section id="sorry" class="level3">
+<h3 class="anchored" data-anchor-id="sorry">Sorry</h3>
+<p>This post can stand as a public apology from the R community. It’s my attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near Palmer Station who allowed themselves to be measured for science from 2007 to 2009.</p>
+<blockquote class="blockquote">
+<p>Hey, guys: I understand your pain. I hope you don’t mind my human, literary, historical references I’ve used to give you names.</p>
+</blockquote>
+<!--
+Pivot: a few of them do have names. Name them here, briefly, as a teaser:
+Cyrano and Hook Nose (from my book), the BFG, Tinkerbell and Average Joe (from Cara Thompson).
+The question of the post: what makes each of them unusual, and do the names fit?
+-->
+<p>As it turns out, a few of them do have names. Cara Thompson named four: Cyrano, the BFG, Tinkerbell and Average Joe. I borrowed Cyrano for my book, and added a Hook Nose of my own. This post renames him, and names one more. So the questions for this post are: what makes each of these birds unusual, and do their names fit?</p>
+</section>
+</section>
+<section id="naming-names" class="level2">
+<h2 class="anchored" data-anchor-id="naming-names">Naming names</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Data and the named birds used here</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(peng, <span class="at">package =</span> <span class="st">"heplots"</span>)    <span class="co"># palmerpenguins, 333 complete cases</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Adélie"</span> <span class="ot">=</span> <span class="st">"#F37A00"</span>, <span class="at">Chinstrap =</span> <span class="st">"#6A3D9A"</span>, <span class="at">Gentoo =</span> <span class="st">"#33a02c"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># the named birds, by row number in heplots::peng</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>named <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>id, <span class="sc">~</span>name,         <span class="sc">~</span>namer,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">283</span>, <span class="st">"Cyrano"</span>,       <span class="st">"Thompson"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">124</span>, <span class="st">"The BFG"</span>,      <span class="st">"Thompson"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">304</span>, <span class="st">"Tinkerbell"</span>,   <span class="st">"Thompson"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">166</span>, <span class="st">"Average Joe"</span>,  <span class="st">"Thompson"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>   <span class="dv">10</span>, <span class="st">"Snub Nose"</span>,    <span class="st">"Friendly"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>   <span class="dv">35</span>, <span class="st">"Falstaff"</span>,     <span class="st">"Friendly"</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>peng <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id         =</span> <span class="fu">row_number</span>(),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">species    =</span> <span class="fu">factor</span>(species, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Adélie"</span>, <span class="st">"Chinstrap"</span>, <span class="st">"Gentoo"</span>)),</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">bill_shape =</span> <span class="fu">log</span>(bill_length) <span class="sc">-</span> <span class="fu">log</span>(bill_depth),</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">stoutness  =</span> <span class="fu">log</span>(body_mass) <span class="sc">/</span> <span class="dv">3</span> <span class="sc">-</span> <span class="fu">log</span>(flipper_length)) <span class="sc">|&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z_shape =</span> <span class="fu">c</span>(<span class="fu">scale</span>(bill_shape)),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">z_stout =</span> <span class="fu">c</span>(<span class="fu">scale</span>(stoutness))) <span class="sc">|&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(named, <span class="at">by =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(name), <span class="cn">NA</span>, <span class="fu">paste0</span>(name, <span class="st">" ("</span>, id, <span class="st">")"</span>)))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>birds <span class="ot">&lt;-</span> <span class="fu">filter</span>(peng, <span class="sc">!</span><span class="fu">is.na</span>(name))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>I first got to know the Palmer penguins when I found that they made good examples for methods of multivariate data visualization. I adopted them as a running example in my book, <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a>, where they turn up in nearly every chapter.</p>
+<section id="three-noteworthy-birds" class="level3">
+<h3 class="anchored" data-anchor-id="three-noteworthy-birds">Three noteworthy birds</h3>
+<p>In <a href="https://friendly.github.io/Vis-MLM-book/04-multivariate_plots.html">Chapter 4</a>, I went looking for multivariate outliers. As in the Bob Marley song, I found “three little birds, pitch by my doorstep.” As I hope to say to my Palmer friends, “Don’t worry about a thing, ’cause every little thing gonna be all right.”</p>
+<p>The first tool I usually use to identify possible outliers in multivariate data is a <code>heplots::cqplot()</code>, which shows the squared Mahalanobis distance, <span class="math inline">\(D^2\)</span>, of each bird from the centroid of all four measures (bill length and depth, flipper length, body mass), taking their variances and correlations into account, plotted against their <span class="math inline">\(\chi^2\)</span> quantiles in a multivariate normal distribution.</p>
+<p>Three birds came out on top: cases 283, 10 and 35. The chi-square QQ plot showed that only one of them, 283, falls outside the 95% envelope. The other two are just the most unusual of an ordinary lot.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(heplots)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bill_length"</span>, <span class="st">"bill_depth"</span>, <span class="st">"flipper_length"</span>, <span class="st">"body_mass"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>DSQ <span class="ot">&lt;-</span> <span class="fu">Mahalanobis</span>(peng[, vars])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cqplot</span>(peng[, vars],</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">id.n =</span> <span class="dv">3</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> col[peng<span class="sc">$</span>species],</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">17</span>, <span class="dv">15</span>)[peng<span class="sc">$</span>species],</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">ref.col =</span> <span class="st">"grey"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">what =</span> <span class="st">"Penguin numeric variables"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex.lab =</span> <span class="fl">1.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-cqplot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cqplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-cqplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cqplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Chi-square QQ plot of the penguins’ squared Mahalanobis distances on the four measures, with a 95% confidence envelope. Only case 283 lies outside it.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Plotting bill length against bill depth with those three labeled, two of them looked odd for their species. Case 283, a <span class="chinstrap">Chinstrap</span>, has a remarkably long bill, so I called her “Cyrano”, after the long-nosed hero of Edmond Rostand’s play. Case 10, an <span class="adelie">Adélie</span> with a short, deep bill, became “Hook Nose”. Case 35 looked unremarkable in that view and stayed nameless until today.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>three <span class="ot">&lt;-</span> <span class="fu">order</span>(DSQ, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>peng_plot <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">note =</span> id <span class="sc">%in%</span> three)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(peng_plot,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> bill_length, <span class="at">y =</span> bill_depth,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">colour =</span> species, <span class="at">shape =</span> species, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> note), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">4</span>)) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> <span class="fu">subset</span>(peng_plot, note),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> id), <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">nudge_y =</span> .<span class="dv">4</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ellipse</span>(<span class="at">geom =</span> <span class="st">"polygon"</span>, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> col) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> col) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Bill length (mm)"</span>, <span class="at">y =</span> <span class="st">"Bill depth (mm)"</span>) <span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"inside"</span>, <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.85</span>, <span class="fl">0.15</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-bill-noteworthy" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bill-noteworthy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-bill-noteworthy-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bill-noteworthy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Bill length against bill depth, with 95% data ellipses and regression lines for each species. The three birds with the largest <span class="math inline">\(D^2\)</span> are labeled.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The names stuck, at least for me. Cyrano reappears throughout the book: dancing around the edges of a grand tour, at the extreme ends of a biplot, as the most influential case in a multivariate linear model, and finally getting a weight of zero in a robust fit. Using <code>heplots::robmlm()</code> I could just say, “Bye-bye Cyrano—it’s been fun—but we can get along nicely without you.” That is the point of a name: a reader can follow Cyrano from chapter to chapter in a way they can’t follow “case 283”.</p>
+</section>
+<section id="where-cyrano-came-from" class="level3">
+<h3 class="anchored" data-anchor-id="where-cyrano-came-from">Where “Cyrano” came from</h3>
+<p>I thought I had made up the name. It turns out I hadn’t. I’d seen it in <a href="https://www.cararthompson.com/">Cara Thompson</a>’s poster for useR! 2022, <a href="https://www.cararthompson.com/talks/user2022/"><em>Level Up Your Labels: Tips and Tricks for Annotating Plots</em></a>, filed it away, and forgotten where it came from. My code for the book still had a comment, <code># From Cara Thompson</code>, above her lines that picked out the birds (with her name misspelled, which didn’t help).</p>
+<p>Her poster image is a wonderful lesson in plot annotation. Its plot, titled <em>“Perfectly proportional penguins—with a few exceptions!”</em>, shows flipper length against bill length, and replaces a legend and a lot of explanation with a few well-placed text boxes. Four birds get names and a sentence each:</p>
+<ul>
+<li><strong>The BFG</strong>: “Sitting comfortably within the cluster of Gentoos, this Adelie penguin defies the predictions of his species on both flipper length and bill length.”</li>
+<li><strong>Tinkerbell</strong>: “The smallest penguin in the set defies the odds on weight for her species and flipper and bill length.”</li>
+<li><strong>Average Joes</strong>: “The Gentoos tend to stick to their trend, with very few outliers. Heavier penguins have longer flippers and longer bills.”</li>
+<li><strong>Cyrano</strong>: “With an exceptionally long bill and the shortest flippers bar one among the Chinstraps, this little guy is sure to stand out!”</li>
+</ul>
+<div id="fig-thompson" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-thompson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/thompson-annotated-penguins.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-thompson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Cara Thompson’s plot from her useR! 2022 poster, <a href="https://www.cararthompson.com/talks/user2022/"><em>Level Up Your Labels</em></a>. © Cara Thompson, reused under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</figcaption>
+</figure>
+</div>
+<p>Did she really pick these birds by eye, from one plot? As we’ll see, every one of her descriptions holds up, except perhaps “little guy”: Cyrano is a female.</p>
+</section>
+<section id="who-gets-a-label" class="level3">
+<h3 class="anchored" data-anchor-id="who-gets-a-label">Who gets a label?</h3>
+<p>Thompson’s poster had a second effect on me. In her plot, and in mine in the book, the labeled birds were chosen by hand, and the labels were added by a small piece of <code>ggplot2</code> plumbing: compute something, make a logical variable for the cases to label, then add a <code>geom_text()</code> layer for just those rows. It works, but you have to do it again for every plot.</p>
+<p>Base R graphics handle this better than <code>ggplot2</code>, thanks to the <code>car</code> package. Nearly <strong>every plotting function</strong> in <code>car</code> takes an argument like <code>id = list(n = 3, method = "mahal")</code>, and labels the 3 points furthest from the centroid, with no further work. The <code>method</code> can be <code>"x"</code>, <code>"y"</code>, <code>"r"</code> for residuals, or a vector such as Cook’s distances. Labeling unusual points becomes a decision about <em>which criterion</em>, not a chore.</p>
+<p>I pulled that selection logic out into a function, <a href="https://friendly.github.io/heplots/reference/noteworthy.html"><code>heplots::noteworthy()</code></a>, which takes <code>x</code>, <code>y</code>, <code>n</code> and a <code>method</code>, and returns the row numbers of the points to label. The criterion needn’t come from the two variables on the axes. You can supply a computed vector of criteria values. Here it finds the book’s three birds, using <span class="math inline">\(D^2\)</span> on all four measures, for a plot of just two:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">noteworthy</span>(peng<span class="sc">$</span>bill_length, peng<span class="sc">$</span>flipper_length, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">method =</span> DSQ)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 283  10  35</code></pre>
+</div>
+</div>
+<p>That isn’t what Thompson would have found with a formula. The default, <code>method = "mahal"</code>, on the two variables in her plot picks out a different set:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">noteworthy</span>(peng<span class="sc">$</span>bill_length, peng<span class="sc">$</span>flipper_length, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">method =</span> <span class="st">"mahal"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 283 179 314 272 329 297</code></pre>
+</div>
+</div>
+<p>Cyrano (283) is first again, but the rest (179, 314, 272, …) are birds on the edges of the overall cloud, which spans three species. None of the BFG, Tinkerbell or Average Joe is on that list. Her eye was doing something the formula wasn’t: judging each bird <em>against its own species</em>. I’ll come back to that.</p>
+<p>The next step was to make this a <code>ggplot2</code> layer, <code>stat_noteworthy()</code>, so that any plot could say which points to label in the same vocabulary. With help from the <a href="https://github.com/ggplot2-extenders/ggplot-extension-club/discussions/91">ggplot2 extenders club</a>, I got a working version. Getting it <em>generally</em> right turned out to be harder:</p>
+<ul>
+<li><strong>With groups</strong>, should it pick the <span class="math inline">\(n\)</span> most unusual points overall, or <span class="math inline">\(n\)</span> in each group? The usual <code>ggplot2</code> habit is per group. A statistician usually wants the most unusual points in the plot as a whole. Both are reasonable, so it should probably be an option.</li>
+<li><strong>With facets</strong>, the selection should be done separately in each panel.</li>
+<li><strong>Higher dimensions</strong>: the penguins’ case is the hardest. The criterion (<span class="math inline">\(D^2\)</span> over four variables) lives in more dimensions than the plot shows. A <code>ggplot2</code> stat sees only the variables mapped to aesthetics, so there’s no clean way to hand it the others.</li>
+</ul>
+<p>So <code>stat_noteworthy()</code> is still in the development folder of <code>heplots</code>, a branch partly leafed out, waiting for another season. Meanwhile the penguins wait for their names.</p>
+<!--
+NOTES FOR THIS SECTION from the framework, kept for reference:
+1. The book: Ch 4 found three "noteworthy" birds by Mahalanobis D² on the four measures
+   (cqplot). I named 283 "Cyrano" (long bill) and 10 "Hook Nose" (reading bill *depth* as
+   curvature); 35 stayed nameless. Link to the book chapter online.
+2. Where "Cyrano" really came from: Cara Thompson's useR! 2022 poster, "Level Up Your Labels"
+   https://www.cararthompson.com/talks/user2022/  Her plot: "Perfectly proportional penguins
+   - with a few exceptions!", four birds with text boxes. I had forgotten the source; credit her.
+   Her page is CC BY 4.0: her plot is shown (DONE), with attribution.
+3. Why names work: a labeled point is remembered; a reader follows "Cyrano" through a chapter
+   (cqplot, grand tour, biplot, influence, robust weights: "Bye-bye Cyrano").
+4. The mechanics, MF's note: this was the impetus for thinking about a general way to label
+   "interesting" points in ggplot2, as car does throughout (id = list(method = ...)).
+   heplots::noteworthy() -> attempts at stat_noteworthy(); still not as general as car,
+   across the variety of plots car handles. A short code example of noteworthy() here?
+-->
+</section>
+</section>
+<section id="one-view-in-2d" class="level2">
+<h2 class="anchored" data-anchor-id="one-view-in-2d">One view in 2D</h2>
+<p>To see the six birds together, <a href="#fig-thompson-view" class="quarto-xref">Figure&nbsp;4</a> reproduces Thompson’s plot, without her annotations: flipper length against bill length, with the size of each point showing body mass. Her four named birds and my two are labeled with their case numbers in <code>heplots::peng</code>.</p>
+<p>Her four are easy to find. Cyrano is alone at the right, far beyond the other Chinstraps. The BFG is an orange point among the green Gentoos. Tinkerbell is the smallest point among the Chinstraps, and Average Joe sits in the middle of the Gentoos. But Snub Nose and Falstaff don’t stand out. Snub Nose is at the short-bill edge of the Adélies, but not beyond it, and Falstaff is lost in the crowd. What makes them unusual will need another view.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(peng, <span class="fu">aes</span>(bill_length, flipper_length, <span class="at">colour =</span> species)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> body_mass), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> birds, <span class="fu">aes</span>(<span class="at">size =</span> body_mass), <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">stroke =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(<span class="at">data =</span> birds, <span class="fu">aes</span>(<span class="at">label =</span> label),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">fill =</span> <span class="fu">alpha</span>(<span class="st">"white"</span>, <span class="fl">0.85</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">box.padding =</span> <span class="fl">0.6</span>, <span class="at">min.segment.length =</span> <span class="dv">0</span>, <span class="at">seed =</span> <span class="dv">2022</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> col) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">7</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">3000</span>, <span class="dv">4500</span>, <span class="dv">6000</span>),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">labels =</span> \(x) <span class="fu">paste</span>(x <span class="sc">/</span> <span class="dv">1000</span>, <span class="st">"kg"</span>)) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Bill length (mm)"</span>, <span class="at">y =</span> <span class="st">"Flipper length (mm)"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">"Species"</span>, <span class="at">size =</span> <span class="st">"Body mass"</span>) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">size =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">colour =</span> <span class="st">"grey50"</span>)),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="dv">1</span>))) <span class="sc">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"inside"</span>, <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.02</span>, <span class="fl">0.98</span>),</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.justification =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">legend.box =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"grey80"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-thompson-view" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-thompson-view-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-thompson-view-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-thompson-view-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Thompson’s view of the penguins: flipper length against bill length, with point size showing body mass. Her four named birds are joined by two more from my book.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="what-makes-a-penguin-unusual" class="level2">
+<h2 class="anchored" data-anchor-id="what-makes-a-penguin-unusual">What makes a penguin unusual?</h2>
+<p>To say <em>why</em> a bird is unusual, you need a better question than “which of its four measures is extreme?” A long bill is only part of a description: is it also deep, or unusually slender? And a heavy penguin may just be a big penguin. The two earlier posts in this series took up exactly these questions, by re-expressing the four measures as variables that mean something:</p>
+<ul>
+<li>In <a href="https://friendly.github.io/blog/posts/2026-10-peng-altviews/">Thinking about Penguin Variables</a>, bill length (<span class="math inline">\(L\)</span>) and depth (<span class="math inline">\(D\)</span>) became bill <strong>size</strong>, <span class="math inline">\(\log L + \log D\)</span>, and bill <strong>shape</strong>, <span class="math inline">\(\log (L / D)\)</span>: is the bill long and slender, or short and stubby?</li>
+<li>In <a href="https://friendly.github.io/blog/posts/2026-10-peng-body/">Penguin Bodies</a>, flipper length (<span class="math inline">\(F\)</span>) and body mass (<span class="math inline">\(M\)</span>) became body <strong>size</strong>, <span class="math inline">\(\log F + \log M / 3\)</span>, and <strong>stoutness</strong>, <span class="math inline">\(\log (M^{1/3} / F)\)</span>: is the bird heavy or light for its flipper length? Cubed, this is <span class="math inline">\(M / F^3\)</span>, a penguin version of the condition factor used for fish.</li>
+</ul>
+<p>Within species, these four are nearly uncorrelated, except that bigger birds have bigger bills (bill size with body size, <span class="math inline">\(r = 0.70\)</span>). The two size variables mostly say what you’d expect: big birds are big all over.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> What gives a bird its character is its <em>proportions</em>, and those are what the names are about: a long nose, a snub nose, a stout body, a slight one. So here I use just the two ratios, bill shape and stoutness. Bill shape is dimensionless; stoutness, as <span class="math inline">\(M / F^3\)</span>, has units of density, but standardizing within species makes both free of units. The two are almost exactly uncorrelated within species (<span class="math inline">\(r = -0.03\)</span>).</p>
+<section id="compared-with-whom" class="level3">
+<h3 class="anchored" data-anchor-id="compared-with-whom">Compared with whom?</h3>
+<p>The second, and more important, question for doing right by our penguin friends is: unusual <em>compared with whom?</em> What are the aspects of their measurements that we should take into account (control or adjust for) in declaring a bird <em>name-worthy</em>?</p>
+<p>Cyrano’s bill, at 3.26 times as long as it is deep, would be unremarkable on a <span class="gentoo">Gentoo</span>, whose bills average 3.18. On a <span class="chinstrap">Chinstrap</span>, it is the most slender bill by a wide margin. A Gentoo’s bill on a Gentoo isn’t news; on a Chinstrap it is.</p>
+<p>So I standardize each variable <em>within species</em>: a bird’s <span class="math inline">\(z\)</span>-score is its distance from its own species’ mean, in units of that species’ standard deviation. This also puts the species on a common scale, which matters because they don’t vary equally: <span class="adelie">Adélie</span> bills vary more in shape than the others. Males and females are pooled. Males are bigger, but on these two ratios the sexes differ little, except that Adélie males are a bit stouter.</p>
+<p>This is where Cara Thompson’s eye and the book’s formula parted company. The book’s <span class="math inline">\(D^2\)</span> measured each bird’s distance from the centroid of <em>all</em> the penguins, ignoring species. By that measure the BFG ranks 89th of 333: a large Adélie sits comfortably inside the overall cloud, close to the Gentoos. Judged against other Adélies, with the same <span class="math inline">\(D^2\)</span> computed within species, he is the third most unusual bird in the data. Thompson saw that from one plot.</p>
+<p><a href="#tbl-birds" class="quarto-xref">Table&nbsp;1</a> gives the six birds’ bill ratios and stoutness indices as recorded, and their <span class="math inline">\(z\)</span>-scores within species. The raw measurements are in the <a href="#do-the-names-fit">next section</a> below.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>birds <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name   =</span> <span class="fu">factor</span>(name, <span class="at">levels =</span> named<span class="sc">$</span>name[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>)]),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">LD     =</span> bill_length <span class="sc">/</span> bill_depth,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">MF3    =</span> <span class="dv">1000</span> <span class="sc">*</span> body_mass <span class="sc">/</span> flipper_length<span class="sc">^</span><span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(name) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, id, species, sex, LD, MF3, z_shape, z_stout) <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Name"</span>, <span class="st">"Case"</span>, <span class="st">"Species"</span>, <span class="st">"Sex"</span>, <span class="st">"L / D"</span>, <span class="st">"M / F³"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"z shape"</span>, <span class="st">"z stoutness"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-birds" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-birds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: The named birds: bill length / depth and the stoutness index M / F³ (in g/cm³), as recorded, and bill shape and stoutness as z-scores within species. Species means of L / D are 2.12 (Adélie), 2.65 (Chinstrap) and 3.18 (Gentoo); of M / F³, 0.54, 0.50 and 0.50.
+</figcaption>
+<div aria-describedby="tbl-birds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 7%">
+<col style="width: 15%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: right;">Case</th>
+<th style="text-align: left;">Species</th>
+<th style="text-align: left;">Sex</th>
+<th style="text-align: right;">L / D</th>
+<th style="text-align: right;">M / F³</th>
+<th style="text-align: right;">z shape</th>
+<th style="text-align: right;">z stoutness</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cyrano</td>
+<td style="text-align: right;">283</td>
+<td style="text-align: left;">Chinstrap</td>
+<td style="text-align: left;">f</td>
+<td style="text-align: right;">3.26</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: right;">3.80</td>
+<td style="text-align: right;">2.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Snub Nose</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">Adélie</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">1.64</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">-3.43</td>
+<td style="text-align: right;">0.47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Falstaff</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: left;">Adélie</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">2.08</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: right;">2.78</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tinkerbell</td>
+<td style="text-align: right;">304</td>
+<td style="text-align: left;">Chinstrap</td>
+<td style="text-align: left;">f</td>
+<td style="text-align: right;">2.83</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">1.18</td>
+<td style="text-align: right;">-2.84</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The BFG</td>
+<td style="text-align: right;">124</td>
+<td style="text-align: left;">Adélie</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">2.45</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: right;">1.97</td>
+<td style="text-align: right;">-1.82</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Average Joe</td>
+<td style="text-align: right;">166</td>
+<td style="text-align: left;">Gentoo</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">3.23</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">-0.17</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p><a href="#fig-shape-stoutness" class="quarto-xref">Figure&nbsp;5</a> is the main event: every bird, placed by bill shape and stoutness within its species. Because the two are nearly uncorrelated and on the same scale, it reads like a map. An ordinary penguin sits near the center; the farther a bird lies from it, in any direction, the more unusual it is; and the <em>direction</em> says why. To the right, slender bills; to the left, stubby ones. Up is stout, down is lean.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>lim <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">4.2</span>, <span class="fl">4.2</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(peng, <span class="fu">aes</span>(z_shape, z_stout, <span class="at">colour =</span> species)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">colour =</span> <span class="st">"grey70"</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">colour =</span> <span class="st">"grey70"</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ellipse</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="dv">1</span>), <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">colour =</span> <span class="st">"grey40"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ellipse</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="dv">1</span>), <span class="at">level =</span> <span class="fl">0.68</span>, <span class="at">colour =</span> <span class="st">"grey40"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> birds, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">colour =</span> <span class="st">"black"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">fill =</span> species), <span class="at">stroke =</span> <span class="fl">1.1</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(<span class="at">data =</span> birds, <span class="fu">aes</span>(<span class="at">label =</span> label),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">fill =</span> <span class="fu">alpha</span>(<span class="st">"white"</span>, <span class="fl">0.85</span>),</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">box.padding =</span> <span class="fl">0.7</span>, <span class="at">min.segment.length =</span> <span class="dv">0</span>, <span class="at">seed =</span> <span class="dv">2022</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> col) <span class="sc">+</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> col) <span class="sc">+</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">xlim =</span> lim, <span class="at">ylim =</span> lim) <span class="sc">+</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"← stubby    Bill shape, z within species    slender →"</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"← lean    Stoutness, z within species    stout →"</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">"Species"</span>) <span class="sc">+</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="dv">1</span>))) <span class="sc">+</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"inside"</span>, <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.88</span>, <span class="fl">0.14</span>),</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"grey80"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-shape-stoutness" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shape-stoutness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-shape-stoutness-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shape-stoutness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Bill shape against stoutness, as z-scores within species. The ellipses enclose about 68% and 95% of the birds. The named birds lie in contrasting directions from the center; Average Joe marks the center itself.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The named birds spread out to the edges, in pairs of opposites. Cyrano lies far to the right, the most slender bill for her species, and Snub Nose far to the left, among the stubbiest: the long nose and the short one. Falstaff is at the top and Tinkerbell at the bottom: the stoutest and the slightest. The BFG is off in the lower right, with a slender bill and a lean body, not the most extreme on either alone, but unusual on both. Average Joe sits almost exactly at the center.</p>
+<p>Two of these birds were hard to see in Thompson’s view (<a href="#fig-thompson-view" class="quarto-xref">Figure&nbsp;4</a>). Snub Nose’s bill is short, but no shorter than a few other Adélies’, and Falstaff’s flippers are short, but not remarkably so. What marks them out is a ratio: bill length to depth for Snub Nose, mass to flipper length for Falstaff. A plot of the raw measures can’t show a ratio unless you know to look for it.</p>
+<p>The map also turns up birds that nobody has named yet. The stubbiest bill for its species isn’t Snub Nose’s but that of a Gentoo male, case 183 (z = −3.93, against −3.43 for Snub Nose). Snub Nose has the stubbiest bill of all 333 as measured, at 1.64, but Adélie bills are stubby to begin with. Likewise, two Gentoo males, 160 and 253, are as stout among Gentoos as Falstaff is among Adélies.</p>
+</section>
+</section>
+<section id="do-the-names-fit" class="level2">
+<h2 class="anchored" data-anchor-id="do-the-names-fit">Do the names fit?</h2>
+<p>Assigning a name to a Palmer penguin from afar is a data analyst’s one-word theory of what makes a bird unusual. Here are the six, in relation to the data shown in plots, with their measurements and a verdict on each name. Means in parentheses are for birds of the same species and sex.</p>
+<section id="cyrano-283-the-long-nose" class="level3">
+<h3 class="anchored" data-anchor-id="cyrano-283-the-long-nose">Cyrano (283): the long nose</h3>
+<p>Cyrano, a <span class="chinstrap">Chinstrap</span> female, has the longest bill of any Chinstrap: 58.0 mm (mean 46.6). But its depth is ordinary, 17.8 mm (mean 17.6), so it is long <em>and</em> slender. At 3.26 times as long as it is deep, it is far beyond any other Chinstrap’s (the next is 2.93), and more slender than the average <span class="gentoo">Gentoo</span> bill. She has a Gentoo’s bill on a Chinstrap’s body. She is also stout, the second part of her story: a normal mass, 3700 g (mean 3527), on flippers of 181 mm (mean 192), among the shortest of the Chinstraps. Thompson’s label, “an exceptionally long bill and the shortest flippers bar one among the Chinstraps”, is exact.</p>
+<p><strong>Verdict:</strong> The name fits perfectly. Rostand’s Cyrano de Bergerac has the most famous nose in literature, the subject of a whole speech in the play: “C’est un roc! … c’est un pic! … c’est un cap! Que dis-je, c’est un cap? … C’est une péninsule!” (It’s a rock, a peak, a cape! A cape, did I say? It’s a peninsula!) That Cyrano is a female, which Thompson’s “little guy” missed, doesn’t matter. A nose like that transcends gender.</p>
+</section>
+<section id="snub-nose-socrates-10-formerly-hook-nose" class="level3">
+<h3 class="anchored" data-anchor-id="snub-nose-socrates-10-formerly-hook-nose">Snub Nose (“Socrates”) (10): formerly Hook Nose</h3>
+<p>Case 10, an <span class="adelie">Adélie</span> male, has the opposite bill: short, 34.6 mm (mean 40.4), and deep, 21.1 mm (mean 19.1), at the 4th and 97th percentiles of the Adélies. Its ratio of 1.64 (mean 2.12) is the lowest of all 333 penguins; the next is 1.76. The rest of him is a large but ordinary Adélie male.</p>
+<p>I called him “Hook Nose” in the book, describing “a very short and curved bill.” That was my mistake: bill depth is measured top to bottom at the base of the bill. It says how <em>thick</em> the bill is, not how curved. Nothing in the data measures a hook. What he has is a snub nose.</p>
+<p><strong>Verdict:</strong> “Hook Nose” doesn’t fit; <strong>Snub Nose</strong> does, and says so plainly. For those who know their history, his alias is <strong>Socrates</strong>, owner of the best documented snub nose there is. Plato and Xenophon both mention it, and in Xenophon’s <em>Symposium</em> Socrates argues, tongue in cheek, that it is the more beautiful kind, because upturned nostrils catch scents from every direction. Cyrano and Snub Nose make a pair, the long nose and the snub nose: one has a bill too slender for her species, the other too stubby for his. One caveat, from the map: relative to its own species, the stubbiest bill belongs to Gentoo 183, still nameless.</p>
+</section>
+<section id="falstaff-35-the-stout-one" class="level3">
+<h3 class="anchored" data-anchor-id="falstaff-35-the-stout-one">Falstaff (35): the stout one</h3>
+<p>Case 35, another Adélie male, has a bill that is average in every respect: 39.8 by 19.1 mm, against means of 40.4 and 19.1. It is his body that stands out. At 4650 g (mean 4043), he is one of the heaviest Adélies, 97th percentile, but his flippers are short, 184 mm (mean 192). That makes him, on the raw index M/F³ = 0.75, the stoutest penguin in the data; the next is 0.69. (Within species, two Gentoos are as extreme, relative to other Gentoos.) In the book (Chapter 5), he showed up at the edge of a biplot of the smallest principal components, where I guessed that he was “probably much heavier than most and has short flippers”. That was right, but I didn’t give him a name.</p>
+<p><strong>Verdict:</strong> <strong>Falstaff</strong>, Shakespeare’s fat knight in <em>Henry IV</em>, who pleads “banish plump Jack, and banish all the world.” He is a new name, so the only question is whether it fits. I think it does, though a fuller comparison takes some of the stuffing out of him (see <a href="#going-further">Going further</a>).</p>
+</section>
+<section id="tinkerbell-304-the-slight-one" class="level3">
+<h3 class="anchored" data-anchor-id="tinkerbell-304-the-slight-one">Tinkerbell (304): the slight one</h3>
+<p>Tinkerbell, a Chinstrap female, is the lightest penguin in the data: 2700 g (mean 3527); the next lightest weighs 2850 g. But she is not simply small. Her flippers, 192 mm, are exactly the average for a Chinstrap female, and her bill is an ordinary length, if shallow. She is light <em>for her size</em>. On M/F³ = 0.38, she is the least stout bird of all 333, and the most extreme on stoutness within species too. She is Falstaff’s mirror image: his M/F³ is 31% above the mean for Adélie males, hers 24% below the mean for Chinstrap females.</p>
+<p><strong>Verdict:</strong> Thompson’s label calls her “the smallest penguin in the set.” “Lightest” is more precise, since her flippers are ordinary. But Barrie’s Tinker Bell is a tiny fairy, and the name suits a bird that weighs less than she should. It fits. (Barrie did describe his Tinker Bell as “slightly inclined to <em>embonpoint</em>”, but we needn’t tell her.)</p>
+</section>
+<section id="the-bfg-124-the-impostor" class="level3">
+<h3 class="anchored" data-anchor-id="the-bfg-124-the-impostor">The BFG (124): the impostor</h3>
+<p>The BFG is an Adélie male with the longest flippers of any Adélie: 210 mm (mean 192); the next is 208. His bill is long for an Adélie, 44.1 mm (mean 40.4), but shallower, 18.0 mm (mean 19.1), so it is slender. He is not heavy: 4000 g (mean 4043). Long flippers on an ordinary mass make him lean.</p>
+<p>In Thompson’s view, flipper length against bill length, he sits “comfortably within the cluster of Gentoos”. A discriminant analysis on just those two variables would call him a Gentoo, with a posterior probability of 0.97. On all four measures, it wouldn’t. His bill is still deep for a Gentoo. None of his oddities is extreme on its own, which is why the book’s <span class="math inline">\(D^2\)</span>, ignoring species, ranked him 89th. Taken together, against other Adélies, he is the third most unusual bird in the data.</p>
+<p><strong>Verdict:</strong> It fits beautifully. Dahl’s Big Friendly Giant is the gentle runt among giants, much smaller than the others. That’s the BFG here: a giant among Adélies, but a small Gentoo.</p>
+</section>
+<section id="average-joe-166-the-reference-bird" class="level3">
+<h3 class="anchored" data-anchor-id="average-joe-166-the-reference-bird">Average Joe (166): the reference bird</h3>
+<p>Thompson’s text box was for the “Average Joes”, plural: the <span class="gentoo">Gentoo</span>s, who “tend to stick to their trend, with very few outliers.” The bird her arrow points to is Gentoo male 166, and he is average indeed. His flippers, 222 mm, are exactly the mean for a Gentoo male. His bill, 48.7 by 15.1 mm (means 49.5 by 15.7), and his mass, 5350 g (mean 5485), are close to it. On the map, he sits near the center (z = 0.31 and −0.17). Among all 333 birds, by <span class="math inline">\(D^2\)</span> within species, he ranks 319th: only 14 birds are more ordinary.</p>
+<p><strong>Verdict:</strong> It fits, and it earns its place. Every gallery of oddities needs one ordinary specimen to show what “normal” looks like. He is the reference bird.</p>
+</section>
+</section>
+<section id="whats-in-a-name" class="level2">
+<h2 class="anchored" data-anchor-id="whats-in-a-name">What’s in a name?</h2>
+<p>Thompson’s names come from fiction: Rostand’s Cyrano, Barrie’s Tinker Bell, Dahl’s Big Friendly Giant, and the everyman. Each one describes a body, not a personality. My two join that family: Falstaff from Shakespeare, and Snub Nose, a plain description like Average Joe’s, with Socrates as his literary alias. Together they make three pairs. Cyrano and Snub Nose are the long nose and the short one; Falstaff and Tinkerbell, the stoutest and the slightest; the BFG, an Adélie who passes for a Gentoo, and Average Joe, a Gentoo who passes for nothing but himself.</p>
+<p>There is a statistical point under the fun. <strong>A name helps us remember a point; a good choice of variables tells us <em>why</em> it is unusual.</strong> The book’s <span class="math inline">\(D^2\)</span>, computed on the four measures as recorded and ignoring species, found Cyrano, Snub Nose and Falstaff, but ranked the BFG 89th. Thompson’s plot of two raw measures found Cyrano, the BFG and Tinkerbell, but Snub Nose and Falstaff looked ordinary there. I misread my own plot and named a bird for a hook that nothing in the data could measure. Once the measures were re-expressed as bill shape and stoutness, and each bird was compared with its own species, every one of the six landed in a place that said what was special about it, and the names could be checked against that. Of the five names these birds had before, four hold up; Hook Nose has been retired with thanks.</p>
+<p>That leaves birds that are just as unusual and still go by a row number. Gentoo male 183 has the stubbiest bill for his species, stubbier relative to other Gentoos than Snub Nose’s is among the Adélies. “Pug” would do, or “Puffin”, if naming a penguin after another bird isn’t an insult. Gentoo males 160 and 253 are as stout as Falstaff, relative to their species. Suggestions are welcome: by email, or wherever you found this post.</p>
+<p>As for the penguins of Biscoe Point, a few of them can now be called by their names. The Big Five personality scales will have to wait for another field season.</p>
+</section>
+<section id="going-further" class="level2">
+<h2 class="anchored" data-anchor-id="going-further">Going further</h2>
+<p>The <span class="math inline">\(z\)</span>-scores in this post are standardized residuals from a model, though I didn’t call them that: the simplest one, <code>~ species</code>, applied to one variable at a time. “Compared with whom?” has a fuller answer. A penguin is not only a member of its species; it is also male or female, and it was measured in a particular year. And the four re-expressed variables are not quite independent: bill size goes with body size.</p>
+<p>A multivariate linear model handles all of that at once. Fit the four variables, bill size and shape, body size and stoutness, to species, sex and year, and take each bird’s Mahalanobis <span class="math inline">\(D^2\)</span> from its residuals, using their pooled covariance. Then a bird is unusual relative to birds of the same species and sex, measured in the same year, with the correlations among the variables taken into account. Including <code>year</code> deals with something found in <a href="https://friendly.github.io/blog/posts/2026-10-peng-body/">Penguin Bodies</a>: flippers measured in 2007 were shorter, in all three species, most likely because of how they were measured.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Residual D² from a sequence of models</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>peng <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_size =</span> <span class="fu">log</span>(bill_length) <span class="sc">+</span> <span class="fu">log</span>(bill_depth),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">body_size =</span> <span class="fu">log</span>(flipper_length) <span class="sc">+</span> <span class="fu">log</span>(body_mass) <span class="sc">/</span> <span class="dv">3</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">fyear     =</span> <span class="fu">factor</span>(year))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ignoring species"</span> <span class="ot">=</span> <span class="st">"1"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Species"</span>          <span class="ot">=</span> <span class="st">"species"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"+ sex"</span>            <span class="ot">=</span> <span class="st">"species * sex"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"+ year"</span>           <span class="ot">=</span> <span class="st">"species * sex + fyear"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>resid_D2 <span class="ot">&lt;-</span> <span class="cf">function</span>(rhs) {</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">reformulate</span>(rhs, <span class="st">"cbind(bill_size, bill_shape, body_size, stoutness)"</span>), <span class="at">data =</span> peng)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  R <span class="ot">&lt;-</span> <span class="fu">resid</span>(fit)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mahalanobis</span>(R, <span class="at">center =</span> <span class="dv">0</span>, <span class="at">cov =</span> <span class="fu">crossprod</span>(R) <span class="sc">/</span> fit<span class="sc">$</span>df.residual)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>ranks <span class="ot">&lt;-</span> <span class="fu">sapply</span>(models, \(rhs) <span class="fu">rank</span>(<span class="sc">-</span><span class="fu">resid_D2</span>(rhs)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><a href="#fig-rank-models" class="quarto-xref">Figure&nbsp;6</a> follows the named birds as the comparison group is refined, from the whole colony to birds of the same species, sex and year.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rank_long <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(ranks[birds<span class="sc">$</span>id, ]) <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> birds<span class="sc">$</span>name, <span class="at">species =</span> birds<span class="sc">$</span>species) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(name, species), <span class="at">names_to =</span> <span class="st">"model"</span>, <span class="at">values_to =</span> <span class="st">"rank"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">names</span>(models)))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rank_long, <span class="fu">aes</span>(model, rank, <span class="at">group =</span> name, <span class="at">colour =</span> species)) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> <span class="fu">subset</span>(rank_long, model <span class="sc">==</span> <span class="st">"+ year"</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(name, <span class="st">" ("</span>, rank, <span class="st">")"</span>)),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">nudge_x =</span> <span class="fl">0.08</span>, <span class="at">size =</span> <span class="fl">4.5</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">trans =</span> <span class="fu">c</span>(<span class="st">"log10"</span>, <span class="st">"reverse"</span>),</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">333</span>)) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">add =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">1.3</span>))) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> col) <span class="sc">+</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Model for the four re-expressed variables"</span>, <span class="at">y =</span> <span class="st">"Rank of residual D²"</span>) <span class="sc">+</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>, <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-rank-models" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rank-models-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-rank-models-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rank-models-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Rank of each named bird’s residual D² among all 333 penguins (1 = most unusual), as the model grows. The first column ignores species, using the same four re-expressed variables, so its ranks differ a little from the book’s D² on the raw measures. The rank axis is on a log scale.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Three birds don’t care how they are compared. Once species is in the model, Cyrano, Snub Nose and the BFG hold the top three places, whatever else is added. Their oddities are in the shape of the bill and the build of the body, and nothing about their sex or the year they were measured explains them away. Tinkerbell rises when she is compared with other females: she is small even for a female Chinstrap. Average Joe stays ordinary throughout.</p>
+<p>Falstaff is the exception. With species alone, he ranks 9th. Compared with Adélie males, the one group in which males are stouter than females, and with birds measured in 2007, the year of short flippers, he drops to 34th. He is still the stoutest bird of all on the raw ratio <span class="math inline">\(M / F^3\)</span>, and still well out in the tail on stoutness, so I’ll keep his name. But part of his stoutness is explained by who he is and when he was measured. That depends on a judgment: adjusting for year treats the 2007 flippers as a measurement artifact. If the difference were real, Falstaff would deserve his rank in the <code>species</code> model. Every term added to a model is a decision about what counts as unremarkable.</p>
+<p>The fuller model also turns up new candidates for names. Gentoo male 179, measured in 2007, ranks 4th, and three Adélie females from 2009 (cases 137, 109 and 117) enter the top eight. They have names waiting for them too.</p>
+<p>This is also where the post meets the book again. In <a href="https://friendly.github.io/Vis-MLM-book/14-infl-robust.html">Chapter 14</a>, a robust multivariate linear model, <code>heplots::robmlm()</code>, down-weights the cases with large residuals. Its four lowest weights go to Cyrano, Snub Nose, the BFG and Gentoo 179: much the same birds, found by a different route. A robust fit of the model here does the same, giving Cyrano a weight of 0 and Snub Nose 0.05, while Falstaff keeps 0.81.</p>
+<p><span id="about-the-banner"></span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>About the banner
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The banner image was made by ChatGPT, not drawn from the data. I asked it to read an earlier draft of this post, with <a href="#tbl-birds" class="quarto-xref">Table&nbsp;1</a>, and to design a banner of the six birds: in sunglasses, in my species colors, and with sizes, shapes and bills that reflect their measurements. It took five rounds: tinting the bellies so the species could be told apart at thumbnail size, making Cyrano’s bill longer, adding the sashes with their names, and finally renaming Snub Nose and cutting Average Joe down to size.</p>
+<p>It’s a caricature, and an instructive one. Cyrano’s bill was doubled on purpose, to make the point at banner size. Average Joe was a different matter. The prompt described him, correctly, as having “the largest overall frame” of the six, as a Gentoo male should, and the image generator read “largest” as “much the largest”: he stood half again as tall as Tinkerbell. In the data, he is only about 20% bigger in each linear dimension than she is (taking <span class="math inline">\(\sqrt{F \times M^{1/3}}\)</span>, a length-like version of body size, as the measure), and about 12% bigger than Falstaff. In fact, all six are within about 20% of each other. Shrunk by about 10%, he is still a little large, but closer to the truth. Which makes, in its way, the point of the post: Average Joe is average <em>for a Gentoo</em>, and how unusual a bird looks depends on what you compare it with.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<p><strong>The earlier posts in this series</strong></p>
+<ul>
+<li><a href="https://friendly.github.io/blog/posts/2026-10-peng-altviews/">Thinking about Penguin Variables</a>: bill size and shape as an alternative view of bill length and depth.</li>
+<li><a href="https://friendly.github.io/blog/posts/2026-10-peng-body/">Penguin Bodies: Size and Stoutness</a>: the same idea for flipper length and body mass.</li>
+</ul>
+<p><strong>Naming and labeling points</strong></p>
+<ul>
+<li>Thompson, C. (2022). <em>Level Up Your Labels: Tips and Tricks for Annotating Plots</em>. Poster, useR! 2022. <a href="https://www.cararthompson.com/talks/user2022/" class="uri">https://www.cararthompson.com/talks/user2022/</a></li>
+<li>Friendly, M. (in preparation). <em>Visualizing Multivariate Data and Models in R</em>. Chapman &amp; Hall/CRC. Online at <a href="https://friendly.github.io/Vis-MLM-book/" class="uri">https://friendly.github.io/Vis-MLM-book/</a>. Cyrano and her companions first appear in <a href="https://friendly.github.io/Vis-MLM-book/04-multivariate_plots.html">Chapter 4</a>, and come back in the chapter on influence and robust estimation for multivariate models.</li>
+<li>Friendly, M., Fox, J., &amp; Monette, G. <em>heplots: Visualizing Tests in Multivariate Linear Models</em>. R package. <a href="https://CRAN.R-project.org/package=heplots" class="uri">https://CRAN.R-project.org/package=heplots</a>. See <a href="https://friendly.github.io/heplots/reference/noteworthy.html"><code>noteworthy()</code></a>.</li>
+<li>Fox, J., &amp; Weisberg, S. (2018). <em>An R Companion to Applied Regression</em> (3rd ed.). Sage. The <code>car</code> package, whose <code>id</code> argument labels unusual points in nearly every plot.</li>
+</ul>
+<p><strong>The data</strong></p>
+<ul>
+<li>Gorman, K. B., Williams, T. D., &amp; Fraser, W. R. (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus <em>Pygoscelis</em>). <em>PLoS ONE</em>, 9(3), e90081. <a href="https://doi.org/10.1371/journal.pone.0090081" class="uri">https://doi.org/10.1371/journal.pone.0090081</a></li>
+<li>Horst, A. M., Hill, A. P., &amp; Gorman, K. B. (2020). <em>palmerpenguins: Palmer Archipelago (Antarctica) penguin data</em>. R package version 0.1.0. <a href="https://doi.org/10.5281/zenodo.3960218" class="uri">https://doi.org/10.5281/zenodo.3960218</a></li>
+</ul>
+<p><strong>The namesakes</strong></p>
+<ul>
+<li>Edmond Rostand, <a href="https://en.wikipedia.org/wiki/Cyrano_de_Bergerac_(play)"><em>Cyrano de Bergerac</em></a> (1897). The nose speech is in Act I, scene 4.</li>
+<li>Xenophon, <a href="https://en.wikipedia.org/wiki/Symposium_(Xenophon)"><em>Symposium</em></a>, chapter 5: Socrates’ beauty contest with Critobulus, nose included.</li>
+<li>William Shakespeare, <a href="https://en.wikipedia.org/wiki/Henry_IV,_Part_1"><em>Henry IV, Part 1</em></a> (c.&nbsp;1597), for <a href="https://en.wikipedia.org/wiki/Falstaff">Falstaff</a>.</li>
+<li>J. M. Barrie, <a href="https://en.wikipedia.org/wiki/Peter_and_Wendy"><em>Peter and Wendy</em></a> (1911), for <a href="https://en.wikipedia.org/wiki/Tinker_Bell">Tinker Bell</a>.</li>
+<li>Roald Dahl, <a href="https://en.wikipedia.org/wiki/The_BFG"><em>The BFG</em></a> (1982).</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>My consultant on this point, Big Bird of <em>Sesame Street</em>, agreed with the plan, but cautioned that at 8 feet 2 inches he has never once been called stout. By my measures, he’d be the BFG of Sesame Street.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/friendly\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Michael Friendly</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://friendly.github.io/">
+<p>friendly.github.io/</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -95,3 +95,24 @@ This is a possible direction, not a replacement for your voice. The ending will 
 6. Render and inspect the table, labels, color distinctions, and main plot on desktop and at a narrow reading width. Confirm that prose rankings match the rendered results.
 
 No source draft or analysis was changed for these notes.
+
+## Final pre-publication review (2026-10-25)
+
+Reviewed `index.qmd` and its rendered `index.html`. Checked the six named birds' measurements and the model-ranking calculations in R; these agree with the prose. Inspected the rendered shape/stoutness and model-ranking figures. All local HTML image references resolve, and no unresolved cross-references were found. No source or analysis files were changed during this review.
+
+### Three points to fix before publication
+
+1. **The opening overstates the lack of identifiers (index.qmd, lines 57-60 at review time).** The birds are described as identified only by row numbers, supposedly because they were never given `rownames()`. The simplified dataset omits identifiers, but `penguins_raw` includes an `Individual ID` field. See https://allisonhorst.github.io/palmerpenguins/reference/penguins_raw.html. Suggested replacement: "In the simplified data frames most of us use, the birds have lost their original identifiers, leaving us to refer to them by row number. Even those numbers aren't stable."
+
+2. **"True outlier" is too categorical (line 134).** Being outside the QQ envelope does not establish that status, especially when the reference assumes multivariate normality and the pooled data mix three species. Suggested replacement: "Only case 283 fell outside the plot's reference envelope. Cases 10 and 35 were noteworthy, but less extreme."
+
+3. **"Both are dimensionless" needs qualification (line 355).** Bill length/depth is dimensionless, but mass/flipper-length cubed has density units, as the table caption correctly states. The logged stoutness index consequently changes by a constant when units change; its within-species z-scores do not. Suggested replacement: "Standardizing within species makes both indices independent of the measurement units."
+
+### Two smaller mathematical clarifications
+
+- At line 580, say "species-standardized residuals" rather than just "residuals."
+- The banner's 20% and 12% linear-size comparisons check out, but line 686 should identify the linear-size proxy as `sqrt(F * M^(1/3))`. The product itself gives approximately 45% and 26%. Calculated Joe/Tinkerbell: product ratio 1.452274, square-root ratio 1.205103. Joe/Falstaff: product ratio 1.264257, square-root ratio 1.124392.
+
+### Publication mechanics
+
+The post is still under `blog/drafts/`, which the site configuration excludes. Move it into its dated `blog/posts/` folder and run the full site render so the blog listing and listings metadata update.
