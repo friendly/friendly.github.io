@@ -53,13 +53,15 @@ penguin-names.md, to be worked up. Keep it short: three or four exchanges, then 
 > "And why didn't they bother to give us the Big Five personality scales? Those orange Adelies are often
 > narcissistic extroverts, not very open to experience. I'm a proud, average Joe Gentoo. Let's teach them a thing or two."
 
-They have a point; moreover an interesting challenge. The [Palmer penguins](https://allisonhorst.github.io/palmerpenguins/) are
+They have a point. And moreover this creates an interesting data analysis challenge. The [Palmer penguins](https://allisonhorst.github.io/palmerpenguins/) are
 identified only by numbers: their row numbers in a data frame. Even those aren't stable. They
 depend on whether the few birds with missing measurements were dropped: Cyrano, whom you'll meet
-shortly, is number 294 in `palmerpenguins::penguins` and number 283 in `heplots::peng`. This post
-is an attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near
+shortly, is number 294 in `palmerpenguins::penguins` and number 283 in `heplots::peng`. 
+This happened because our penguin friends were never given `rownames()` in the data.
+
+This post can stand as a public apology from the R community. It's my attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near
 Palmer Station who allowed themselves to be measured for science from 2007 to 2009.
-I understand your pain.
+Hey, guys: I understand your pain.
 
 <!--
 Pivot: a few of them do have names. Name them here, briefly, as a teaser:
@@ -75,7 +77,7 @@ post are: what makes each of these birds unusual, and do their names fit?
 ## Naming names
 
 ```{r data}
-#| code-summary: "Data and the named birds"
+#| code-summary: "Data and the named birds used here"
 library(dplyr)
 library(ggplot2)
 library(ggrepel)
@@ -123,6 +125,7 @@ The first tool I usually use to identify possible outliers in multivariate data 
 which shows the squared Mahalanobis distance, $D^2$, of each bird from the
 centroid of all four measures (bill length and depth, flipper length, body mass), taking their
 variances and correlations into account, plotted against their $\chi^2$ quantiles in a multivariate normal distribution. 
+
 Three birds came out on top: cases 283, 10 and 35. The
 chi-square QQ plot showed that only one of them, 283, is a true outlier. The other two are just the
 most unusual of an ordinary lot.
@@ -147,9 +150,9 @@ cqplot(peng[, vars],
 ```
 
 Plotting bill length against bill depth with those three labeled, two of them looked odd for their
-species. Case 283, a [Chinstrap]{.chinstrap}, has a remarkably long bill, so I called him "Cyrano",
+species. Case 283, a [Chinstrap]{.chinstrap}, has a remarkably long bill, so I called her "Cyrano",
 after the long-nosed hero of Edmond Rostand's play. Case 10, an [Adelie]{.adelie} with a short, deep
-bill, became "Hook Nose". Case 35 looked unremarkable in that view and stayed nameless.
+bill, became "Hook Nose". Case 35 looked unremarkable in that view and stayed nameless until today
 
 ```{r}
 #| label: fig-bill-noteworthy
@@ -180,9 +183,11 @@ ggplot(peng_plot,
 
 The names stuck, at least for me. Cyrano reappears throughout the book: dancing around the edges of a
 grand tour, at the extreme ends of a biplot, as the most influential case in a multivariate linear
-model, and finally getting a weight of zero in a robust fit. "Bye-bye Cyrano---it's been fun---but we
+model, and finally getting a weight of zero in a robust fit.
+Using `heplots::robmlm()` I could just say, "Bye-bye Cyrano---it's been fun---but we
 can get along nicely without you." That is the point of a name: a reader can follow Cyrano from chapter
 to chapter in a way they can't follow "case 283".
+
 
 ### Where "Cyrano" came from
 
@@ -208,7 +213,7 @@ explanation with a few well-placed text boxes. Four birds get names and a senten
 
 ![Cara Thompson's plot from her useR! 2022 poster, [*Level Up Your Labels*](https://www.cararthompson.com/talks/user2022/). © Cara Thompson, reused under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).](images/thompson-annotated-penguins.png){#fig-thompson}
 
-She picked these birds by eye, from one plot. As we'll see, every one of her descriptions holds up,
+Did she really pick these birds by eye, from one plot? As we'll see, every one of her descriptions holds up,
 except perhaps "little guy": Cyrano is a female.
 
 ### Who gets a label?
@@ -218,8 +223,8 @@ birds were chosen by hand, and the labels were added by a small piece of `ggplot
 something, make a logical variable for the cases to label, then add a `geom_text()` layer for just
 those rows. It works, but you have to do it again for every plot.
 
-Base R graphics handle this better than `ggplot2`, thanks to the `car` package. Nearly every plotting
-function in `car` takes an argument like `id = list(n = 3, method = "mahal")`, and labels the 3
+Base R graphics handle this better than `ggplot2`, thanks to the `car` package. Nearly **every plotting
+function** in `car` takes an argument like `id = list(n = 3, method = "mahal")`, and labels the 3
 points furthest from the centroid, with no further work. The `method` can be `"x"`, `"y"`, `"r"` for
 residuals, or a vector such as Cook's distances. Labeling unusual points becomes a decision about
 *which criterion*, not a chore.
@@ -227,7 +232,8 @@ residuals, or a vector such as Cook's distances. Labeling unusual points becomes
 I pulled that selection logic out into a function,
 [`heplots::noteworthy()`](https://friendly.github.io/heplots/reference/noteworthy.html), which takes
 `x`, `y`, `n` and a `method`, and returns the row numbers of the points to label. The criterion
-needn't come from the two variables on the axes. Here it finds the book's three birds, using $D^2$ on
+needn't come from the two variables on the axes. You can supply a computed vector of criteria values.
+Here it finds the book's three birds, using $D^2$ on
 all four measures, for a plot of just two:
 
 ```{r noteworthy}
@@ -338,7 +344,9 @@ these questions, by re-expressing the four measures as variables that mean somet
 
 Within species, these four are nearly uncorrelated, except that bigger birds have bigger bills
 (bill size with body size, $r = 0.70$). The two size variables mostly say what you'd expect: big
-birds are big all over. What gives a bird its character is its *proportions*, and those are what the
+birds are big all over.^[My consultant on this point, Big Bird of *Sesame Street*, agreed with the
+plan, but cautioned that at 8 feet 2 inches he has never once been called stout. By my measures,
+he'd be the BFG of Sesame Street.] What gives a bird its character is its *proportions*, and those are what the
 names are about: a long nose, a snub nose, a stout body, a slight one. So here I use just the two
 ratios, bill shape and stoutness. Both are dimensionless, and they are almost exactly uncorrelated
 within species ($r = -0.03$).

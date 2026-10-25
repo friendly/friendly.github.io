@@ -213,7 +213,8 @@ penguin-names.md, to be worked up. Keep it short: three or four exchanges, then 
 <p>“Hey Bro, have you noticed? All these scientists measured us up the wazoo, published papers, and now our data is famous. They use us to teach statistics and data graphics all over the world. But sadly, they don’t even know our names, even with those tags on our flippers.”</p>
 <p>“And why didn’t they bother to give us the Big Five personality scales? Those orange Adelies are often narcissistic extroverts, not very open to experience. I’m a proud, average Joe Gentoo. Let’s teach them a thing or two.”</p>
 </blockquote>
-<p>They have a point; moreover an interesting challenge. The <a href="https://allisonhorst.github.io/palmerpenguins/">Palmer penguins</a> are identified only by numbers: their row numbers in a data frame. Even those aren’t stable. They depend on whether the few birds with missing measurements were dropped: Cyrano, whom you’ll meet shortly, is number 294 in <code>palmerpenguins::penguins</code> and number 283 in <code>heplots::peng</code>. This post is an attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near Palmer Station who allowed themselves to be measured for science from 2007 to 2009. I understand your pain.</p>
+<p>They have a point. And moreover this creates an interesting data analysis challenge. The <a href="https://allisonhorst.github.io/palmerpenguins/">Palmer penguins</a> are identified only by numbers: their row numbers in a data frame. Even those aren’t stable. They depend on whether the few birds with missing measurements were dropped: Cyrano, whom you’ll meet shortly, is number 294 in <code>palmerpenguins::penguins</code> and number 283 in <code>heplots::peng</code>. This happened because our penguin friends were never given <code>rownames()</code> in the data.</p>
+<p>This post can stand as a public apology from the R community. It’s my attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near Palmer Station who allowed themselves to be measured for science from 2007 to 2009. Hey, guys: I understand your pain.</p>
 <!--
 Pivot: a few of them do have names. Name them here, briefly, as a teaser:
 Cyrano and Hook Nose (from my book), the BFG, Tinkerbell and Average Joe (from Cara Thompson).
@@ -225,7 +226,7 @@ The question of the post: what makes each of them unusual, and do the names fit?
 <h2 class="anchored" data-anchor-id="naming-names">Naming names</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
-<summary>Data and the named birds</summary>
+<summary>Data and the named birds used here</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
@@ -262,7 +263,8 @@ The question of the post: what makes each of them unusual, and do the names fit?
 <section id="three-noteworthy-birds" class="level3">
 <h3 class="anchored" data-anchor-id="three-noteworthy-birds">Three noteworthy birds</h3>
 <p>In <a href="https://friendly.github.io/Vis-MLM-book/04-multivariate_plots.html">Chapter 4</a>, I went looking for multivariate outliers. As in the Bob Marley song, I found “three little birds, at my doorstep.” As I hope to say to my Palmer friends, “Don’t worry about a thing, ’cause every little thing gonna be all right.”</p>
-<p>The first tool I usually use to identify possible outliers in multivariate data is a <code>heplots::cqplot()</code>, which shows the squared Mahalanobis distance, <span class="math inline">\(D^2\)</span>, of each bird from the centroid of all four measures (bill length and depth, flipper length, body mass), taking their variances and correlations into account, plotted against their <span class="math inline">\(\chi^2\)</span> quantiles in a multivariate normal distribution. Three birds came out on top: cases 283, 10 and 35. The chi-square QQ plot showed that only one of them, 283, is a true outlier. The other two are just the most unusual of an ordinary lot.</p>
+<p>The first tool I usually use to identify possible outliers in multivariate data is a <code>heplots::cqplot()</code>, which shows the squared Mahalanobis distance, <span class="math inline">\(D^2\)</span>, of each bird from the centroid of all four measures (bill length and depth, flipper length, body mass), taking their variances and correlations into account, plotted against their <span class="math inline">\(\chi^2\)</span> quantiles in a multivariate normal distribution.</p>
+<p>Three birds came out on top: cases 283, 10 and 35. The chi-square QQ plot showed that only one of them, 283, is a true outlier. The other two are just the most unusual of an ordinary lot.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
@@ -291,7 +293,7 @@ Figure&nbsp;1: Chi-square QQ plot of the penguins’ squared Mahalanobis distanc
 </div>
 </div>
 </div>
-<p>Plotting bill length against bill depth with those three labeled, two of them looked odd for their species. Case 283, a <span class="chinstrap">Chinstrap</span>, has a remarkably long bill, so I called him “Cyrano”, after the long-nosed hero of Edmond Rostand’s play. Case 10, an <span class="adelie">Adelie</span> with a short, deep bill, became “Hook Nose”. Case 35 looked unremarkable in that view and stayed nameless.</p>
+<p>Plotting bill length against bill depth with those three labeled, two of them looked odd for their species. Case 283, a <span class="chinstrap">Chinstrap</span>, has a remarkably long bill, so I called her “Cyrano”, after the long-nosed hero of Edmond Rostand’s play. Case 10, an <span class="adelie">Adelie</span> with a short, deep bill, became “Hook Nose”. Case 35 looked unremarkable in that view and stayed nameless until today</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
@@ -328,7 +330,7 @@ Figure&nbsp;2: Bill length against bill depth, with 95% data ellipses and regres
 </div>
 </div>
 </div>
-<p>The names stuck, at least for me. Cyrano reappears throughout the book: dancing around the edges of a grand tour, at the extreme ends of a biplot, as the most influential case in a multivariate linear model, and finally getting a weight of zero in a robust fit. “Bye-bye Cyrano—it’s been fun—but we can get along nicely without you.” That is the point of a name: a reader can follow Cyrano from chapter to chapter in a way they can’t follow “case 283”.</p>
+<p>The names stuck, at least for me. Cyrano reappears throughout the book: dancing around the edges of a grand tour, at the extreme ends of a biplot, as the most influential case in a multivariate linear model, and finally getting a weight of zero in a robust fit. Using <code>heplots::robmlm()</code> I could just say, “Bye-bye Cyrano—it’s been fun—but we can get along nicely without you.” That is the point of a name: a reader can follow Cyrano from chapter to chapter in a way they can’t follow “case 283”.</p>
 </section>
 <section id="where-cyrano-came-from" class="level3">
 <h3 class="anchored" data-anchor-id="where-cyrano-came-from">Where “Cyrano” came from</h3>
@@ -350,13 +352,13 @@ Figure&nbsp;3: Cara Thompson’s plot from her useR! 2022 poster, <a href="https
 </figcaption>
 </figure>
 </div>
-<p>She picked these birds by eye, from one plot. As we’ll see, every one of her descriptions holds up, except perhaps “little guy”: Cyrano is a female.</p>
+<p>Did she really pick these birds by eye, from one plot? As we’ll see, every one of her descriptions holds up, except perhaps “little guy”: Cyrano is a female.</p>
 </section>
 <section id="who-gets-a-label" class="level3">
 <h3 class="anchored" data-anchor-id="who-gets-a-label">Who gets a label?</h3>
 <p>Thompson’s poster had a second effect on me. In her plot, and in mine in the book, the labeled birds were chosen by hand, and the labels were added by a small piece of <code>ggplot2</code> plumbing: compute something, make a logical variable for the cases to label, then add a <code>geom_text()</code> layer for just those rows. It works, but you have to do it again for every plot.</p>
-<p>Base R graphics handle this better than <code>ggplot2</code>, thanks to the <code>car</code> package. Nearly every plotting function in <code>car</code> takes an argument like <code>id = list(n = 3, method = "mahal")</code>, and labels the 3 points furthest from the centroid, with no further work. The <code>method</code> can be <code>"x"</code>, <code>"y"</code>, <code>"r"</code> for residuals, or a vector such as Cook’s distances. Labeling unusual points becomes a decision about <em>which criterion</em>, not a chore.</p>
-<p>I pulled that selection logic out into a function, <a href="https://friendly.github.io/heplots/reference/noteworthy.html"><code>heplots::noteworthy()</code></a>, which takes <code>x</code>, <code>y</code>, <code>n</code> and a <code>method</code>, and returns the row numbers of the points to label. The criterion needn’t come from the two variables on the axes. Here it finds the book’s three birds, using <span class="math inline">\(D^2\)</span> on all four measures, for a plot of just two:</p>
+<p>Base R graphics handle this better than <code>ggplot2</code>, thanks to the <code>car</code> package. Nearly <strong>every plotting function</strong> in <code>car</code> takes an argument like <code>id = list(n = 3, method = "mahal")</code>, and labels the 3 points furthest from the centroid, with no further work. The <code>method</code> can be <code>"x"</code>, <code>"y"</code>, <code>"r"</code> for residuals, or a vector such as Cook’s distances. Labeling unusual points becomes a decision about <em>which criterion</em>, not a chore.</p>
+<p>I pulled that selection logic out into a function, <a href="https://friendly.github.io/heplots/reference/noteworthy.html"><code>heplots::noteworthy()</code></a>, which takes <code>x</code>, <code>y</code>, <code>n</code> and a <code>method</code>, and returns the row numbers of the points to label. The criterion needn’t come from the two variables on the axes. You can supply a computed vector of criteria values. Here it finds the book’s three birds, using <span class="math inline">\(D^2\)</span> on all four measures, for a plot of just two:</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -451,7 +453,7 @@ Figure&nbsp;4: Thompson’s view of the penguins: flipper length against bill le
 <li>In <a href="https://friendly.github.io/blog/posts/2026-10-peng-altviews/">Thinking about Penguin Variables</a>, bill length (<span class="math inline">\(L\)</span>) and depth (<span class="math inline">\(D\)</span>) became bill <strong>size</strong>, <span class="math inline">\(\log L + \log D\)</span>, and bill <strong>shape</strong>, <span class="math inline">\(\log (L / D)\)</span>: is the bill long and slender, or short and stubby?</li>
 <li>In <a href="https://friendly.github.io/blog/posts/2026-10-peng-body/">Penguin Bodies</a>, flipper length (<span class="math inline">\(F\)</span>) and body mass (<span class="math inline">\(M\)</span>) became body <strong>size</strong>, <span class="math inline">\(\log F + \log M / 3\)</span>, and <strong>stoutness</strong>, <span class="math inline">\(\log (M^{1/3} / F)\)</span>: is the bird heavy or light for its flipper length? Cubed, this is <span class="math inline">\(M / F^3\)</span>, a penguin version of the condition factor used for fish.</li>
 </ul>
-<p>Within species, these four are nearly uncorrelated, except that bigger birds have bigger bills (bill size with body size, <span class="math inline">\(r = 0.70\)</span>). The two size variables mostly say what you’d expect: big birds are big all over. What gives a bird its character is its <em>proportions</em>, and those are what the names are about: a long nose, a snub nose, a stout body, a slight one. So here I use just the two ratios, bill shape and stoutness. Both are dimensionless, and they are almost exactly uncorrelated within species (<span class="math inline">\(r = -0.03\)</span>).</p>
+<p>Within species, these four are nearly uncorrelated, except that bigger birds have bigger bills (bill size with body size, <span class="math inline">\(r = 0.70\)</span>). The two size variables mostly say what you’d expect: big birds are big all over.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> What gives a bird its character is its <em>proportions</em>, and those are what the names are about: a long nose, a snub nose, a stout body, a slight one. So here I use just the two ratios, bill shape and stoutness. Both are dimensionless, and they are almost exactly uncorrelated within species (<span class="math inline">\(r = -0.03\)</span>).</p>
 <p>The second question is: unusual <em>compared with whom?</em> Cyrano’s bill, at 3.26 times as long as it is deep, would be unremarkable on a <span class="gentoo">Gentoo</span>, whose bills average 3.18. On a <span class="chinstrap">Chinstrap</span>, it is the most slender bill by a wide margin. A Gentoo’s bill on a Gentoo isn’t news; on a Chinstrap it is. So I standardize each variable <em>within species</em>: a bird’s <span class="math inline">\(z\)</span>-score is its distance from its own species’ mean, in units of that species’ standard deviation. This also puts the species on a common scale, which matters because they don’t vary equally: <span class="adelie">Adelie</span> bills vary more in shape than the others. Males and females are pooled. Males are bigger, but on these two ratios the sexes differ little, except that Adelie males are a bit stouter.</p>
 <p>This is where Thompson’s eye and the book’s formula parted company. The book’s <span class="math inline">\(D^2\)</span> measured each bird’s distance from the centroid of <em>all</em> the penguins, ignoring species. By that measure the BFG ranks 89th of 333: a large Adelie sits comfortably inside the overall cloud, close to the Gentoos. Judged against other Adelies, with the same <span class="math inline">\(D^2\)</span> computed within species, he is the third most unusual bird in the data. Thompson saw that from one plot.</p>
 <p><a href="#tbl-birds" class="quarto-xref">Table&nbsp;1</a> gives the six birds’ bill ratios and stoutness indices as recorded, and their <span class="math inline">\(z\)</span>-scores within species. The raw measurements are in the <a href="#do-the-names-fit">next section</a> below.</p>
@@ -703,7 +705,13 @@ Figure&nbsp;5: Bill shape against stoutness, as z-scores within species. The ell
 </ul>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>My consultant on this point, Big Bird of <em>Sesame Street</em>, agreed with the plan, but cautioned that at 8 feet 2 inches he has never once been called stout. By my measures, he’d be the BFG of Sesame Street.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
