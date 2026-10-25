@@ -64,7 +64,7 @@ This happened because our penguin friends were never given `rownames()` in the d
 This post can stand as a public apology from the R community. It's my attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near
 Palmer Station who allowed themselves to be measured for science from 2007 to 2009.
 
-> Hey, guys: I understand your pain. I hoper you don't mind my human, literary, historical references I've used to give you names. 
+> Hey, guys: I understand your pain. I hope you don't mind my human, literary, historical references I've used to give you names. 
 
 <!--
 Pivot: a few of them do have names. Name them here, briefly, as a teaser:
