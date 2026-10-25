@@ -14,3 +14,6 @@ Rplots.pdf
 
 # knitr/Quarto chunk cache
 *_cache/
+
+# never publish text notes copied from drafts (e.g. image-generation prompts)
+docs/blog/drafts/**/*.md
