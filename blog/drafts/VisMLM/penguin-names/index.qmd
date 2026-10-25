@@ -3,7 +3,7 @@ title: "Palmer Penguins Cry Out: \"Call Me by My Name\""
 subtitle: "Who are the unusual penguins, what makes each one unusual, and do their nicknames fit?"
 author: "Michael Friendly"
 description: "Six Palmer penguins with nicknames, from Cara Thompson's useR! poster and my book. Re-expressing the measures as bill shape and stoutness shows what makes each bird stand out, and whether its name fits"
-date: "2026-10-XX"
+date: "2026-10-25"
 categories: [Vis-MLM, R, multivariate, penguins]
 image: images/penguin-names-banner-v4.png
 format:
