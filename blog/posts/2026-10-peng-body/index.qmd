@@ -533,6 +533,10 @@ Unlike penguin bills, their body measurements do not hide a statistical paradox.
 to hear the views of biologists about the analysis here, and the more general topic of how they decide what
 are the meaningful transformations of the variables they measure into ones that more closely relate to biology.
 
+*Update:* The next post, [Palmer Penguins Cry Out: "Call Me by My Name"](https://friendly.github.io/blog/posts/2026-10-peng-names/), puts bill shape and
+stoutness to work, to find out what makes six named penguins unusual. Its last section also adjusts
+for year, as suggested under "Still to do", and shows what difference that makes.
+
 ## References {.unnumbered}
 
 * Gorman, K. B., Williams, T. D., & Fraser, W. R. (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus *Pygoscelis*). *PLoS ONE*, 9(3), e90081.

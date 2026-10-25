@@ -548,6 +548,10 @@ This doesn't create information that wasn't in the data. When $r$ is large, the 
 
 The same reasoning applies to the other penguin variables. Flipper length and body mass are also, in part, measures of overall size; one might go on to define an overall body size (for example, the mean of the four log measurements) and express each variable relative to it. That is a story for another post.
 
+*Update:* That story is told in [Penguin Bodies: Size and Stoutness](https://friendly.github.io/blog/posts/2026-10-peng-body/). The series continues
+with [Palmer Penguins Cry Out: "Call Me by My Name"](https://friendly.github.io/blog/posts/2026-10-peng-names/), which uses bill shape and stoutness
+to find out what makes six named penguins unusual.
+
 ## References {.unnumbered}
 
 * Bland, J. M., & Altman, D. G. (1986). Statistical methods for assessing agreement between two methods of clinical measurement. *The Lancet*, 327(8476), 307--310. https://doi.org/10.1016/S0140-6736(86)90837-8
