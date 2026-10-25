@@ -117,7 +117,10 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overheard-at-biscoe-point" id="toc-overheard-at-biscoe-point" class="nav-link active" data-scroll-target="#overheard-at-biscoe-point">Overheard at Biscoe Point</a></li>
+  <li><a href="#overheard-at-biscoe-point" id="toc-overheard-at-biscoe-point" class="nav-link active" data-scroll-target="#overheard-at-biscoe-point">Overheard at Biscoe Point</a>
+  <ul class="collapse">
+  <li><a href="#sorry" id="toc-sorry" class="nav-link" data-scroll-target="#sorry">Sorry</a></li>
+  </ul></li>
   <li><a href="#naming-names" id="toc-naming-names" class="nav-link" data-scroll-target="#naming-names">Naming names</a>
   <ul class="collapse">
   <li><a href="#three-noteworthy-birds" id="toc-three-noteworthy-birds" class="nav-link" data-scroll-target="#three-noteworthy-birds">Three noteworthy birds</a></li>
@@ -215,16 +218,22 @@ penguin-names.md, to be worked up. Keep it short: three or four exchanges, then 
 -->
 <blockquote class="blockquote">
 <p>“Hey Bro, have you noticed? All these scientists measured us up the wazoo, published papers, and now our data is famous. They use us to teach statistics and data graphics all over the world. But sadly, they don’t even know our names, even with those tags on our flippers.”</p>
-<p>“And why didn’t they bother to give us the Big Five personality scales? Those orange Adelies are often narcissistic extroverts, not very open to experience. I’m a proud, average Joe Gentoo. Let’s teach them a thing or two.”</p>
+<p>“And why didn’t they bother to give us the Big Five personality scales? Those orange Adélies are often narcissistic extroverts, not very open to experience. I’m a proud, average Joe Gentoo. Let’s teach them a thing or two.”</p>
 </blockquote>
 <p>They have a point. And moreover this creates an interesting data analysis challenge. The <a href="https://allisonhorst.github.io/palmerpenguins/">Palmer penguins</a> are identified only by numbers: their row numbers in a data frame. Even those aren’t stable. They depend on whether the few birds with missing measurements were dropped: Cyrano, whom you’ll meet shortly, is number 294 in <code>palmerpenguins::penguins</code> and number 283 in <code>heplots::peng</code>. This happened because our penguin friends were never given <code>rownames()</code> in the data.</p>
-<p>This post can stand as a public apology from the R community. It’s my attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near Palmer Station who allowed themselves to be measured for science from 2007 to 2009. Hey, guys: I understand your pain.</p>
+<section id="sorry" class="level3">
+<h3 class="anchored" data-anchor-id="sorry">Sorry</h3>
+<p>This post can stand as a public apology from the R community. It’s my attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near Palmer Station who allowed themselves to be measured for science from 2007 to 2009.</p>
+<blockquote class="blockquote">
+<p>Hey, guys: I understand your pain. I hoper you don’t mind my human, literary, historical references I’ve used to give you names.</p>
+</blockquote>
 <!--
 Pivot: a few of them do have names. Name them here, briefly, as a teaser:
 Cyrano and Hook Nose (from my book), the BFG, Tinkerbell and Average Joe (from Cara Thompson).
 The question of the post: what makes each of them unusual, and do the names fit?
 -->
-<p>A few of them do have names. Cara Thompson named four: Cyrano, the BFG, Tinkerbell and Average Joe. I borrowed Cyrano for my book, and added a Hook Nose of my own. So the questions for this post are: what makes each of these birds unusual, and do their names fit?</p>
+<p>As it turns out, a few of them do have names. Cara Thompson named four: Cyrano, the BFG, Tinkerbell and Average Joe. I borrowed Cyrano for my book, and added a Hook Nose of my own. So the questions for this post are: what makes each of these birds unusual, and do their names fit?</p>
+</section>
 </section>
 <section id="naming-names" class="level2">
 <h2 class="anchored" data-anchor-id="naming-names">Naming names</h2>
@@ -237,7 +246,7 @@ The question of the post: what makes each of them unusual, and do the names fit?
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(peng, <span class="at">package =</span> <span class="st">"heplots"</span>)    <span class="co"># palmerpenguins, 333 complete cases</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Adelie =</span> <span class="st">"#F37A00"</span>, <span class="at">Chinstrap =</span> <span class="st">"#6A3D9A"</span>, <span class="at">Gentoo =</span> <span class="st">"#33a02c"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Adélie"</span> <span class="ot">=</span> <span class="st">"#F37A00"</span>, <span class="at">Chinstrap =</span> <span class="st">"#6A3D9A"</span>, <span class="at">Gentoo =</span> <span class="st">"#33a02c"</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># the named birds, by row number in heplots::peng</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>named <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
@@ -252,15 +261,16 @@ The question of the post: what makes each of them unusual, and do the names fit?
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>peng <span class="ot">&lt;-</span> peng <span class="sc">|&gt;</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id         =</span> <span class="fu">row_number</span>(),</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">bill_shape =</span> <span class="fu">log</span>(bill_length) <span class="sc">-</span> <span class="fu">log</span>(bill_depth),</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">stoutness  =</span> <span class="fu">log</span>(body_mass) <span class="sc">/</span> <span class="dv">3</span> <span class="sc">-</span> <span class="fu">log</span>(flipper_length)) <span class="sc">|&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z_shape =</span> <span class="fu">c</span>(<span class="fu">scale</span>(bill_shape)),</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">z_stout =</span> <span class="fu">c</span>(<span class="fu">scale</span>(stoutness))) <span class="sc">|&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(named, <span class="at">by =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(name), <span class="cn">NA</span>, <span class="fu">paste0</span>(name, <span class="st">" ("</span>, id, <span class="st">")"</span>)))</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>birds <span class="ot">&lt;-</span> <span class="fu">filter</span>(peng, <span class="sc">!</span><span class="fu">is.na</span>(name))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">species    =</span> <span class="fu">factor</span>(species, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Adélie"</span>, <span class="st">"Chinstrap"</span>, <span class="st">"Gentoo"</span>)),</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">bill_shape =</span> <span class="fu">log</span>(bill_length) <span class="sc">-</span> <span class="fu">log</span>(bill_depth),</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">stoutness  =</span> <span class="fu">log</span>(body_mass) <span class="sc">/</span> <span class="dv">3</span> <span class="sc">-</span> <span class="fu">log</span>(flipper_length)) <span class="sc">|&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z_shape =</span> <span class="fu">c</span>(<span class="fu">scale</span>(bill_shape)),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">z_stout =</span> <span class="fu">c</span>(<span class="fu">scale</span>(stoutness))) <span class="sc">|&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(named, <span class="at">by =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(name), <span class="cn">NA</span>, <span class="fu">paste0</span>(name, <span class="st">" ("</span>, id, <span class="st">")"</span>)))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>birds <span class="ot">&lt;-</span> <span class="fu">filter</span>(peng, <span class="sc">!</span><span class="fu">is.na</span>(name))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>I first got to know the Palmer penguins when I found that they made good examples for methods of multivariate data visualization. I adopted them as a running example in my book, <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a>, where they turn up in nearly every chapter.</p>
@@ -297,7 +307,7 @@ Figure&nbsp;1: Chi-square QQ plot of the penguins’ squared Mahalanobis distanc
 </div>
 </div>
 </div>
-<p>Plotting bill length against bill depth with those three labeled, two of them looked odd for their species. Case 283, a <span class="chinstrap">Chinstrap</span>, has a remarkably long bill, so I called her “Cyrano”, after the long-nosed hero of Edmond Rostand’s play. Case 10, an <span class="adelie">Adelie</span> with a short, deep bill, became “Hook Nose”. Case 35 looked unremarkable in that view and stayed nameless until today</p>
+<p>Plotting bill length against bill depth with those three labeled, two of them looked odd for their species. Case 283, a <span class="chinstrap">Chinstrap</span>, has a remarkably long bill, so I called her “Cyrano”, after the long-nosed hero of Edmond Rostand’s play. Case 10, an <span class="adelie">Adélie</span> with a short, deep bill, became “Hook Nose”. Case 35 looked unremarkable in that view and stayed nameless until today</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
@@ -412,7 +422,7 @@ NOTES FOR THIS SECTION from the framework, kept for reference:
 <section id="one-view-in-2d" class="level2">
 <h2 class="anchored" data-anchor-id="one-view-in-2d">One view in 2D</h2>
 <p>To see the six birds together, <a href="#fig-thompson-view" class="quarto-xref">Figure&nbsp;4</a> reproduces Thompson’s plot, without her annotations: flipper length against bill length, with the size of each point showing body mass. Her four named birds and my two are labeled with their case numbers in <code>heplots::peng</code>.</p>
-<p>Her four are easy to find. Cyrano is alone at the right, far beyond the other Chinstraps. The BFG is an orange point among the green Gentoos. Tinkerbell is the smallest point among the Chinstraps, and Average Joe sits in the middle of the Gentoos. But Snub Nose and Falstaff don’t stand out. Snub Nose is at the short-bill edge of the Adelies, but not beyond it, and Falstaff is lost in the crowd. What makes them unusual will need another view.</p>
+<p>Her four are easy to find. Cyrano is alone at the right, far beyond the other Chinstraps. The BFG is an orange point among the green Gentoos. Tinkerbell is the smallest point among the Chinstraps, and Average Joe sits in the middle of the Gentoos. But Snub Nose and Falstaff don’t stand out. Snub Nose is at the short-bill edge of the Adélies, but not beyond it, and Falstaff is lost in the crowd. What makes them unusual will need another view.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
@@ -461,8 +471,9 @@ Figure&nbsp;4: Thompson’s view of the penguins: flipper length against bill le
 <section id="compared-with-whom" class="level3">
 <h3 class="anchored" data-anchor-id="compared-with-whom">Compared with whom?</h3>
 <p>The second, and more important question for doing right by our penguin friends is: unusual <em>compared with whom?</em> What are the aspects of their measurements that we should take into account (control or adjust for) in declaring a bird <em>name worthy</em>?</p>
-<p>Cyrano’s bill, at 3.26 times as long as it is deep, would be unremarkable on a <span class="gentoo">Gentoo</span>, whose bills average 3.18. On a <span class="chinstrap">Chinstrap</span>, it is the most slender bill by a wide margin. A Gentoo’s bill on a Gentoo isn’t news; on a Chinstrap it is. So I standardize each variable <em>within species</em>: a bird’s <span class="math inline">\(z\)</span>-score is its distance from its own species’ mean, in units of that species’ standard deviation. This also puts the species on a common scale, which matters because they don’t vary equally: <span class="adelie">Adelie</span> bills vary more in shape than the others. Males and females are pooled. Males are bigger, but on these two ratios the sexes differ little, except that Adelie males are a bit stouter.</p>
-<p>This is where Thompson’s eye and the book’s formula parted company. The book’s <span class="math inline">\(D^2\)</span> measured each bird’s distance from the centroid of <em>all</em> the penguins, ignoring species. By that measure the BFG ranks 89th of 333: a large Adelie sits comfortably inside the overall cloud, close to the Gentoos. Judged against other Adelies, with the same <span class="math inline">\(D^2\)</span> computed within species, he is the third most unusual bird in the data. Thompson saw that from one plot.</p>
+<p>Cyrano’s bill, at 3.26 times as long as it is deep, would be unremarkable on a <span class="gentoo">Gentoo</span>, whose bills average 3.18. On a <span class="chinstrap">Chinstrap</span>, it is the most slender bill by a wide margin. A Gentoo’s bill on a Gentoo isn’t news; on a Chinstrap it is.</p>
+<p>So I standardize each variable <em>within species</em>: a bird’s <span class="math inline">\(z\)</span>-score is its distance from its own species’ mean, in units of that species’ standard deviation. This also puts the species on a common scale, which matters because they don’t vary equally: <span class="adelie">Adélie</span> bills vary more in shape than the others. Males and females are pooled. Males are bigger, but on these two ratios the sexes differ little, except that Adélie males are a bit stouter.</p>
+<p>This is where Cara Thompson’s eye and the book’s formula parted company. The book’s <span class="math inline">\(D^2\)</span> measured each bird’s distance from the centroid of <em>all</em> the penguins, ignoring species. By that measure the BFG ranks 89th of 333: a large Adélie sits comfortably inside the overall cloud, close to the Gentoos. Judged against other Adélies, with the same <span class="math inline">\(D^2\)</span> computed within species, he is the third most unusual bird in the data. Thompson saw that from one plot.</p>
 <p><a href="#tbl-birds" class="quarto-xref">Table&nbsp;1</a> gives the six birds’ bill ratios and stoutness indices as recorded, and their <span class="math inline">\(z\)</span>-scores within species. The raw measurements are in the <a href="#do-the-names-fit">next section</a> below.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
@@ -480,7 +491,7 @@ Figure&nbsp;4: Thompson’s view of the penguins: flipper length against bill le
 <div id="tbl-birds" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-birds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: The named birds: bill length / depth and the stoutness index M / F³ (in g/cm³), as recorded, and bill shape and stoutness as z-scores within species. Species means of L / D are 2.12 (Adelie), 2.65 (Chinstrap) and 3.18 (Gentoo); of M / F³, 0.54, 0.50 and 0.50.
+Table&nbsp;1: The named birds: bill length / depth and the stoutness index M / F³ (in g/cm³), as recorded, and bill shape and stoutness as z-scores within species. Species means of L / D are 2.12 (Adélie), 2.65 (Chinstrap) and 3.18 (Gentoo); of M / F³, 0.54, 0.50 and 0.50.
 </figcaption>
 <div aria-describedby="tbl-birds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -521,7 +532,7 @@ Table&nbsp;1: The named birds: bill length / depth and the stoutness index M / F
 <tr class="even">
 <td style="text-align: left;">Snub Nose</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">Adelie</td>
+<td style="text-align: left;">Adélie</td>
 <td style="text-align: left;">m</td>
 <td style="text-align: right;">1.64</td>
 <td style="text-align: right;">0.57</td>
@@ -531,7 +542,7 @@ Table&nbsp;1: The named birds: bill length / depth and the stoutness index M / F
 <tr class="odd">
 <td style="text-align: left;">Falstaff</td>
 <td style="text-align: right;">35</td>
-<td style="text-align: left;">Adelie</td>
+<td style="text-align: left;">Adélie</td>
 <td style="text-align: left;">m</td>
 <td style="text-align: right;">2.08</td>
 <td style="text-align: right;">0.75</td>
@@ -551,7 +562,7 @@ Table&nbsp;1: The named birds: bill length / depth and the stoutness index M / F
 <tr class="odd">
 <td style="text-align: left;">The BFG</td>
 <td style="text-align: right;">124</td>
-<td style="text-align: left;">Adelie</td>
+<td style="text-align: left;">Adélie</td>
 <td style="text-align: left;">m</td>
 <td style="text-align: right;">2.45</td>
 <td style="text-align: right;">0.43</td>
@@ -619,8 +630,8 @@ Figure&nbsp;5: Bill shape against stoutness, as z-scores within species. The ell
 </div>
 </div>
 <p>The named birds spread out to the edges, in pairs of opposites. Cyrano lies far to the right, the most slender bill for her species, and Snub Nose far to the left, among the stubbiest: the long nose and the short one. Falstaff is at the top and Tinkerbell at the bottom: the stoutest and the slightest. The BFG is off in the lower right, with a slender bill and a lean body, not the most extreme on either alone, but unusual on both. Average Joe sits almost exactly at the center.</p>
-<p>Two of these birds were hard to see in Thompson’s view (<a href="#fig-thompson-view" class="quarto-xref">Figure&nbsp;4</a>). Snub Nose’s bill is short, but no shorter than a few other Adelies’, and Falstaff’s flippers are short, but not remarkably so. What marks them out is a ratio: bill length to depth for Snub Nose, mass to flipper length for Falstaff. A plot of the raw measures can’t show a ratio unless you know to look for it.</p>
-<p>The map also turns up birds that nobody has named yet. The stubbiest bill for its species isn’t Snub Nose’s but that of a Gentoo male, case 183 (z = −3.93, against −3.43 for Snub Nose). Snub Nose has the stubbiest bill of all 333 as measured, at 1.64, but Adelie bills are stubby to begin with. Likewise, two Gentoo males, 160 and 253, are as stout among Gentoos as Falstaff is among Adelies.</p>
+<p>Two of these birds were hard to see in Thompson’s view (<a href="#fig-thompson-view" class="quarto-xref">Figure&nbsp;4</a>). Snub Nose’s bill is short, but no shorter than a few other Adélies’, and Falstaff’s flippers are short, but not remarkably so. What marks them out is a ratio: bill length to depth for Snub Nose, mass to flipper length for Falstaff. A plot of the raw measures can’t show a ratio unless you know to look for it.</p>
+<p>The map also turns up birds that nobody has named yet. The stubbiest bill for its species isn’t Snub Nose’s but that of a Gentoo male, case 183 (z = −3.93, against −3.43 for Snub Nose). Snub Nose has the stubbiest bill of all 333 as measured, at 1.64, but Adélie bills are stubby to begin with. Likewise, two Gentoo males, 160 and 253, are as stout among Gentoos as Falstaff is among Adélies.</p>
 </section>
 </section>
 <section id="do-the-names-fit" class="level2">
@@ -633,25 +644,25 @@ Figure&nbsp;5: Bill shape against stoutness, as z-scores within species. The ell
 </section>
 <section id="snub-nose-socrates-10-formerly-hook-nose" class="level3">
 <h3 class="anchored" data-anchor-id="snub-nose-socrates-10-formerly-hook-nose">Snub Nose (“Socrates”) (10): formerly Hook Nose</h3>
-<p>Case 10, an <span class="adelie">Adelie</span> male, has the opposite bill: short, 34.6 mm (mean 40.4), and deep, 21.1 mm (mean 19.1), at the 4th and 97th percentiles of the Adelies. Its ratio of 1.64 (mean 2.12) is the lowest of all 333 penguins; the next is 1.76. The rest of him is a large but ordinary Adelie male.</p>
+<p>Case 10, an <span class="adelie">Adélie</span> male, has the opposite bill: short, 34.6 mm (mean 40.4), and deep, 21.1 mm (mean 19.1), at the 4th and 97th percentiles of the Adélies. Its ratio of 1.64 (mean 2.12) is the lowest of all 333 penguins; the next is 1.76. The rest of him is a large but ordinary Adélie male.</p>
 <p>I called him “Hook Nose” in the book, describing “a very short and curved bill.” That was my mistake: bill depth is measured top to bottom at the base of the bill. It says how <em>thick</em> the bill is, not how curved. Nothing in the data measures a hook. What he has is a snub nose.</p>
 <p><strong>Verdict:</strong> “Hook Nose” doesn’t fit; <strong>Snub Nose</strong> does, and says so plainly. For those who know their history, his alias is <strong>Socrates</strong>, owner of the best documented snub nose there is. Plato and Xenophon both mention it, and in Xenophon’s <em>Symposium</em> Socrates argues, tongue in cheek, that it is the more beautiful kind, because upturned nostrils catch scents from every direction. Cyrano and Snub Nose make a pair, the long nose and the snub nose: one has a bill too slender for her species, the other too stubby for his. One caveat, from the map: relative to its own species, the stubbiest bill belongs to Gentoo 183, still nameless.</p>
 </section>
 <section id="falstaff-35-the-stout-one" class="level3">
 <h3 class="anchored" data-anchor-id="falstaff-35-the-stout-one">Falstaff (35): the stout one</h3>
-<p>Case 35, another Adelie male, has a bill that is average in every respect: 39.8 by 19.1 mm, against means of 40.4 and 19.1. It is his body that stands out. At 4650 g (mean 4043), he is one of the heaviest Adelies, 97th percentile, but his flippers are short, 184 mm (mean 192). That makes him, on the raw index M/F³ = 0.75, the stoutest penguin in the data; the next is 0.69. (Within species, two Gentoos are as extreme, relative to other Gentoos.) In the book (Chapter 5), he showed up at the edge of a biplot of the smallest principal components, where I guessed that he was “probably much heavier than most and has short flippers”. That was right, but I didn’t give him a name.</p>
+<p>Case 35, another Adélie male, has a bill that is average in every respect: 39.8 by 19.1 mm, against means of 40.4 and 19.1. It is his body that stands out. At 4650 g (mean 4043), he is one of the heaviest Adélies, 97th percentile, but his flippers are short, 184 mm (mean 192). That makes him, on the raw index M/F³ = 0.75, the stoutest penguin in the data; the next is 0.69. (Within species, two Gentoos are as extreme, relative to other Gentoos.) In the book (Chapter 5), he showed up at the edge of a biplot of the smallest principal components, where I guessed that he was “probably much heavier than most and has short flippers”. That was right, but I didn’t give him a name.</p>
 <p><strong>Verdict:</strong> <strong>Falstaff</strong>, Shakespeare’s fat knight in <em>Henry IV</em>, who pleads “banish plump Jack, and banish all the world.” He is a new name, so the only question is whether it fits. I think it does, though a fuller comparison takes some of the stuffing out of him (see <a href="#going-further">Going further</a>).</p>
 </section>
 <section id="tinkerbell-304-the-slight-one" class="level3">
 <h3 class="anchored" data-anchor-id="tinkerbell-304-the-slight-one">Tinkerbell (304): the slight one</h3>
-<p>Tinkerbell, a Chinstrap female, is the lightest penguin in the data: 2700 g (mean 3527); the next lightest weighs 2850 g. But she is not simply small. Her flippers, 192 mm, are exactly the average for a Chinstrap female, and her bill is an ordinary length, if shallow. She is light <em>for her size</em>. On M/F³ = 0.38, she is the least stout bird of all 333, and the most extreme on stoutness within species too. She is Falstaff’s mirror image: his M/F³ is 31% above the mean for Adelie males, hers 24% below the mean for Chinstrap females.</p>
+<p>Tinkerbell, a Chinstrap female, is the lightest penguin in the data: 2700 g (mean 3527); the next lightest weighs 2850 g. But she is not simply small. Her flippers, 192 mm, are exactly the average for a Chinstrap female, and her bill is an ordinary length, if shallow. She is light <em>for her size</em>. On M/F³ = 0.38, she is the least stout bird of all 333, and the most extreme on stoutness within species too. She is Falstaff’s mirror image: his M/F³ is 31% above the mean for Adélie males, hers 24% below the mean for Chinstrap females.</p>
 <p><strong>Verdict:</strong> Thompson’s label calls her “the smallest penguin in the set.” “Lightest” is more precise, since her flippers are ordinary. But Barrie’s Tinker Bell is a tiny fairy, and the name suits a bird that weighs less than she should. It fits. (Barrie did describe his Tinker Bell as “slightly inclined to <em>embonpoint</em>”, but we needn’t tell her.)</p>
 </section>
 <section id="the-bfg-124-the-impostor" class="level3">
 <h3 class="anchored" data-anchor-id="the-bfg-124-the-impostor">The BFG (124): the impostor</h3>
-<p>The BFG is an Adelie male with the longest flippers of any Adelie: 210 mm (mean 192); the next is 208. His bill is long for an Adelie, 44.1 mm (mean 40.4), but shallower, 18.0 mm (mean 19.1), so it is slender. He is not heavy: 4000 g (mean 4043). Long flippers on an ordinary mass make him lean.</p>
-<p>In Thompson’s view, flipper length against bill length, he sits “comfortably within the cluster of Gentoos”. A discriminant analysis on just those two variables would call him a Gentoo, with a posterior probability of 0.97. On all four measures, it wouldn’t. His bill is still deep for a Gentoo. None of his oddities is extreme on its own, which is why the book’s <span class="math inline">\(D^2\)</span>, ignoring species, ranked him 89th. Taken together, against other Adelies, he is the third most unusual bird in the data.</p>
-<p><strong>Verdict:</strong> It fits beautifully. Dahl’s Big Friendly Giant is the gentle runt among giants, much smaller than the others. That’s the BFG here: a giant among Adelies, but a small Gentoo.</p>
+<p>The BFG is an Adélie male with the longest flippers of any Adélie: 210 mm (mean 192); the next is 208. His bill is long for an Adélie, 44.1 mm (mean 40.4), but shallower, 18.0 mm (mean 19.1), so it is slender. He is not heavy: 4000 g (mean 4043). Long flippers on an ordinary mass make him lean.</p>
+<p>In Thompson’s view, flipper length against bill length, he sits “comfortably within the cluster of Gentoos”. A discriminant analysis on just those two variables would call him a Gentoo, with a posterior probability of 0.97. On all four measures, it wouldn’t. His bill is still deep for a Gentoo. None of his oddities is extreme on its own, which is why the book’s <span class="math inline">\(D^2\)</span>, ignoring species, ranked him 89th. Taken together, against other Adélies, he is the third most unusual bird in the data.</p>
+<p><strong>Verdict:</strong> It fits beautifully. Dahl’s Big Friendly Giant is the gentle runt among giants, much smaller than the others. That’s the BFG here: a giant among Adélies, but a small Gentoo.</p>
 </section>
 <section id="average-joe-166-the-reference-bird" class="level3">
 <h3 class="anchored" data-anchor-id="average-joe-166-the-reference-bird">Average Joe (166): the reference bird</h3>
@@ -661,9 +672,9 @@ Figure&nbsp;5: Bill shape against stoutness, as z-scores within species. The ell
 </section>
 <section id="whats-in-a-name" class="level2">
 <h2 class="anchored" data-anchor-id="whats-in-a-name">What’s in a name?</h2>
-<p>Thompson’s names come from fiction: Rostand’s Cyrano, Barrie’s Tinker Bell, Dahl’s Big Friendly Giant, and the everyman. Each one describes a body, not a personality. My two join that family: Falstaff from Shakespeare, and Snub Nose, a plain description like Average Joe’s, with Socrates as his literary alias. Together they make three pairs. Cyrano and Snub Nose are the long nose and the short one; Falstaff and Tinkerbell, the stoutest and the slightest; the BFG, an Adelie who passes for a Gentoo, and Average Joe, a Gentoo who passes for nothing but himself.</p>
+<p>Thompson’s names come from fiction: Rostand’s Cyrano, Barrie’s Tinker Bell, Dahl’s Big Friendly Giant, and the everyman. Each one describes a body, not a personality. My two join that family: Falstaff from Shakespeare, and Snub Nose, a plain description like Average Joe’s, with Socrates as his literary alias. Together they make three pairs. Cyrano and Snub Nose are the long nose and the short one; Falstaff and Tinkerbell, the stoutest and the slightest; the BFG, an Adélie who passes for a Gentoo, and Average Joe, a Gentoo who passes for nothing but himself.</p>
 <p>There is a statistical point under the fun. <strong>A name helps us remember a point; a good choice of variables tells us <em>why</em> it is unusual.</strong> The book’s <span class="math inline">\(D^2\)</span>, computed on the four measures as recorded and ignoring species, found Cyrano, Snub Nose and Falstaff, but ranked the BFG 89th. Thompson’s plot of two raw measures found Cyrano, the BFG and Tinkerbell, but Snub Nose and Falstaff looked ordinary there. I misread my own plot and named a bird for a hook that nothing in the data could measure. Once the measures were re-expressed as bill shape and stoutness, and each bird was compared with its own species, every one of the six landed in a place that said what was special about it, and the names could be checked against that. Of the five names these birds had before, four hold up; Hook Nose has been retired with thanks.</p>
-<p>That leaves birds that are just as unusual and still go by a row number. Gentoo male 183 has the stubbiest bill for his species, stubbier relative to other Gentoos than Snub Nose’s is among the Adelies. “Pug” would do, or “Puffin”, if naming a penguin after another bird isn’t an insult. Gentoo males 160 and 253 are as stout as Falstaff, relative to their species. Suggestions are welcome: in the comments, or wherever you found this post.</p>
+<p>That leaves birds that are just as unusual and still go by a row number. Gentoo male 183 has the stubbiest bill for his species, stubbier relative to other Gentoos than Snub Nose’s is among the Adélies. “Pug” would do, or “Puffin”, if naming a penguin after another bird isn’t an insult. Gentoo males 160 and 253 are as stout as Falstaff, relative to their species. Suggestions are welcome: in the comments, or wherever you found this post.</p>
 <p>As for the penguins of Biscoe Point, a few of them can now be called by their names. The Big Five personality scales will have to wait for another field season.</p>
 </section>
 <section id="going-further" class="level2">
@@ -730,8 +741,8 @@ Figure&nbsp;6: Rank of each named bird’s residual D² among all 333 penguins (
 </div>
 </div>
 <p>Three birds don’t care how they are compared. Once species is in the model, Cyrano, Snub Nose and the BFG hold the top three places, whatever else is added. Their oddities are in the shape of the bill and the build of the body, and nothing about their sex or the year they were measured explains them away. Tinkerbell rises when she is compared with other females: she is small even for a female Chinstrap. Average Joe stays ordinary throughout.</p>
-<p>Falstaff is the exception. With species alone, he ranks 9th. Compared with Adelie males, the one group in which males are stouter than females, and with birds measured in 2007, the year of short flippers, he drops to 34th. He is still the stoutest bird of all on the raw ratio <span class="math inline">\(M / F^3\)</span>, and still well out in the tail on stoutness, so I’ll keep his name. But part of his stoutness is explained by who he is and when he was measured. That depends on a judgment: adjusting for year treats the 2007 flippers as a measurement artifact. If the difference were real, Falstaff would deserve his rank in the <code>species</code> model. Every term added to a model is a decision about what counts as unremarkable.</p>
-<p>The fuller model also turns up new candidates for names. Gentoo male 179, measured in 2007, ranks 4th, and three Adelie females from 2009 (cases 137, 109 and 117) enter the top eight. They have names waiting for them too.</p>
+<p>Falstaff is the exception. With species alone, he ranks 9th. Compared with Adélie males, the one group in which males are stouter than females, and with birds measured in 2007, the year of short flippers, he drops to 34th. He is still the stoutest bird of all on the raw ratio <span class="math inline">\(M / F^3\)</span>, and still well out in the tail on stoutness, so I’ll keep his name. But part of his stoutness is explained by who he is and when he was measured. That depends on a judgment: adjusting for year treats the 2007 flippers as a measurement artifact. If the difference were real, Falstaff would deserve his rank in the <code>species</code> model. Every term added to a model is a decision about what counts as unremarkable.</p>
+<p>The fuller model also turns up new candidates for names. Gentoo male 179, measured in 2007, ranks 4th, and three Adélie females from 2009 (cases 137, 109 and 117) enter the top eight. They have names waiting for them too.</p>
 <p>This is also where the post meets the book again. In <a href="https://friendly.github.io/Vis-MLM-book/14-infl-robust.html">Chapter 14</a>, a robust multivariate linear model, <code>heplots::robmlm()</code>, down-weights the cases with large residuals. Its four lowest weights go to Cyrano, Snub Nose, the BFG and Gentoo 179: much the same birds, found by a different route. A robust fit of the model here does the same, giving Cyrano a weight of 0 and Snub Nose 0.05, while Falstaff keeps 0.81.</p>
 <p><span id="about-the-banner"></span></p>
 <div class="callout callout-style-default callout-note callout-titled">

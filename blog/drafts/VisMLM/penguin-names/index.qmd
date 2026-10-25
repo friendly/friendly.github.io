@@ -50,7 +50,7 @@ penguin-names.md, to be worked up. Keep it short: three or four exchanges, then 
 > data is famous. They use us to teach statistics and data graphics all over the world. But sadly, they don't even know
 > our names, even with those tags on our flippers."
 >
-> "And why didn't they bother to give us the Big Five personality scales? Those orange Adelies are often
+> "And why didn't they bother to give us the Big Five personality scales? Those orange Adélies are often
 > narcissistic extroverts, not very open to experience. I'm a proud, average Joe Gentoo. Let's teach them a thing or two."
 
 They have a point. And moreover this creates an interesting data analysis challenge. The [Palmer penguins](https://allisonhorst.github.io/palmerpenguins/) are
@@ -59,9 +59,12 @@ depend on whether the few birds with missing measurements were dropped: Cyrano, 
 shortly, is number 294 in `palmerpenguins::penguins` and number 283 in `heplots::peng`. 
 This happened because our penguin friends were never given `rownames()` in the data.
 
+### Sorry
+
 This post can stand as a public apology from the R community. It's my attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near
 Palmer Station who allowed themselves to be measured for science from 2007 to 2009.
-Hey, guys: I understand your pain.
+
+> Hey, guys: I understand your pain. I hoper you don't mind my human, literary, historical references I've used to give you names. 
 
 <!--
 Pivot: a few of them do have names. Name them here, briefly, as a teaser:
@@ -69,7 +72,7 @@ Cyrano and Hook Nose (from my book), the BFG, Tinkerbell and Average Joe (from C
 The question of the post: what makes each of them unusual, and do the names fit?
 -->
 
-A few of them do have names. Cara Thompson named four: Cyrano, the BFG, Tinkerbell and
+As it turns out, a few of them do have names. Cara Thompson named four: Cyrano, the BFG, Tinkerbell and
 Average Joe. I borrowed Cyrano for my book, and added a Hook Nose of my own. So the questions for this
 post are: what makes each of these birds unusual, and do their names fit?
 
@@ -84,7 +87,7 @@ library(ggrepel)
 
 data(peng, package = "heplots")    # palmerpenguins, 333 complete cases
 
-col <- c(Adelie = "#F37A00", Chinstrap = "#6A3D9A", Gentoo = "#33a02c")
+col <- c("Adélie" = "#F37A00", Chinstrap = "#6A3D9A", Gentoo = "#33a02c")
 
 # the named birds, by row number in heplots::peng
 named <- tibble::tribble(
@@ -99,6 +102,7 @@ named <- tibble::tribble(
 
 peng <- peng |>
   mutate(id         = row_number(),
+         species    = factor(species, labels = c("Adélie", "Chinstrap", "Gentoo")),
          bill_shape = log(bill_length) - log(bill_depth),
          stoutness  = log(body_mass) / 3 - log(flipper_length)) |>
   group_by(species) |>
@@ -151,7 +155,7 @@ cqplot(peng[, vars],
 
 Plotting bill length against bill depth with those three labeled, two of them looked odd for their
 species. Case 283, a [Chinstrap]{.chinstrap}, has a remarkably long bill, so I called her "Cyrano",
-after the long-nosed hero of Edmond Rostand's play. Case 10, an [Adelie]{.adelie} with a short, deep
+after the long-nosed hero of Edmond Rostand's play. Case 10, an [Adélie]{.adelie} with a short, deep
 bill, became "Hook Nose". Case 35 looked unremarkable in that view and stayed nameless until today
 
 ```{r}
@@ -298,7 +302,7 @@ Her four named birds and my two are labeled with their case numbers in `heplots:
 Her four are easy to find. Cyrano is alone at the right, far beyond the other Chinstraps. The BFG is an
 orange point among the green Gentoos. Tinkerbell is the smallest point among the Chinstraps, and Average
 Joe sits in the middle of the Gentoos. But Snub Nose and Falstaff don't stand out. Snub Nose is at the
-short-bill edge of the Adelies, but not beyond it, and Falstaff is lost in the crowd. What makes them
+short-bill edge of the Adélies, but not beyond it, and Falstaff is lost in the crowd. What makes them
 unusual will need another view.
 
 ```{r}
@@ -360,16 +364,18 @@ in declaring a bird *name worthy*?
 Cyrano's bill, at 3.26 times as long as it is
 deep, would be unremarkable on a [Gentoo]{.gentoo}, whose bills average 3.18. On a
 [Chinstrap]{.chinstrap}, it is the most slender bill by a wide margin. A Gentoo's bill on a Gentoo
-isn't news; on a Chinstrap it is. So I standardize each variable *within species*: a bird's
+isn't news; on a Chinstrap it is. 
+
+So I standardize each variable *within species*: a bird's
 $z$-score is its distance from its own species' mean, in units of that species' standard deviation.
 This also puts the species on a common scale, which matters because they don't vary equally:
-[Adelie]{.adelie} bills vary more in shape than the others. Males and females are pooled. Males are
-bigger, but on these two ratios the sexes differ little, except that Adelie males are a bit stouter.
+[Adélie]{.adelie} bills vary more in shape than the others. Males and females are pooled. Males are
+bigger, but on these two ratios the sexes differ little, except that Adélie males are a bit stouter.
 
-This is where Thompson's eye and the book's formula parted company. The book's $D^2$ measured each
+This is where Cara Thompson's eye and the book's formula parted company. The book's $D^2$ measured each
 bird's distance from the centroid of *all* the penguins, ignoring species. By that measure the BFG
-ranks 89th of 333: a large Adelie sits comfortably inside the overall cloud, close to the
-Gentoos. Judged against other Adelies, with the same $D^2$ computed within species, he is the third
+ranks 89th of 333: a large Adélie sits comfortably inside the overall cloud, close to the
+Gentoos. Judged against other Adélies, with the same $D^2$ computed within species, he is the third
 most unusual bird in the data. Thompson saw that from one plot.
 
 @tbl-birds gives the six birds' bill ratios and stoutness indices as recorded, and their $z$-scores
@@ -377,7 +383,7 @@ within species. The raw measurements are in the [next section](#do-the-names-fit
 
 ```{r}
 #| label: tbl-birds
-#| tbl-cap: "The named birds: bill length / depth and the stoutness index M / F³ (in g/cm³), as recorded, and bill shape and stoutness as z-scores within species. Species means of L / D are 2.12 (Adelie), 2.65 (Chinstrap) and 3.18 (Gentoo); of M / F³, 0.54, 0.50 and 0.50."
+#| tbl-cap: "The named birds: bill length / depth and the stoutness index M / F³ (in g/cm³), as recorded, and bill shape and stoutness as z-scores within species. Species means of L / D are 2.12 (Adélie), 2.65 (Chinstrap) and 3.18 (Gentoo); of M / F³, 0.54, 0.50 and 0.50."
 birds |>
   mutate(name   = factor(name, levels = named$name[c(1, 5, 6, 3, 2, 4)]),
          LD     = bill_length / bill_depth,
@@ -434,15 +440,15 @@ slightest. The BFG is off in the lower right, with a slender bill and a lean bod
 extreme on either alone, but unusual on both. Average Joe sits almost exactly at the center.
 
 Two of these birds were hard to see in Thompson's view (@fig-thompson-view). Snub Nose's bill is
-short, but no shorter than a few other Adelies', and Falstaff's flippers are short, but not
+short, but no shorter than a few other Adélies', and Falstaff's flippers are short, but not
 remarkably so. What marks them out is a ratio: bill
 length to depth for Snub Nose, mass to flipper length for Falstaff. A plot of the raw measures can't
 show a ratio unless you know to look for it.
 
 The map also turns up birds that nobody has named yet. The stubbiest bill for its species isn't
 Snub Nose's but that of a Gentoo male, case 183 (z = −3.93, against −3.43 for Snub Nose). Snub Nose has
-the stubbiest bill of all 333 as measured, at 1.64, but Adelie bills are stubby to begin with.
-Likewise, two Gentoo males, 160 and 253, are as stout among Gentoos as Falstaff is among Adelies.
+the stubbiest bill of all 333 as measured, at 1.64, but Adélie bills are stubby to begin with.
+Likewise, two Gentoo males, 160 and 253, are as stout among Gentoos as Falstaff is among Adélies.
 
 ## Do the names fit?
 
@@ -469,9 +475,9 @@ doesn't matter. A nose like that transcends gender.
 
 ### Snub Nose ("Socrates") (10): formerly Hook Nose
 
-Case 10, an [Adelie]{.adelie} male, has the opposite bill: short, 34.6 mm (mean 40.4), and deep,
-21.1 mm (mean 19.1), at the 4th and 97th percentiles of the Adelies. Its ratio of 1.64 (mean 2.12) is the
-lowest of all 333 penguins; the next is 1.76. The rest of him is a large but ordinary Adelie male.
+Case 10, an [Adélie]{.adelie} male, has the opposite bill: short, 34.6 mm (mean 40.4), and deep,
+21.1 mm (mean 19.1), at the 4th and 97th percentiles of the Adélies. Its ratio of 1.64 (mean 2.12) is the
+lowest of all 333 penguins; the next is 1.76. The rest of him is a large but ordinary Adélie male.
 
 I called him "Hook Nose" in the book, describing "a very short and curved bill." That was my mistake:
 bill depth is measured top to bottom at the base of the bill. It says how *thick* the bill is, not how
@@ -487,9 +493,9 @@ species, the stubbiest bill belongs to Gentoo 183, still nameless.
 
 ### Falstaff (35): the stout one
 
-Case 35, another Adelie male, has a bill that is average in every respect: 39.8 by 19.1 mm, against
+Case 35, another Adélie male, has a bill that is average in every respect: 39.8 by 19.1 mm, against
 means of 40.4 and 19.1. It is his body that stands out. At 4650 g (mean 4043), he is one of the
-heaviest Adelies, 97th percentile, but his flippers are short, 184 mm (mean 192). That makes him, on the
+heaviest Adélies, 97th percentile, but his flippers are short, 184 mm (mean 192). That makes him, on the
 raw index M/F³ = 0.75, the stoutest penguin in the data; the next is 0.69. (Within species, two
 Gentoos are as extreme, relative to other Gentoos.) In the book (Chapter 5), he showed up at
 the edge of a biplot of the smallest principal components, where I guessed that he was "probably much
@@ -505,7 +511,7 @@ Tinkerbell, a Chinstrap female, is the lightest penguin in the data: 2700 g (mea
 lightest weighs 2850 g. But she is not simply small. Her flippers, 192 mm, are exactly the average
 for a Chinstrap female, and her bill is an ordinary length, if shallow. She is light *for her size*.
 On M/F³ = 0.38, she is the least stout bird of all 333, and the most extreme on stoutness within
-species too. She is Falstaff's mirror image: his M/F³ is 31% above the mean for Adelie males, hers 24% below
+species too. She is Falstaff's mirror image: his M/F³ is 31% above the mean for Adélie males, hers 24% below
 the mean for Chinstrap females.
 
 **Verdict:** Thompson's label calls her "the smallest penguin in the set." "Lightest" is more precise,
@@ -515,18 +521,18 @@ to *embonpoint*", but we needn't tell her.)
 
 ### The BFG (124): the impostor
 
-The BFG is an Adelie male with the longest flippers of any Adelie: 210 mm (mean 192); the next is 208. His
-bill is long for an Adelie, 44.1 mm (mean 40.4), but shallower, 18.0 mm (mean 19.1), so it is slender. He is
+The BFG is an Adélie male with the longest flippers of any Adélie: 210 mm (mean 192); the next is 208. His
+bill is long for an Adélie, 44.1 mm (mean 40.4), but shallower, 18.0 mm (mean 19.1), so it is slender. He is
 not heavy: 4000 g (mean 4043). Long flippers on an ordinary mass make him lean.
 
 In Thompson's view, flipper length against bill length, he sits "comfortably within the cluster of
 Gentoos". A discriminant analysis on just those two variables would call him a Gentoo, with a
 posterior probability of 0.97. On all four measures, it wouldn't. His bill is still deep for a Gentoo.
 None of his oddities is extreme on its own, which is why the book's $D^2$, ignoring species, ranked
-him 89th. Taken together, against other Adelies, he is the third most unusual bird in the data.
+him 89th. Taken together, against other Adélies, he is the third most unusual bird in the data.
 
 **Verdict:** It fits beautifully. Dahl's Big Friendly Giant is the gentle runt among giants, much
-smaller than the others. That's the BFG here: a giant among Adelies, but a small Gentoo.
+smaller than the others. That's the BFG here: a giant among Adélies, but a small Gentoo.
 
 ### Average Joe (166): the reference bird
 
@@ -547,7 +553,7 @@ Giant, and the everyman. Each one describes a body, not a personality. My two jo
 Falstaff from Shakespeare, and Snub Nose, a plain description like Average Joe's, with Socrates as
 his literary alias. Together they make three pairs. Cyrano and Snub Nose are the long nose and the
 short one; Falstaff and Tinkerbell, the stoutest
-and the slightest; the BFG, an Adelie who passes for a Gentoo, and Average Joe, a Gentoo who passes
+and the slightest; the BFG, an Adélie who passes for a Gentoo, and Average Joe, a Gentoo who passes
 for nothing but himself.
 
 There is a statistical point under the fun. **A name helps us remember a point; a good choice of
@@ -561,7 +567,7 @@ could be checked against that. Of the five names these birds had before, four ho
 has been retired with thanks.
 
 That leaves birds that are just as unusual and still go by a row number. Gentoo male 183 has the
-stubbiest bill for his species, stubbier relative to other Gentoos than Snub Nose's is among the Adelies.
+stubbiest bill for his species, stubbier relative to other Gentoos than Snub Nose's is among the Adélies.
 "Pug" would do, or "Puffin", if naming a penguin after another bird isn't an insult. Gentoo males 160
 and 253 are as stout as Falstaff, relative to their species. Suggestions are welcome: in the
 comments, or wherever you found this post.
@@ -641,7 +647,7 @@ bill and the build of the body, and nothing about their sex or the year they wer
 them away. Tinkerbell rises when she is compared with other females: she is small even for a female
 Chinstrap. Average Joe stays ordinary throughout.
 
-Falstaff is the exception. With species alone, he ranks 9th. Compared with Adelie males, the one group
+Falstaff is the exception. With species alone, he ranks 9th. Compared with Adélie males, the one group
 in which males are stouter than females, and with birds measured in 2007, the year of short
 flippers, he drops to 34th. He is still the stoutest bird of all on the raw ratio $M / F^3$, and
 still well out in the tail on stoutness, so I'll keep his name. But part of his stoutness is
@@ -651,7 +657,7 @@ deserve his rank in the `species` model. Every term added to a model is a decisi
 as unremarkable.
 
 The fuller model also turns up new candidates for names. Gentoo male 179, measured in 2007, ranks
-4th, and three Adelie females from 2009 (cases 137, 109 and 117) enter the top eight. They have names
+4th, and three Adélie females from 2009 (cases 137, 109 and 117) enter the top eight. They have names
 waiting for them too.
 
 This is also where the post meets the book again. In
