@@ -62,6 +62,13 @@ The original data, `palmerpenguins::penguins_raw`, does record an `Individual ID
 were dropped from the simplified data frames everyone uses, so our penguin friends never got
 `rownames()`.
 
+T. S. Eliot warned that "The Naming of Cats is a difficult matter," because a cat must have three
+different names. Penguins have the same problem. Cyrano's everyday name is a row number, 283 or 294,
+depending on which data frame you ask. Her more particular name, the one for the field notebook, is
+`N71A2`, which she shares with other birds. And then there is the third name, "the name that no human
+research can discover." Eliot says the cat "himself knows, and will never confess." Cyrano knows hers
+too. Our nicknames are only a guess at it.
+
 ### Sorry
 
 This post can stand as a public apology from the R community. It's my attempt to right this injustice to the 344 birds on Biscoe, Dream and Torgersen islands near
