@@ -1110,6 +1110,17 @@ one can model the dispersion directly, allowing the variances to depend on GDP, 
 
 ## Whole-data views
 
+What if we started afresh, and took a visual look at the life aspect variables simply as a data
+matrix, using the standardized values in `Z`? There are no models, residuals or ellipses here: just
+`r nrow(Z)` rows for the countries, `r ncol(Z)` columns for the outcomes, and a color for each cell.
+
+A display like this is only as good as the order of its rows and columns. Countries listed
+alphabetically would give you confetti. So I use the idea of
+effect ordering (Friendly & Kwan, 2003): arrange the display according to the effect you want to
+see. @fig-heatmap sorts the countries by GDP per capita, and the outcomes by their correlation with
+log GDP, from child mortality (.88) on the left to electricity (.79) on the right. Values beyond
+$\pm 2.5$ are given the darkest color.
+
 ```{r fig-heatmap}
 #| fig-cap: "Ordered heatmap: countries sorted by GDP, responses by correlation with GDP."
 #| fig-height: 11
@@ -1132,6 +1143,36 @@ ggplot(Zlong, aes(response, country, fill = z)) +
         panel.grid = element_blank())
 ```
 
+This is the OWID chart again, with all its panels folded into one picture. The main message is just
+as immediate: blue at the top, red at the bottom. In the richest third of countries, 96% of the cells
+are above average, and in the poorest third only 10% are.
+
+But it can do something the small multiples cannot. In @fig-owid, a country is an anonymous dot in
+each panel, and there is no way to follow it from one panel to the next. Here each country is a row,
+so you can read across it. Against the smooth gradient, the exceptions are rows or cells that
+are off-color for their position:
+
+- **Whole rows.** Guyana sits near the top, with GDP per capita of about \$84,000, in a pale orange
+  band among the blue rows of the richest countries. Near the bottom, Nigeria and Kyrgyzstan are
+  neighbors, with nearly the same income (about \$8,000). Nigeria is one of the reddest rows in the figure, and Kyrgyzstan is
+  nearly white.
+- **Single cells.** Lesotho and Chad stand out on life expectancy, Malawi on doctors, and Afghanistan on
+  life satisfaction. At the other extreme, Greece has the darkest blue cell in the figure, for
+  schooling. Botswana is off-color mainly in its last two columns.
+- **Whole columns.** Electricity looks different from the rest. Its upper two-thirds is nearly one uniform
+  pale blue, and nearly all its color is at the bottom, where Chad and Malawi are darkest. This is the ceiling again: `r sum(Z[, "Electricity"] == max(Z[, "Electricity"]))` of the
+  `r nrow(Z)` countries share the top value, 100%, which is only $z = 0.61$. Life satisfaction, in the
+  column beside it, has its own pattern. No country in the richest third is below average on it, but some in
+  the middle, such as Egypt and Sri Lanka, are much lower than their neighbors.
+
+Many of these are the same countries that came out of the residual PCA and the outlier analysis:
+Guyana, Nigeria, Kyrgyzstan, Botswana, Afghanistan. There they took a fitted model to find. Here you
+can simply see them, once the matrix is put in a useful order. Of course, the model tells you *how far* out of line they are, and the heatmap only tells you
+where to look.
+
+@fig-parcoord shows the same matrix another way. Now each country is a line, running across the
+outcomes in the same order, and colored by GDP.
+
 ```{r fig-parcoord}
 #| fig-cap: "Parallel coordinates of standardized responses, colored by GDP."
 Zlong |>
@@ -1143,13 +1184,76 @@ Zlong |>
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
 ```
 
+With `r nrow(Z)` lines the middle of this plot is a tangle, and you can't identify any particular
+country. It is better for seeing the overall shape. The colors stack up in order, with the rich
+countries in yellow and green on top and the poor ones in purple at the bottom, and that is the
+common factor once more. The lines stay in their bands at the two extremes and cross most in the
+middle incomes. The most striking feature is at the right: the lines from nearly all the richer
+countries converge on a single point at electricity, the ceiling seen as a fan. A lone yellow line well below
+the other rich countries is Guyana, and the line that spikes up at schooling is Greece.
+
+## What I learned
+
+I have been drawing HE plots for a long time, but this example still taught me some things. It has
+one quantitative predictor and many responses, a setup I had not thought much about, and which at
+first seems to leave an HE plot with nothing to do.
+
+**A spline rescues the degenerate ellipse.** With $\log(\text{GDP})$ as a single 1-df term, the H
+"ellipse" is only a line. Giving GDP a few more degrees of freedom lets it open up, and how far it
+opens shows how far the relations depart from a straight line. So what began as a trick to get a
+proper ellipse also gives a visual check for curvature. In @fig-heplot-pairs the GDP ellipse stays
+a thin cigar in most panels, and fattens where doctors are involved.
+
+**A grouping variable gives the plot something to compare.** Adding region is what made the HE plots
+interesting. It gave a second H ellipse, a contrast between an effect that is nearly one-dimensional
+and one that is not, and a question I could not have asked of GDP alone: how do countries differ *at
+the same income*? It also turned the problem into a MANCOVA, which comes with its caveat about
+unequal slopes.
+
+**The defaults can undo the adjustment.** This is the one I would most like others to know about. The
+region H ellipse is adjusted for GDP, but the region means that `heplot()` draws by default are not,
+and neither are the scores that `candisc()` plots. Left alone, these displays mostly show income all
+over again, with Can1 correlating $-0.86$ with log GDP. Using the residuals from the GDP model as the
+responses fixes this, for the display at least.
+
+**PCA can be aimed.** A PCA of the outcomes rediscovers income, which we already knew. Taking out the
+known common factor first turns the same tool toward a better question: who does more, or less, than
+their money predicts?
+
+**Rescaling makes panels comparable.** The development profiles (@fig-profiles) came from wanting to
+compare across the OWID panels. Just rescaling each fitted curve to run from 0 to 1 was enough to show
+a sequence I couldn't see in the separate panels, though @tbl-thresholds shows how much that sequence
+depends on the scale of each outcome.
+
 ## Lessons
 
-- Small multiples show the marginal relations. Multivariate displays show the joint structure:
-  what's common, what's left over, who's unusual.
-- Orientation, transformation and standardization come first.
-- One quantitative predictor alone makes a degenerate HE plot. Splines and a grouping factor
-  make it work.
+Small multiples like @fig-owid show the marginal relations very well. Multivariate displays add the
+joint structure: what's common, what's left over, and who's unusual. Getting there takes some work up
+front. Orienting, transforming and standardizing the variables comes first, and these are not neutral
+steps. As @tbl-thresholds shows, doctors go from second to last in the development sequence just by
+changing the scale, so it is as well to know what your scales are saying.
+
+The largest lesson is to take out what you already know. The raw correlations average .81 and show
+little structure, because GDP drives them all. Controlling for GDP drops the average to .37, and the
+structure appears. Nearly every multivariate display here became more interesting once income was out
+of the way.
+
+But a residual is only relative to its model. Guyana looks like a failure because its GDP changed
+faster than everything else, and Palestine looks like a success partly because its GDP fell. Change the
+curve from a spline to a quadratic, and 9 of the 24 countries in @fig-performance change too. A
+ranking like this one says as much about GDP, and about the shape of the curve, as it does about the
+countries.
+
+The same care applies to summaries over the whole range of incomes. Life satisfaction seemed to go
+its own way, nearly independent of everything else once GDP was controlled. That holds for most of
+the world, but among the richest third of countries it is linked with schooling and maternal
+mortality. A single covariance matrix is an average, and here it averages over rather different
+matrices.
+
+Finally, the models and the pictures need each other. The sorted heatmap in @fig-heatmap shows many of
+the same exceptions that the outlier analysis found, with no model at all. The model says how far out
+of line a country is, and how much to believe it. The picture shows you where to look, and it keeps
+you honest about what the model has left out.
 
 ## Acknowledgments and data
 
@@ -1158,5 +1262,6 @@ Gallup and the World Bank. Thanks to Max Roser.
 
 ## References {.unnumbered}
 
+* Friendly, M., & Kwan, E. (2003). Effect ordering for data displays. *Computational Statistics & Data Analysis*, 43(4), 509--539. https://doi.org/10.1016/S0167-9473(02)00290-6
 * Hastie, T., & Tibshirani, R. (1986). Generalized additive models. *Statistical Science*, 1(3), 297--310. https://doi.org/10.1214/ss/1177013604
 * Nelder, J. A., & Wedderburn, R. W. M. (1972). Generalized linear models. *Journal of the Royal Statistical Society. Series A (General)*, 135(3), 370--384. https://doi.org/10.2307/2344614
