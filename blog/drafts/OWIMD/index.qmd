@@ -5,6 +5,7 @@ description: "A multivariate reanalysis of Our World in Data's chart of life at 
 author: "Michael Friendly"
 date: today
 categories: [Vis-MLM, R, multivariate, HE plots, Our World in Data]
+bibliography: references.bib
 image: images/Life-GDP.jpg
 format:
   html:
@@ -92,6 +93,8 @@ all indicators of quality of life get better as countries get richer.
 
 ![How is life at different levels of GDP per capita? (Our World in Data, CC-BY)](images/Life-GDP.jpg){#fig-owid width="60%"}
 
+In his [post](https://x.com/OurWorldInData/status/2115836531894047016), Max Roser put the message this way: "Where GDP per capita is higher, living conditions are far better in many ways." That is true, and the analysis below confirms it. But it also invites the next questions: are they better in the same way, at the same pace, and what is left over once income is accounted for?
+
 ### A multivariate view?
 But it also struck me as something from which more might be learned from a multivariate perspective. 
 @fig-owid shows 12 *separate* bivariate displays. What it can't show:
@@ -115,7 +118,7 @@ where $x$ is GDP per capita. Both sides can be transformed:
 
 I call this a **doubly generalized linear model**, but that is more a conceptual term than a statistical
 one, because the details that give it structure need to be worked out, as in generalized linear
-models (Nelder & Wedderburn, 1972) and generalized additive models (Hastie & Tibshirani, 1986). The goal is to allow flexibility
+models [@NelderWedderburn:72] and generalized additive models [@HastieTibshirani:86]. The goal is to allow flexibility
 in the transformations of the predictor and the response variables that make the fitted relations
 linear in the parameters in $\mathbf{B}$.
 
@@ -123,11 +126,19 @@ The statistical questions are then about the fitted part $g(x)\mathbf{B}$ and th
 covariance $\boldsymbol{\Sigma}$ of the rows of $\mathbf{E}$.
 These create some interesting possibilities for visualizing these relations,
 using and extending the methods I describe in my book
-[*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/)
-and R packages [heplots](https://friendly.github.io/heplots/), [candisc](https://friendly.github.io/candisc/), [mvinfluence](https://friendly.github.io/mvinfluence/) and others.
+[*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/) [@Friendly:2024:VisMLM]
+and R packages [heplots](https://friendly.github.io/heplots/), [candisc](https://friendly.github.io/candisc/), [mvinfluence](https://friendly.github.io/mvinfluence/) [@heplots; @candisc; @mvinfluence] and others.
 
 As an added bonus, I also discovered several aspects of a multivariate approach to this problem
 and similar ones, that make analysis and visualization simpler or easier to understand.
+
+A word about what I bring to this. I'm a statistician and a data visualization person, not an
+economist, demographer or public health expert, and I don't know the literature on any of these
+measures. When I say why a country stands out, say that a country lives longer or less long than its
+income predicts, that comes from what the analysis and the graphs show, together with what I know in
+general about the countries. Take these as hypotheses to check, not as findings. I'd be glad to hear
+from readers who know the countries or the measures better.
+
 I'm grateful to the team at [Our World In Data](https://ourworldindata.org/) for making these data so easy to get.
 
 ## The data
@@ -469,7 +480,7 @@ The H ellipses are scaled so that a term is significant (by Roy's test, at $\alp
 exactly when its ellipse sticks out beyond the E ellipse somewhere. Then you can read both the
 significance and the direction of an effect from the same picture. 
 
-See the
+See @Friendly:07:manova, the
 [heplots](https://friendly.github.io/heplots/) package, and the chapters on HE plots in my
 book [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/), for more.
 
@@ -1116,7 +1127,7 @@ matrix, using the standardized values in `Z`? There are no models, residuals or 
 
 A display like this is only as good as the order of its rows and columns. Countries listed
 alphabetically would give you confetti. So I use the idea of
-effect ordering (Friendly & Kwan, 2003): arrange the display according to the effect you want to
+effect ordering [@FriendlyKwan:02:effect]: arrange the display according to the effect you want to
 see. @fig-heatmap sorts the countries by GDP per capita, and the outcomes by their correlation with
 log GDP, from child mortality (.88) on the left to electricity (.79) on the right. Values beyond
 $\pm 2.5$ are given the darkest color.
@@ -1257,11 +1268,10 @@ you honest about what the model has left out.
 
 ## Acknowledgments and data
 
-Data: Our World in Data (CC-BY), from UN IGME, UN MMEIG, WHO/UNICEF, UN WPP, UNESCO, UNDP,
+Data: Our World in Data [-@OWID] (CC-BY), from UN IGME, UN MMEIG, WHO/UNICEF, UN WPP, UNESCO, UNDP,
 Gallup and the World Bank. Thanks to Max Roser.
 
 ## References {.unnumbered}
 
-* Friendly, M., & Kwan, E. (2003). Effect ordering for data displays. *Computational Statistics & Data Analysis*, 43(4), 509--539. https://doi.org/10.1016/S0167-9473(02)00290-6
-* Hastie, T., & Tibshirani, R. (1986). Generalized additive models. *Statistical Science*, 1(3), 297--310. https://doi.org/10.1214/ss/1177013604
-* Nelder, J. A., & Wedderburn, R. W. M. (1972). Generalized linear models. *Journal of the Royal Statistical Society. Series A (General)*, 135(3), 370--384. https://doi.org/10.2307/2344614
+::: {#refs}
+:::

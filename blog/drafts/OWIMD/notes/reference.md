@@ -4,24 +4,26 @@ Found while making `../references.bib` on 2026-10-30.
 
 ## In `references.bib`
 
-- [ ] **HE plots paper title.** Crossref has "HE Plots for Multivariate Linear Models", but `vita.bib`
-      and the R citations say "HE plots for Multivariate *General* Linear Models". The `.bib` uses
-      Crossref's title. Confirm it against the paper, then correct whichever is wrong
-      (`Friendly:07:manova` in `vita.bib`).
-- [ ] **My book.** `Friendly:2024:VisMLM` copies `vita.bib`: year 2024, "In progress". Update it if the
-      year or status has changed.
+- [x] **HE plots paper title.** Confirmed 2026-10-30: the published title is "HE Plots for
+      Multivariate Linear Models", as in Crossref and `references.bib`. Fixed `Friendly:07:manova` in
+      `vita.bib` and `graphics.bib` (`Friendly:04:manova`, the submitted version, keeps the old title).
+- [x] **My book.** Kept year 2024 (copyright from the 2024 online draft); note changed from "In progress"
+      to "To be published 2027" (2026-10-30). Same change made in `vita.bib`.
 
 ## In my R packages
 
-- [ ] **`heplots`:** `citation("heplots")` gives the 2007 paper as `number = 4`. Crossref and `vita.bib`
-      have issue 2. Package version checked: 1.8.6.
-- [ ] **`candisc`:** `citation("candisc")` gives the URL as `package=heplots`. It should be
-      `package=candisc`. Package version checked: 1.1.1.
+- [x] **`heplots`:** `citation("heplots")` gave the 2007 paper the wrong title ("...Multivariate *General*
+      Linear Models") and `number = 4`. Fixed in the source on 2026-10-30 (title, issue 2, DOI added),
+      in `inst/CITATION`, `CITATION.cff`, the README, roxygen and `.Rd` files and `vignettes/HE-examples.bib`.
+      Not committed yet; takes effect from the next release after 1.8.6.
+- [x] **`candisc`:** `citation("candisc")` gave the URL as `package=heplots`, and the 2007 paper's old
+      title. Both fixed and pushed on 2026-10-30; takes effect from the next release after 1.1.1.
 
 The `.bib` already has the correct issue number and URL, so these two only need fixing in the packages.
 
 ## When publishing
 
-- [ ] Connect the `.bib` to `index.qmd`: add `bibliography: references.bib` to the YAML, change the
-      citations in the text to `[@key]` form, and replace the typed list under `## References`.
-- [ ] Update the package versions in the `.bib`, if they have changed.
+- [x] Connect the `.bib` to `index.qmd` (done 2026-10-30). All 9 entries are cited; the book,
+      HE plots paper and packages are cited next to their existing links.
+- [ ] Update the package versions in the `.bib`, if they have changed. (Checked 2026-10-30: heplots 1.8.6,
+      candisc 1.1.1 and mvinfluence 0.9.4 are the current CRAN versions.)
