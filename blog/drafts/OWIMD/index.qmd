@@ -1294,34 +1294,35 @@ depends on the scale of each outcome.
 ## Lessons
 
 I started out with a simple thought: how can I take a lovely chart from Our World in Data and try
-to re-envision the data from a multivariate perspective and also explore how the graphical methods
+to re-envision the data from a multivariate perspective. I also thought about how to use this data
+to explore how the graphical methods
 I've been developing could shed some additional light on an interesting applied problem.
 I learned some lessons from this, and here are some take-aways for you:
 
-Small multiples like @fig-owid show the marginal relations very well. Multivariate displays add the
+* **Small multiples** like @fig-owid show the **marginal relations** very well. Multivariate displays add the
 joint structure: what's common, what's left over, and who's unusual. Getting there takes some work up
 front. Orienting, transforming and standardizing the variables comes first, and these are not neutral
 steps. As @tbl-thresholds shows, doctors go from second to last in the development sequence just by
 changing the scale, so it is as well to know what your scales are saying.
 
-The largest lesson is to take out what you already know. The raw correlations average .81 and show
+* A larger lesson is to **take out what you already know**, to see what remains. The raw correlations average .81 and show
 little structure, because GDP drives them all. Controlling for GDP drops the average to .37, and the
 structure appears. Nearly every multivariate display here became more interesting once income was out
 of the way.
 
-But a residual is only relative to its model. Guyana looks like a failure because its GDP changed
+* But a residual is only relative to its model. Guyana looks like a failure because its GDP changed
 faster than everything else, and Palestine looks like a success partly because its GDP fell. Change the
 curve from a spline to a quadratic, and 9 of the 24 countries in @fig-performance change too. A
 ranking like this one says as much about GDP, and about the shape of the curve, as it does about the
 countries.
 
-The same care applies to summaries over the whole range of incomes. Life satisfaction seemed to go
+* The same care applies to summaries over the whole range of incomes. Life satisfaction seemed to go
 its own way, nearly independent of everything else once GDP was controlled. That holds for most of
 the world, but among the richest third of countries it is linked with schooling and maternal
 mortality. A single covariance matrix is an average, and here it averages over rather different
 matrices.
 
-Finally, the models and the pictures need each other. The sorted heatmap in @fig-heatmap shows many of
+* Finally, the **models and pictures need each other**. The sorted heatmap in @fig-heatmap shows many of
 the same exceptions that the outlier analysis found, with no model at all. The model says how far out
 of line a country is, and how much to believe it. The picture shows you where to look, and it keeps
 you honest about what the model has left out.
@@ -1331,7 +1332,7 @@ you honest about what the model has left out.
 Data: Our World in Data [-@OWID] (CC-BY), from UN IGME, UN MMEIG, WHO/UNICEF, UN WPP, UNESCO, UNDP,
 Gallup and the World Bank. Thanks to Max Roser and the team at Our World in Data for providing such
 interesting datasets to explore; thanks also to Gavin Klorfine who gave insightful
-comment on this post.
+comments on this post.
 
 ## References {.unnumbered}
 
