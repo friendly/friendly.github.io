@@ -586,6 +586,8 @@ pairs(modR, variables = c("ChildMort", "Doctors", "LifeExp", "Water", "LifeSat")
       term.labels = c("GDP", "region"))
 ```
 
+### Canonical views
+
 With nine responses there are 36 pairwise panels, too many to look at. A canonical
 discriminant analysis does the summarizing for us. It finds the linear combinations of the
 responses that best separate the regions, relative to the within-region variation. These are the
@@ -598,45 +600,57 @@ it computes the plotted *scores* (the points, region means and data ellipses) fr
 responses, so they still contain GDP. In that version of the plot, Can1 correlates −0.86 with log
 GDP, and the plot mostly shows the income gradient once more, from Africa to Europe.
 
-The fix is the same as before. I run the canonical analysis on the GDP-adjusted responses, the
-partial residuals `Z_adj` from @fig-heplot, with region as the only term. Within each region, the
-scores are now uncorrelated with GDP, and the plot shows how the regions differ *at the same
-income*. Across all countries Can1 still correlates .61 with log GDP, but only because the poorer
-regions also tend to do worse than their income predicts, which is part of the region effect
-itself. The tests for region come from `modR`, in the last section. This version is for display,
-and its significance tests are only approximate, because it doesn't allow for the degrees of
-freedom used by GDP.
+The fix is the same as before, and it needs only the points to change. I keep the canonical axes
+from `candisc(modR, term = "region")`, so they are the dimensions of the region effect that was
+tested in the last section. Then I project the GDP-adjusted responses, the partial residuals
+`Z_adj` from @fig-heplot, onto those axes, and compute the variable vectors from them as well.
+Within regions, pooled over all five, the scores are now uncorrelated with log GDP, and the plot
+shows how the regions differ *at the same income*. Across all countries Can1 still correlates .56
+with log GDP, because the regions differ in income and the poorer ones also tend to do worse than
+their income predicts, which is part of the region effect itself.
 
 ```{r fig-candisc}
-#| fig-cap: "Canonical discriminant plot of region differences, using GDP-adjusted responses."
-# Canonical view of region differences at the same GDP:
-# region model for the partial residuals Z_adj from modR
-modA <- lm(Z_adj ~ region, data = cc)
-can_region <- candisc(modA, term = "region")
+#| fig-cap: "Canonical discriminant plot of region differences. The axes are from the MANCOVA model, and the points are the GDP-adjusted responses."
+# Canonical axes for region from modR. Its scores, means and structure use the raw Z, which
+# still contains GDP, so replace them using the partial residuals Z_adj
+can_region <- candisc(modR, term = "region")
+can_scores <- Z_adj %*% can_region$coeffs.raw
+can_region$scores <- data.frame(region = cc$region, can_scores)
+can_means <- aggregate(can_scores, list(region = cc$region), mean)
+can_region$means <- can_means[, -1]
+can_region$structure <- cor(Z_adj, can_scores)
 can_region
-# reverse Can1 so that right = better than income predicts on health and infrastructure, and
-# reverse Can2 so that up = higher life satisfaction (the Americas)
-plot(can_region, var.lwd = 2, var.col = "black", ellipse = TRUE, rev.axes = c(TRUE, TRUE),
-     scale = 4, col = scales::hue_pal()(nlevels(cc$region)))
+
+# reverse Can1 so that right = better than income predicts on the mortality measures.
+# plot() can't make the region labels bold, so blank them (rownames must differ) and add them after
+region_cols <- scales::hue_pal()(nlevels(cc$region))
+rownames(can_region$means) <- strrep(" ", seq_len(nlevels(cc$region)))
+plot(can_region, var.lwd = 2, var.col = "black", ellipse = TRUE, rev.axes = c(TRUE, FALSE),
+     scale = 5.5, col = region_cols, var.pos = c(4, 3, 1, 4, 3, 1, 4, 4, 3))
+text(-can_means$Can1, can_means$Can2, labels = can_means$region, col = region_cols,
+     font = 2, pos = c(1, 2, 4, 3, 1))
 ```
 
-Two dimensions account for 87% of the GDP-adjusted region differences, and they are easy to
+Two dimensions account for 83% of the GDP-adjusted region differences, and they are nearly equal
+in size. So the plane is better determined than either axis in it, but the axes are easy enough to
 interpret from the variable vectors.
 
-- **Can1 (59%) is doing better or worse than income predicts, across the board.** All nine
-  vectors point to the right, most strongly doctors and electricity, then the three mortality
-  measures. This is the Africa–Europe contrast. At the left, at the same income, are African
-  countries: Botswana, Zimbabwe, Togo, Côte d'Ivoire, the Congo, Sierra Leone, Nigeria and Malawi.
-  At the right are Belarus, Russia, North Macedonia and Montenegro in Europe, and Tajikistan,
-  Uzbekistan and Kyrgyzstan in Central Asia, the post-Soviet legacy of
-  universal electrification and plentiful doctors. Asia/Oceania and the Americas are in between.
-- **Can2 (28%) sets life satisfaction against health.** Up, the life satisfaction vector points to
-  the Americas: the Dominican Republic, Costa Rica, Mexico, Guatemala, Colombia and Paraguay. Down,
-  the vectors for the mortality measures, schooling and water point to Belarus, North Macedonia,
-  Montenegro, Estonia and Egypt. For their income, Latin American countries are happier than
-  their health outcomes would suggest, and post-communist Europe is the reverse. Both are
-  well-known patterns in the happiness literature. Here they appear together, as two ends of the
-  same dimension.
+- **Can1 (42%) is mainly the mortality measures.** The vectors for child mortality, stillbirths and
+  maternal mortality lie almost exactly along this axis, pointing away from Africa. Doctors and
+  electricity are just as strongly related to it, but they also tilt upward, toward Can2. At the
+  left, at the same income, are Botswana, Côte d'Ivoire, Nigeria, Guyana, the Congo, Chad, Zimbabwe
+  and Sierra Leone. At the right are several post-communist countries, Belarus, North Macedonia,
+  Tajikistan, Ukraine, Montenegro and Estonia, along with Luxembourg and Palestine. Europe is furthest
+  to the right among the regions, then Asia/Oceania, and the Americas are to the left of center.
+- **Can2 (40%) contrasts life satisfaction, life expectancy, doctors and electricity with water and
+  schooling.** It separates the Americas, at the top, from Africa at the bottom. Up are the Dominican
+  Republic, Mexico, Costa Rica, Suriname, Paraguay and Colombia. Down are Togo, Zimbabwe, the Congo,
+  Eswatini and Lesotho, and also Belarus and Egypt. The high life satisfaction of Latin America, for
+  its income, shows up here, though the negative side of the contrast is the weaker one.
+
+A third dimension is also significant, with 16% of the region differences. It doesn't appear in
+@fig-candisc. It relates most to life satisfaction and child mortality, with South America high and
+Asia/Oceania low.
 
 ## What GDP doesn't explain: residual correlations
 
@@ -699,7 +713,8 @@ Three features stand out in the partial correlations:
   largest of its partial correlations is .26, and it is .08 with electricity. Happiness tracks
   money, across countries. But a country that is healthier, or better schooled, than its income
   predicts is *not* noticeably happier than its income predicts. We saw a hint of this already
-  in the canonical analysis, where life satisfaction was set against the health outcomes.
+  in the canonical analysis, where the life satisfaction vector points well away from those for the
+  mortality measures.
 
 Some of this residual structure comes from region. The residuals here adjust for GDP only.
 If region is controlled as well (using `modR` from above), the partial correlations shrink
