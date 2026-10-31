@@ -501,8 +501,11 @@ one linear predictor can push the responses in only one direction.
 A trick, which I discovered from this example is to use a term, $g[\log(\text{GDP})]$
 which adds an extra degree of freedom or two, to allow the relationship to bend smoothly
 to some degree. Consequently, the GDP **H** ellipse is allowed to get slightly fatter than
-a line, to the extent that the relationship differs from a strictly linear one in $\log(\text{GDP})$
-relative to the transformation of the response, $f(\mathbf{y}_i)$.
+a line. In a panel for two responses, it is fat to the extent that their fitted curves against
+$\log(\text{GDP})$ have *different shapes*. Two responses that bend in the same way, say both
+rising quickly and then levelling off together, still give a thin ellipse, because each is then
+nearly a linear function of the other. So the ellipse doesn't measure curvature as such, but
+how differently the responses curve.
 
 Here, I use a simple _natural cubic spline_, given by `splines::ns(logGDP, df=3)`.
 This gives the GDP **H** ellipse some extra wiggle room to express non-linearity, if there is any
@@ -521,18 +524,34 @@ The dots in @fig-heplot need a word of explanation. By default, `heplot()` marks
 its *raw* mean. Here that would be misleading. The region H ellipse is adjusted for GDP, but the
 raw means are not. They would mostly show differences in income again, lying along the GDP
 direction, with Africa far down at the lower left. So instead I plot the *GDP-adjusted* region
-means: the averages, by region, of the residuals from a model with GDP alone. Now the dots and
-the region ellipse show the same thing.
+means, the means each region would have at the same GDP.
 
-At the same GDP, North and South America are about 0.5 and 0.3 SD *above* average in life
-satisfaction, and Africa is about 0.25 SD below average in life expectancy. Europe and
-Asia/Oceania are close to the center: their raw advantages are mostly accounted for by income.
+There is a tempting shortcut here that doesn't quite work: fit a model with GDP alone, and
+average its residuals by region. Because region and GDP are related, with most African countries
+poor and most European ones rich, the GDP curve in that model absorbs part of the region
+differences before they are averaged, and the adjusted means come out too close together. This
+is the [Frisch–Waugh–Lovell theorem](https://en.wikipedia.org/wiki/Frisch%E2%80%93Waugh%E2%80%93Lovell_theorem)
+at work: the residual trick reproduces a joint model only if GDP is removed from the region
+indicators as well as from the responses. The right way is to take the GDP part out using the
+coefficients from `modR` itself, which estimates GDP and region together. These *partial
+residuals* average to the same adjusted means that the region H ellipse tests. Here the shortcut
+makes a real difference: it shrinks the spread of the region means by a factor of 1.3 to 2 on
+most outcomes.
+
+At the same GDP, North and South America are about 0.6 and 0.4 SD *above* average in life
+satisfaction. Africa is about 0.45 SD below average in both life expectancy and life
+satisfaction. Asia/Oceania is a little above average in life expectancy, and Europe a little
+above average on both.
 
 ```{r fig-heplot}
 #| fig-cap: "HE plot for LifeExp and LifeSat: GDP (spline) and region effects. Dots show GDP-adjusted region means."
-# GDP-adjusted responses: residuals from the model with GDP alone
-res_gdp <- resid(lm(Z ~ ns(logGDP, 3), data = cc))
-adj_means <- aggregate(res_gdp, list(region = cc$region), mean)
+# GDP-adjusted responses: partial residuals from modR, the responses minus the fitted GDP
+# part of the model. Their region means are the adjusted means, at the same GDP, which the
+# region H ellipse refers to.
+X <- model.matrix(modR)
+gdp <- grep("ns(logGDP", colnames(X), fixed = TRUE)
+Z_adj <- scale(Z - X[, gdp] %*% coef(modR)[gdp, ], scale = FALSE)
+adj_means <- aggregate(Z_adj, list(region = cc$region), mean)
 
 # HE plot for two responses; GDP H ellipse vs. region H ellipse, relative to E.
 # Suppress the raw region means and add the GDP-adjusted ones.
@@ -580,43 +599,44 @@ responses, so they still contain GDP. In that version of the plot, Can1 correlat
 GDP, and the plot mostly shows the income gradient once more, from Africa to Europe.
 
 The fix is the same as before. I run the canonical analysis on the GDP-adjusted responses, the
-residuals from the model with GDP alone, with region as the only term. Now the scores are
-uncorrelated with GDP, and the plot shows only how the regions differ *at the same income*.
-The tests for region come from `modR`, in the last section. This version is for display, and its
-significance tests are only approximate, because it doesn't allow for the degrees of freedom used
-by GDP.
+partial residuals `Z_adj` from @fig-heplot, with region as the only term. Within each region, the
+scores are now uncorrelated with GDP, and the plot shows how the regions differ *at the same
+income*. Across all countries Can1 still correlates .61 with log GDP, but only because the poorer
+regions also tend to do worse than their income predicts, which is part of the region effect
+itself. The tests for region come from `modR`, in the last section. This version is for display,
+and its significance tests are only approximate, because it doesn't allow for the degrees of
+freedom used by GDP.
 
 ```{r fig-candisc}
 #| fig-cap: "Canonical discriminant plot of region differences, using GDP-adjusted responses."
-# Canonical view of region differences, after removing GDP:
-# region model for the residuals from Z ~ ns(logGDP, 3)
-modA <- lm(res_gdp ~ region, data = cc)
+# Canonical view of region differences at the same GDP:
+# region model for the partial residuals Z_adj from modR
+modA <- lm(Z_adj ~ region, data = cc)
 can_region <- candisc(modA, term = "region")
 can_region
-# reverse Can1 so that right = higher life satisfaction (the Americas), and
-# reverse Can2 so that up = better on electricity, doctors, life expectancy
+# reverse Can1 so that right = better than income predicts on health and infrastructure, and
+# reverse Can2 so that up = higher life satisfaction (the Americas)
 plot(can_region, var.lwd = 2, var.col = "black", ellipse = TRUE, rev.axes = c(TRUE, TRUE),
      scale = 4, col = scales::hue_pal()(nlevels(cc$region)))
 ```
 
-Two dimensions account for 86% of the GDP-adjusted region differences, and they are easy to
+Two dimensions account for 87% of the GDP-adjusted region differences, and they are easy to
 interpret from the variable vectors.
 
-- **Can1 (53%) sets life satisfaction against health.** To the right, the life satisfaction
-  vector points to the Americas: the Dominican Republic, Costa Rica, Mexico, Guatemala and
-  Guyana. To the left, the vectors for child and maternal mortality, stillbirths, water and
-  schooling point to Europe, led by Belarus, North Macedonia, Montenegro and Ukraine, along
-  with Egypt. For their income, Latin American countries are happier than their health
-  outcomes would suggest, and post-communist Europe is the reverse. Both are well-known patterns
-  in the happiness literature. Here they appear together, as two ends of the same dimension.
-- **Can2 (33%) is mostly electricity**, along with doctors, life expectancy and maternal
-  mortality. Asia/Oceania is at the top, and Africa and South America are at the bottom. The
-  countries most above
-  their GDP prediction are poor countries with near-universal electricity: Palestine,
-  Tajikistan, Afghanistan, Kyrgyzstan and Lebanon. The countries most below it are all
-  African: the Congo, Eswatini, Botswana, South Africa and Nigeria. Their GDP is high relative to
-  their infrastructure and health, in some because of oil and minerals and in southern Africa
-  alongside the burden of HIV/AIDS, a pattern that returns in the residual PCA below.
+- **Can1 (59%) is doing better or worse than income predicts, across the board.** All nine
+  vectors point to the right, most strongly doctors and electricity, then the three mortality
+  measures. This is the Africa–Europe contrast. At the left, at the same income, are African
+  countries: Botswana, Zimbabwe, Togo, Côte d'Ivoire, the Congo, Sierra Leone, Nigeria and Malawi.
+  At the right are Belarus, Russia, North Macedonia and Montenegro in Europe, and Tajikistan,
+  Uzbekistan and Kyrgyzstan in Central Asia, the post-Soviet legacy of
+  universal electrification and plentiful doctors. Asia/Oceania and the Americas are in between.
+- **Can2 (28%) sets life satisfaction against health.** Up, the life satisfaction vector points to
+  the Americas: the Dominican Republic, Costa Rica, Mexico, Guatemala, Colombia and Paraguay. Down,
+  the vectors for the mortality measures, schooling and water point to Belarus, North Macedonia,
+  Montenegro, Estonia and Egypt. For their income, Latin American countries are happier than
+  their health outcomes would suggest, and post-communist Europe is the reverse. Both are
+  well-known patterns in the happiness literature. Here they appear together, as two ends of the
+  same dimension.
 
 ## What GDP doesn't explain: residual correlations
 
@@ -1227,9 +1247,11 @@ first seems to leave an HE plot with nothing to do.
 
 **A spline rescues the degenerate ellipse.** With $\log(\text{GDP})$ as a single 1-df term, the H
 "ellipse" is only a line. Giving GDP a few more degrees of freedom lets it open up, and how far it
-opens shows how far the relations depart from a straight line. So what began as a trick to get a
-proper ellipse also gives a visual check for curvature. In @fig-heplot-pairs the GDP ellipse stays
-a thin cigar in most panels, and fattens where doctors are involved.
+opens shows how *differently* two outcomes respond to income. So what began as a trick to get a
+proper ellipse also gives a visual check: not for curvature itself, which the spline-vs-linear
+test and @fig-profiles show better, but for outcomes whose curves have different shapes. In
+@fig-heplot-pairs the GDP ellipse stays a thin cigar in most panels, and fattens where doctors are
+involved, because doctors turn down among the richest countries while the rest keep rising.
 
 **A grouping variable gives the plot something to compare.** Adding region is what made the HE plots
 interesting. It gave a second H ellipse, a contrast between an effect that is nearly one-dimensional
@@ -1240,8 +1262,10 @@ unequal slopes.
 **The defaults can undo the adjustment.** This is the one I would most like others to know about. The
 region H ellipse is adjusted for GDP, but the region means that `heplot()` draws by default are not,
 and neither are the scores that `candisc()` plots. Left alone, these displays mostly show income all
-over again, with Can1 correlating $-0.86$ with log GDP. Using the residuals from the GDP model as the
-responses fixes this, for the display at least.
+over again, with Can1 correlating $-0.86$ with log GDP. The obvious fix, using the residuals from a
+model with GDP alone, is itself slightly wrong, for a textbook reason: because region and GDP are
+related, it shrinks the region differences. (Thanks to Gavin Klorfine for pointing this out.) The
+partial residuals from the joint model get it right, for the display at least.
 
 **PCA can be aimed.** A PCA of the outcomes rediscovers income, which we already knew. Taking out the
 known common factor first turns the same tool toward a better question: who does more, or less, than
