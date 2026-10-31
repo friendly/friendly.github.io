@@ -330,6 +330,8 @@ to 90% over about a 15-fold range of GDP. Life expectancy and child mortality ta
 ```{r fig-thresholds}
 #| fig-cap: "Development thresholds: GDP per capita at which each profile reaches 10%, 50% (dot) and 90% of its range."
 #| fig-height: 4
+#| code-fold: true
+#| code-summary: "Show the code for plotting the thresholds"
 ggplot(thresholds, aes(y = response)) +
   geom_linerange(aes(xmin = q10, xmax = q90), linewidth = 1, colour = "grey60") +
   geom_point(aes(x = half), size = 3, colour = "navy") +
