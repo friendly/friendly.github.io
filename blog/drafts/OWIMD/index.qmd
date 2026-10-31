@@ -217,6 +217,8 @@ but they don't make it any easier to compare one panel with another.
 ```{r fig-smoothed}
 #| fig-cap: "The top two rows of the OWID chart, redrawn from the data with a loess smoother added to each panel."
 #| fig-height: 5.5
+#| code-fold: true
+#| code-summary: "Show the code for the smoothed panels"
 # The top two rows of the OWID chart, with a loess smoother added to each panel
 panels <- c("ChildMort", "Stillbirth", "MatMort", "Stunting", "Doctors", "LifeExp")
 LifeGDP |>
@@ -247,6 +249,8 @@ be more generally useful for this type of analysis looking at several aspects of
 ("good life" here) in relation to a single predictor. 
 
 ```{r profiles-fit}
+#| code-fold: true
+#| code-summary: "Show the code for fitting the profiles and thresholds"
 # Smooth fit of each (transformed) response on log GDP, using all available countries
 # for each response, rescaled to [0, 1] over the observed GDP range:
 # 0 = level of the poorest countries, 1 = level of the richest
@@ -283,6 +287,8 @@ thr50 <- setNames(10^thresholds$half, thresholds$response)
 
 ```{r fig-profiles}
 #| fig-cap: "Development profiles: spline fit of each response on log GDP, rescaled to [0, 1]."
+#| code-fold: true
+#| code-summary: "Show the code for plotting the profiles"
 dollar_log <- scale_x_continuous(breaks = 3:5, labels = c("$1,000", "$10,000", "$100,000"))
 
 # label each curve at GDP = $10,000, where the curves are spread out; right-justified
@@ -804,6 +810,8 @@ recent years.
 ```{r fig-performance}
 #| fig-cap: "Countries doing most better or worse than their GDP predicts (residual PC1)."
 #| fig-height: 6
+#| code-fold: true
+#| code-summary: "Show the code for ranking the countries"
 # PC1 of residuals as a "performance relative to income" score
 top <- scores |>
   arrange(PC1) |>
@@ -815,7 +823,11 @@ ggplot(top, aes(PC1, country, colour = side)) +
   geom_segment(aes(x = 0, xend = PC1, yend = country)) +
   geom_point(size = 2.5) +
   scale_colour_manual(values = c(better = "#1b7837", worse = "#c51b7d")) +
-  labs(x = "Residual PC1 score", y = NULL, colour = "Than GDP predicts")
+  labs(x = "Residual PC1 score", y = NULL, colour = "Than GDP predicts") +
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.02, 0.98),
+        legend.justification = c(0, 1),
+        legend.background = element_rect(colour = "grey70"))
 ```
 
 The *underperformers* mostly fall into two groups:
@@ -964,6 +976,8 @@ values of Cook's distance.
 
 ```{r tbl-sensitivity}
 #| tbl-cap: "Main results for all countries, and after removing the most unusual ones."
+#| code-fold: true
+#| code-summary: "Show the code for refitting without the unusual countries"
 # refit the GDP model without some countries, standardizing the responses again
 refit <- function(drop = character()) {
   d <- cc[!(cc$country %in% drop), ]
