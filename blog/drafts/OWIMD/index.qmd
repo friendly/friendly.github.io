@@ -365,7 +365,7 @@ ggplot(thresholds, aes(y = response)) +
 
 It is tempting to read this as a story of *infrastructure and personnel first, outcomes later*.
 But a caution is needed, because the sequence depends on the scale of each response.
-@tbl-thresholds repeats the calculation on the original scales of the OWID chart.
+@fig-thresholds-bump repeats the calculation on the original scales of the OWID chart.
 
 ```{r profiles-raw}
 #| code-fold: true
@@ -378,15 +378,37 @@ thresholds_raw <- fit_thresholds(fit_profiles(OWraw))
 thr50_raw <- setNames(10^thresholds_raw$half, thresholds_raw$response)
 ```
 
-```{r tbl-thresholds}
-#| tbl-cap: "GDP per capita at which each profile reaches half its range, on the transformed scales used here and on the original scales."
+```{r fig-thresholds-bump}
+#| fig-cap: "Order in which the profiles reach half their range, and the GDP per capita at which they do, on the transformed scales used here and on the original scales."
+#| fig-height: 5.5
 #| code-fold: true
-#| code-summary: "Show the code for the table of thresholds"
-data.frame(Transformed = usd(thr50), Rank = seq_along(thr50),
-           Raw = usd(thr50_raw[names(thr50)]),
-           `Raw rank` = match(names(thr50), names(thr50_raw)),
-           row.names = names(thr50), check.names = FALSE) |>
-  knitr::kable(align = "rrrr")
+#| code-summary: "Show the code for the bump chart"
+usd_plain <- function(x) paste0("$", format(round(x, -2), big.mark = ",", trim = TRUE))
+
+ranks <- data.frame(response = names(thr50), rank1 = seq_along(thr50), gdp1 = thr50) |>
+  inner_join(data.frame(response = names(thr50_raw), rank2 = seq_along(thr50_raw), gdp2 = thr50_raw),
+             by = "response") |>
+  mutate(response = factor(response, levels = names(thr50)))
+
+# S-shaped curve joining each outcome's two ranks (ggbump isn't on CRAN)
+curves <- ranks |>
+  reframe(x = seq(1, 2, length.out = 100), .by = c(response, rank1, rank2)) |>
+  mutate(rank = rank1 + (rank2 - rank1) * plogis(10 * (x - 1.5)))
+
+ggplot(ranks, aes(colour = response)) +
+  geom_line(data = curves, aes(x, rank), linewidth = 1.1) +
+  geom_point(aes(1, rank1), size = 3.5) +
+  geom_point(aes(2, rank2), size = 3.5) +
+  geom_text(aes(1, rank1, label = paste0(response, "  ", usd_plain(gdp1))), hjust = 1,
+            nudge_x = -0.05, size = 3.8, fontface = "bold") +
+  geom_text(aes(2, rank2, label = paste0(usd_plain(gdp2), "  ", response)), hjust = 0,
+            nudge_x = 0.05, size = 3.8, fontface = "bold") +
+  scale_x_continuous(breaks = 1:2, labels = c("Transformed scales", "Original scales"),
+                     position = "top", limits = c(0.45, 2.55), expand = c(0, 0)) +
+  scale_y_reverse(breaks = 1:9) +
+  labs(x = NULL, y = "Order of reaching half the range (1 = earliest)") +
+  theme(legend.position = "none", panel.grid = element_blank(), panel.border = element_blank(),
+        axis.ticks = element_blank(), axis.text.x.top = element_text(face = "bold", size = 13))
 ```
 
 Life expectancy, schooling and life satisfaction were not transformed, so their thresholds
@@ -1331,7 +1353,7 @@ their money predicts?
 
 **Rescaling makes panels comparable.** The development profiles (@fig-profiles) came from wanting to
 compare across the OWID panels. Just rescaling each fitted curve to run from 0 to 1 was enough to show
-a sequence I couldn't see in the separate panels, though @tbl-thresholds shows how much that sequence
+a sequence I couldn't see in the separate panels, though @fig-thresholds-bump shows how much that sequence
 depends on the scale of each outcome.
 
 ## Lessons
@@ -1345,7 +1367,7 @@ I learned some lessons from this, and here are some take-aways for you:
 * **Small multiples** like @fig-owid show the **marginal relations** very well. Multivariate displays add the
 joint structure: what's common, what's left over, and who's unusual. Getting there takes some work up
 front. Orienting, transforming and standardizing the variables comes first, and these are not neutral
-steps. As @tbl-thresholds shows, doctors go from second to last in the development sequence just by
+steps. As @fig-thresholds-bump shows, doctors go from second to last in the development sequence just by
 changing the scale, so it is as well to know what your scales are saying.
 
 * A larger lesson is to **take out what you already know**, to see what remains. The raw correlations average .81 and show
