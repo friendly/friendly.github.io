@@ -93,10 +93,12 @@ all indicators of quality of life get better as countries get richer.
 
 ![How is life at different levels of GDP per capita? (Our World in Data, CC-BY)](images/Life-GDP.jpg){#fig-owid width="60%"}
 
-In his [post](https://x.com/OurWorldInData/status/2115836531894047016), Max Roser put the message this way: "Where GDP per capita is higher, living conditions are far better in many ways." That is true, and the analysis below confirms it. But it also invites the next questions: are they better in the same way, at the same pace, and what is left over once income is accounted for?
+In his [post](https://x.com/OurWorldInData/status/2115836531894047016), Max Roser put the message this way: "Where GDP per capita is higher, living conditions are far better in many ways." That is true, and the analysis below confirms it. But it also invites the next questions: are these measures better in the same way, in the same countries? 
+Even more interesting to me is the question, what is left over, remains to be explored,
+once income is accounted for?
 
 ### A multivariate view?
-But it also struck me as something from which more might be learned from a multivariate perspective. 
+So,  it also struck me as something from which more might be learned from a multivariate perspective. 
 @fig-owid shows 12 *separate* bivariate displays. What it can't show:
 
 - how the outcomes relate to *each other*, which is their joint distribution;
@@ -108,13 +110,13 @@ Thinking this way, we can frame this as a "$p$ responses, one predictor" problem
 $$
 f(\mathbf{Y})_{n \times p} = g(x)\,\mathbf{B}_{1 \times p} + \mathbf{E}_{n \times p} \; ,
 $$
-where $x$ is GDP per capita. Both sides can be transformed:
+where $x$ is GDP per capita. Both sides can be transformed to make relations more nearly linear:
 
 - On the left, $f(\mathbf{Y}) = [f_1(\mathbf{y}_1), \dots, f_p(\mathbf{y}_p)]$ transforms each
   outcome separately (log, logit, ...) to accommodate outcome variables measured on very
   different scales, and to make their relations with GDP closer to linear.
 - On the right, $g(x)$ is usually just $\log(\text{GDP})$, as in the OWID chart. But it can
-  also be a polynomial or spline in $\log(\text{GDP})$, when the relation is curved.
+  also be a polynomial or spline in $\log(\text{GDP})$, when the relation is truly curved.
 
 I call this a **doubly generalized linear model**, but that is more a conceptual term than a statistical
 one, because the details that give it structure need to be worked out, as in generalized linear
@@ -122,24 +124,30 @@ models [@NelderWedderburn:72] and generalized additive models [@HastieTibshirani
 in the transformations of the predictor and the response variables that make the fitted relations
 linear in the parameters in $\mathbf{B}$.
 
-The statistical questions are then about the fitted part $g(x)\mathbf{B}$ and the residual
+The statistical questions are then about the fitted part $\widehat{\mathbf{Y}} = g(x)\widehat{\mathbf{B}}$ and the residual
 covariance $\boldsymbol{\Sigma}$ of the rows of $\mathbf{E}$.
 These create some interesting possibilities for visualizing these relations,
 using and extending the methods I describe in my book
 [*Visualizing Multivariate Data and Models in R*](https://friendly.github.io/Vis-MLM-book/) [@Friendly:2024:VisMLM]
-and R packages [heplots](https://friendly.github.io/heplots/), [candisc](https://friendly.github.io/candisc/), [mvinfluence](https://friendly.github.io/mvinfluence/) [@heplots; @candisc; @mvinfluence] and others.
+and R packages [`heplots`](https://friendly.github.io/heplots/), [`candisc`](https://friendly.github.io/candisc/), [`mvinfluence`](https://friendly.github.io/mvinfluence/) [@heplots; @candisc; @mvinfluence] and others.
 
 As an added bonus, I also discovered several aspects of a multivariate approach to this problem
 and similar ones, that make analysis and visualization simpler or easier to understand.
 
+::: {.callout-note}
+## Caveat
+
 A word about what I bring to this. I'm a statistician and a data visualization person, not an
 economist, demographer or public health expert, and I don't know the literature on any of these
-measures. When I say why a country stands out, say that a country lives longer or less long than its
+measures, their limitations and especially how comparable the values are across time and place.
+When I say why a country stands out, say that a country lives longer or less long than its
 income predicts, that comes from what the analysis and the graphs show, together with what I know in
 general about the countries. Take these as hypotheses to check, not as findings. I'd be glad to hear
 from readers who know the countries or the measures better.
+:::
 
 I'm grateful to the team at [Our World In Data](https://ourworldindata.org/) for making these data so easy to get.
+(Well, easy for Claude AI to find, given @fig-owid and a pointer to the OWID GitHub repo.)
 
 ## The data
 
@@ -484,8 +492,8 @@ kinds of ellipses:
   that term. Its size and orientation show how strongly, and in which directions, the term
   moves the responses.
 
-The H ellipses are scaled so that a term is significant (by Roy's test, at $\alpha = .05$)
-exactly when its ellipse sticks out beyond the E ellipse somewhere. Then you can read both the
+The **H** ellipses are scaled so that a term is significant (by Roy's test, at $\alpha = .05$)
+exactly when its ellipse sticks out beyond the **E** ellipse somewhere. Then you can read both the
 significance and the direction of an effect from the same picture. 
 
 See @Friendly:07:manova, the
@@ -495,7 +503,7 @@ book [*Visualizing Multivariate Data and Models in R*](https://friendly.github.i
 ### The spline trick
 
 The model is the MANCOVA from the last section, `modR`. There is one detail worth noting. With
-GDP entered as a single 1-df term, $\log(\text{GDP})$, its H "ellipse" would collapse to a line:
+GDP entered as a single 1-df term, $\log(\text{GDP})$, its **H** "ellipse" would collapse to a line:
 one linear predictor can push the responses in only one direction. 
 
 A trick, which I discovered from this example is to use a term, $g[\log(\text{GDP})]$
@@ -515,13 +523,13 @@ in the data.
 
 - The GDP ellipse (blue) is very long and *very* thin. Even with three degrees of freedom, GDP
   moves these two outcomes along essentially a single direction: up and to the right, together.
-- The region ellipse (black) is much rounder. It sticks out past the E ellipse only modestly, at
+- The region ellipse (black) is much rounder. It sticks out past the **E** ellipse only modestly, at
   the upper right and lower left, so region matters here, though far less than GDP. It is tilted
   up and to the right, but more steeply than the GDP ellipse, so it reaches further in the life
   satisfaction direction.
 
 The dots in @fig-heplot need a word of explanation. By default, `heplot()` marks each region with
-its *raw* mean. Here that would be misleading. The region H ellipse is adjusted for GDP, but the
+its *raw* mean. Here that would be misleading. The region **H** ellipse is adjusted for GDP, but the
 raw means are not. They would mostly show differences in income again, lying along the GDP
 direction, with Africa far down at the lower left. So instead I plot the *GDP-adjusted* region
 means, the means each region would have at the same GDP.
@@ -534,7 +542,7 @@ is the [Frisch–Waugh–Lovell theorem](https://en.wikipedia.org/wiki/Frisch%E2
 at work: the residual trick reproduces a joint model only if GDP is removed from the region
 indicators as well as from the responses. The right way is to take the GDP part out using the
 coefficients from `modR` itself, which estimates GDP and region together. These *partial
-residuals* average to the same adjusted means that the region H ellipse tests. Here the shortcut
+residuals* average to the same adjusted means that the region **H** ellipse tests. Here the shortcut
 makes a real difference: it shrinks the spread of the region means by a factor of 1.3 to 2 on
 most outcomes.
 
@@ -573,12 +581,12 @@ stand out:
   richest countries while the other outcomes keep rising.
 - **The region effect is not one-dimensional.** Its ellipse is fatter, and its orientation
   changes from panel to panel. The regions differ in *different ways* on different outcomes,
-  not just "better" or "worse" overall. Relative to E, region is largest in the panels
+  not just "better" or "worse" overall. Relative to **E**, region is largest in the panels
   with doctors or child mortality. It is smallest among life expectancy, water and life
-  satisfaction, where its ellipse barely gets past E.
+  satisfaction, where its ellipse barely gets past **E**.
 
 ```{r fig-heplot-pairs}
-#| fig-cap: "HE plot matrix for five responses. \"GDP\" labels the H ellipse for the 3-df natural spline in log GDP per capita, `ns(logGDP, 3)`, in the model."
+#| fig-cap: "HE plot matrix for five responses. \"GDP\" labels the **H** ellipse for the 3-df natural spline in log GDP per capita, `ns(logGDP, 3)`, in the model."
 #| fig-height: 8
 # region means are left out here: the default ones would be unadjusted for GDP
 pairs(modR, variables = c("ChildMort", "Doctors", "LifeExp", "Water", "LifeSat"),
@@ -591,7 +599,7 @@ pairs(modR, variables = c("ChildMort", "Doctors", "LifeExp", "Water", "LifeSat")
 With nine responses there are 36 pairwise panels, too many to look at. A canonical
 discriminant analysis does the summarizing for us. It finds the linear combinations of the
 responses that best separate the regions, relative to the within-region variation. These are the
-dimensions of the region H ellipsoid in the full 9-dimensional space. There can be at most four
+dimensions of the region **H** ellipsoid in the full 9-dimensional space. There can be at most four
 dimensions, one fewer than the number of regions.
 
 The same problem as with the dots in @fig-heplot comes up here, in a bigger way. Running
@@ -619,7 +627,7 @@ can_region$scores <- data.frame(region = cc$region, can_scores)
 can_means <- aggregate(can_scores, list(region = cc$region), mean)
 can_region$means <- can_means[, -1]
 can_region$structure <- cor(Z_adj, can_scores)
-can_region
+print(can_region, digits = 3)
 
 # reverse Can1 so that right = better than income predicts on the mortality measures.
 # plot() can't make the region labels bold, so blank them (rownames must differ) and add them after
@@ -766,7 +774,7 @@ rediscovers income, the common factor that the OWID chart already puts on the ho
 ```{r pca-y}
 # PCA of the (standardized, oriented) responses: PC1 is essentially GDP
 pca_y <- prcomp(Z)
-summary(pca_y)$importance[, 1:4]
+round(summary(pca_y)$importance[, 1:4], 3)
 round(cor(pca_y$x[, 1:2], cc$logGDP), 2)
 ```
 
@@ -791,7 +799,7 @@ if (sum(pca_r$rotation[, 1]) < 0) {
   pca_r$rotation[, 1] <- -pca_r$rotation[, 1]
   pca_r$x[, 1] <- -pca_r$x[, 1]
 }
-summary(pca_r)$importance[, 1:4]
+round(summary(pca_r)$importance[, 1:4], 3)
 round(pca_r$rotation[, 1:2], 2)
 ```
 
@@ -984,11 +992,16 @@ two against each other, with measures generalized to the multivariate case, on l
 circle's area shows Cook's distance, the overall influence on the coefficients $\mathbf{B}$.
 The dashed diagonal lines mark constant values of the product of leverage and residual.
 
+This format, provided in the [`mvinfluence`](https://friendly.github.io/mvinfluence/) package
+makes it easier to see the influential points than the standard `car::influencePlot()`
+version that plots *signed* residuals, so the influential cases appear in the upper and lower
+right corners of the plot.
+
 ```{r fig-influence}
 #| fig-cap: "Influence plot for the MLM. Circle area shows Cook's distance; dashed lines mark constant values of the product of leverage and residual."
 # mvinfluence supplies the influencePlot() method for "mlm" objects
 library(mvinfluence)
-influencePlot(mod2, id.n = 4, type = "LR")
+round(influencePlot(mod2, id.n = 4, type = "LR"), 3)
 ```
 
 Most of the outliers are at the left: Palestine, Turkmenistan, Nigeria and Belarus have large
@@ -1085,7 +1098,7 @@ how much multivariate scatter it describes. The High group stands well apart fro
 plot(bm, gplabel = "Income group")
 ```
 
-A determinant mixes two things, though: how much each outcome varies, and how strongly the outcomes
+The determinant $\lvert\boldsymbol{\Sigma}_i\rvert$ for each group mixes two things, though: how much each outcome varies, and how strongly the outcomes
 are correlated. @tbl-cov-summary pulls these apart. Going up the income scale, the total residual
 variance steadily shrinks. But the correlations don't follow it. They are weakest in the Middle
 group. That is why the Middle group has the largest determinant, even though the Low group has more
@@ -1176,9 +1189,11 @@ What if we started afresh, and took a visual look at the life aspect variables s
 matrix, using the standardized values in `Z`? There are no models, residuals or ellipses here: just
 `r nrow(Z)` rows for the countries, `r ncol(Z)` columns for the outcomes, and a color for each cell.
 
-A display like this is only as good as the order of its rows and columns. Countries listed
+A display like this is only as good as the order of its rows and columns makes any patterns
+or anomalies visually apparent.
+Countries listed
 alphabetically would give you confetti. So I use the idea of
-effect ordering [@FriendlyKwan:02:effect]: arrange the display according to the effect you want to
+**effect ordering** [@FriendlyKwan:02:effect]: arrange the display according to the effect you want to
 see. @fig-heatmap sorts the countries by GDP per capita, and the outcomes by their correlation with
 log GDP, from child mortality (.88) on the left to electricity (.79) on the right. Values beyond
 $\pm 2.5$ are given the darkest color.
@@ -1260,7 +1275,7 @@ I have been drawing HE plots for a long time, but this example still taught me s
 one quantitative predictor and many responses, a setup I had not thought much about, and which at
 first seems to leave an HE plot with nothing to do.
 
-**A spline rescues the degenerate ellipse.** With $\log(\text{GDP})$ as a single 1-df term, the H
+**A spline rescues a degenerate ellipse.** With $\log(\text{GDP})$ as a single 1-df term, the **H**
 "ellipse" is only a line. Giving GDP a few more degrees of freedom lets it open up, and how far it
 opens shows how *differently* two outcomes respond to income. So what began as a trick to get a
 proper ellipse also gives a visual check: not for curvature itself, which the spline-vs-linear
@@ -1269,13 +1284,13 @@ test and @fig-profiles show better, but for outcomes whose curves have different
 involved, because doctors turn down among the richest countries while the rest keep rising.
 
 **A grouping variable gives the plot something to compare.** Adding region is what made the HE plots
-interesting. It gave a second H ellipse, a contrast between an effect that is nearly one-dimensional
+interesting. It gave a second **H** ellipse, a contrast between an effect that is nearly one-dimensional
 and one that is not, and a question I could not have asked of GDP alone: how do countries differ *at
 the same income*? It also turned the problem into a MANCOVA, which comes with its caveat about
 unequal slopes.
 
 **The defaults can undo the adjustment.** This is the one I would most like others to know about. The
-region H ellipse is adjusted for GDP, but the region means that `heplot()` draws by default are not,
+region **H** ellipse is adjusted for GDP, but the region means that `heplot()` draws by default are not,
 and neither are the scores that `candisc()` plots. Left alone, these displays mostly show income all
 over again, with Can1 correlating $-0.86$ with log GDP. The obvious fix, using the residuals from a
 model with GDP alone, is itself slightly wrong, for a textbook reason: because region and GDP are
@@ -1310,13 +1325,13 @@ little structure, because GDP drives them all. Controlling for GDP drops the ave
 structure appears. Nearly every multivariate display here became more interesting once income was out
 of the way.
 
-* But a residual is only relative to its model. Guyana looks like a failure because its GDP changed
+* But **a residual is only relative to its model**. Guyana looks like a failure because its GDP changed
 faster than everything else, and Palestine looks like a success partly because its GDP fell. Change the
 curve from a spline to a quadratic, and 9 of the 24 countries in @fig-performance change too. A
 ranking like this one says as much about GDP, and about the shape of the curve, as it does about the
 countries.
 
-* The same care applies to summaries over the whole range of incomes. Life satisfaction seemed to go
+* The same care applies to **summaries over the whole range of incomes**. Life satisfaction seemed to go
 its own way, nearly independent of everything else once GDP was controlled. That holds for most of
 the world, but among the richest third of countries it is linked with schooling and maternal
 mortality. A single covariance matrix is an average, and here it averages over rather different
@@ -1331,8 +1346,28 @@ you honest about what the model has left out.
 
 Data: Our World in Data [-@OWID] (CC-BY), from UN IGME, UN MMEIG, WHO/UNICEF, UN WPP, UNESCO, UNDP,
 Gallup and the World Bank. Thanks to Max Roser and the team at Our World in Data for providing such
-interesting datasets to explore; thanks also to Gavin Klorfine who gave insightful
+interesting datasets to explore. Thanks also to Gavin Klorfine who gave insightful
 comments on this post.
+
+::: {.callout-note icon=false}
+## To cite this article
+
+Friendly, M. (2026, November). Our World in Multivariate Data: From twelve scatterplots to one
+multivariate picture of life at different levels of GDP. *Michael Friendly's blog*.
+<https://friendly.github.io/blog/posts/2026-11-owimd/>
+
+```bibtex
+@Misc{Friendly:2026:OWIMD,
+  author       = {Friendly, Michael},
+  title        = {Our World in Multivariate Data: From twelve scatterplots to one
+                  multivariate picture of life at different levels of {GDP}},
+  year         = {2026},
+  month        = nov,
+  howpublished = {Blog post},
+  url          = {https://friendly.github.io/blog/posts/2026-11-owimd/},
+}
+```
+:::
 
 ## References {.unnumbered}
 
