@@ -180,7 +180,7 @@ The variables used in the analyses here are:
 - `SchoolYrs`: expected years of schooling
 - `Electricity`: percent of the population with access to electricity
 - `Water`: percent of the population using safely managed drinking water
-- `LifeSat`: life satisfaction, on the 0--10 Cantril ladder
+- `LifeSat`: life satisfaction, on the 0--10 Cantril ladder [@Cantril:1965]
 
 ### Data prep
 
@@ -193,10 +193,12 @@ A bit of preparation makes the multivariate analyses go more smoothly:
     countries, so I use an empirical logit for them,
     $\text{logit}(y) = \log \left[ (y + 0.5) / (100 - y + 0.5) \right]$, where $y$ is the
     percentage. Adding 0.5 keeps the values at exactly 100% finite.
+    
 - **Orientation.** Child mortality, stillbirths and maternal mortality are "bad" outcomes,
   where lower is better. I reverse them (using $-\log$), so that higher means better on *every*
   response, in contrast to @fig-owid, where you have to think about what direction is better.  This small step makes every later display, from correlation matrices to biplots,
   much easier to read: all the arrows and ellipses point the same semantic way.
+  
 - **Standardization.** For the multivariate models the responses are standardized to
   $z$-scores, so that no single indicator dominates because of its units.
 
@@ -205,6 +207,8 @@ has complete data, so I merged it with Asia.
 
 ```{r}
 #| tbl-cap: "Countries in the complete-case analysis, by region"
+#| code-fold: true
+#| code-summary: "Show the code for the table of countries"
 knitr::kable(as.data.frame(table(Region = cc$region)))
 ```
 
@@ -214,13 +218,11 @@ Small multiples invite comparison *within* a panel. Comparing *across* panels is
 panel in @fig-owid has its own vertical scale and units, so it is hard to say whether electricity or life
 expectancy "responds" to income sooner in relation to $\log(GDP)$
 
+### Smoothing
+
 A first step is to add a smoother to each panel. @fig-smoothed does this for the top two rows of
 @fig-owid, using a [loess](https://en.wikipedia.org/wiki/Local_regression) curve, with the three
-rates on a log scale as in the OWID chart. Stunting (the "Hunger" panel in OWID) is one of the indicators I leave out of the
-later analyses. The curves bring out what the clouds of points only suggest: these relations are
-not straight lines. Doctors is the clearest case, staying near zero up to about \$10,000, then
-climbing steeply, and falling back among the richest countries. Smoothers help you read each panel,
-but they don't make it any easier to compare one panel with another.
+rates on a log scale as in the OWID chart. 
 
 ```{r fig-smoothed}
 #| fig-cap: "The top two rows of the OWID chart, redrawn from the data with a loess smoother added to each panel."
@@ -243,6 +245,14 @@ LifeGDP |>
   theme(axis.text.x = element_text(size = 9))
 ```
 
+The curves bring out what the clouds of points only suggest: these relations are
+not all approximately straight lines. Doctors is the clearest case, staying near zero up to about \$10,000, then
+climbing steeply, and falling back among the richest countries. Smoothers help you read each panel,
+but they don't make it any easier to compare one panel with another, particularly when the panels
+are not arranged in any meaningful order.
+
+### Profiles
+
 One simple way to put the responses on a common footing:
 
 1. Fit a smooth curve to each response against log GDP. I use a natural spline with 3 df, and
@@ -250,11 +260,14 @@ One simple way to put the responses on a common footing:
 2. Rescale each fitted curve to run from 0, the level predicted for the poorest countries, to 1,
    the level predicted for the richest.
 
-Overlaying the rescaled curves gives @fig-profiles. I call these **development profiles**. Each
-curve shows how far a typical country at a given income has come, on that indicator, along the
+Overlaying the rescaled curves gives @fig-profiles. I call these **development profiles**. 
+Each
+curve shows how far a typical country _at a given income_ has come, on that indicator, along the
 path from the poorest to the richest. I haven't seen this kind of chart before. I think it could
 be more generally useful for this type of analysis looking at several aspects of an outcome 
 ("good life" here) in relation to a single predictor. 
+
+The code below calculates a _development threshold_: GDP where the fitted profile first reaches 10/50/90% of its range.
 
 ```{r profiles-fit}
 #| code-fold: true
@@ -293,8 +306,10 @@ usd <- function(x) paste0("\\$", format(round(x, -2), big.mark = ",", trim = TRU
 thr50 <- setNames(10^thresholds$half, thresholds$response)
 ```
 
+Plot them:
+
 ```{r fig-profiles}
-#| fig-cap: "Development profiles: spline fit of each response on log GDP, rescaled to [0, 1]."
+#| fig-cap: "Development profiles: development progress of each response, its spline fit on log GDP rescaled so that its lowest fitted value is 0 and its highest is 1."
 #| code-fold: true
 #| code-summary: "Show the code for plotting the profiles"
 dollar_log <- scale_x_continuous(breaks = 3:5, labels = c("$1,000", "$10,000", "$100,000"))
@@ -316,7 +331,7 @@ ggplot(profiles, aes(logGDP, fit, colour = response)) +
                    min.segment.length = 0, seed = 1) +
   dollar_log +
   labs(x = "GDP per capita (log scale)",
-       y = "Fitted level (0 = poorest, 1 = richest)") +
+       y = "Development progress (proportion of fitted range)") +
   theme(legend.position = "none")
 ```
 
@@ -353,6 +368,8 @@ But a caution is needed, because the sequence depends on the scale of each respo
 @tbl-thresholds repeats the calculation on the original scales of the OWID chart.
 
 ```{r profiles-raw}
+#| code-fold: true
+#| code-summary: "Show the code for the profiles on the original scales"
 # Same profiles on the original scales (mortality-type outcomes only negated)
 OWraw <- LifeGDP |>
   transmute(logGDP = log10(GDP), ChildMort = -ChildMort, Stillbirth = -Stillbirth,
@@ -363,6 +380,8 @@ thr50_raw <- setNames(10^thresholds_raw$half, thresholds_raw$response)
 
 ```{r tbl-thresholds}
 #| tbl-cap: "GDP per capita at which each profile reaches half its range, on the transformed scales used here and on the original scales."
+#| code-fold: true
+#| code-summary: "Show the code for the table of thresholds"
 data.frame(Transformed = usd(thr50), Rank = seq_along(thr50),
            Raw = usd(thr50_raw[names(thr50)]),
            `Raw rank` = match(names(thr50), names(thr50_raw)),
@@ -392,6 +411,15 @@ Neither version is "right". A log scale measures relative change and a raw scale
 absolute change, and which matters depends on the question. For the multivariate analyses that
 follow, I chose the transformations to make the relations closer to linear and the variances
 more similar. But it's worth knowing that this choice also changes the story a display tells.
+
+It is hard to look at a sequence like this without thinking of Maslow's [-@Maslow:1943] hierarchy
+of needs, in which survival and safety come first, and higher aspirations only after them. On the
+original scales, the order looks roughly like that: apart from electricity, the mortality measures
+and water come first, followed by schooling and then life satisfaction. But on the transformed
+scales it nearly reverses, with life satisfaction ahead of child mortality and safe water last of
+all. So the resemblance is at least partly a matter of scale. Besides, Maslow was describing the
+motivation of individuals, whereas these curves compare different countries at one time. A country
+at \$5,000 today is not a picture of where a country at \$50,000 once was.
 
 One more detail: the Electricity and Doctors profiles turn *down* slightly at the top of the GDP
 range. This is most likely an end effect of the spline. Only `r sum(OW$GDP > 80000)` countries
