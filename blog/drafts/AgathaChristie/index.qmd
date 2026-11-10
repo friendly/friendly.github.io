@@ -1,0 +1,259 @@
+---
+title: "Whodunnit? Reanalysing Lutz's Miss Marple data"
+description: "Lutz (2026, Significance) used statistics and AI to unmask the killers in Agatha Christie's Miss Marple novels. Her odds ratios turn out to come from a linear probability model; a reanalysis with logistic and within-novel conditional logit models, cross-validation, and fourfold, mosaic and effect displays."
+author: "Michael Friendly"
+date: today
+categories: [categorical data, logistic regression, mosaic displays, AI, reanalysis]
+draft: true
+format:
+  html:
+    toc: true
+    code-fold: show
+    code-summary: "Show the code"
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: read-chunks
+#| include: false
+knitr::read_chunk("AgathaChristie.R")
+```
+
+Lutz (2026), "Statistical sleuths versus AI: Unmasking the killer in Agatha Christie
+novels", *Significance* 23(6), 10–15, coded 166 main characters in the 12 Miss Marple
+novels (14 killers) by gender, employment, relation to the victim, and financial gain, and
+added three AI "guesses" (Harvard AI Sandbox, GPT 5.1/5.6) based on the opening of each
+novel. This document reproduces her analysis, corrects the odds ratios in her Table 1, and
+extends it with multivariable and conditional (within-novel) logistic models.
+Only the code for the key models is shown here. All of the code, including the figures,
+is in `AgathaChristie.R`.
+
+```{r}
+#| label: setup
+#| code-fold: true
+#| results: hold
+```
+
+## The data
+
+```{r}
+#| label: describe
+#| code-fold: true
+#| results: hold
+```
+
+## Reproducing Lutz's Table 1
+
+### Univariate "odds ratios"
+
+Lutz's odds ratios are all between 0.98 and 1.75, which is far too small for binary
+predictors with AUCs of 0.80 or more. They are reproduced *exactly* by exponentiating the
+slopes of a **linear probability model** (`glm(..., family = gaussian)`), i.e. exp(difference
+in proportions), not by logistic regression:
+
+```{r}
+#| label: lutz-table1
+```
+
+### Multivariable AUCs
+
+Her multivariable AUCs (0.89, 0.89, 0.97, 0.92) reproduce too:
+
+```{r}
+#| label: lutz-multi
+#| code-fold: true
+#| results: hold
+```
+
+## Correct odds ratios
+
+### Univariate logistic regressions
+
+```{r}
+#| label: uni-logit
+```
+
+A character who gains financially from the murder has about 50 times the odds of being the
+killer; being related to the victim, about 20 times. Gender and employment are irrelevant.
+
+### Fourfold displays
+
+```{r}
+#| label: fig-fourfold
+#| code-fold: true
+#| results: hold
+#| fig-width: 10
+#| fig-height: 6
+#| fig-cap: "Fourfold displays (ggfourfold) of Innocent/Killer (top/bottom) by each predictor, No/Yes (left/right). Quarter-circle areas show the cell frequencies, standardized to equal margins; non-overlapping 95% confidence rings and intense shading (Holm-adjusted) mean the odds ratio differs from 1. The white diagonal marks the direction of association."
+```
+
+## All non-AI predictors together
+
+The univariate odds ratios ask about each predictor on its own, but Related and Financial
+are strongly associated (OR ≈ 53), so they partly tell the same story. To see what each
+contributes *given the others*, fit one logistic model with all four non-AI predictors.
+`drop1()` gives a likelihood-ratio (LR) test for removing each term from the full model.
+LR tests are more trustworthy than the Wald *z* tests in `summary()` when there are only
+14 events.
+
+### Main-effects model
+
+```{r}
+#| label: full-logit
+```
+
+With all four together, financial gain carries most of the weight (LR χ² = 12.9,
+p < .001). Related is only marginal once gain is in the model (p = .10), and Female adds
+nothing.
+
+### Effect plot
+
+An effect plot shows the same model on the probability scale. Each panel gives the fitted
+probability of being the killer at each level of one predictor, averaging over the other
+three, with 95% confidence intervals.
+
+```{r}
+#| label: fig-effects
+#| code-fold: true
+#| results: hold
+#| fig-width: 9
+#| fig-height: 4
+#| fig-cap: "Effect plot for the four-predictor logistic model: fitted probability of being the killer at each level of one predictor, averaged over the others, with 95% confidence intervals. The y-axis is on the logit scale, which is common to all panels; the dashed line is the overall proportion of killers (14/166)."
+```
+
+Financial gain moves the probability of guilt from about 2% to 40%, and being related
+moves it from 2% to 13%. Employed now looks positive (adjusted OR ≈ 4.6, against 1.1 on
+its own), but its interval is wide (p = .16). The shift happens because employed
+characters rarely gain financially (7 of 103), but 6 of those 7 are killers.
+
+### Related × Financial interaction
+
+Is the effect of financial gain the same for relatives and non-relatives? Adding a
+Related × Financial interaction tests this:
+
+```{r}
+#| label: full-interaction
+```
+
+The interaction is significant (p = .02). With only 3 unrelated characters who gained
+financially, 2 of them killers, financial gain matters even more for the unrelated. The
+mosaic display in @fig-mosaic shows this.
+
+```{r}
+#| label: fig-mosaic
+#| code-fold: true
+#| results: hold
+#| fig-width: 7
+#| fig-height: 6
+#| fig-cap: "Mosaic display of Killer by Related and Financial gain, shaded by residuals from the model in which Killer is independent of the two predictors. 8 of the 14 related characters with something to gain are killers."
+```
+
+### Reducing the model and adding the AI guesses
+
+Finally, two questions about the predictor set. Can Female and Employed be dropped
+together, leaving Related + Financial as the base model? And once Related and Financial
+are known, does each AI guess add anything? Both are LR tests of nested models.
+
+```{r}
+#| label: ai-add
+#| code-fold: true
+#| results: hold
+```
+
+Female and Employed together add nothing (p = 0.14), so Related + Financial is the base
+model from here on. Adding the AI's web-based Chapter 1 guess improves it a lot (LR
+χ² = 16.5, AUC 0.97), and adding the pasted Chapter 1 helps less (p = .01). The ~20%
+passage adds nothing significant (p = .14).
+
+## Conditional logistic regression: comparing suspects within a novel
+
+Each novel is a closed circle of suspects with one (or two) killers, so the natural model
+compares the killer with the other characters *in the same book*: conditional logit with
+`strata(Title)`, e.g.
+
+```r
+clogit(Killer ~ Female + Employed + Related + Financial + strata(Title), data = dat)
+```
+
+The output below shows, for each novel, the number of characters and killers and how many
+gain financially. It then gives univariate conditional ORs, LR tests for dropping each term
+from the full model, and LR tests for adding each AI guess to Related + Financial.
+
+```{r}
+#| label: clogit
+#| code-fold: true
+#| results: hold
+```
+
+The striking result is that **financial gain is perfectly separated within novels**: in
+every novel where any innocent character gains financially, the killer does too. Its
+conditional odds ratio is infinite, so we report likelihood-ratio tests rather than Wald
+tests. Within novels, Related and Financial remain strong; of the AI guesses, only the one
+that "read" Chapter 1 from the web adds anything once Related and Financial are known.
+
+## Whom would Miss Marple accuse?
+
+AUC pools all 166 characters, but the reader's real question is "which of *these*
+suspects did it?" Here each novel's top-scoring suspect(s) are accused, and we record the
+chance of accusing the right one (averaged over the 12 novels).
+
+```{r}
+#| label: accuse
+#| code-fold: true
+#| results: hold
+```
+
+Guessing at random is right 8% of the time. Following the money alone is right 57% of the
+time, Related + Financial 68%, and adding the AI's web-based Chapter 1 guess, 85%.
+
+## Leave-one-novel-out cross-validation
+
+All of the above is in-sample: 14 killers, and models chosen after looking at the data.
+To mimic predicting the killer in a novel you haven't read, each model is fit to 11
+novels and used to score the characters of the 12th, for each novel in turn.
+
+```{r}
+#| label: cv
+#| code-fold: true
+#| results: hold
+```
+
+Scores use the fitted slopes only. A held-out novel's killer is missing from training
+exactly when it matters, which lowers that fold's intercept, and pooling scores across
+folds then biases the CV AUC downward. With intercepts included, the single-AI-predictor
+CV AUCs fall to 0.51–0.64, an artifact of pooling, not a real loss of
+discrimination. Within-novel rankings (hit rates) are unaffected either way.
+
+* **Related + Financial + AI web holds up**: CV AUC 0.94 (in-sample 0.97), and the
+  best CV hit rate (76%).
+* **Female and Employed are overfitting**: adding them raises in-sample AUC (0.91) but
+  *lowers* CV AUC (0.83 vs. 0.88 for Related + Financial alone), and the CV hit rate falls
+  to 55–63%.
+* Related + Financial alone is the most stable model: 68% hit rate in-sample and in CV.
+
+### Doubledecker plots: where the AI guess helps
+
+```{r}
+#| label: fig-doubledecker
+#| code-fold: true
+#| results: hold
+#| fig-width: 9
+#| fig-height: 5
+#| fig-cap: "Doubledecker plots: the proportion of killers (red) in each combination of Related, Gain and the AI's guess."
+#| fig-subcap:
+#|   - "AI guess from Chapter 1 on the web"
+#|   - "AI guess from Chapter 1 pasted in"
+#| layout-ncol: 1
+```
+
+## Caveats
+
+* 14 killers in 12 novels: models with more than two or three predictors overfit, and
+  in-sample AUCs and hit rates are optimistic (see the cross-validation above). With 12
+  folds, the CV estimates themselves are noisy.
+* Lutz notes that the "web" AI condition performed better than giving the AI the same text
+  directly, which suggests it was drawing on outside knowledge of these famous books. Its
+  advantage may be partly leakage, not reading.
