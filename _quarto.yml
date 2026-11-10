@@ -32,6 +32,9 @@ website:
       - text: "Home"
         icon: house
         href: index.qmd
+      - text: "About"
+        icon: person
+        href: about.qmd
       - text: "R Packages"
         icon: box-seam
         href: packages.qmd
