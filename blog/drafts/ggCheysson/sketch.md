@@ -6,6 +6,20 @@ lives.
 
 ## Framing
 
+The French _Albums de Statistique Graphique_, produced in the Ministry of Public Works, 1879-1899
+under the direction of Émile Cheysson, have, since I first laid eyes on one, impressed me as
+perhaps the most impressive contribution to what I call The Golden Age of Statistical Graphics [ref:].
+
+[Somehow reference/link to https://attilabatorfy.substack.com/p/not-just-pretty-pictures-interview]
+
+I was so obsessed with them I tracked down a complete set in an antiquarian bookshop in Paris,
+formed a group, _Les Chevaliers des Albums_ to purchase them, and later convinced David Rumsey
+to find and [digitize the entire collection]https://www.davidrumsey.com/luna/servlet/view/search?q=album+de+statistique). I was therefore delighted when RJ Andrews created an
+[Advent Calendar](https://infowetrust.com/project/album-colors) in January 2020 based on the color palettes and shading
+used in 25 of these lovely graphic works.
+
+--> segue into:
+
 Time-travel dream conceit: the narrator discovers he can time-travel in his dreams. The *Albums de
 Statistique Graphique* have long been on his mind, so one night he books a round-trip: YYZ (2026)
 -> CDG (1896). [Running gags to plant early: do I need a visa? Is my passport *down*-to-date? Does
