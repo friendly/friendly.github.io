@@ -20,6 +20,8 @@ used in 25 of these lovely graphic works.
 
 --> segue into:
 
+[I am the narrator]
+
 Time-travel dream conceit: the narrator discovers he can time-travel in his dreams. The *Albums de
 Statistique Graphique* have long been on his mind, so one night he books a round-trip: YYZ (2026)
 -> CDG (1896). [Running gags to plant early: do I need a visa? Is my passport *down*-to-date? Does

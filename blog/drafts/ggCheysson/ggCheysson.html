@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-11-10">
+<meta name="description" content="The Albums de Statistique Graphique are the high point of the Golden Age of statistical graphics. What happened when I tried to bring their colours, hatching and hand-lettering into R, told as a dream visit to Cheysson’s drawing office.">
+
+<title>Émile Cheysson Meets ggplot2</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="ggCheysson_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ggCheysson_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="ggCheysson_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="ggCheysson_files/libs/quarto-html/popper.min.js"></script>
+<script src="ggCheysson_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ggCheysson_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ggCheysson_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ggCheysson_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ggCheysson_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ggCheysson_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ggCheysson_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="quarto:status" content="draft">
+
+
+</head>
+
+<body class="fullcontent quarto-light"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Émile Cheysson Meets <code>ggplot2</code></h1>
+<p class="subtitle lead">A dream trip to 1886, with a laptop full of hex stickers</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">history</div>
+    <div class="quarto-category">dataviz</div>
+    <div class="quarto-category">R packages</div>
+    <div class="quarto-category">ggplot2</div>
+    <div class="quarto-category">Chevaliers</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    The Albums de Statistique Graphique are the high point of the Golden Age of statistical graphics. What happened when I tried to bring their colours, hatching and hand-lettering into R, told as a dream visit to Cheysson’s drawing office.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 10, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+Status (2026-11-10): full first draft. Scenes kept: through-line, three names, five
+plates, underscores, title (with "a page that holds still" folded in); Dropbox is one line
+in "The flight home". Code chunks need ggCheysson 1.2.0.9000 (GitHub) and gridpattern
+>= 1.5.0.
+
+Framing rule (MF): time travel throughout, but don't go overboard. Each section opens
+with a short beat in the drawing office (a remark, a question, a glance at a plate: a few
+lines, not a scene), then drops into plain first-person explanation of what actually
+happened in ggCheysson. Come back to the frame only at the very end ("The flight home").
+Why 1886: the Album that palette 1886_28, the package's running example, comes from. Background: sketch.md (framing + candidate scenes), Observable-notes.md
+(Shanley vs. ggCheysson), and C:\R\Projects\ggCheysson\dev\TASKS.md (the dev log).
+-->
+<p><img src="figures/logo.png" class="img-fluid" style="float:right; margin-left:1.5em; margin-bottom:1em; width:22%" alt="ggCheysson hex logo"></p>
+<p>The French <em>Albums de Statistique Graphique</em>, produced by the Ministry of Public Works from 1879 to 1897 under the direction of <a href="https://en.wikipedia.org/wiki/%C3%89mile_Cheysson"><strong>Émile Cheysson</strong></a>, have impressed me since the day Antoine de Falguerolles showed me a copy of the 1884 volume. I still think of them as perhaps the finest achievement of what I’ve called the <a href="https://doi.org/10.1214/08-STS268">Golden Age of Statistical Graphics</a>: maps of freight and passengers, rivers of trade flowing into French ports, pie charts sitting on the cities they describe. All of it was drawn and coloured by hand, and all of it is beautiful. (I said more about how I fell for them in a recent <a href="https://attilabatorfy.substack.com/p/not-just-pretty-pictures-interview">interview with Attila Bátorfy</a>.)</p>
+<p>I was so taken with them that I tracked down a complete set in an antiquarian bookshop in Paris. It was more than I could buy on my own, so I formed a small group of co-conspirators, <em>Les Chevaliers des Albums de Statistique Graphique</em>, to purchase them. (The Chevaliers have since gone on to <a href="https://medium.com/nightingale/raiders-of-the-lost-tombs-the-search-for-some-heroes-of-the-history-of-data-visualization-c4a4b4690d24">other adventures</a>, mostly involving cemeteries.) Later, I convinced fellow Chevalier David Rumsey to find and <a href="https://www.davidrumsey.com/luna/servlet/view/search?q=album+de+statistique">digitize the entire collection</a>, so that anyone can now zoom in on the brush strokes.</p>
+<p>So I was delighted when <a href="https://infowetrust.com/">RJ Andrews</a> ran a month-long Twitter thread, an Advent calendar of sorts, in which each day he took one plate from the <em>Albums</em> and pulled out its colours and hatching patterns as a reusable palette. He collected all 25 in January 2020 as <a href="https://infowetrust.com/project/album-colors">Classic Map Color Design</a> (<a href="#fig-andrews" class="quarto-xref">Figure&nbsp;1</a>). Tom Shanley soon turned Andrews’ swatches into an <a href="https://web.archive.org/web/20210130125506/https://observablehq.com/@tomshanley/cheysson-color-palettes">Observable notebook</a> for D3, and Kenneth Field went further still and made <a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/the-style-of-emile-cheysson/">hand-drawn fonts</a> from the lettering on the plates.</p>
+<div id="fig-andrews" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A grid of 25 colour and hatching palettes taken from plates of the Albums de Statistique Graphique">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-andrews-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/RJ-Andrews-color-palettes.jpg" class="img-fluid figure-img" alt="A grid of 25 colour and hatching palettes taken from plates of the Albums de Statistique Graphique">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-andrews-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: RJ Andrews’ 25 palettes from the <em>Albums</em>, one for each day of his Advent calendar. Source: <a href="https://infowetrust.com/project/album-colors">infowetrust.com</a>.
+</figcaption>
+</figure>
+</div>
+<p>Colours for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in R, my own home ground. That became <a href="https://friendly.github.io/ggCheysson/">ggCheysson</a>, and this post is the story of making it. I could tell it the usual way: a list of design decisions, bugs found and fixed, and a few lessons learned. But the more I worked on it, the more I found myself wondering what Cheysson and his draftsmen would have made of the whole enterprise. So I went to ask them.</p>
+<section id="a-ticket-to-1886" class="level2">
+<h2 class="anchored" data-anchor-id="a-ticket-to-1886">A ticket to 1886</h2>
+<p>I should explain that I have recently discovered I <strong>can travel in time</strong>, though only in my dreams. (I discovered this skill after re-reading Edwin Abbott’s <em>Flatland</em>, about a Square who encounters a Sphere, and learned to travel in higher dimensions, in his imagination. Hey, time is just one more dimension.)</p>
+<p>The <em>Albums</em> had been on my mind for months, so one night I booked a round trip: YYZ (2026) to CDG (1886), with an open return ticket. The booking went through without a hitch, which worried me more than if it hadn’t. Did I need a visa? Was my passport sufficiently <em>down</em>-to-date? And did my time-travel <code>SKILL.md</code> say anything about who would build the aeroplane, or the airport?</p>
+<p>Whatever the answers, I arrived. I had packed light: a bottle of Niagara ice-wine and a tin of maple syrup for Monsieur Cheysson, and my laptop, with R 4.6.1, <code>ggplot2</code>, and a small library of packages that extend it.</p>
+<p>The drawing office was at the top of the Ministry, where the light was best. Half a dozen draftsmen sat at tall tables, working on the plates for next year’s <em>Album</em>. One was laying bands of colour along the rivers of France, each as wide as the tonnage it carried. Another was ruling hatch lines, very close together, with a steadiness I could only envy.</p>
+<p>Cheysson received the ice-wine graciously and the maple syrup with genuine curiosity. What interested him most, though, was the lid of my laptop, which is covered in hexagons. I explained that in my time every useful piece of software comes with a sticker, and that people collect them. He studied them for a while. In his office, he said, a useful thing comes with a plate number.</p>
+<p>I had come with three questions to start the discussion with Émile &amp; his colleagues:</p>
+<ol type="1">
+<li>What can we learn from each other?</li>
+<li>How should I design an R package that lets people make graphics in your style?</li>
+<li>What will be hard about this once I’m back in Toronto?</li>
+</ol>
+<p>We talked until the lamps were lit. What follows is roughly what came up, in the order it came up.</p>
+</section>
+<section id="drawn-drawn-again-passed-along-described" class="level2">
+<h2 class="anchored" data-anchor-id="drawn-drawn-again-passed-along-described">Drawn, drawn again, passed along, described</h2>
+<p>I spent a long time watching the draftsman who was ruling hatch lines. When he paused, I asked him how he knew how far apart to draw them. He held up a finished plate: <em>comme ça</em>. Like this one.</p>
+<p>That, it turns out, is how a swatch travelled for the next 140 years: as a picture. Cheysson’s draftsmen drew each one on the plate. Andrews drew them again, as small SVG tiles. Tom Shanley’s notebook simply passed Andrews’ tiles along. In a web browser, a tile is a perfectly good fill, so one line, <code>fill: url(#id)</code>, paints a bar or a whole state with it, and the browser does the rest.</p>
+<p>ggplot2 has no way to fill a bar with someone else’s picture. So ggCheysson has to <em>describe</em> each swatch instead: read Andrews’ SVG, reduce it to a handful of numbers, and then draw it a third time with <a href="https://trevorldavis.com/R/gridpattern/">gridpattern</a>. Here is the first swatch of palette <code>1886_28</code>, Cheysson’s red vertical stripes, as the package sees them:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cheysson_patterns[[<span class="st">"1886_28"</span>]]<span class="sc">$</span>patterns[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; List of 9
+#&gt;  $ type             : chr "stripe"
+#&gt;  $ fill             : chr "transparent"
+#&gt;  $ pattern_fill     : chr "#d61d21"
+#&gt;  $ pattern_color    : chr "#d61d21"
+#&gt;  $ pattern_angle    : num 90
+#&gt;  $ pattern_density  : num 0.941
+#&gt;  $ pattern_spacing  : num 0.0588
+#&gt;  $ pattern_linewidth: num 2
+#&gt;  $ direction        : chr "vertical"</code></pre>
+</div>
+</div>
+<p>To ggplot2, in other words, a swatch is a printer’s spec sheet: type, colour, angle, spacing, line width. Nearly every bug I met lived in the translation from picture to spec sheet. SVG lets you leave out a coordinate that is zero, and Andrews often did; my first parser insisted on all four, silently threw away every line it couldn’t read, and left 15 swatches in 6 palettes empty. His files came in two dialects (one hand-written, one apparently exported from Illustrator). And some things simply have no number to go in: the round white dots of <code>1891_25</code> and the dashed stripes of <code>1891_19</code> were lost in translation, and still are.</p>
+<p>Then there was the plumbing. In ggplot2 every visual property is a separate aesthetic, with its own scale. So in version 1.1.0, applying one of Cheysson’s palettes to a bar chart took five mappings and five scales:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggCheysson 1.1.0</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(category, value, <span class="at">fill =</span> category)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col_pattern</span>(<span class="fu">aes</span>(<span class="at">pattern =</span> category, <span class="at">pattern_fill =</span> category,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pattern_fill2 =</span> category, <span class="at">pattern_angle =</span> category),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pattern_density =</span> <span class="fl">0.35</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_cheysson_pattern</span>(<span class="st">"1886_28"</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_manual</span>(<span class="at">values =</span> <span class="fu">cheysson_pattern_params</span>(pats, <span class="st">"pattern_type"</span>)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_fill_manual</span>(<span class="at">values =</span> <span class="fu">cheysson_pattern_params</span>(pats, <span class="st">"pattern_fill"</span>)) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_fill2_cheysson</span>(<span class="st">"1886_28"</span>) <span class="sc">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_angle_cheysson</span>(<span class="st">"1886_28"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>It worked, but nobody would call it Cheysson’s style. The fix, in version 1.2.0, was to stop splitting a swatch into parts. Each of the 134 swatches is now registered with gridpattern as a pattern of its own, with a name (<code>"1886_28-1"</code>, <code>"1886_28-2"</code>, …), and <code>scale_cheysson()</code> simply hands out names:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">category =</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">23</span>, <span class="dv">18</span>, <span class="dv">20</span>, <span class="dv">12</span>, <span class="dv">9</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(category, value, <span class="at">pattern =</span> category)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col_pattern</span>(<span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_cheysson</span>(<span class="st">"1886_28"</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cheysson</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-new-way" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-new-way-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ggCheysson_files/figure-html/fig-new-way-1.png" class="img-fluid figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-new-way-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Palette <code>1886_28</code> applied with <code>scale_cheysson()</code>. The legend keys are the same swatches as the bars.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>That is exactly what Shanley’s notebook did on day one: a swatch is known by its name. Getting R back to that point took me several detours, a function new in gridpattern 1.5.0 (<code>register_pattern()</code>), and patient advice from its author, Trevor Davis, in a <a href="https://github.com/trevorld/ggpattern/issues/154">GitHub issue</a>.</p>
+<p>When I showed Cheysson the three lines of code, he nodded. Of course a swatch is known by its name, he said. By its plate number.</p>
+<p><code>show_swatches()</code> draws the whole collection, or any part of it, as an atlas (<a href="#fig-atlas" class="quarto-xref">Figure&nbsp;3</a>). A swatch’s name is its row and column.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_swatches</span>(<span class="fu">c</span>(<span class="st">"1888_27"</span>, <span class="st">"1883_21"</span>, <span class="st">"1886_24"</span>, <span class="st">"1886_28"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-atlas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-atlas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ggCheysson_files/figure-html/fig-atlas-1.png" class="img-fluid figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-atlas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Four of the 25 palettes, one of each type, drawn by <code>show_swatches()</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="three-names-for-the-same-25-plates" class="level2">
+<h2 class="anchored" data-anchor-id="three-names-for-the-same-25-plates">Three names for the same 25 plates</h2>
+<p>Plate numbers turned out to be a sore point. On Cheysson’s table I laid out three index cards, all for the plate on his wall: <code>Dec.05-1886.28</code>, <code>category12516028</code>, and <code>1886_28</code>. He read them twice and asked, very politely, why one plate needed three names.</p>
+<p>Because three people named it, each for good reasons of his own. Andrews labelled his palettes by the day of his Advent calendar on which they appeared, plus album and plate. Shanley used the palette type and the catalogue number from the David Rumsey collection. I used album year and plate. None of us was wrong, and none of us agreed with the others.</p>
+<p>So the package now carries a crosswalk, <code>cheysson_labels</code>, that lets you go from any one name to the others. Here are the six palettes from the 1886 <em>Album</em>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(cheysson_labels, album_year <span class="sc">==</span> <span class="dv">1886</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">c</span>(name, advent_day, type, rumsey_no, andrews_label, shanley_id))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;       name advent_day       type rumsey_no  andrews_label         shanley_id
+#&gt; 2  1886_24          2    Grouped 12516.024 Dec.02-1886.24    grouped12516024
+#&gt; 4  1886_17          4    Grouped 12516.017 Dec.04-1886.17    grouped12516017
+#&gt; 5  1886_28          5   Category 12516.028 Dec.05-1886.28   category12516028
+#&gt; 7  1886_11          7    Grouped 12516.011 Dec.07-1886.11    grouped12516011
+#&gt; 15 1886_18         15    Grouped 12516.018 Dec.15-1886.18    grouped12516018
+#&gt; 19 1886_26         19 Sequential 12516.026 Dec.19-1886.26 sequential12516026</code></pre>
+</div>
+</div>
+<p>Building it was a small lesson in how names drift when they are copied by hand. Two of Shanley’s IDs have typos (<code>diverging12541021</code> has two digits swapped; <code>category1252605</code> has lost its last one), and in a few places his notebook disagrees with itself, because a display name was copied from a neighbouring cell and never changed. I don’t say this to pick on Tom, whose notebook is lovely and whose design, as you’ve seen, was right all along. The point is that any name typed twice will, sooner or later, be typed two ways.</p>
+<p>I also had to confess something to Cheysson. Even the “plate” in <code>1886_28</code> is not really his plate number. It is the suffix of Rumsey’s catalogue number, the best unique key we have. His own numbering isn’t in any of our data.</p>
+</section>
+<section id="the-bug-that-ate-five-plates" class="level2">
+<h2 class="anchored" data-anchor-id="the-bug-that-ate-five-plates">The bug that ate five plates</h2>
+<p>Cheysson then asked how many plates I had brought. Twenty-five, I said. Then, because he was looking at me, I admitted that for most of this year my software had quietly kept only twenty.</p>
+<p>The first versions of the package built each palette’s name from the album year and a field called <code>Qty</code>, which I took to be the plate number. It isn’t: it’s a count of the colours and patterns in the palette, and different plates in the same album can have the same count. Three palettes from 1886, for example, all have four elements, so all three were named <code>1886_04</code>. Each was stored with a plain <code>palettes[[name]] &lt;- ...</code>, so each one overwrote the one before. No error, no warning. Four such collisions, and 5 of the 25 palettes were simply gone, through a release on CRAN and the months that followed.</p>
+<p>I found out only by rebuilding Andrews’ grid of palettes, row by row, from the package’s own data, and setting it beside his (<a href="#fig-reconstruct" class="quarto-xref">Figure&nbsp;4</a>). Some rows had nothing to show.</p>
+<div id="fig-reconstruct" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-reconstruct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/RJ-Andrews-reconstruct.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reconstruct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The reconstruction of Andrews’ grid that exposed the bug, as first drawn in September 2026. Each grey crosshatched placeholder is a palette lost to the naming collision. All 25 were restored in version 1.1.0.
+</figcaption>
+</figure>
+</div>
+<p>The fix was to build names from Rumsey’s catalogue number, which really is unique. That brought back all 25 palettes, but it renamed 19 of the 20 that had shipped, so version 1.1.0 also had to tell users of the old names where their palette had gone.</p>
+<p>His archive, Cheysson observed, had never lost a plate to arithmetic.</p>
+</section>
+<section id="cheysson-had-no-need-of-underscores" class="level2">
+<h2 class="anchored" data-anchor-id="cheysson-had-no-need-of-underscores">Cheysson had no need of underscores</h2>
+<p>The lettering draftsman, whose titles I had admired all afternoon, was the next person I showed the laptop to. On the screen was one of my plot titles, <code>Palette 1880</code> followed by a small empty box and <code>21</code>. I asked if he could draw me the missing character. He asked what it was for.</p>
+<p>He had a point. The package’s fonts, which Kenneth Field drew from the lettering on the plates, have no underscore. Not one of the five families:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fams <span class="ot">&lt;-</span> cheysson_fonts<span class="sc">$</span>family</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(fams, <span class="cf">function</span>(f) systemfonts<span class="sc">::</span><span class="fu">glyph_info</span>(<span class="st">"_"</span>, <span class="at">family =</span> f)<span class="sc">$</span>name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;            Cheysson      CheyssonItalic    CheyssonSansCaps CheyssonOutlineCaps 
+#&gt;           ".notdef"           ".notdef"           ".notdef"           ".notdef" 
+#&gt;       CheyssonTitle 
+#&gt;           ".notdef"</code></pre>
+</div>
+</div>
+<p><code>.notdef</code> is a font’s way of saying “I have nothing for this”. So any title or label in a Cheysson font that contains a palette name, like <code>1880_21</code>, can come out with a little box (tofu, in the trade) where the underscore should be. Some graphics devices quietly borrow the missing character from another font, so you may never see the box. Others don’t.</p>
+<p>There was nothing to fix in the font. An 1880s alphabet had no use for a character that came in with the typewriter, for underlining, and was later taken up by programmers. I changed my text instead: the title now reads <code>Palette 1880, Plate 21</code>. Cheysson had no need of underscores!</p>
+</section>
+<section id="let-the-title-fill-the-page" class="level2">
+<h2 class="anchored" data-anchor-id="let-the-title-fill-the-page">Let the title fill the page</h2>
+<p>Next to the plate on the wall I held up the laptop, with a map drawn with a default ggplot2 theme. Cheysson looked from one to the other and asked why my title was so timid.</p>
+<p>I had already had a version of this conversation with myself. Someone (me) complained that the text in the package’s vignettes was too small. I measured: the sizes of title, axis labels and legend relative to each other were exactly those of <code>theme_minimal()</code>. The trouble was absolute size. An 11-point theme in a 7-inch figure looks small next to the text of a web page, and a ggplot2 theme has to work at whatever size the reader’s window happens to be. Cheysson’s plates were engraved once, for one page, and every element on them knew how big it was. Mine never do.</p>
+<p>For maps, though, the old convention had more to teach than the size of the page. On the maps of <a href="https://www.datavis.ca/papers/guerry-STS241.pdf"><strong>André-Michel Guerry</strong></a>, which Cheysson may well have known, the title runs nearly the whole width of the map. No default ggplot2 theme would ever choose that: the panel dominates, and the title is a modest line at the top. A single ratio of title to body text couldn’t give me both, because a title big enough for Guerry would have blown the legend text up to 30 points along with it.</p>
+<p>So <code>theme_cheysson_map()</code> now has its own, poster-style hierarchy: the title at five times the base size (55 points at the default <code>base_size = 11</code>, up from about 17), and the subtitle, legend and caption scaled up to match (<a href="#fig-literacy" class="quarto-xref">Figure&nbsp;5</a>). Here the 19th century didn’t just lend me colours; it changed a design decision.</p>
+<div id="fig-literacy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-literacy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/map-literacy-pattern-1.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-literacy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Literacy in Guerry’s data (1833), from the package’s Guerry maps vignette, with <code>theme_cheysson_map()</code>’s large title and the sequential hatching of palette <code>1888_27</code>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-flight-home" class="level2">
+<h2 class="anchored" data-anchor-id="the-flight-home">The flight home</h2>
+<p>By the time the lamps were lit, I had answers of a sort to my three questions.</p>
+<p>What could we learn from each other? From them: that a swatch is a thing with a name, that a plate’s number matters more than any label you put on it, and that a title can be as large as the map deserves. From me, I am less sure, though the draftsmen did seem to like <code>reverse = TRUE</code>.</p>
+<p>How should the package be designed? Around the swatch as a single named thing, and around data you can check against the originals. The rest, the scales that pick light to dark from a palette, the handling of missing values, one swatch serving bars, tiles, maps and legend keys alike, follows from that.</p>
+<p>What will be hard back in Toronto? The dots and the dashes, still lost in translation. And a question I keep coming back to: whether ggCheysson could skip the spec sheet entirely, and fill with Andrews’ tiles directly, as the browser does. R’s own graphics engine can now fill a shape with a pattern; not every graphics device can draw one.</p>
+<p>Then I woke up. Coming back is always the hard part of time travel; things are rarely as you left them. I once lost an afternoon’s work, not to war, revolution or shipwreck, but to a cloud-sync client. But that is another story.</p>
+<p>I still have the open return.</p>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<ul>
+<li>Friendly, M. (2008). The Golden Age of Statistical Graphics. <em>Statistical Science</em>, 23(4), 502–535. <a href="https://doi.org/10.1214/08-STS268" class="uri">https://doi.org/10.1214/08-STS268</a></li>
+<li>Andrews, RJ (2020). <a href="https://infowetrust.com/project/album-colors">Classic Map Color Design</a>.</li>
+<li>Shanley, T. (2021). <a href="https://web.archive.org/web/20210130125506/https://observablehq.com/@tomshanley/cheysson-color-palettes">Cheysson Color Palettes</a>. Observable notebook.</li>
+<li>Field, K. <a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/the-style-of-emile-cheysson/">The style of Émile Cheysson</a>.</li>
+<li><a href="https://friendly.github.io/ggCheysson/">ggCheysson</a> package documentation, especially the Guerry maps vignette.</li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
