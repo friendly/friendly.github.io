@@ -31,7 +31,7 @@ package-development post.
 
 Each of these is a real thing that happened during development, with enough narrative shape to
 carry a scene. Pick 4-6, not all of them - full technical detail for each is in
-`C:\Dropbox\R\projects\ggCheysson\dev\TASKS.md` (search for the bolded phrase quoted below).
+`C:\R\Projects\ggCheysson\dev\TASKS.md` (search for the bolded phrase quoted below).
 
 1. **Three men, three names for the same 25 plates.** The package's own naming scheme (album year
    + plate number), RJ Andrews' Advent-calendar labels (he released one plate per day every
@@ -89,9 +89,9 @@ carry a scene. Pick 4-6, not all of them - full technical detail for each is in
    war, revolution, or shipwreck, but to a cloud-sync client."
    - TASKS.md: "## Git/Dropbox corruption"
 
-## Source material (this package, `colorpat` branch)
+## Source material (package repo at `C:\R\Projects\ggCheysson`; the `colorpat` work is now on `master`)
 
-- `C:\Dropbox\R\projects\ggCheysson\dev\TASKS.md` - the full, detailed development log for
+- `C:\R\Projects\ggCheysson\dev\TASKS.md` - the full, detailed development log for
   everything above (and more) - the primary source to mine for specifics, exact numbers, and
   direct quotes.
 - Figures worth pulling in:
