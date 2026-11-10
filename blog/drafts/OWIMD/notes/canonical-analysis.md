@@ -26,10 +26,12 @@ for display.
   up part of the region effect (Frisch–Waugh–Lovell: you'd have to residualize the region dummies
   too). Its E isn't modR's E either: the largest element difference is 5.3. In effect this is a
   "GDP first, region gets what's left" view, though not exactly the sequential (Type I) test.
+  
 - **B** removes the GDP part using modR's own coefficients. Its E is exactly modR's E (to 1e-14),
   and the region means of the scores are the adjusted means. But its H is the plain between-group
   SSCP of the adjusted means, not modR's Type II H, so the axes and percentages differ from C, and
   Pillai (1.58) overstates modR's (1.33).
+  
 - **C** is closest to "the model's own canonical analysis". The axes come from modR's H and E, and
   only the plotted points are changed to the partial residuals. Projected adjusted means (Can1,
   Can2): Africa (2.12, −1.49), Asia/Oceania (−0.36, 0.60), Europe (−1.49, −0.35), N. America
