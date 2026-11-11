@@ -45,7 +45,7 @@ Paris. It was more than I could buy on my own, so I formed a small group of co-c
 since gone on to [other adventures](https://medium.com/nightingale/raiders-of-the-lost-tombs-the-search-for-some-heroes-of-the-history-of-data-visualization-c4a4b4690d24),
 mostly involving cemeteries.) Later, I convinced fellow Chevalier David Rumsey to find and
 [digitize the entire collection](https://www.davidrumsey.com/luna/servlet/view/search?q=album+de+statistique),
-so that anyone can now zoom in on the brush strokes.
+so that anyone can now zoom in on the brush strokes and marvel at their design.
 
 So I was delighted when [RJ Andrews](https://infowetrust.com/) ran a month-long Twitter
 thread, an Advent calendar of sorts, in which each day he took one plate from the *Albums*
@@ -62,10 +62,10 @@ from the lettering on the plates.
 Colours for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in
 R, my own home ground. That became [ggCheysson](https://friendly.github.io/ggCheysson/), and
 this post is the story of making it. (Version 1.2.0 is on CRAN:
-`install.packages("ggCheysson")`.) I could tell it the usual way: a list of design
+`install.packages("ggCheysson")`.) I could tell this story the usual way: a list of design
 decisions, bugs found and fixed, and a few lessons learned. But the more I worked on it, the
 more I found myself wondering what Cheysson and his draftsmen would have made of the whole
-enterprise. So I went to ask them.
+enterprise to reproduce their style. So I went to ask them.
 
 ## A ticket to 1886
 
@@ -83,16 +83,18 @@ need a visa? Was my passport sufficiently *down*-to-date? And did my time-travel
 `SKILL.md` say anything about who would build the aeroplane, or the airport?
 
 Whatever the answers, I arrived. I had packed light: a bottle of Niagara ice-wine and a tin
-of maple syrup for Monsieur Cheysson, and my laptop, with R 4.6.1, `ggplot2`, and a small
-library of packages that extend it.
+of Canadian maple syrup for Monsieur Cheysson, and my laptop, with R 4.6.1, `ggplot2`, and my
+library of packages that extend it. Self-contained; no need for a Wi-Fi connection.
 
-The drawing office was at the top of the Ministry, where the light was best. Half a dozen
+The drawing office was at the top of the Ministry, where the light was best, in the old Hôtel de Roquelaure on the
+boulevard Saint-Germain. Half a dozen
 draftsmen sat at tall tables, working on the plates for next year's *Album*. One was laying
 bands of colour along the rivers of France, each as wide as the tonnage it carried. Another
 was ruling hatch lines, very close together, with a steadiness I could only envy.
 
-Cheysson received the ice-wine graciously and the maple syrup with genuine curiosity. What
-interested him most, though, was the lid of my laptop, which is covered in hexagons. I
+Cheysson received the ice-wine graciously and the maple syrup with genuine curiosity. 
+I said, "Try this on pancakes."
+What interested him most, though, was the lid of my laptop, which is covered in hexagons. I
 explained that in my time every useful piece of software comes with a sticker, and that
 people collect them. He studied them for a while. In his office, he said, a useful thing
 comes with a plate number.
@@ -125,12 +127,13 @@ asked him how he knew how far apart to draw them. He held up a finished plate: *
 That, it turns out, is how a swatch travelled for the next 140 years: as a picture.
 Cheysson's draftsmen drew each one on the plate. Andrews drew them again, as small SVG
 tiles. Tom Shanley's notebook simply passed Andrews' tiles along. In a web browser, a
-tile is a perfectly good fill, so one line, `fill: url(#id)`, paints a bar or a whole state
+tile is a perfectly good fill, so one line, `fill: pattern(#id)`, paints a bar or a whole map region
 with it, and the browser does the rest.
 
-ggplot2 has no way to fill a bar with someone else's picture. So ggCheysson has to
+ggplot2 has no easy way to fill a bar with someone else's picture described in SVG. 
+So ggCheysson has to
 *describe* each swatch instead: read Andrews' SVG, reduce it to a handful of numbers, and
-then draw it a third time with [gridpattern](https://trevorldavis.com/R/gridpattern/).
+then draw it using [gridpattern](https://trevorldavis.com/R/gridpattern/) notation.
 Here is the first swatch of palette `1886_28`, Cheysson's red vertical stripes, as the
 package sees them:
 
@@ -148,7 +151,8 @@ from Illustrator). And some things simply have no number to go in: the round whi
 `1891_25` and the dashed stripes of `1891_19` were lost in translation, and still are.
 
 Then there was the plumbing. In ggplot2 every visual property is a separate aesthetic,
-with its own scale. So in version 1.1.0, applying one of Cheysson's palettes to a bar chart
+with its own `scale_*()` mapping a data value into what is drawn.
+So in [version 1.1.0](https://github.com/friendly/ggCheysson/releases/tag/v1.1.0), applying one of Cheysson's palettes to a bar chart
 took five mappings and five scales:
 
 ```{r}
@@ -167,9 +171,9 @@ ggplot(d, aes(category, value, fill = category)) +
   scale_pattern_angle_cheysson("1886_28")
 ```
 
-It worked, but nobody would call it Cheysson's style. The fix, in version 1.2.0, was to
+It worked, but nobody would call it Cheysson's style. The fix, in [version 1.2.0](https://github.com/friendly/ggCheysson/releases/tag/v1.2.0), was to
 stop splitting a swatch into parts. Each of the 134 swatches is now registered with
-gridpattern as a pattern of its own, with a name (`"1886_28-1"`, `"1886_28-2"`, ...), and
+`gridpattern` as a pattern of its own, with a name (`"1886_28-1"`, `"1886_28-2"`, ...), and
 `scale_cheysson()` simply hands out names:
 
 ```{r}
@@ -255,8 +259,8 @@ own data, and setting it beside his (@fig-reconstruct). Some rows had nothing to
 ![The reconstruction of Andrews' grid that exposed the bug, as first drawn in September 2026. Each grey crosshatched placeholder is a palette lost to the naming collision. All 25 were restored in version 1.1.0.](figures/RJ-Andrews-reconstruct.png){#fig-reconstruct}
 
 The fix was to build names from Rumsey's catalogue number, which really is unique. That
-brought back all 25 palettes, but it renamed 19 of the 20 that had shipped, so version
-1.1.0 also had to tell users of the old names where their palette had gone.
+brought back all 25 palettes, but it renamed 19 of the 20 that had shipped, so
+[version 1.1.0](https://github.com/friendly/ggCheysson/releases/tag/v1.1.0) also had to tell users of the old names where their palette had gone.
 
 Cheysson grinned and chuckled at this. His archive, he observed, had never lost a plate to arithmetic. A few were lost in his edits of the Albums, but these were due to
 redundancy or failure to meet his standard of truth and beauty.
@@ -314,24 +318,90 @@ didn't just lend me colours; it changed a design decision.
 
 ![Literacy in Guerry's data (1833), from the package's Guerry maps vignette, with `theme_cheysson_map()`'s large title and the sequential hatching of palette `1888_27`.](figures/map-literacy-pattern-1.png){#fig-literacy width="80%"}
 
+## The eye, which no package supplies
+
+<!-- DRAFT (Claude). The plate described is the 1884 Album's (Rumsey 12515.017, p. 11,
+data for 1882), from MF's crops and the Rumsey metadata in
+C:\Dropbox\Documents\milestones\images\albums\1884-Carte_Figurative_Voyageurs\12515017.txt.
+1886 Map 11 (12516.011, palette 1886_11) is the same kind of map in a later Album; its data
+year (1883? 1884?) not yet checked, so not stated.
+Optional sentence on 1886_28's quarter-circle sectors, if there's a good reason to give. -->
+
+Colours, fonts and title sizes were the things I could pack into the laptop and carry home.
+What I most wanted to learn from Cheysson's office was something no package supplies: the
+eye for choosing the right visual form for a given set of numbers. The *Albums* have no
+house "chart type" or "house style". Nearly every plate is a fresh decision: flow bands along rivers and
+railways, as wide as the traffic they carried; pie charts sitting on the cities they
+describe; bars, squares and sectors arranged on the map wherever the data lived.
+
+The plate I asked about was the one that first caught my eye, years ago, in the 1884 volume
+Antoine showed me: the
+[*Carte figurative des expéditions de voyageurs et de marchandises effectuées en 1882*](https://www.davidrumsey.com/luna/servlet/view/search?q=12515.017),
+the passengers and goods sent out from the principal railway stations of France in 1882.
+
+It begins in Paris (@fig-voyageurs-paris). Each of the five railway companies with a
+terminus in the capital (Nord, Est, Ouest, Orléans and Paris-Lyon-Méditerranée) gets a
+column, in its own colour, and each column is split into goods above, in thousands of
+tonnes, and passengers below, in thousands of travellers. Then the same design goes out
+across the map (@fig-voyageurs-south). Every station gets its own small block, split the
+same way into goods and passengers, in the colour of the company that serves it. Where two
+companies meet, as at Cette (now Sète) or Montpellier, their blocks stand side by side. The
+inset is even drawn "at the same scale as the general map", so a Paris terminus can be
+compared, by area, with Narbonne or Perpignan.
+
+::: {#fig-voyageurs layout-ncol="2"}
+
+![The five Paris termini. Totals for all of them: 5,431,000 tonnes of goods and 26,518,000 passengers.](figures/1884-Carte_Figurative_Voyageurs-Paris.jpg){#fig-voyageurs-paris}
+
+![Languedoc, from Albi and Nîmes to Perpignan. Green is the Midi company, pink the PLM.](figures/1884-Carte_Figurative_Voyageurs-snip1.jpg){#fig-voyageurs-south}
+
+Two details of the *Carte figurative des expéditions de voyageurs et de marchandises effectuées en 1882*, *Album de Statistique Graphique de 1884*. In each block, goods are on top (blue numbers) and passengers below (red numbers). Source: [David Rumsey Map Collection](https://www.davidrumsey.com/luna/servlet/view/search?q=12515.017), 12515.017.
+:::
+
+It is, in effect, a recursive mosaic display, subdivided at every station in France. I have spent a
+good part of my career on [mosaic displays](https://www.datavis.ca/papers/moshist.pdf),
+which divide a rectangle by one variable of a table, and then each piece by the next. Here
+was Cheysson's office doing it by hand, on a map, with the railway company as the first
+variable and passengers versus goods as the second. I asked him how they had arrived at it.
+He seemed puzzled by the question. "What is being divided", he said, "is the traffic. So you
+divide the traffic. And so on, until the job is done".
+
+The office drew this map again for later *Albums*, with newer figures. One version is Map 11
+of the 1886 *Album*, the plate whose colours became palette `1886_11` in ggCheysson. That
+palette is eight swatches in four pairs, a light stripe and a denser crosshatch for each
+colour: exactly what a map like this needs, one colour per company, two textures for goods
+and passengers.
+
+That is Émile's lesson, and one I find hardest to put in a package: the eye of a master graphic designer,
+with only pen-and-ink technology, a collection of graphic forms to choose from, and a desire to
+communicate complex problems to policy makers in 19th C. France.
+`ggplot2` gives me a grammar to build
+almost any of these forms, and an active R community continues to extend this.
+`ggCheysson` can now dress them in Cheysson's colours and
+hatching. But the grammar doesn't choose the form, and neither do the palettes. That choice,
+seeing what the **structure of the data asks for**, was the real craft of Cheysson's office,
+and it still has to come from whoever is making the graph.
+
 ## The flight home
 
-By the time the lamps were lit, I had answers of a sort to my three questions.
+By the time the lamps were beginning to dim in Paris, and my dream was interrupted by
+my alarm clock in Toronto, I had answers of a sort to my three questions.
 
-What could we learn from each other? From them: that a swatch is a thing with a name, that
-a plate's number matters more than any label you put on it, and that a title can be as
-large as the map deserves. From me, I am less sure. The one thing that truly impressed the
+**What could we learn from each other?** From them: that a swatch is a thing with a name, that
+a plate's number matters more than any label you put on it, that a title can be as
+large as the map deserves, and, most of all, that the form of a graph should follow the
+structure of its data. From me, I am less sure. The one thing that truly impressed the
 draftsmen was `reverse = TRUE`. I showed them a map hatched from light to dark, added that
 one argument, and it came back hatched from dark to light. For them, that would have meant
 a week of ruling every line again. The draftsman with the steady hand asked whether the
 laptop could stay.
 
-How should the package be designed? Around the swatch as a single named thing, and around
+**How should the package be designed?** Around the swatch as a single named thing, and around
 data you can check against the originals. The rest, the scales that pick light to dark
 from a palette, the handling of missing values, one swatch serving bars, tiles, maps and
 legend keys alike, follows from that.
 
-What will be hard back in Toronto? The dots and the dashes, still lost in translation. And
+**What will be hard back in Toronto?** The dots and the dashes, still lost in translation. And
 a question I keep coming back to: whether ggCheysson could skip the spec sheet entirely,
 and fill with Andrews' tiles directly, as the browser does. R's own graphics engine can now
 fill a shape with a pattern; not every graphics device can draw one.
@@ -340,7 +410,7 @@ Then I woke up. Coming back is always the hard part of time travel; things are r
 you left them. I once lost an afternoon's work, not to war, revolution or shipwreck, but to
 a cloud-sync client. But that is another story.
 
-I still have the open return.
+I still have the open return, in my dreams.
 
 Another night, I might ask Cheysson to meet me at La Closerie des Lilas, near where
 Minard and Guerry rest today in Montparnasse Cemetery.
