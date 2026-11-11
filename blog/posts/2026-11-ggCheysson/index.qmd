@@ -1,6 +1,6 @@
 ---
 title: "Émile Cheysson Meets `ggplot2`"
-subtitle: "A dream trip to 1886, with a laptop full of hex stickers and some questions"
+subtitle: "Making `ggCheysson` told as a dream trip to 1886, with a laptop full of hex stickers and some questions"
 description: "The Albums de Statistique Graphique are the high point of the Golden Age of statistical graphics. What happened when I tried to bring their colours, hatching and hand-lettering into R, told as a dream visit to Cheysson's drawing office."
 author: "Michael Friendly"
 date: "2026-11-11"
@@ -63,12 +63,17 @@ Hey, time is just one more dimension.)
 
 The *Albums* had been on my mind for months, so one night I booked a round trip:
 YYZ (2026) to CDG (1886), with an open return ticket.
-The booking went through without a hitch, which worried me more than if it hadn't. Did I
+The booking went through without a hitch, which worried me more than if it hadn't. 
+I had a flash memory of Chris Marker's _La Jetee_ (1962), a masterpiece of _avant-garde_ cinema,
+of a post-apocalyptic
+world involving time travel, romance in memory, and an inescapable time loop.
+
+Some practical questions were: Did I
 need a visa? Was my passport sufficiently *down*-to-date? And did my time-travel
 `SKILL.md` say anything about who would build the aeroplane, or the airport?
 
-Whatever the answers, I arrived. I had packed light: a bottle of Niagara ice-wine and a tin
-of Canadian maple syrup for Monsieur Cheysson, and my laptop, with R 4.6.1, `ggplot2`, and my
+Whatever the answers, I arrived. I had packed light: a bottle of Niagara ice-wine and a bottle
+of Canadian maple syrup for Monsieur Cheysson, and my laptop: with R 4.6.1, `ggplot2`, and my
 library of packages that extend it. Self-contained; no need for a Wi-Fi connection.
 
 The drawing office was at the top of the Ministry, where the light was best, in the old Hôtel de Roquelaure on the
