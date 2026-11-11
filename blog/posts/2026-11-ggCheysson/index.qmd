@@ -6,6 +6,9 @@ author: "Michael Friendly"
 date: "2026-11-11"
 categories: [history, dataviz, R packages, ggplot2, Chevaliers, time travel]
 image: "figures/cheysson-maps-grid.png"
+format:
+  html:
+    toc: true
 ---
 
 ![](figures/logo.png){style="float:right; margin-left:1.5em; margin-bottom:1em; width:22%" fig-alt="ggCheysson hex logo"}
@@ -431,3 +434,23 @@ about the numbers. I’ll book a table for five and leave the date blank.
 - Field, K. [The style of Émile Cheysson](https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/the-style-of-emile-cheysson/).
 - [ggCheysson](https://friendly.github.io/ggCheysson/) package documentation, especially
   the Guerry maps vignette.
+
+::: {.callout-note icon=false}
+## To cite this article
+
+Friendly, M. (2026, November). Émile Cheysson Meets `ggplot2`: Making `ggCheysson`, told as a
+dream trip to 1886, with a laptop full of hex stickers and some questions. *Michael Friendly's blog*.
+<https://friendly.github.io/blog/posts/2026-11-ggCheysson/>
+
+```bibtex
+@Misc{Friendly:2026:ggCheysson,
+  author       = {Friendly, Michael},
+  title        = {\'{E}mile {Cheysson} Meets {ggplot2}: Making {ggCheysson}, told as a
+                  dream trip to 1886, with a laptop full of hex stickers and some questions},
+  year         = {2026},
+  month        = nov,
+  howpublished = {Blog post},
+  url          = {https://friendly.github.io/blog/posts/2026-11-ggCheysson/},
+}
+```
+:::
