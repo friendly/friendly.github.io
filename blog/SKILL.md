@@ -148,6 +148,24 @@ When looking for a citation or BibTeX key, check these files first.
   `docs/blog/index.html` and `docs/listings.json` stale, so the new post
   won't show up on the blog listing page
 * Stage all changed `docs/` files together with the source `.qmd`
+* **End every published post with a "To cite this article" box**, after any
+  Further reading / References. Model it on `2026-11-OWIMD`: a
+  `::: {.callout-note icon=false}` with `## To cite this article`, a plain-text
+  reference (Friendly, M. (YYYY, Month). Title: Subtitle. *Michael Friendly's
+  blog*. URL), then a `bibtex` chunk with a `@Misc{Friendly:YYYY:shortname}`
+  entry (`howpublished = {Blog post}`, `url`, `month`). Brace-protect capitals
+  and names in the BibTeX title (`{GDP}`, `{ggplot2}`, `\'{E}mile`).
+* **TOC**: use `format: html: toc: true` for longer posts with several `##`
+  sections (most recent posts do); skip it for short pieces.
+* **Images in `docs/`**: `_quarto.yml` `resources:` globs are anchored with a
+  leading `/` (`/images/`, `/blog/posts/*/images/`, `/blog/assets/images/`,
+  `/dev/banner/images/`, `/papers/`). Without the `/`, a pattern matches a folder
+  of that name anywhere, and `images/` used to copy every
+  `blog/drafts/*/images/` folder into `docs/blog/drafts/`, publishing draft
+  images. Keep the `/`. A post that keeps pictures in `images/` is covered
+  (including ones referenced only from CSS, like banner images); pictures in
+  another folder (e.g. `figures/`) are copied only if the page references them
+  directly.
 
 ## Open / backlog
 
