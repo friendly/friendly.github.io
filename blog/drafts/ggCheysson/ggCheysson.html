@@ -134,7 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!--
 Status (2026-11-10): full first draft. Scenes kept: through-line, three names, five
 plates, underscores, title (with "a page that holds still" folded in); Dropbox is one line
-in "The flight home". Code chunks need ggCheysson 1.2.0.9000 (GitHub) and gridpattern
+in "The flight home". Code chunks need ggCheysson >= 1.2.0 (CRAN) and gridpattern
 >= 1.5.0.
 
 Framing rule (MF): time travel throughout, but don't go overboard. Each section opens
@@ -145,20 +145,30 @@ Why 1886: the Album that palette 1886_28, the package's running example, comes f
 (Shanley vs. ggCheysson), and C:\R\Projects\ggCheysson\dev\TASKS.md (the dev log).
 -->
 <p><img src="figures/logo.png" class="img-fluid" style="float:right; margin-left:1.5em; margin-bottom:1em; width:22%" alt="ggCheysson hex logo"></p>
-<p>The French <em>Albums de Statistique Graphique</em>, produced by the Ministry of Public Works from 1879 to 1897 under the direction of <a href="https://en.wikipedia.org/wiki/%C3%89mile_Cheysson"><strong>Émile Cheysson</strong></a>, have impressed me since the day Antoine de Falguerolles showed me a copy of the 1884 volume. I still think of them as perhaps the finest achievement of what I’ve called the <a href="https://doi.org/10.1214/08-STS268">Golden Age of Statistical Graphics</a>: maps of freight and passengers, rivers of trade flowing into French ports, pie charts sitting on the cities they describe. All of it was drawn and coloured by hand, and all of it is beautiful. (I said more about how I fell for them in a recent <a href="https://attilabatorfy.substack.com/p/not-just-pretty-pictures-interview">interview with Attila Bátorfy</a>.)</p>
+<p>The French <em>Albums de Statistique Graphique</em>, produced by the Ministry of Public Works from 1879 to 1897 under the direction of <a href="https://en.wikipedia.org/wiki/%C3%89mile_Cheysson"><strong>Émile Cheysson</strong></a> (with two later volumes, in 1900 and 1906), have impressed me since the day Antoine de Falguerolles showed me a copy of the 1884 volume. I still think of them as perhaps the finest achievement of what I’ve called the <a href="https://doi.org/10.1214/08-STS268">Golden Age of Statistical Graphics</a>: maps of freight and passengers, rivers of trade flowing into French ports, pie charts sitting on the cities they describe. All of it was drawn and coloured by hand, and all of it is beautiful. (I said more about how I fell for them in a recent <a href="https://attilabatorfy.substack.com/p/not-just-pretty-pictures-interview">interview with Attila Bátorfy</a>.)</p>
+<div id="fig-plates" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A 5 by 5 grid of close-up crops from maps in the Albums de Statistique Graphique, each labeled with its year and map number, from 1880 Map 7 to 1906 Map 50. They show pie charts, flow bands, shaded regions and bar charts on old French maps, in soft pinks, blues, golds, greens, browns and black, many with fine hatched lines.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-plates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/cheysson-maps-grid.png" class="img-fluid figure-img" style="width:80.0%" alt="A 5 by 5 grid of close-up crops from maps in the Albums de Statistique Graphique, each labeled with its year and map number, from 1880 Map 7 to 1906 Map 50. They show pie charts, flow bands, shaded regions and bar charts on old French maps, in soft pinks, blues, golds, greens, browns and black, many with fine hatched lines.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Details from 25 plates of the <em>Albums</em>, 1880 to 1906: pie charts on cities, flow bands along rivers and canals, and regions shaded and hatched by hand. Each is the source of one palette in ggCheysson. Crops by <a href="https://infowetrust.com/project/album-colors">RJ Andrews</a>.
+</figcaption>
+</figure>
+</div>
 <p>I was so taken with them that I tracked down a complete set in an antiquarian bookshop in Paris. It was more than I could buy on my own, so I formed a small group of co-conspirators, <em>Les Chevaliers des Albums de Statistique Graphique</em>, to purchase them. (The Chevaliers have since gone on to <a href="https://medium.com/nightingale/raiders-of-the-lost-tombs-the-search-for-some-heroes-of-the-history-of-data-visualization-c4a4b4690d24">other adventures</a>, mostly involving cemeteries.) Later, I convinced fellow Chevalier David Rumsey to find and <a href="https://www.davidrumsey.com/luna/servlet/view/search?q=album+de+statistique">digitize the entire collection</a>, so that anyone can now zoom in on the brush strokes.</p>
-<p>So I was delighted when <a href="https://infowetrust.com/">RJ Andrews</a> ran a month-long Twitter thread, an Advent calendar of sorts, in which each day he took one plate from the <em>Albums</em> and pulled out its colours and hatching patterns as a reusable palette. He collected all 25 in January 2020 as <a href="https://infowetrust.com/project/album-colors">Classic Map Color Design</a> (<a href="#fig-andrews" class="quarto-xref">Figure&nbsp;1</a>). Tom Shanley soon turned Andrews’ swatches into an <a href="https://web.archive.org/web/20210130125506/https://observablehq.com/@tomshanley/cheysson-color-palettes">Observable notebook</a> for D3, and Kenneth Field went further still and made <a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/the-style-of-emile-cheysson/">hand-drawn fonts</a> from the lettering on the plates.</p>
+<p>So I was delighted when <a href="https://infowetrust.com/">RJ Andrews</a> ran a month-long Twitter thread, an Advent calendar of sorts, in which each day he took one plate from the <em>Albums</em> and pulled out its colours and hatching patterns as a reusable palette. He collected all 25 in January 2020 as <a href="https://infowetrust.com/project/album-colors">Classic Map Color Design</a> (<a href="#fig-andrews" class="quarto-xref">Figure&nbsp;2</a>). Tom Shanley soon turned Andrews’ swatches into an <a href="https://web.archive.org/web/20210130125506/https://observablehq.com/@tomshanley/cheysson-color-palettes">Observable notebook</a> for D3, and Kenneth Field went further still and made <a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/the-style-of-emile-cheysson/">hand-drawn fonts</a> from the lettering on the plates.</p>
 <div id="fig-andrews" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A grid of 25 colour and hatching palettes taken from plates of the Albums de Statistique Graphique">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-andrews-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/RJ-Andrews-color-palettes.jpg" class="img-fluid figure-img" alt="A grid of 25 colour and hatching palettes taken from plates of the Albums de Statistique Graphique">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-andrews-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: RJ Andrews’ 25 palettes from the <em>Albums</em>, one for each day of his Advent calendar. Source: <a href="https://infowetrust.com/project/album-colors">infowetrust.com</a>.
+Figure&nbsp;2: RJ Andrews’ 25 palettes from the <em>Albums</em>, one for each day of his Advent calendar. Source: <a href="https://infowetrust.com/project/album-colors">infowetrust.com</a>.
 </figcaption>
 </figure>
 </div>
-<p>Colours for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in R, my own home ground. That became <a href="https://friendly.github.io/ggCheysson/">ggCheysson</a>, and this post is the story of making it. I could tell it the usual way: a list of design decisions, bugs found and fixed, and a few lessons learned. But the more I worked on it, the more I found myself wondering what Cheysson and his draftsmen would have made of the whole enterprise. So I went to ask them.</p>
+<p>Colours for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in R, my own home ground. That became <a href="https://friendly.github.io/ggCheysson/">ggCheysson</a>, and this post is the story of making it. (Version 1.2.0 is on CRAN: <code>install.packages("ggCheysson")</code>.) I could tell it the usual way: a list of design decisions, bugs found and fixed, and a few lessons learned. But the more I worked on it, the more I found myself wondering what Cheysson and his draftsmen would have made of the whole enterprise. So I went to ask them.</p>
 <section id="a-ticket-to-1886" class="level2">
 <h2 class="anchored" data-anchor-id="a-ticket-to-1886">A ticket to 1886</h2>
 <div id="fig-cheysson-office" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Émile Cheysson stands beside a draftsman painting red and blue river bands on a map of France. At the next table, a draftsman rules fine hatch lines.">
@@ -167,7 +177,7 @@ Figure&nbsp;1: RJ Andrews’ 25 palettes from the <em>Albums</em>, one for each 
 <img src="figures/cheysson-drawing-office.png" class="img-fluid figure-img" alt="Émile Cheysson stands beside a draftsman painting red and blue river bands on a map of France. At the next table, a draftsman rules fine hatch lines.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cheysson-office-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: I arrived in time to see next year’s <em>Album</em> taking shape. Cheysson was looking over a river map, and at the next table a draftsman was ruling hatch lines with a steadiness I could only envy.
+Figure&nbsp;3: I arrived in time to see next year’s <em>Album</em> taking shape. Cheysson was looking over a river map, and at the next table a draftsman was ruling hatch lines with a steadiness I could only envy.
 </figcaption>
 </figure>
 </div>
@@ -208,15 +218,16 @@ Figure&nbsp;2: I arrived in time to see next year’s <em>Album</em> taking shap
 <p>Then there was the plumbing. In ggplot2 every visual property is a separate aesthetic, with its own scale. So in version 1.1.0, applying one of Cheysson’s palettes to a bar chart took five mappings and five scales:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggCheysson 1.1.0</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(category, value, <span class="at">fill =</span> category)) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col_pattern</span>(<span class="fu">aes</span>(<span class="at">pattern =</span> category, <span class="at">pattern_fill =</span> category,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pattern_fill2 =</span> category, <span class="at">pattern_angle =</span> category),</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pattern_density =</span> <span class="fl">0.35</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_cheysson_pattern</span>(<span class="st">"1886_28"</span>) <span class="sc">+</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_manual</span>(<span class="at">values =</span> <span class="fu">cheysson_pattern_params</span>(pats, <span class="st">"pattern_type"</span>)) <span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_fill_manual</span>(<span class="at">values =</span> <span class="fu">cheysson_pattern_params</span>(pats, <span class="st">"pattern_fill"</span>)) <span class="sc">+</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_fill2_cheysson</span>(<span class="st">"1886_28"</span>) <span class="sc">+</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_angle_cheysson</span>(<span class="st">"1886_28"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pats <span class="ot">&lt;-</span> <span class="fu">cheysson_pattern</span>(<span class="st">"1886_28"</span>)   <span class="co"># the palette's list of swatch specs</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(category, value, <span class="at">fill =</span> category)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col_pattern</span>(<span class="fu">aes</span>(<span class="at">pattern =</span> category, <span class="at">pattern_fill =</span> category,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pattern_fill2 =</span> category, <span class="at">pattern_angle =</span> category),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pattern_density =</span> <span class="fl">0.35</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_cheysson_pattern</span>(<span class="st">"1886_28"</span>) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_manual</span>(<span class="at">values =</span> <span class="fu">cheysson_pattern_params</span>(pats, <span class="st">"pattern_type"</span>)) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_fill_manual</span>(<span class="at">values =</span> <span class="fu">cheysson_pattern_params</span>(pats, <span class="st">"pattern_fill"</span>)) <span class="sc">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_fill2_cheysson</span>(<span class="st">"1886_28"</span>) <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_pattern_angle_cheysson</span>(<span class="st">"1886_28"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>It worked, but nobody would call it Cheysson’s style. The fix, in version 1.2.0, was to stop splitting a swatch into parts. Each of the 134 swatches is now registered with gridpattern as a pattern of its own, with a name (<code>"1886_28-1"</code>, <code>"1886_28-2"</code>, …), and <code>scale_cheysson()</code> simply hands out names:</p>
 <div class="cell">
@@ -233,7 +244,7 @@ Figure&nbsp;2: I arrived in time to see next year’s <em>Album</em> taking shap
 <img src="ggCheysson_files/figure-html/fig-new-way-1.png" class="img-fluid figure-img" width="720">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-new-way-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Palette <code>1886_28</code> applied with <code>scale_cheysson()</code>. The legend keys are the same swatches as the bars.
+Figure&nbsp;4: Palette <code>1886_28</code> applied with <code>scale_cheysson()</code>. The legend keys are the same swatches as the bars.
 </figcaption>
 </figure>
 </div>
@@ -241,7 +252,7 @@ Figure&nbsp;3: Palette <code>1886_28</code> applied with <code>scale_cheysson()<
 </div>
 <p>That is exactly what Shanley’s notebook did on day one: a swatch is known by its name. Getting R back to that point took me several detours, a function new in gridpattern 1.5.0 (<code>register_pattern()</code>), and patient advice from its author, Trevor Davis, in a <a href="https://github.com/trevorld/ggpattern/issues/154">GitHub issue</a>.</p>
 <p>When I showed Cheysson the three lines of code, he nodded. Of course a swatch is known by its name, he said. By its plate number.</p>
-<p><code>show_swatches()</code> draws the whole collection, or any part of it, as an atlas (<a href="#fig-atlas" class="quarto-xref">Figure&nbsp;4</a>). A swatch’s name is its row and column.</p>
+<p><code>show_swatches()</code> draws the whole collection, or any part of it, as an atlas (<a href="#fig-atlas" class="quarto-xref">Figure&nbsp;5</a>). A swatch’s name is its row and column.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_swatches</span>(<span class="fu">c</span>(<span class="st">"1888_27"</span>, <span class="st">"1883_21"</span>, <span class="st">"1886_24"</span>, <span class="st">"1886_28"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -251,7 +262,7 @@ Figure&nbsp;3: Palette <code>1886_28</code> applied with <code>scale_cheysson()<
 <img src="ggCheysson_files/figure-html/fig-atlas-1.png" class="img-fluid figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-atlas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Four of the 25 palettes, one of each type, drawn by <code>show_swatches()</code>.
+Figure&nbsp;5: Four of the 25 palettes, one of each type, drawn by <code>show_swatches()</code>.
 </figcaption>
 </figure>
 </div>
@@ -283,24 +294,24 @@ Figure&nbsp;4: Four of the 25 palettes, one of each type, drawn by <code>show_sw
 <h2 class="anchored" data-anchor-id="the-bug-that-ate-five-plates">The bug that ate five plates</h2>
 <p>Cheysson then asked how many plates I had brought. Twenty-five, I said. Then, because he was looking at me, I admitted that for most of this year my software had quietly kept only twenty.</p>
 <p>The first versions of the package built each palette’s name from the album year and a field called <code>Qty</code>, which I took to be the plate number. It isn’t: it’s a count of the colours and patterns in the palette, and different plates in the same album can have the same count. Three palettes from 1886, for example, all have four elements, so all three were named <code>1886_04</code>. Each was stored with a plain <code>palettes[[name]] &lt;- ...</code>, so each one overwrote the one before. No error, no warning. Four such collisions, and 5 of the 25 palettes were simply gone, through a release on CRAN and the months that followed.</p>
-<p>I found out only by rebuilding Andrews’ grid of palettes, row by row, from the package’s own data, and setting it beside his (<a href="#fig-reconstruct" class="quarto-xref">Figure&nbsp;5</a>). Some rows had nothing to show.</p>
+<p>I found out only by rebuilding Andrews’ grid of palettes, row by row, from the package’s own data, and setting it beside his (<a href="#fig-reconstruct" class="quarto-xref">Figure&nbsp;6</a>). Some rows had nothing to show.</p>
 <div id="fig-reconstruct" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-reconstruct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/RJ-Andrews-reconstruct.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reconstruct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: The reconstruction of Andrews’ grid that exposed the bug, as first drawn in September 2026. Each grey crosshatched placeholder is a palette lost to the naming collision. All 25 were restored in version 1.1.0.
+Figure&nbsp;6: The reconstruction of Andrews’ grid that exposed the bug, as first drawn in September 2026. Each grey crosshatched placeholder is a palette lost to the naming collision. All 25 were restored in version 1.1.0.
 </figcaption>
 </figure>
 </div>
 <p>The fix was to build names from Rumsey’s catalogue number, which really is unique. That brought back all 25 palettes, but it renamed 19 of the 20 that had shipped, so version 1.1.0 also had to tell users of the old names where their palette had gone.</p>
-<p>His archive, Cheysson observed, had never lost a plate to arithmetic.</p>
+<p>Cheysson grinned and chuckled at this. His archive, he observed, had never lost a plate to arithmetic. A few were lost in his edits of the Albums, but these were due to redundancy or failure to meet his standard of truth and beauty.</p>
 </section>
 <section id="cheysson-had-no-need-of-underscores" class="level2">
 <h2 class="anchored" data-anchor-id="cheysson-had-no-need-of-underscores">Cheysson had no need of underscores</h2>
 <p>The lettering draftsman, whose titles I had admired all afternoon, was the next person I showed the laptop to. On the screen was one of my plot titles, <code>Palette 1880</code> followed by a small empty box and <code>21</code>. I asked if he could draw me the missing character. He asked what it was for.</p>
-<p>He had a point. The package’s fonts, which Kenneth Field drew from the lettering on the plates, have no underscore. Not one of the five families:</p>
+<p>He had a point. The package’s fonts, which Kenneth Field drew from the lettering on the plates, have no underscore. (They come with the package; <code>load_cheysson_fonts()</code> makes them available to your graphics device, once per session.) Not one of the five families:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fams <span class="ot">&lt;-</span> cheysson_fonts<span class="sc">$</span>family</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(fams, <span class="cf">function</span>(f) systemfonts<span class="sc">::</span><span class="fu">glyph_info</span>(<span class="st">"_"</span>, <span class="at">family =</span> f)<span class="sc">$</span>name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -319,14 +330,14 @@ Figure&nbsp;5: The reconstruction of Andrews’ grid that exposed the bug, as fi
 <p>Next to the plate on the wall I held up the laptop, with a map drawn with a default ggplot2 theme. Cheysson looked from one to the other and asked why my title was so timid.</p>
 <p>I had already had a version of this conversation with myself. Someone (me) complained that the text in the package’s vignettes was too small. I measured: the sizes of title, axis labels and legend relative to each other were exactly those of <code>theme_minimal()</code>. The trouble was absolute size. An 11-point theme in a 7-inch figure looks small next to the text of a web page, and a ggplot2 theme has to work at whatever size the reader’s window happens to be. Cheysson’s plates were engraved once, for one page, and every element on them knew how big it was. Mine never do.</p>
 <p>For maps, though, the old convention had more to teach than the size of the page. On the maps of <a href="https://www.datavis.ca/papers/guerry-STS241.pdf"><strong>André-Michel Guerry</strong></a>, which Cheysson may well have known, the title runs nearly the whole width of the map. No default ggplot2 theme would ever choose that: the panel dominates, and the title is a modest line at the top. A single ratio of title to body text couldn’t give me both, because a title big enough for Guerry would have blown the legend text up to 30 points along with it.</p>
-<p>So <code>theme_cheysson_map()</code> now has its own, poster-style hierarchy: the title at five times the base size (55 points at the default <code>base_size = 11</code>, up from about 17), and the subtitle, legend and caption scaled up to match (<a href="#fig-literacy" class="quarto-xref">Figure&nbsp;6</a>). Here the 19th century didn’t just lend me colours; it changed a design decision.</p>
+<p>So <code>theme_cheysson_map()</code> now has its own, poster-style hierarchy: the title at five times the base size (55 points at the default <code>base_size = 11</code>, up from about 17), and the subtitle, legend and caption scaled up to match (<a href="#fig-literacy" class="quarto-xref">Figure&nbsp;7</a>). Here the 19th century didn’t just lend me colours; it changed a design decision.</p>
 <div id="fig-literacy" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-literacy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/map-literacy-pattern-1.png" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-literacy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Literacy in Guerry’s data (1833), from the package’s Guerry maps vignette, with <code>theme_cheysson_map()</code>’s large title and the sequential hatching of palette <code>1888_27</code>.
+Figure&nbsp;7: Literacy in Guerry’s data (1833), from the package’s Guerry maps vignette, with <code>theme_cheysson_map()</code>’s large title and the sequential hatching of palette <code>1888_27</code>.
 </figcaption>
 </figure>
 </div>
@@ -334,7 +345,7 @@ Figure&nbsp;6: Literacy in Guerry’s data (1833), from the package’s Guerry m
 <section id="the-flight-home" class="level2">
 <h2 class="anchored" data-anchor-id="the-flight-home">The flight home</h2>
 <p>By the time the lamps were lit, I had answers of a sort to my three questions.</p>
-<p>What could we learn from each other? From them: that a swatch is a thing with a name, that a plate’s number matters more than any label you put on it, and that a title can be as large as the map deserves. From me, I am less sure, though the draftsmen did seem to like <code>reverse = TRUE</code>.</p>
+<p>What could we learn from each other? From them: that a swatch is a thing with a name, that a plate’s number matters more than any label you put on it, and that a title can be as large as the map deserves. From me, I am less sure. The one thing that truly impressed the draftsmen was <code>reverse = TRUE</code>. I showed them a map hatched from light to dark, added that one argument, and it came back hatched from dark to light. For them, that would have meant a week of ruling every line again. The draftsman with the steady hand asked whether the laptop could stay.</p>
 <p>How should the package be designed? Around the swatch as a single named thing, and around data you can check against the originals. The rest, the scales that pick light to dark from a palette, the handling of missing values, one swatch serving bars, tiles, maps and legend keys alike, follows from that.</p>
 <p>What will be hard back in Toronto? The dots and the dashes, still lost in translation. And a question I keep coming back to: whether ggCheysson could skip the spec sheet entirely, and fill with Andrews’ tiles directly, as the browser does. R’s own graphics engine can now fill a shape with a pattern; not every graphics device can draw one.</p>
 <p>Then I woke up. Coming back is always the hard part of time travel; things are rarely as you left them. I once lost an afternoon’s work, not to war, revolution or shipwreck, but to a cloud-sync client. But that is another story.</p>

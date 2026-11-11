@@ -5,13 +5,14 @@ description: "The Albums de Statistique Graphique are the high point of the Gold
 author: "Michael Friendly"
 date: today
 categories: [history, dataviz, R packages, ggplot2, Chevaliers, time travel]
+image: "figures/cheysson-maps-grid.png"
 draft: true
 ---
 
 <!--
 Status (2026-11-10): full first draft. Scenes kept: through-line, three names, five
 plates, underscores, title (with "a page that holds still" folded in); Dropbox is one line
-in "The flight home". Code chunks need ggCheysson 1.2.0.9000 (GitHub) and gridpattern
+in "The flight home". Code chunks need ggCheysson >= 1.2.0 (CRAN) and gridpattern
 >= 1.5.0.
 
 Framing rule (MF): time travel throughout, but don't go overboard. Each section opens
@@ -26,7 +27,8 @@ Why 1886: the Album that palette 1886_28, the package's running example, comes f
 
 The French *Albums de Statistique Graphique*,
 produced by the Ministry of Public Works from 1879 to 1897 under the direction of
-[**Émile Cheysson**](https://en.wikipedia.org/wiki/%C3%89mile_Cheysson), have impressed me
+[**Émile Cheysson**](https://en.wikipedia.org/wiki/%C3%89mile_Cheysson) (with two later
+volumes, in 1900 and 1906), have impressed me
 since the day Antoine de Falguerolles showed me a copy of the 1884 volume. I still think
 of them as perhaps the finest achievement of what I've called the
 [Golden Age of Statistical Graphics](https://doi.org/10.1214/08-STS268): maps of freight and
@@ -34,6 +36,8 @@ passengers, rivers of trade flowing into French ports, pie charts sitting on the
 describe. All of it was drawn and coloured by hand, and all of it is beautiful.
 (I said more about how I fell for them in a recent
 [interview with Attila Bátorfy](https://attilabatorfy.substack.com/p/not-just-pretty-pictures-interview).)
+
+![Details from 25 plates of the *Albums*, 1880 to 1906: pie charts on cities, flow bands along rivers and canals, and regions shaded and hatched by hand. Each is the source of one palette in ggCheysson. Crops by [RJ Andrews](https://infowetrust.com/project/album-colors).](figures/cheysson-maps-grid.png){#fig-plates width="80%" fig-alt="A 5 by 5 grid of close-up crops from maps in the Albums de Statistique Graphique, each labeled with its year and map number, from 1880 Map 7 to 1906 Map 50. They show pie charts, flow bands, shaded regions and bar charts on old French maps, in soft pinks, blues, golds, greens, browns and black, many with fine hatched lines."}
 
 I was so taken with them that I tracked down a complete set in an antiquarian bookshop in
 Paris. It was more than I could buy on my own, so I formed a small group of co-conspirators,
@@ -57,7 +61,8 @@ from the lettering on the plates.
 
 Colours for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in
 R, my own home ground. That became [ggCheysson](https://friendly.github.io/ggCheysson/), and
-this post is the story of making it. I could tell it the usual way: a list of design
+this post is the story of making it. (Version 1.2.0 is on CRAN:
+`install.packages("ggCheysson")`.) I could tell it the usual way: a list of design
 decisions, bugs found and fixed, and a few lessons learned. But the more I worked on it, the
 more I found myself wondering what Cheysson and his draftsmen would have made of the whole
 enterprise. So I went to ask them.
@@ -107,7 +112,7 @@ came up.
 knitr::opts_chunk$set(dev = "ragg_png", dpi = 120, comment = "#>")
 library(ggplot2)
 library(ggpattern)
-library(ggCheysson)    # development version, 1.2.0.9000
+library(ggCheysson)    # >= 1.2.0
 invisible(capture.output(load_cheysson_fonts()))
 ```
 
@@ -150,6 +155,7 @@ took five mappings and five scales:
 #| label: old-way
 #| eval: false
 # ggCheysson 1.1.0
+pats <- cheysson_pattern("1886_28")   # the palette's list of swatch specs
 ggplot(d, aes(category, value, fill = category)) +
   geom_col_pattern(aes(pattern = category, pattern_fill = category,
                        pattern_fill2 = category, pattern_angle = category),
@@ -252,7 +258,8 @@ The fix was to build names from Rumsey's catalogue number, which really is uniqu
 brought back all 25 palettes, but it renamed 19 of the 20 that had shipped, so version
 1.1.0 also had to tell users of the old names where their palette had gone.
 
-His archive, Cheysson observed, had never lost a plate to arithmetic.
+Cheysson grinned and chuckled at this. His archive, he observed, had never lost a plate to arithmetic. A few were lost in his edits of the Albums, but these were due to
+redundancy or failure to meet his standard of truth and beauty.
 
 ## Cheysson had no need of underscores
 
@@ -262,7 +269,8 @@ a small empty box and `21`. I asked if he could draw me the missing character. H
 what it was for.
 
 He had a point. The package's fonts, which Kenneth Field drew from the lettering on the
-plates, have no underscore. Not one of the five families:
+plates, have no underscore. (They come with the package; `load_cheysson_fonts()` makes them
+available to your graphics device, once per session.) Not one of the five families:
 
 ```{r}
 #| label: underscore
@@ -312,8 +320,11 @@ By the time the lamps were lit, I had answers of a sort to my three questions.
 
 What could we learn from each other? From them: that a swatch is a thing with a name, that
 a plate's number matters more than any label you put on it, and that a title can be as
-large as the map deserves. From me, I am less sure, though the draftsmen did seem to like
-`reverse = TRUE`.
+large as the map deserves. From me, I am less sure. The one thing that truly impressed the
+draftsmen was `reverse = TRUE`. I showed them a map hatched from light to dark, added that
+one argument, and it came back hatched from dark to light. For them, that would have meant
+a week of ruling every line again. The draftsman with the steady hand asked whether the
+laptop could stay.
 
 How should the package be designed? Around the swatch as a single named thing, and around
 data you can check against the originals. The rest, the scales that pick light to dark
