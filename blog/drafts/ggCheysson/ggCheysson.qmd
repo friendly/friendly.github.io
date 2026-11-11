@@ -323,8 +323,8 @@ didn't just lend me colours; it changed a design decision.
 <!-- DRAFT (Claude). The plate described is the 1884 Album's (Rumsey 12515.017, p. 11,
 data for 1882), from MF's crops and the Rumsey metadata in
 C:\Dropbox\Documents\milestones\images\albums\1884-Carte_Figurative_Voyageurs\12515017.txt.
-1886 Map 11 (12516.011, palette 1886_11) is the same kind of map in a later Album; its data
-year (1883? 1884?) not yet checked, so not stated.
+1886 Map 11 (12516.011, palette 1886_11) is the same kind of map in a later Album, data for
+1883 (Rumsey title). 1884 plate: RUMSEY~8~1~309212~90079118.
 Optional sentence on 1886_28's quarter-circle sectors, if there's a good reason to give. -->
 
 Colours, fonts and title sizes were the things I could pack into the laptop and carry home.
@@ -336,7 +336,7 @@ describe; bars, squares and sectors arranged on the map wherever the data lived.
 
 The plate I asked about was the one that first caught my eye, years ago, in the 1884 volume
 Antoine showed me: the
-[*Carte figurative des expéditions de voyageurs et de marchandises effectuées en 1882*](https://www.davidrumsey.com/luna/servlet/view/search?q=12515.017),
+[*Carte figurative des expéditions de voyageurs et de marchandises effectuées en 1882*](https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~309212~90079118),
 the passengers and goods sent out from the principal railway stations of France in 1882.
 
 It begins in Paris (@fig-voyageurs-paris). Each of the five railway companies with a
@@ -355,7 +355,7 @@ compared, by area, with Narbonne or Perpignan.
 
 ![Languedoc, from Albi and Nîmes to Perpignan. Green is the Midi company, pink the PLM.](figures/1884-Carte_Figurative_Voyageurs-snip1.jpg){#fig-voyageurs-south}
 
-Two details of the *Carte figurative des expéditions de voyageurs et de marchandises effectuées en 1882*, *Album de Statistique Graphique de 1884*. In each block, goods are on top (blue numbers) and passengers below (red numbers). Source: [David Rumsey Map Collection](https://www.davidrumsey.com/luna/servlet/view/search?q=12515.017), 12515.017.
+Two details of the *Carte figurative des expéditions de voyageurs et de marchandises effectuées en 1882*, *Album de Statistique Graphique de 1884*. In each block, goods are on top (blue numbers) and passengers below (red numbers). Source: [David Rumsey Map Collection](https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~309212~90079118), 12515.017.
 :::
 
 It is, in effect, a recursive mosaic display, subdivided at every station in France. I have spent a
@@ -366,8 +366,9 @@ variable and passengers versus goods as the second. I asked him how they had arr
 He seemed puzzled by the question. "What is being divided", he said, "is the traffic. So you
 divide the traffic. And so on, until the job is done".
 
-The office drew this map again for later *Albums*, with newer figures. One version is Map 11
-of the 1886 *Album*, the plate whose colours became palette `1886_11` in ggCheysson. That
+The office drew this map again for later *Albums*, with newer figures. One version is
+[Map 11](https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~309237~90079152)
+of the 1886 *Album*, showing the traffic of 1883, the plate whose colours became palette `1886_11` in ggCheysson. That
 palette is eight swatches in four pairs, a light stripe and a denser crosshatch for each
 colour: exactly what a map like this needs, one colour per company, two textures for goods
 and passengers.
