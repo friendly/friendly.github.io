@@ -21,7 +21,7 @@ transforms, dashes, dots and legend rendering.
 
 ggCheysson starts from **the same 25 SVG files** (`data-raw/observable/decNN.txt` are
 Shanley's attachments), but R graphics has no "fill with this SVG tile" primitive. So
-ggCheysson has to *translate* each SVG into a parametric description (type, fill, line colour,
+ggCheysson has to *translate* each SVG into a parametric description (type, fill, line color,
 angle, spacing), then *re-draw* it with gridpattern's stripe/crosshatch generators, and then
 fit that through ggplot2's one-aesthetic-one-scale model. Nearly all of the work, and
 nearly all of the bugs, happen in that translate and re-draw step and in the ggplot2
@@ -90,16 +90,16 @@ The demo choropleth (US states) is the same thing on a bigger scale:
 is just more `<rect>`s with the same `url(#…)` fill. His usage instructions to readers come
 down to three steps: import the palette, `svg.append("defs").html(p.patterns)`, then
 `fill: url(#id)`, or put `rangeURLs` in any D3 scale (`scaleThreshold`, `scaleOrdinal`, ...).
-The fourth step sets the paper colour `#f9ece3`.
+The fourth step sets the paper color `#f9ece3`.
 
 ### Why it's easy
 
 1. **The swatch is drawn already, and a swatch is just a name.** One string,
-   `url(#grouped-12516011-4)`, stands for the whole bundle: paper colour, line colour(s),
+   `url(#grouped-12516011-4)`, stands for the whole bundle: paper color, line color(s),
    angle, spacing, line width, dashes, dots, offset. There's nothing to break apart into
    separate settings.
-2. **Fills in the browser can be any paint.** A colour and a pattern are interchangeable
-   values of the `fill` property, so any D3 scale can return patterns as easily as colours.
+2. **Fills in the browser can be any paint.** A color and a pattern are interchangeable
+   values of the `fill` property, so any D3 scale can return patterns as easily as colors.
 3. **The legend is the same drawing as the plot.** No separate key-drawing code, and no zoom
    factor.
 4. **Fixed pixel scale.** `patternUnits="userSpaceOnUse"` means the tile is the same size in
@@ -118,8 +118,8 @@ regexes, line by line, and reduces it to a small spec:
 
 ```r
 list(type = "stripe" | "crosshatch" | "solid",
-     fill = <paper colour or "transparent">,
-     pattern_fill = <line colour>, pattern_fill2 = <2nd colour>,
+     fill = <paper color or "transparent">,
+     pattern_fill = <line color>, pattern_fill2 = <2nd color>,
      pattern_angle = <deg>, pattern_spacing = <measured>, pattern_linewidth = ...)
 ```
 
@@ -235,8 +235,8 @@ These are worth saying in the post, so the comparison isn't one-sided:
   legends. Shanley's `rangeURLs` is a bare array; the D3 user does all of that themselves.
 - **Geometry the swatch doesn't know about.** The same swatch fills bars, tiles, `sf` maps, and
   legend keys.
-- **Data you can query.** `cheysson_patterns` is structured data (type, colours, angle,
-  spacing) you can inspect, filter and plot, e.g. the colour-wheel idea in TASKS.md. Shanley's
+- **Data you can query.** `cheysson_patterns` is structured data (type, colors, angle,
+  spacing) you can inspect, filter and plot, e.g. the color-wheel idea in TASKS.md. Shanley's
   patterns are SVG text: easy to render, hard to ask questions of.
 - **Fonts, themes, `cheysson_labels`**: the rest of the package has no Observable
   counterpart.
@@ -250,8 +250,8 @@ Beyond the two ID typos already in TASKS.md (`diverging12541021` → `12514021`;
   slip as `category1252605`. Probably the "illegible" 25th ID in the earlier cross-check;
   worth confirming.
 - Several `displayName`s are copy-paste leftovers: day 2 (`grouped12516024`) and day 4
-  (`grouped12516017`) are both labelled **"Grouped 12541.021"**. That is day 1's number, with
-  the transposition typo and the wrong type. Day 7 (`grouped12516011`) is labelled
+  (`grouped12516017`) are both labeled **"Grouped 12541.021"**. That is day 1's number, with
+  the transposition typo and the wrong type. Day 7 (`grouped12516011`) is labeled
   **"Grouped 12511.007"**, which is day 6's. Day 17 shows "Category 12526.05" and day 23
   "Grouped 12512.03".
 - So the notebook has *three* naming layers that can disagree: the JS variable name, the
@@ -265,7 +265,7 @@ Beyond the two ID typos already in TASKS.md (`diverging12541021` → `12514021`;
   draw it a third time."** A nice chain: the engraver's plate → Andrews' hand-built SVG →
   Shanley's 3-step wrapper → ggCheysson's parse-and-redraw.
 - Cheysson's draftsmen worked like SVG: a swatch was a *drawn thing* you copied. ggplot2
-  thinks like a printer's spec sheet: angle 45°, spacing 0.025, colour #b75533. Moving from
+  thinks like a printer's spec sheet: angle 45°, spacing 0.025, color #b75533. Moving from
   one to the other is the hard part, and the bugs (missing coordinates, `100%`, dots that
   can't be described as parameters) all happen at that point.
 - The happy ending: the final `scale_cheysson()` design, which treats a swatch as a name, is

@@ -1,7 +1,7 @@
 ---
 title: "Émile Cheysson Meets `ggplot2`"
 subtitle: "Making `ggCheysson` told as a dream trip to 1886, with a laptop full of hex stickers and some questions"
-description: "The Albums de Statistique Graphique are the high point of the Golden Age of statistical graphics. What happened when I tried to bring their colours, hatching and hand-lettering into R, told as a dream visit to Cheysson's drawing office."
+description: "The _Albums de Statistique Graphique_ are the pinnacle of the Golden Age of statistical graphics. Here's what happened when I tried to bring their colors, hatching and hand-lettering into R, told as a dream visit to Émile Cheysson's Album factory."
 author: "Michael Friendly"
 date: "2026-11-11"
 categories: [history, dataviz, R packages, ggplot2, Chevaliers, time travel]
@@ -18,7 +18,7 @@ since the day Antoine de Falguerolles showed me a copy of the 1884 volume. I sti
 of them as perhaps the finest achievement of what I've called the
 [Golden Age of Statistical Graphics](https://doi.org/10.1214/08-STS268): maps of freight and
 passengers, rivers of trade flowing into French ports, pie charts sitting on the cities they
-describe. All of it was drawn and coloured by hand, and all of it is beautiful.
+describe. All of it was drawn and colored by hand, and all of it is beautiful.
 (I said more about how I fell for them in a recent
 [interview with Attila Bátorfy](https://attilabatorfy.substack.com/p/not-just-pretty-pictures-interview).)
 
@@ -34,7 +34,7 @@ so that anyone can now zoom in on the brush strokes and marvel at their design.
 
 So I was delighted when [RJ Andrews](https://infowetrust.com/) ran a month-long Twitter
 thread, an Advent calendar of sorts, in which each day he took one plate from the *Albums*
-and pulled out its colours and hatching patterns as a reusable palette. He collected all 25
+and pulled out its colors and hatching patterns as a reusable palette. He collected all 25
 in January 2020 as [Classic Map Color Design](https://infowetrust.com/project/album-colors)
 (@fig-andrews). Tom Shanley soon turned Andrews' swatches into an
 [Observable notebook](https://web.archive.org/web/20210130125506/https://observablehq.com/@tomshanley/cheysson-color-palettes)
@@ -42,9 +42,9 @@ for D3, and Kenneth Field went further still and made
 [hand-drawn fonts](https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/the-style-of-emile-cheysson/)
 from the lettering on the plates.
 
-![RJ Andrews' 25 palettes from the *Albums*, one for each day of his Advent calendar. Source: [infowetrust.com](https://infowetrust.com/project/album-colors).](figures/RJ-Andrews-color-palettes.jpg){#fig-andrews fig-alt="A grid of 25 colour and hatching palettes taken from plates of the Albums de Statistique Graphique"}
+![RJ Andrews' 25 palettes from the *Albums*, one for each day of his Advent calendar. Source: [infowetrust.com](https://infowetrust.com/project/album-colors).](figures/RJ-Andrews-color-palettes.jpg){#fig-andrews fig-alt="A grid of 25 color and hatching palettes taken from plates of the Albums de Statistique Graphique"}
 
-Colours for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in
+Colors for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in
 R, my own home ground. That became [ggCheysson](https://friendly.github.io/ggCheysson/), and
 this post is the story of making it. (Version 1.2.0 is on CRAN:
 `install.packages("ggCheysson")`.) I could tell this story the usual way: a list of design
@@ -70,7 +70,7 @@ world involving time travel, romance in memory, and an inescapable time loop.
 
 Some practical questions were: Did I
 need a visa? Was my passport sufficiently *down*-to-date? And did my time-travel
-`SKILL.md` say anything about who would build the aeroplane, or the airport?
+`SKILL.md` say anything about who would build the airplane, or the airport?
 
 Whatever the answers, I arrived. I had packed light: a bottle of Niagara ice-wine and a bottle
 of Canadian maple syrup for Monsieur Cheysson, and my laptop: with R 4.6.1, `ggplot2`, and my
@@ -79,7 +79,7 @@ library of packages that extend it. Self-contained; no need for a Wi-Fi connecti
 The drawing office was at the top of the Ministry, where the light was best, in the old Hôtel de Roquelaure on the
 boulevard Saint-Germain. Half a dozen
 draftsmen sat at tall tables, working on the plates for next year's *Album*. One was laying
-bands of colour along the rivers of France, each as wide as the tonnage it carried. Another
+bands of color along the rivers of France, each as wide as the tonnage it carried. Another
 was ruling hatch lines, very close together, with a steadiness I could only envy.
 
 Cheysson received the ice-wine graciously and the maple syrup with genuine curiosity. 
@@ -88,6 +88,11 @@ What interested him most, though, was the lid of my laptop, which is covered in 
 explained that in my time every useful piece of software comes with a sticker, and that
 people collect them. He studied them for a while. In his office, he said, a useful thing
 comes with a plate number.
+
+Then he found the one with his own name on it. He tilted the laptop toward the lamp and
+traced the coast of Corsica with a finger, past the crossing times and the dotted routes
+to Calvi and Ajaccio, through the fine engraved ripples of the sea. A good choice, he
+said. Anyone can draw a coastline; it is the water that takes a week.
 
 I had come with three questions to start the discussion with Émile & his colleagues:
 
@@ -114,7 +119,7 @@ I spent a long time watching the draftsman who was ruling hatch lines. When he p
 asked him how he knew how far apart to draw them. He held up a finished plate: *comme
 ça*. Like this one.
 
-That, it turns out, is how a swatch travelled for the next 140 years: as a picture.
+That, it turns out, is how a swatch traveled for the next 140 years: as a picture.
 Cheysson's draftsmen drew each one on the plate. Andrews drew them again, as small SVG
 tiles. Tom Shanley's notebook simply passed Andrews' tiles along. In a web browser, a
 tile is a perfectly good fill, so one line, `fill: pattern(#id)`, paints a bar or a whole map region
@@ -133,7 +138,7 @@ package sees them:
 str(cheysson_patterns[["1886_28"]]$patterns[[1]])
 ```
 
-To ggplot2, in other words, a swatch is a printer's spec sheet: type, colour, angle,
+To ggplot2, in other words, a swatch is a printer's spec sheet: type, color, angle,
 spacing, line width. Nearly every bug I met lived in the translation from picture to spec
 sheet. SVG lets you leave out a coordinate that is zero, and Andrews often did; my first
 parser insisted on all four, silently threw away every line it couldn't read, and left 15
@@ -154,7 +159,7 @@ pats <- cheysson_pattern("1886_28")   # the palette's list of swatch specs
 ggplot(d, aes(category, value, fill = category)) +
   geom_col_pattern(aes(pattern = category, pattern_fill = category,
                        pattern_fill2 = category, pattern_angle = category),
-                   pattern_density = 0.35, colour = "black") +
+                   pattern_density = 0.35, color = "black") +
   scale_fill_cheysson_pattern("1886_28") +
   scale_pattern_manual(values = cheysson_pattern_params(pats, "pattern_type")) +
   scale_pattern_fill_manual(values = cheysson_pattern_params(pats, "pattern_fill")) +
@@ -175,7 +180,7 @@ stop splitting a swatch into parts. Each of the 134 swatches is now registered w
 d <- data.frame(category = LETTERS[1:6], value = c(15, 23, 18, 20, 12, 9))
 
 ggplot(d, aes(category, value, pattern = category)) +
-  geom_col_pattern(colour = "black") +
+  geom_col_pattern(color = "black") +
   scale_cheysson("1886_28") +
   theme_cheysson()
 ```
@@ -205,9 +210,9 @@ Plate numbers turned out to be a sore point. On Cheysson's table I laid out thre
 cards, all for the plate on his wall: `Dec.05-1886.28`, `category12516028`, and `1886_28`.
 He read them twice and asked, very politely, why one plate needed three names.
 
-Because three people named it, each for good reasons of his own. Andrews labelled his
+Because three people named it, each for good reasons of his own. Andrews labeled his
 palettes by the day of his Advent calendar on which they appeared, plus album and plate.
-Shanley used the palette type and the catalogue number from the David Rumsey collection.
+Shanley used the palette type and the catalog number from the David Rumsey collection.
 I used album year and plate. None of us was wrong, and none of us agreed with the others.
 
 So the package now carries a crosswalk, `cheysson_labels`, that lets you go from any one
@@ -222,12 +227,12 @@ subset(cheysson_labels, album_year == 1886,
 Building it was a small lesson in how names drift when they are copied by hand. Two of
 Shanley's IDs have typos (`diverging12541021` has two digits swapped; `category1252605`
 has lost its last one), and in a few places his notebook disagrees with itself, because a
-display name was copied from a neighbouring cell and never changed. I don't say this to
+display name was copied from a neighboring cell and never changed. I don't say this to
 pick on Tom, whose notebook is lovely and whose design, as you've seen, was right all
 along. The point is that any name typed twice will, sooner or later, be typed two ways.
 
 I also had to confess something to Cheysson. Even the "plate" in `1886_28` is not really
-his plate number. It is the suffix of Rumsey's catalogue number, the best unique key we
+his plate number. It is the suffix of Rumsey's catalog number, the best unique key we
 have. His own numbering isn't in any of our data.
 
 ## The bug that ate five plates
@@ -238,7 +243,7 @@ twenty.
 
 The first versions of the package built each palette's name from the album year and a
 field called `Qty`, which I took to be the plate number. It isn't: it's a count of the
-colours and patterns in the palette, and different plates in the same album can have the
+colors and patterns in the palette, and different plates in the same album can have the
 same count. Three palettes from 1886, for example, all have four elements, so all three
 were named `1886_04`. Each was stored with a plain `palettes[[name]] <- ...`, so each one
 overwrote the one before. No error, no warning. Four such collisions, and 5 of the 25
@@ -247,9 +252,9 @@ palettes were simply gone, through a release on CRAN and the months that followe
 I found out only by rebuilding Andrews' grid of palettes, row by row, from the package's
 own data, and setting it beside his (@fig-reconstruct). Some rows had nothing to show.
 
-![The reconstruction of Andrews' grid that exposed the bug, as first drawn in September 2026. Each grey crosshatched placeholder is a palette lost to the naming collision. All 25 were restored in version 1.1.0.](figures/RJ-Andrews-reconstruct.png){#fig-reconstruct}
+![The reconstruction of Andrews' grid that exposed the bug, as first drawn in September 2026. Each gray crosshatched placeholder is a palette lost to the naming collision. All 25 were restored in version 1.1.0.](figures/RJ-Andrews-reconstruct.png){#fig-reconstruct}
 
-The fix was to build names from Rumsey's catalogue number, which really is unique. That
+The fix was to build names from Rumsey's catalog number, which really is unique. That
 brought back all 25 palettes, but it renamed 19 of the 20 that had shipped, so
 [version 1.1.0](https://github.com/friendly/ggCheysson/releases/tag/v1.1.0) also had to tell users of the old names where their palette had gone.
 
@@ -305,13 +310,13 @@ big enough for Guerry would have blown the legend text up to 30 points along wit
 So `theme_cheysson_map()` now has its own, poster-style hierarchy: the title at five times
 the base size (55 points at the default `base_size = 11`, up from about 17), and the
 subtitle, legend and caption scaled up to match (@fig-literacy). Here the 19th century
-didn't just lend me colours; it changed a design decision.
+didn't just lend me colors; it changed a design decision.
 
 ![Literacy in Guerry's data (1833), from the package's Guerry maps vignette, with `theme_cheysson_map()`'s large title and the sequential hatching of palette `1888_27`.](figures/map-literacy-pattern-1.png){#fig-literacy width="80%"}
 
 ## The eye, which no package supplies
 
-Colours, fonts and title sizes were the things I could pack into the laptop and carry home.
+Colors, fonts and title sizes were the things I could pack into the laptop and carry home.
 What I most wanted to learn from Cheysson's office was something no package supplies: the
 eye for choosing the right visual form for a given set of numbers. The *Albums* have no
 house "chart type" or "house style". Nearly every plate is a fresh decision: flow bands along rivers and
@@ -325,17 +330,17 @@ the passengers and goods sent out from the principal railway stations of France 
 
 It begins in Paris (@fig-voyageurs-paris). Each of the five railway companies with a
 terminus in the capital (Nord, Est, Ouest, Orléans and Paris-Lyon-Méditerranée) gets a
-column, in its own colour, and each column is split into goods above, in thousands of
-tonnes, and passengers below, in thousands of travellers. Then the same design goes out
+column, in its own color, and each column is split into goods above, in thousands of
+metric tons, and passengers below, in thousands of travelers. Then the same design goes out
 across the map (@fig-voyageurs-south). Every station gets its own small block, split the
-same way into goods and passengers, in the colour of the company that serves it. Where two
+same way into goods and passengers, in the color of the company that serves it. Where two
 companies meet, as at Cette (now Sète) or Montpellier, their blocks stand side by side. The
 inset is even drawn "at the same scale as the general map", so a Paris terminus can be
 compared, by area, with Narbonne or Perpignan.
 
 ::: {#fig-voyageurs layout-ncol="2"}
 
-![The five Paris termini. Totals for all of them: 5,431,000 tonnes of goods and 26,518,000 passengers.](figures/1884-Carte_Figurative_Voyageurs-Paris.jpg){#fig-voyageurs-paris}
+![The five Paris termini. Totals for all of them: 5,431,000 metric tons of goods and 26,518,000 passengers.](figures/1884-Carte_Figurative_Voyageurs-Paris.jpg){#fig-voyageurs-paris}
 
 ![Languedoc, from Albi and Nîmes to Perpignan. Green is the Midi company, pink the PLM.](figures/1884-Carte_Figurative_Voyageurs-snip1.jpg){#fig-voyageurs-south}
 
@@ -352,9 +357,9 @@ divide the traffic. And so on, until the job is done".
 
 The office drew this map again for later *Albums*, with newer figures. One version is
 [Map 11](https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~309237~90079152)
-of the 1886 *Album*, showing the traffic of 1883, the plate whose colours became palette `1886_11` in ggCheysson. That
+of the 1886 *Album*, showing the traffic of 1883, the plate whose colors became palette `1886_11` in ggCheysson. That
 palette is eight swatches in four pairs, a light stripe and a denser crosshatch for each
-colour: exactly what a map like this needs, one colour per company, two textures for goods
+color: exactly what a map like this needs, one color per company, two textures for goods
 and passengers.
 
 That is Émile's lesson, and one I find hardest to put in a package: the eye of a master graphic designer,
@@ -363,7 +368,7 @@ communicate complex problems to policy makers in 19th C. France.
 
 `ggplot2` gives me a grammar to build
 almost any of these forms, and an active R community continues to extend this.
-`ggCheysson` can now dress them in Cheysson's colours and
+`ggCheysson` can now dress them in Cheysson's colors and
 hatching. But the grammar doesn't choose the form, and neither do the palettes. That choice,
 seeing what the **structure of the data asks for**, was the real craft of Cheysson's office,
 and it still has to come from whoever is making the graph.
