@@ -54,7 +54,7 @@ enterprise to reproduce their style. So I went to ask them.
 
 ## A ticket to 1886
 
-![I arrived in time to see next year’s *Album* taking shape. Cheysson was looking over a river map, and at the next table a draftsman was ruling hatch lines with a steadiness I could only envy.](figures/cheysson-drawing-office.png){#fig-cheysson-office fig-alt="Émile Cheysson stands beside a draftsman painting red and blue river bands on a map of France. At the next table, a draftsman rules fine hatch lines."}
+![I arrived in time to see next year’s *Album* taking shape. Cheysson was looking over a river map, and at the next table a draftsman was ruling hatch lines with a steadiness I could only envy. *Source*: an imagined scene, generated with ChatGPT 6.1 from images in my [Milestones](https://datavis.ca/milestones/) collection.](figures/cheysson-drawing-office.png){#fig-cheysson-office fig-alt="An AI-generated illustration: Émile Cheysson stands beside a draftsman painting red and blue river bands on a map of France. At the next table, a draftsman rules fine hatch lines."}
 
 I should explain that I have recently discovered I **can travel in time**, though only in my
 dreams. (I discovered this skill after re-reading Edwin Abbott's _Flatland_, about a Square who
