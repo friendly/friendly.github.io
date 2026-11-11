@@ -1,6 +1,6 @@
 ---
 title: "Émile Cheysson Meets `ggplot2`"
-subtitle: "A dream trip to 1886, with a laptop full of hex stickers"
+subtitle: "A dream trip to 1886, with a laptop full of hex stickers and some questions"
 description: "The Albums de Statistique Graphique are the high point of the Golden Age of statistical graphics. What happened when I tried to bring their colours, hatching and hand-lettering into R, told as a dream visit to Cheysson's drawing office."
 author: "Michael Friendly"
 date: today
