@@ -4,7 +4,7 @@ subtitle: "A dream trip to 1886, with a laptop full of hex stickers"
 description: "The Albums de Statistique Graphique are the high point of the Golden Age of statistical graphics. What happened when I tried to bring their colours, hatching and hand-lettering into R, told as a dream visit to Cheysson's drawing office."
 author: "Michael Friendly"
 date: today
-categories: [history, dataviz, R packages, ggplot2, Chevaliers]
+categories: [history, dataviz, R packages, ggplot2, Chevaliers, time travel]
 draft: true
 ---
 
@@ -63,6 +63,8 @@ more I found myself wondering what Cheysson and his draftsmen would have made of
 enterprise. So I went to ask them.
 
 ## A ticket to 1886
+
+![I arrived in time to see next year’s *Album* taking shape. Cheysson was looking over a river map, and at the next table a draftsman was ruling hatch lines with a steadiness I could only envy.](figures/cheysson-drawing-office.png){#fig-cheysson-office fig-alt="Émile Cheysson stands beside a draftsman painting red and blue river bands on a map of France. At the next table, a draftsman rules fine hatch lines."}
 
 I should explain that I have recently discovered I **can travel in time**, though only in my
 dreams. (I discovered this skill after re-reading Edwin Abbott's _Flatland_, about a Square who
@@ -328,6 +330,13 @@ you left them. I once lost an afternoon's work, not to war, revolution or shipwr
 a cloud-sync client. But that is another story.
 
 I still have the open return.
+
+Another night, I might ask Cheysson to meet me at the Café de Lilas, near where
+Minard and Guerry rest today in Montparnasse Cemetery.
+With any
+luck, Minard will be drawing on the menu, Guerry will turn it over to see what
+he can map on the back, and Florence Nightingale will ask what we mean to do
+about the numbers. I’ll book a table for five and leave the date blank.
 
 ## Further reading
 

@@ -96,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="quarto-category">R packages</div>
     <div class="quarto-category">ggplot2</div>
     <div class="quarto-category">Chevaliers</div>
+    <div class="quarto-category">time travel</div>
   </div>
   </div>
 
@@ -160,6 +161,16 @@ Figure&nbsp;1: RJ Andrews’ 25 palettes from the <em>Albums</em>, one for each 
 <p>Colours for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in R, my own home ground. That became <a href="https://friendly.github.io/ggCheysson/">ggCheysson</a>, and this post is the story of making it. I could tell it the usual way: a list of design decisions, bugs found and fixed, and a few lessons learned. But the more I worked on it, the more I found myself wondering what Cheysson and his draftsmen would have made of the whole enterprise. So I went to ask them.</p>
 <section id="a-ticket-to-1886" class="level2">
 <h2 class="anchored" data-anchor-id="a-ticket-to-1886">A ticket to 1886</h2>
+<div id="fig-cheysson-office" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Émile Cheysson stands beside a draftsman painting red and blue river bands on a map of France. At the next table, a draftsman rules fine hatch lines.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cheysson-office-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/cheysson-drawing-office.png" class="img-fluid figure-img" alt="Émile Cheysson stands beside a draftsman painting red and blue river bands on a map of France. At the next table, a draftsman rules fine hatch lines.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cheysson-office-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: I arrived in time to see next year’s <em>Album</em> taking shape. Cheysson was looking over a river map, and at the next table a draftsman was ruling hatch lines with a steadiness I could only envy.
+</figcaption>
+</figure>
+</div>
 <p>I should explain that I have recently discovered I <strong>can travel in time</strong>, though only in my dreams. (I discovered this skill after re-reading Edwin Abbott’s <em>Flatland</em>, about a Square who encounters a Sphere, and learned to travel in higher dimensions, in his imagination. Hey, time is just one more dimension.)</p>
 <p>The <em>Albums</em> had been on my mind for months, so one night I booked a round trip: YYZ (2026) to CDG (1886), with an open return ticket. The booking went through without a hitch, which worried me more than if it hadn’t. Did I need a visa? Was my passport sufficiently <em>down</em>-to-date? And did my time-travel <code>SKILL.md</code> say anything about who would build the aeroplane, or the airport?</p>
 <p>Whatever the answers, I arrived. I had packed light: a bottle of Niagara ice-wine and a tin of maple syrup for Monsieur Cheysson, and my laptop, with R 4.6.1, <code>ggplot2</code>, and a small library of packages that extend it.</p>
@@ -222,7 +233,7 @@ Figure&nbsp;1: RJ Andrews’ 25 palettes from the <em>Albums</em>, one for each 
 <img src="ggCheysson_files/figure-html/fig-new-way-1.png" class="img-fluid figure-img" width="720">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-new-way-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Palette <code>1886_28</code> applied with <code>scale_cheysson()</code>. The legend keys are the same swatches as the bars.
+Figure&nbsp;3: Palette <code>1886_28</code> applied with <code>scale_cheysson()</code>. The legend keys are the same swatches as the bars.
 </figcaption>
 </figure>
 </div>
@@ -230,7 +241,7 @@ Figure&nbsp;2: Palette <code>1886_28</code> applied with <code>scale_cheysson()<
 </div>
 <p>That is exactly what Shanley’s notebook did on day one: a swatch is known by its name. Getting R back to that point took me several detours, a function new in gridpattern 1.5.0 (<code>register_pattern()</code>), and patient advice from its author, Trevor Davis, in a <a href="https://github.com/trevorld/ggpattern/issues/154">GitHub issue</a>.</p>
 <p>When I showed Cheysson the three lines of code, he nodded. Of course a swatch is known by its name, he said. By its plate number.</p>
-<p><code>show_swatches()</code> draws the whole collection, or any part of it, as an atlas (<a href="#fig-atlas" class="quarto-xref">Figure&nbsp;3</a>). A swatch’s name is its row and column.</p>
+<p><code>show_swatches()</code> draws the whole collection, or any part of it, as an atlas (<a href="#fig-atlas" class="quarto-xref">Figure&nbsp;4</a>). A swatch’s name is its row and column.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_swatches</span>(<span class="fu">c</span>(<span class="st">"1888_27"</span>, <span class="st">"1883_21"</span>, <span class="st">"1886_24"</span>, <span class="st">"1886_28"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -240,7 +251,7 @@ Figure&nbsp;2: Palette <code>1886_28</code> applied with <code>scale_cheysson()<
 <img src="ggCheysson_files/figure-html/fig-atlas-1.png" class="img-fluid figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-atlas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Four of the 25 palettes, one of each type, drawn by <code>show_swatches()</code>.
+Figure&nbsp;4: Four of the 25 palettes, one of each type, drawn by <code>show_swatches()</code>.
 </figcaption>
 </figure>
 </div>
@@ -272,14 +283,14 @@ Figure&nbsp;3: Four of the 25 palettes, one of each type, drawn by <code>show_sw
 <h2 class="anchored" data-anchor-id="the-bug-that-ate-five-plates">The bug that ate five plates</h2>
 <p>Cheysson then asked how many plates I had brought. Twenty-five, I said. Then, because he was looking at me, I admitted that for most of this year my software had quietly kept only twenty.</p>
 <p>The first versions of the package built each palette’s name from the album year and a field called <code>Qty</code>, which I took to be the plate number. It isn’t: it’s a count of the colours and patterns in the palette, and different plates in the same album can have the same count. Three palettes from 1886, for example, all have four elements, so all three were named <code>1886_04</code>. Each was stored with a plain <code>palettes[[name]] &lt;- ...</code>, so each one overwrote the one before. No error, no warning. Four such collisions, and 5 of the 25 palettes were simply gone, through a release on CRAN and the months that followed.</p>
-<p>I found out only by rebuilding Andrews’ grid of palettes, row by row, from the package’s own data, and setting it beside his (<a href="#fig-reconstruct" class="quarto-xref">Figure&nbsp;4</a>). Some rows had nothing to show.</p>
+<p>I found out only by rebuilding Andrews’ grid of palettes, row by row, from the package’s own data, and setting it beside his (<a href="#fig-reconstruct" class="quarto-xref">Figure&nbsp;5</a>). Some rows had nothing to show.</p>
 <div id="fig-reconstruct" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-reconstruct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/RJ-Andrews-reconstruct.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reconstruct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: The reconstruction of Andrews’ grid that exposed the bug, as first drawn in September 2026. Each grey crosshatched placeholder is a palette lost to the naming collision. All 25 were restored in version 1.1.0.
+Figure&nbsp;5: The reconstruction of Andrews’ grid that exposed the bug, as first drawn in September 2026. Each grey crosshatched placeholder is a palette lost to the naming collision. All 25 were restored in version 1.1.0.
 </figcaption>
 </figure>
 </div>
@@ -308,14 +319,14 @@ Figure&nbsp;4: The reconstruction of Andrews’ grid that exposed the bug, as fi
 <p>Next to the plate on the wall I held up the laptop, with a map drawn with a default ggplot2 theme. Cheysson looked from one to the other and asked why my title was so timid.</p>
 <p>I had already had a version of this conversation with myself. Someone (me) complained that the text in the package’s vignettes was too small. I measured: the sizes of title, axis labels and legend relative to each other were exactly those of <code>theme_minimal()</code>. The trouble was absolute size. An 11-point theme in a 7-inch figure looks small next to the text of a web page, and a ggplot2 theme has to work at whatever size the reader’s window happens to be. Cheysson’s plates were engraved once, for one page, and every element on them knew how big it was. Mine never do.</p>
 <p>For maps, though, the old convention had more to teach than the size of the page. On the maps of <a href="https://www.datavis.ca/papers/guerry-STS241.pdf"><strong>André-Michel Guerry</strong></a>, which Cheysson may well have known, the title runs nearly the whole width of the map. No default ggplot2 theme would ever choose that: the panel dominates, and the title is a modest line at the top. A single ratio of title to body text couldn’t give me both, because a title big enough for Guerry would have blown the legend text up to 30 points along with it.</p>
-<p>So <code>theme_cheysson_map()</code> now has its own, poster-style hierarchy: the title at five times the base size (55 points at the default <code>base_size = 11</code>, up from about 17), and the subtitle, legend and caption scaled up to match (<a href="#fig-literacy" class="quarto-xref">Figure&nbsp;5</a>). Here the 19th century didn’t just lend me colours; it changed a design decision.</p>
+<p>So <code>theme_cheysson_map()</code> now has its own, poster-style hierarchy: the title at five times the base size (55 points at the default <code>base_size = 11</code>, up from about 17), and the subtitle, legend and caption scaled up to match (<a href="#fig-literacy" class="quarto-xref">Figure&nbsp;6</a>). Here the 19th century didn’t just lend me colours; it changed a design decision.</p>
 <div id="fig-literacy" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-literacy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/map-literacy-pattern-1.png" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-literacy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Literacy in Guerry’s data (1833), from the package’s Guerry maps vignette, with <code>theme_cheysson_map()</code>’s large title and the sequential hatching of palette <code>1888_27</code>.
+Figure&nbsp;6: Literacy in Guerry’s data (1833), from the package’s Guerry maps vignette, with <code>theme_cheysson_map()</code>’s large title and the sequential hatching of palette <code>1888_27</code>.
 </figcaption>
 </figure>
 </div>
@@ -328,6 +339,7 @@ Figure&nbsp;5: Literacy in Guerry’s data (1833), from the package’s Guerry m
 <p>What will be hard back in Toronto? The dots and the dashes, still lost in translation. And a question I keep coming back to: whether ggCheysson could skip the spec sheet entirely, and fill with Andrews’ tiles directly, as the browser does. R’s own graphics engine can now fill a shape with a pattern; not every graphics device can draw one.</p>
 <p>Then I woke up. Coming back is always the hard part of time travel; things are rarely as you left them. I once lost an afternoon’s work, not to war, revolution or shipwreck, but to a cloud-sync client. But that is another story.</p>
 <p>I still have the open return.</p>
+<p>Another night, I might ask Cheysson to meet me at the Café de Lilas, near where Minard and Guerry rest today in Montparnasse Cemetery. With any luck, Minard will be drawing on the menu, Guerry will turn it over to see what he can map on the back, and Florence Nightingale will ask what we mean to do about the numbers. I’ll book a table for five and leave the date blank.</p>
 </section>
 <section id="further-reading" class="level2">
 <h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
