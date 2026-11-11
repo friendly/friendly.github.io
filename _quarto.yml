@@ -13,8 +13,11 @@ project:
     - "!QUARTO*"
     - "!*-old.qmd"
   resources:
-    - "images/"
-    - "papers/"
+    - "/images/"
+    - "/blog/posts/*/images/"
+    - "/blog/assets/images/"
+    - "/dev/banner/images/"
+    - "/papers/"
 
 execute:
   freeze: auto
