@@ -375,6 +375,7 @@ and passengers.
 That is Émile's lesson, and one I find hardest to put in a package: the eye of a master graphic designer,
 with only pen-and-ink technology, a collection of graphic forms to choose from, and a desire to
 communicate complex problems to policy makers in 19th C. France.
+
 `ggplot2` gives me a grammar to build
 almost any of these forms, and an active R community continues to extend this.
 `ggCheysson` can now dress them in Cheysson's colours and
@@ -407,12 +408,12 @@ and fill with Andrews' tiles directly, as the browser does. R's own graphics eng
 fill a shape with a pattern; not every graphics device can draw one.
 
 Then I woke up. Coming back is always the hard part of time travel; things are rarely as
-you left them. I once lost an afternoon's work, not to war, revolution or shipwreck, but to
-a cloud-sync client. But that is another story.
+you left them, at least in your imagination. I once lost an afternoon's work, not to war, revolution or shipwreck, but to
+a Dropbox-sync issue. But that's is another story.
 
 I still have the open return, in my dreams.
 
-Another night, I might ask Cheysson to meet me at La Closerie des Lilas, near where
+Another night, I might ask Cheysson to meet me at [La Closerie des Lilas](https://en.wikipedia.org/wiki/La_Closerie_des_Lilas), near where
 Minard and Guerry rest today in Montparnasse Cemetery.
 With any
 luck, Minard will be drawing on the menu, Guerry will turn it over to see what
