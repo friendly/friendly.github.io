@@ -50,7 +50,9 @@ from the lettering on the plates.
 Colors for D3, fonts for ArcGIS. What was missing was a way to make graphs in this style in
 R, my own home ground. That became [ggCheysson](https://friendly.github.io/ggCheysson/), and
 this post is the story of making it. (Version 1.2.0 is on CRAN:
-`install.packages("ggCheysson")`.) I could tell this story the usual way: a list of design
+`install.packages("ggCheysson")`.) 
+
+I could tell this story the usual way: a list of design
 decisions, bugs found and fixed, and a few lessons learned. But the more I worked on it, the
 more I found myself wondering what Cheysson and his draftsmen would have made of the whole
 enterprise to reproduce their style. So I went to ask them.
