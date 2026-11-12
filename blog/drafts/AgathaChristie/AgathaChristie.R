@@ -245,21 +245,21 @@ cat("Chance hit rate:", round(chance, 3), "\n")
 # Fourfold displays: Killer vs. each predictor. Area of each quarter circle ~ frequency,
 # standardized to equal margins; confidence rings that don't overlap => OR != 1.
 # ggfourfold: stack the predictors into long form (one row per character x predictor) and
-# facet by predictor. Shading intensity marks ORs significant after Holm adjustment.
-# theme_fourfold() has no axis titles, so the levels must say what they are: the predictor
-# (No/Yes, left/right) is named in the facet title, Killer is Innocent/Killer (top/bottom).
+# facet by predictor, named in the facet title. Shading intensity marks ORs significant
+# after Holm adjustment. labels = "both" labels each side "Variable: level", as in vcd.
+# (needs ggfourfold >= 0.1.1.9000)
 library(ggplot2)
 library(ggfourfold)
 ff_vars <- c(preds, ai_preds)
 ff_lab  <- sprintf("%s\nOR = %.1f", labels[ff_vars], uni[labels[ff_vars], "OR"])
-ff_long <- do.call(rbind, lapply(seq_along(ff_vars), function(i)
-  data.frame(Variable = ff_lab[i], Predictor = fac[[ff_vars[i]]],
-             Killer = factor(fac$Killer, labels = c("Innocent", "Killer")))))
-ff_long$Variable <- factor(ff_long$Variable, levels = ff_lab)
+ff_long <- with(stack(dat[ff_vars]),
+                data.frame(Variable  = factor(ind, labels = ff_lab),
+                           Predictor = factor(values, labels = c("No", "Yes")),
+                           Killer    = fac$Killer))
 savefig("fourfold", {
   print(
     ggplot(ff_long, aes(x = Predictor, y = Killer)) +
-      geom_fourfold() +
+      geom_fourfold(labels = "both") +
       facet_wrap(vars(Variable), nrow = 2) +
       theme_fourfold()
   )
