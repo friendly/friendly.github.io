@@ -87,7 +87,7 @@ killer; being related to the victim, about 20 times. Gender and employment are i
 #| results: hold
 #| fig-width: 10
 #| fig-height: 6
-#| fig-cap: "Fourfold displays (ggfourfold) of Killer (top/bottom) by each predictor (left/right). Quarter-circle areas show the cell frequencies, standardized to equal margins; non-overlapping 95% confidence rings and intense shading (Holm-adjusted) mean the odds ratio differs from 1. The white diagonal marks the direction of association."
+#| fig-cap: "Fourfold displays (ggfourfold) of Killer (top/bottom) by each predictor (left/right). Quarter-circle areas show the cell frequencies, standardized to equal margins; non-overlapping 95% confidence rings and intense shading mean the odds ratio differs from 1. The white diagonal marks the direction of association."
 ```
 
 ## All non-AI predictors together

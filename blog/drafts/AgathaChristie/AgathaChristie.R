@@ -244,25 +244,26 @@ cat("Chance hit rate:", round(chance, 3), "\n")
 ## ---- fig-fourfold ----
 # Fourfold displays: Killer vs. each predictor. Area of each quarter circle ~ frequency,
 # standardized to equal margins; confidence rings that don't overlap => OR != 1.
-# ggfourfold: stack the predictors into long form (one row per character x predictor) and
-# facet by predictor, named in the facet title. Shading intensity marks ORs significant
-# after Holm adjustment. labels = "both" labels each side "Variable: level", as in vcd.
-# (needs ggfourfold >= 0.1.1.9000)
+# ggfourfold: one plot per predictor, combined with patchwork. labels = "both" labels each
+# side "Variable: level", as in vcd, taking the names from the columns, so give them their
+# display names. (Facets can't do this: per-panel level names need free scales, which
+# facet_wrap() refuses with ggfourfold's fixed aspect ratio.) Shading intensity marks ORs
+# significant at 95%; with separate plots there is no Holm adjustment across panels, but
+# the faceted version with it shaded the same panels. (needs ggfourfold >= 0.1.1.9000)
 library(ggplot2)
 library(ggfourfold)
+library(patchwork)
 ff_vars <- c(preds, ai_preds)
 ff_lab  <- sprintf("%s\nOR = %.1f", labels[ff_vars], uni[labels[ff_vars], "OR"])
-ff_long <- with(stack(dat[ff_vars]),
-                data.frame(Variable  = factor(ind, labels = ff_lab),
-                           Predictor = factor(values, labels = c("No", "Yes")),
-                           Killer    = fac$Killer))
+ff <- setNames(fac[c("Killer", ff_vars)], c("Killer", labels[ff_vars]))
+ff_plots <- lapply(seq_along(ff_vars), function(i)
+  ggplot(ff, aes(x = .data[[labels[[ff_vars[i]]]]], y = Killer)) +
+    geom_fourfold(labels = "both") +
+    labs(title = ff_lab[i]) +
+    theme_fourfold() +
+    theme(plot.title = element_text(face = "plain", size = 14, hjust = 0.5)))
 savefig("fourfold", {
-  print(
-    ggplot(ff_long, aes(x = Predictor, y = Killer)) +
-      geom_fourfold(labels = "both") +
-      facet_wrap(vars(Variable), nrow = 2) +
-      theme_fourfold()
-  )
+  print(wrap_plots(ff_plots, nrow = 2))
 }, width = 10, height = 6)
 
 ## ---- fig-effects ----

@@ -4,6 +4,66 @@ Michael Friendly, 2026-11-10 (drafted with Claude)
 
 Package: **ggfourfold 0.1.0** (CRAN), compared with `vcd::fourfold()`.
 
+## Update, 2026-11-12: ggfourfold 0.1.1.9000
+
+Thanks! Both fixes work. With `geom_fourfold(labels = "both")` the sides read
+"Killer: No", "Killer: Yes", and so on, and the docs now say where the axis titles go.
+The `0.1.1.9000` dev version also takes care of point 3 below. The faceted code is now
+simpler, with no need to rename `Killer`'s levels:
+
+```r
+ff_long <- with(stack(dat[ff_vars]),
+                data.frame(Variable  = factor(ind, labels = ff_lab),
+                           Predictor = factor(values, labels = c("No", "Yes")),
+                           Killer    = fac$Killer))
+
+ggplot(ff_long, aes(x = Predictor, y = Killer)) +
+  geom_fourfold(labels = "both") +
+  facet_wrap(vars(Variable), nrow = 2) +
+  theme_fourfold()
+```
+
+Two smaller points remain, both about where the variable names come from.
+
+1. **Faceted long data can't name the variable per panel.** The names come from the
+   columns, so with the predictors stacked into one column, every panel says
+   "Predictor: No/Yes". What I wanted was "Female: No/Yes", "Financial gain: No/Yes", etc.
+   Per-panel level names (`"Female: No"`, ...) don't work either: they need free scales,
+   and `facet_wrap()` refuses those with the fixed aspect ratio:
+
+   > `facet_wrap()` can't use free scales with `coord_cartesian()` with a fixed `ratio` argument.
+
+   My workaround is one plot per predictor, combined with **patchwork**:
+
+   ```r
+   ff <- setNames(fac[c("Killer", ff_vars)], c("Killer", labels[ff_vars]))
+   ff_plots <- lapply(seq_along(ff_vars), function(i)
+     ggplot(ff, aes(x = .data[[labels[[ff_vars[i]]]]], y = Killer)) +
+       geom_fourfold(labels = "both") +
+       labs(title = ff_lab[i]) +
+       theme_fourfold())
+   wrap_plots(ff_plots, nrow = 2)
+   ```
+
+   This looks right, but it loses the Holm adjustment across panels, since each plot is
+   adjusted on its own (here the same panels were shaded either way).
+
+   *Suggestion:* let the side names come from the data, e.g. optional `x_name` / `y_name`
+   aesthetics (`aes(x = Predictor, y = Killer, x_name = Variable)`), or a labeller-style
+   function. Then facets would give both the right labels and the adjustment.
+
+2. **`labs()` doesn't rename the sides.** `aes(A, B) + labs(x = "Gain", y = "Killer")`
+   with `labels = "both"` still draws "A: No", "B: Yes". In ggplot2, `labs()` is the usual
+   way to rename a variable for display, and `theme_fourfold()` hides the axis titles
+   anyway, so using `labs(x =, y =)` (when set) for the names would feel natural. Right now
+   the only way is to rename the columns, which needs `.data[[...]]` for names with spaces.
+
+The figure in the post now uses the patchwork version.
+
+---
+
+*Original notes, 2026-11-10:*
+
 ## The task
 
 Seven fourfold displays, one for each binary predictor (Female, Employed, Related,
