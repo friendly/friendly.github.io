@@ -67,6 +67,11 @@ expected counts this small, the odds ratio is the better summary.
 
 ## Reproducing Lutz's Table 1
 
+Lutz's Table 1 gives, for each predictor on its own, an odds ratio with its confidence
+interval and *p*-value, and the AUC. Her multivariable models are reported only by their
+AUCs. The first step is to see whether these numbers can be reproduced, and how they
+were calculated.
+
 ### Univariate "odds ratios"
 
 Lutz's odds ratios are all between 0.98 and 1.75, which is far too small for binary
@@ -78,15 +83,29 @@ in proportions), not by logistic regression:
 #| label: lutz-table1
 ```
 
+A difference in proportions lies between −1 and 1, so its exponential can never be
+smaller than 1/e ≈ 0.37 or larger than e ≈ 2.72, however strong the association. Her AUCs
+are not affected: with a single binary predictor, every model ranks the characters the
+same way. Her *p*-values, also from the linear model, are much smaller than the logistic
+ones below, but they put the predictors in the same order. It is the odds ratios
+themselves that are wrong.
+
 ### Multivariable AUCs
 
-Her multivariable AUCs (0.89, 0.89, 0.97, 0.92) reproduce too:
+The AUC (area under the ROC curve) is the probability that a randomly chosen killer gets a
+higher fitted score than a randomly chosen innocent character: 0.5 is chance, 1 is
+perfect. Her four multivariable models add each AI guess, in turn, to Related and
+Financial gain. Fitting them as logistic regressions, her AUCs (0.89, 0.89, 0.97, 0.92)
+reproduce too:
 
 ```{r}
 #| label: lutz-multi
 #| code-fold: true
 #| results: hold
 ```
+
+So the problem is confined to the odds ratios. Adding the AI's web-based guess raises the
+AUC from 0.89 to 0.97; the other two guesses add little.
 
 ## Correct odds ratios
 
@@ -250,11 +269,21 @@ conditional odds ratio is infinite, so we report likelihood-ratio tests rather t
 tests. Within novels, Related and Financial remain strong; of the AI guesses, only the one
 that "read" Chapter 1 from the web adds anything once Related and Financial are known.
 
+The conditional odds ratios for the other predictors (column `OR`) are close to the
+ordinary ones (`glm_OR`), except for Related, which rises from 21 to 69. Comparing
+suspects within a book sharpens the effect of being related to the victim.
+
 ## Whom would Miss Marple accuse?
 
 AUC pools all 166 characters, but the reader's real question is "which of *these*
 suspects did it?" Here each novel's top-scoring suspect(s) are accused, and we record the
 chance of accusing the right one (averaged over the 12 novels).
+
+The scores are the linear predictors from the conditional logit models, or the 0/1 values
+themselves for a single predictor. With binary predictors, several suspects often tie for
+the top score. Miss Marple then picks one of them at random, so a novel scores the
+proportion of killers among its top-ranked suspects. "Chance" means accusing any
+character in the novel at random.
 
 ```{r}
 #| label: accuse
@@ -270,6 +299,12 @@ time, Related + Financial 68%, and adding the AI's web-based Chapter 1 guess, 85
 All of the above is in-sample: 14 killers, and models chosen after looking at the data.
 To mimic predicting the killer in a novel you haven't read, each model is fit to 11
 novels and used to score the characters of the 12th, for each novel in turn.
+
+In the output, `AUC_in` and `AUC_cv` are the in-sample and cross-validated AUCs from the
+logistic models. The `hit_` columns are the accusation hit rates of the previous section,
+in-sample and cross-validated, for the logistic (`glm`) and conditional logit (`cl`)
+models. When a CV value is close to the in-sample one, the model is not just fitting
+the noise in these 166 characters.
 
 ```{r}
 #| label: cv
@@ -292,6 +327,11 @@ discrimination. Within-novel rankings (hit rates) are unaffected either way.
 
 ### Doubledecker plots: where the AI guess helps
 
+Where does the AI's web-based guess add to Related and Financial gain? A doubledecker plot
+divides the characters into a bar for each combination of the predictors, with width
+proportional to the number of characters. The height of the red part of each bar is the
+proportion of killers in that group.
+
 ```{r}
 #| label: fig-doubledecker
 #| code-fold: true
@@ -304,6 +344,16 @@ discrimination. Within-novel rankings (hit rates) are unaffected either way.
 #|   - "AI guess from Chapter 1 pasted in"
 #| layout-ncol: 1
 ```
+
+The two plots differ in one group: the 137 characters who are neither related nor stand to
+gain, the wide bars at the left. Two killers hide among them, with no obvious motive. The
+web-based guess flags 14 of these characters, and both killers are among them; no killer
+is among the 123 it leaves out. The guess from the pasted Chapter 1 flags 9 of them, and
+misses both killers. Among related characters with something to gain, both guesses do
+about equally well (4 of 5 flagged are killers, against 4 of 9 not flagged).
+
+Finding the killers that motive can't find is exactly what an AI that remembers how the
+book ends would do. This is the leakage concern in the caveats below.
 
 ## Caveats
 
