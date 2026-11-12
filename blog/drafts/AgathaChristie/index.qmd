@@ -1,5 +1,5 @@
 ---
-title: "Whodunnit? Reanalysing Lutz's Miss Marple data"
+title: "Whodunnit? Reanalyzing Lutz's Miss Marple data"
 description: "Lutz (2026, Significance) used statistics and AI to unmask the killers in Agatha Christie's Miss Marple novels. Her odds ratios turn out to come from a linear probability model; a reanalysis with logistic and within-novel conditional logit models, cross-validation, and fourfold, mosaic and effect displays."
 author: "Michael Friendly"
 date: today
@@ -39,11 +39,31 @@ is in `AgathaChristie.R`.
 
 ## The data
 
+Lutz's data, from her [GitHub repository](https://github.com/SharonLutz/Stats-vs-AI-whodunnit),
+have one row per character, with the novel's title and 0/1 indicators for being the
+killer, the four character traits, and the three AI guesses. The setup code above reads
+them and makes No/Yes factor copies for tables and plots.
+
+The output below gives the counts, the percentage of characters with each trait (or
+flagged by each AI guess), and a three-way table of Killer by Related and Financial gain,
+the two traits that matter most. The last two lines test the association between Related
+and Financial gain.
+
 ```{r}
 #| label: describe
 #| code-fold: true
 #| results: hold
 ```
+
+Only 8.4% of the characters are killers, 14 in 12 novels (two novels have two). About
+half the characters are female and most are employed, but only 16% are related to the
+victim and 10% stand to gain financially. Each AI guess flags 10–14% of the characters.
+
+The table already tells most of the story. Of the 14 characters who are both related and
+stand to gain, 8 are killers, while only 2 of the 137 with neither trait are. Related and
+Financial gain also go together (OR = 53): an heir is usually a relative. Lutz's
+chi-square of 58.3 for this table is the Yates-corrected value (uncorrected, 63.8). With
+expected counts this small, the odds ratio is the better summary.
 
 ## Reproducing Lutz's Table 1
 
@@ -70,16 +90,46 @@ Her multivariable AUCs (0.89, 0.89, 0.97, 0.92) reproduce too:
 
 ## Correct odds ratios
 
+For a binary outcome, the odds ratio comes from logistic regression: exp(slope) in
+`glm(Killer ~ x, family = binomial)` is the odds of being the killer for characters with
+the trait, divided by the odds for those without it. For a single binary predictor this
+is just the cross-product ratio of the 2 × 2 table.
+
 ### Univariate logistic regressions
+
+The code fits one logistic regression for each predictor, with profile-likelihood 95%
+confidence intervals, and sets the result beside Lutz's values (`Lutz_OR`). The rows are
+sorted by AUC, so the weakest predictors come first.
 
 ```{r}
 #| label: uni-logit
 ```
 
-A character who gains financially from the murder has about 50 times the odds of being the
-killer; being related to the victim, about 20 times. Gender and employment are irrelevant.
+The correct odds ratios are much larger than Lutz's. A character who gains financially from
+the murder has about 50 times the odds of being the killer; being related to the victim,
+about 20 times. Gender and employment are irrelevant. The AI guesses fall in between,
+with odds ratios of 6 to 19. The AUCs are unchanged, because AUC depends only on how the
+fitted values rank the characters, and with one binary predictor every model ranks them the
+same way.
+
+The confidence intervals are wide (financial gain: 14 to 233), as they must be with only 14
+killers. The odds ratios are clearly different from 1, but their size is not well
+determined.
 
 ### Fourfold displays
+
+A fourfold display shows each 2 × 2 table as four quarter circles, one per cell, with
+area proportional to the cell count. Here the counts are first standardized so that both
+margins are equal. This removes the fact that only 8% of the characters are killers,
+leaving only the association.
+
+In each panel below, the rows are Killer (No at top, Yes at bottom) and the columns are
+the predictor (No at left, Yes at right). The raw counts are in the corners. When the
+odds ratio is greater than 1, the No/No and Yes/Yes quadrants (top left and bottom right)
+are larger than the other two, and the white diagonal runs between them. The rings around
+each quadrant show 95% confidence limits for the odds ratio: if the rings for adjacent
+quadrants don't overlap, the odds ratio differs significantly from 1, and those panels
+are shaded in darker colors.
 
 ```{r}
 #| label: fig-fourfold
@@ -89,6 +139,12 @@ killer; being related to the victim, about 20 times. Gender and employment are i
 #| fig-height: 6
 #| fig-cap: "Fourfold displays (ggfourfold) of Killer (top/bottom) by each predictor (left/right). Quarter-circle areas show the cell frequencies, standardized to equal margins; non-overlapping 95% confidence rings and intense shading mean the odds ratio differs from 1. The white diagonal marks the direction of association."
 ```
+
+The panels for Female and Employed are nearly round, with overlapping rings and pale
+shading: no association. In the other five, the Yes/Yes quadrant of killers with the trait
+is far larger than its neighbors, most of all for Related and Financial gain. The AI
+guesses look much like the character traits, but weaker, and the ~20% passage is the
+weakest of all.
 
 ## All non-AI predictors together
 
