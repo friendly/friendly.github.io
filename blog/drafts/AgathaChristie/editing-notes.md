@@ -21,3 +21,11 @@ The draft is clear for readers who know Lutz’s article. The distinction betwee
 - **Ending and metadata.** Close with what the reanalysis adds to Lutz’s account, namely stronger estimates of the association with motive and a within-book ranking that helps quantify the contribution of the AI guess. Turn the description’s sentence fragment after the semicolon into a complete sentence or replace it with the main finding.
 
 Review based on index.qmd, Lutz’s six-page Significance article (pp. 10–15), and spot checks of AgathaChristie.R and the existing index.html. The models were not rerun.
+
+
+## Figures
+
+- **Keep the fourfold display.** The contrast between Employment and Financial gain works well. Use shared row and column labels to remove the repeated rotated text. If seven panels are too much, show those two panels and put the full grid in a foldout.
+- **Fold the effect plot and mosaic.** The mosaic's 135-character cell dominates the area and the important 2-of-3 group is a sliver. A small table of observed killer counts over group totals would make the interaction easier to read. If the effect plot stays in the main text, use a shared linear percentage scale and label the 8.4% reference line.
+- **Replace the two doubledeckers with a four-cell table.** For the 137 characters with neither coded motive, show killers over suspects for flagged and unflagged groups. Web Chapter 1 is 2/14 flagged and 0/123 unflagged. Pasted Chapter 1 is 0/9 flagged and 2/128 unflagged. The current plots clip labels and make the two missed killers hard to see.
+- **Add one paired dot plot in place of the printed cross-validation table.** Plot in-sample and held-out conditional-logit hit rates on a shared 0–100% axis and mark random accusation at about 8%. The main comparisons are family ties plus financial gain (68% to 68%), all four character traits (72% to 55%), and family ties plus financial gain plus web AI (85% to 76%). If comparing AI inputs, include the pasted Chapter 1 and 20%-point conditions. Both scored 75% held out. Keep pooled AUC in the prose or folded output.
