@@ -48,6 +48,8 @@ aucval <- function(fit) as.numeric(auc(dat$Killer, fitted(fit), quiet = TRUE))
 cat(nrow(dat), "characters,", sum(dat$Killer), "killers,", nlevels(dat$Title), "novels\n")
 round(100 * colMeans(dat[, c("Killer", preds, ai_preds)]), 1)
 ftable(xtabs(~ Related + Financial + Killer, fac))
+
+## ---- rel-fin-assoc ----
 # Lutz: Pearson chi-square for Related x Financial = 58.3 -- that's the Yates-corrected value
 # (uncorrected: 63.8). Either way, expected counts are small; the OR is the better summary.
 chisq.test(xtabs(~ Related + Financial, fac))

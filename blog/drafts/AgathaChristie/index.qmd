@@ -57,8 +57,7 @@ them and makes No/Yes factor copies for tables and plots.
 
 The output below gives the counts, the percentage of characters with each trait (or
 flagged by each AI guess), and a three-way table of Killer by Related and Financial gain,
-the two traits that matter most. The last two lines test the association between Related
-and Financial gain.
+the two traits that matter most.
 
 ```{r}
 #| label: describe
@@ -71,10 +70,23 @@ half the characters are female and most are employed, but only 16% are related t
 victim and 10% stand to gain financially. Each AI guess flags 10–14% of the characters.
 
 The table already tells most of the story. Of the 14 characters who are both related and
-stand to gain, 8 are killers, while only 2 of the 137 with neither trait are. Related and
-Financial gain also go together (OR = 53): an heir is usually a relative. Lutz's
-chi-square of 58.3 for this table is the Yates-corrected value (uncorrected, 63.8). With
-expected counts this small, the odds ratio is the better summary.
+stand to gain, 8 are killers, while only 2 of the 137 with neither trait are.
+
+### Related and Financial gain
+
+A quick look at the association between the two traits that best identify the killers.
+If they go together, they partly tell the same story, which matters when both are in
+one model.
+
+```{r}
+#| label: rel-fin-assoc
+#| code-fold: true
+#| results: hold
+```
+
+They do go together (OR = 53): an heir is usually a relative. Lutz's chi-square of 58.3
+for this table is the Yates-corrected value (uncorrected, 63.8). With expected counts
+this small, the odds ratio is the better summary.
 
 ## Reproducing Lutz's Table 1
 

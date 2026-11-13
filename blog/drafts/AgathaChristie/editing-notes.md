@@ -111,3 +111,9 @@ move, obsolete figures, stale notes) and a "What I learned" section are done; th
 **Also**
 
 17. Review the new "What I learned" section (LLM as consulting detective), then re-render.
+
+**After publishing**
+
+18. Send a letter to the editor of *Significance* (≤ 400 words, marked "For publication").
+    Submission details, points to make and a rough draft are in
+    [Significance-letter.md](Significance-letter.md).

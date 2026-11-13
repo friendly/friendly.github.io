@@ -2211,7 +2211,10 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The data</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The data</a>
+  <ul class="collapse">
+  <li><a href="#related-and-financial-gain" id="toc-related-and-financial-gain" class="nav-link" data-scroll-target="#related-and-financial-gain">Related and Financial gain</a></li>
+  </ul></li>
   <li><a href="#reproducing-lutzs-table-1" id="toc-reproducing-lutzs-table-1" class="nav-link" data-scroll-target="#reproducing-lutzs-table-1">Reproducing Lutz’s Table 1</a>
   <ul class="collapse">
   <li><a href="#univariate-odds-ratios" id="toc-univariate-odds-ratios" class="nav-link" data-scroll-target="#univariate-odds-ratios">Univariate “odds ratios”</a></li>
@@ -2332,17 +2335,13 @@ vertical-align: -.125em;
 <section id="the-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-data">The data</h2>
 <p>Lutz’s data, from her <a href="https://github.com/SharonLutz/Stats-vs-AI-whodunnit">GitHub repository</a>, have one row per character, with the novel’s title and 0/1 indicators for being the killer, the four character traits, and the three AI guesses. The setup code above reads them and makes No/Yes factor copies for tables and plots.</p>
-<p>The output below gives the counts, the percentage of characters with each trait (or flagged by each AI guess), and a three-way table of Killer by Related and Financial gain, the two traits that matter most. The last two lines test the association between Related and Financial gain.</p>
+<p>The output below gives the counts, the percentage of characters with each trait (or flagged by each AI guess), and a three-way table of Killer by Related and Financial gain, the two traits that matter most.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">nrow</span>(dat), <span class="st">&quot;characters,&quot;</span>, <span class="fu">sum</span>(dat<span class="sc">$</span>Killer), <span class="st">&quot;killers,&quot;</span>, <span class="fu">nlevels</span>(dat<span class="sc">$</span>Title), <span class="st">&quot;novels</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">colMeans</span>(dat[, <span class="fu">c</span>(<span class="st">&quot;Killer&quot;</span>, preds, ai_preds)]), <span class="dv">1</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ftable</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> Killer, fac))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Lutz: Pearson chi-square for Related x Financial = 58.3 -- that&#39;s the Yates-corrected value</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (uncorrected: 63.8). Either way, expected counts are small; the OR is the better summary.</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> Related <span class="sc">+</span> Financial, fac))</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">oddsratio</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> Related <span class="sc">+</span> Financial, fac), <span class="at">log =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ftable</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> Killer, fac))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>166 characters, 14 killers, 12 novels
@@ -2355,8 +2354,24 @@ Related Financial
 No      No               135   2
         Yes                1   2
 Yes     No                10   2
-        Yes                6   8
-
+        Yes                6   8</code></pre>
+</div>
+</div>
+<p>Only 8.4% of the characters are killers, 14 in 12 novels (two novels have two). About half the characters are female and most are employed, but only 16% are related to the victim and 10% stand to gain financially. Each AI guess flags 10–14% of the characters.</p>
+<p>The table already tells most of the story. Of the 14 characters who are both related and stand to gain, 8 are killers, while only 2 of the 137 with neither trait are.</p>
+<section id="related-and-financial-gain" class="level3">
+<h3 class="anchored" data-anchor-id="related-and-financial-gain">Related and Financial gain</h3>
+<p>A quick look at the association between the two traits that best identify the killers. If they go together, they partly tell the same story, which matters when both are in one model.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lutz: Pearson chi-square for Related x Financial = 58.3 -- that&#39;s the Yates-corrected value</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (uncorrected: 63.8). Either way, expected counts are small; the OR is the better summary.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> Related <span class="sc">+</span> Financial, fac))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">oddsratio</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> Related <span class="sc">+</span> Financial, fac), <span class="at">log =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
     Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
 
 data:  xtabs(~Related + Financial, fac)
@@ -2367,8 +2382,8 @@ X-squared = 58.269, df = 1, p-value = 2.287e-14
 [1] 53.27778</code></pre>
 </div>
 </div>
-<p>Only 8.4% of the characters are killers, 14 in 12 novels (two novels have two). About half the characters are female and most are employed, but only 16% are related to the victim and 10% stand to gain financially. Each AI guess flags 10–14% of the characters.</p>
-<p>The table already tells most of the story. Of the 14 characters who are both related and stand to gain, 8 are killers, while only 2 of the 137 with neither trait are. Related and Financial gain also go together (OR = 53): an heir is usually a relative. Lutz’s chi-square of 58.3 for this table is the Yates-corrected value (uncorrected, 63.8). With expected counts this small, the odds ratio is the better summary.</p>
+<p>They do go together (OR = 53): an heir is usually a relative. Lutz’s chi-square of 58.3 for this table is the Yates-corrected value (uncorrected, 63.8). With expected counts this small, the odds ratio is the better summary.</p>
+</section>
 </section>
 <section id="reproducing-lutzs-table-1" class="level2">
 <h2 class="anchored" data-anchor-id="reproducing-lutzs-table-1">Reproducing Lutz’s Table 1</h2>
@@ -2379,16 +2394,16 @@ X-squared = 58.269, df = 1, p-value = 2.287e-14
 <div class="cell">
 <details open class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lutz&#39;s Table 1 &quot;odds ratios&quot; are reproduced exactly by exp(coef) from a *linear*</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># probability model (gaussian glm), not from logistic regression.</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>lutz <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(preds, ai_preds), <span class="cf">function</span>(v) {</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">reformulate</span>(v, <span class="st">&quot;Killer&quot;</span>), <span class="at">family =</span> gaussian, <span class="at">data =</span> dat)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ci  <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint.default</span>(fit)[<span class="dv">2</span>, ])</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR =</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit)[[<span class="dv">2</span>]]), <span class="at">lower =</span> ci[[<span class="dv">1</span>]], <span class="at">upper =</span> ci[[<span class="dv">2</span>]],</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="at">AUC =</span> <span class="fu">aucval</span>(fit))</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(lutz) <span class="ot">&lt;-</span> labels[<span class="fu">rownames</span>(lutz)]</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(lutz[<span class="fu">order</span>(lutz[, <span class="st">&quot;AUC&quot;</span>]), ], <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lutz&#39;s Table 1 &quot;odds ratios&quot; are reproduced exactly by exp(coef) from a *linear*</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># probability model (gaussian glm), not from logistic regression.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>lutz <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(preds, ai_preds), <span class="cf">function</span>(v) {</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">reformulate</span>(v, <span class="st">&quot;Killer&quot;</span>), <span class="at">family =</span> gaussian, <span class="at">data =</span> dat)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  ci  <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint.default</span>(fit)[<span class="dv">2</span>, ])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR =</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit)[[<span class="dv">2</span>]]), <span class="at">lower =</span> ci[[<span class="dv">1</span>]], <span class="at">upper =</span> ci[[<span class="dv">2</span>]],</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="at">AUC =</span> <span class="fu">aucval</span>(fit))</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(lutz) <span class="ot">&lt;-</span> labels[<span class="fu">rownames</span>(lutz)]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(lutz[<span class="fu">order</span>(lutz[, <span class="st">&quot;AUC&quot;</span>]), ], <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     OR lower upper     p   AUC
@@ -2409,15 +2424,15 @@ Financial gain    1.753 1.569 1.959 0.000 0.834</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lutz&#39;s four multivariable models (AUC only is reported; AUC is the same for logit or LPM</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># only when the fitted values have the same ordering, so use the logistic fits)</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>lutz_models <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Gain&quot;</span>            <span class="ot">=</span> Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Gain + AI ch1&quot;</span>   <span class="ot">=</span> Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> AIch1passage,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Gain + AI web&quot;</span>   <span class="ot">=</span> Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> AIch1web,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Gain + AI 20%&quot;</span>   <span class="ot">=</span> Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> AIch20p)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>lutz_fits <span class="ot">&lt;-</span> <span class="fu">lapply</span>(lutz_models, glm, <span class="at">family =</span> binomial, <span class="at">data =</span> dat)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">sapply</span>(lutz_fits, aucval), <span class="dv">3</span>)   <span class="co"># Lutz: 0.89, 0.89, 0.97, 0.92</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lutz&#39;s four multivariable models (AUC only is reported; AUC is the same for logit or LPM</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># only when the fitted values have the same ordering, so use the logistic fits)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>lutz_models <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Gain&quot;</span>            <span class="ot">=</span> Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Gain + AI ch1&quot;</span>   <span class="ot">=</span> Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> AIch1passage,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Gain + AI web&quot;</span>   <span class="ot">=</span> Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> AIch1web,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Gain + AI 20%&quot;</span>   <span class="ot">=</span> Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> AIch20p)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>lutz_fits <span class="ot">&lt;-</span> <span class="fu">lapply</span>(lutz_models, glm, <span class="at">family =</span> binomial, <span class="at">data =</span> dat)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">sapply</span>(lutz_fits, aucval), <span class="dv">3</span>)   <span class="co"># Lutz: 0.89, 0.89, 0.97, 0.92</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>         Related + Gain Related + Gain + AI ch1 Related + Gain + AI web 
@@ -2438,16 +2453,16 @@ Related + Gain + AI 20%
 <div class="cell">
 <details open class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct univariate logistic odds ratios (profile-likelihood CIs)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>uni <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(preds, ai_preds), <span class="cf">function</span>(v) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">reformulate</span>(v, <span class="st">&quot;Killer&quot;</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> dat)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  ci  <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">suppressMessages</span>(<span class="fu">confint</span>(fit))[<span class="dv">2</span>, ])</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR =</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit)[[<span class="dv">2</span>]]), <span class="at">lower =</span> ci[[<span class="dv">1</span>]], <span class="at">upper =</span> ci[[<span class="dv">2</span>]],</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="at">AUC =</span> <span class="fu">aucval</span>(fit))</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(uni) <span class="ot">&lt;-</span> labels[<span class="fu">rownames</span>(uni)]</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>compare <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">Lutz_OR =</span> lutz[, <span class="st">&quot;OR&quot;</span>], uni)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(compare[<span class="fu">order</span>(compare[, <span class="st">&quot;AUC&quot;</span>]), ], <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct univariate logistic odds ratios (profile-likelihood CIs)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>uni <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(preds, ai_preds), <span class="cf">function</span>(v) {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">reformulate</span>(v, <span class="st">&quot;Killer&quot;</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> dat)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  ci  <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">suppressMessages</span>(<span class="fu">confint</span>(fit))[<span class="dv">2</span>, ])</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR =</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit)[[<span class="dv">2</span>]]), <span class="at">lower =</span> ci[[<span class="dv">1</span>]], <span class="at">upper =</span> ci[[<span class="dv">2</span>]],</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="at">AUC =</span> <span class="fu">aucval</span>(fit))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(uni) <span class="ot">&lt;-</span> labels[<span class="fu">rownames</span>(uni)]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>compare <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">Lutz_OR =</span> lutz[, <span class="st">&quot;OR&quot;</span>], uni)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(compare[<span class="fu">order</span>(compare[, <span class="st">&quot;AUC&quot;</span>]), ], <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  Lutz_OR     OR  lower   upper     p   AUC
@@ -2470,29 +2485,29 @@ Financial gain      1.753 51.786 13.932 232.931 0.000 0.834</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fourfold displays: Killer vs. each predictor. Area of each quarter circle ~ frequency,</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># standardized to equal margins; confidence rings that don&#39;t overlap =&gt; OR != 1.</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ggfourfold: one plot per predictor, combined with patchwork. labels = &quot;both&quot; labels each</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># side &quot;Variable: level&quot;, as in vcd, taking the names from the columns, so give them their</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># display names. (Facets can&#39;t do this: per-panel level names need free scales, which</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># facet_wrap() refuses with ggfourfold&#39;s fixed aspect ratio.) Shading intensity marks ORs</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># significant at 95%; with separate plots there is no Holm adjustment across panels, but</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># the faceted version with it shaded the same panels. (needs ggfourfold &gt;= 0.1.1.9000)</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfourfold)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ff_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(preds, ai_preds)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>ff_lab  <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;%s</span><span class="sc">\n</span><span class="st">OR = %.1f&quot;</span>, labels[ff_vars], uni[labels[ff_vars], <span class="st">&quot;OR&quot;</span>])</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ff <span class="ot">&lt;-</span> <span class="fu">setNames</span>(fac[<span class="fu">c</span>(<span class="st">&quot;Killer&quot;</span>, ff_vars)], <span class="fu">c</span>(<span class="st">&quot;Killer&quot;</span>, labels[ff_vars]))</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>ff_plots <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_along</span>(ff_vars), <span class="cf">function</span>(i)</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ff, <span class="fu">aes</span>(<span class="at">x =</span> .data[[labels[[ff_vars[i]]]]], <span class="at">y =</span> Killer)) <span class="sc">+</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_fourfold</span>(<span class="at">labels =</span> <span class="st">&quot;both&quot;</span>) <span class="sc">+</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> ff_lab[i]) <span class="sc">+</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_fourfold</span>() <span class="sc">+</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;plain&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>)))</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="fu">savefig</span>(<span class="st">&quot;fourfold&quot;</span>, {</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">wrap_plots</span>(ff_plots, <span class="at">nrow =</span> <span class="dv">2</span>))</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>}, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fourfold displays: Killer vs. each predictor. Area of each quarter circle ~ frequency,</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># standardized to equal margins; confidence rings that don&#39;t overlap =&gt; OR != 1.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ggfourfold: one plot per predictor, combined with patchwork. labels = &quot;both&quot; labels each</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># side &quot;Variable: level&quot;, as in vcd, taking the names from the columns, so give them their</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># display names. (Facets can&#39;t do this: per-panel level names need free scales, which</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># facet_wrap() refuses with ggfourfold&#39;s fixed aspect ratio.) Shading intensity marks ORs</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># significant at 95%; with separate plots there is no Holm adjustment across panels, but</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># the faceted version with it shaded the same panels. (needs ggfourfold &gt;= 0.1.1.9000)</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfourfold)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>ff_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(preds, ai_preds)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>ff_lab  <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;%s</span><span class="sc">\n</span><span class="st">OR = %.1f&quot;</span>, labels[ff_vars], uni[labels[ff_vars], <span class="st">&quot;OR&quot;</span>])</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>ff <span class="ot">&lt;-</span> <span class="fu">setNames</span>(fac[<span class="fu">c</span>(<span class="st">&quot;Killer&quot;</span>, ff_vars)], <span class="fu">c</span>(<span class="st">&quot;Killer&quot;</span>, labels[ff_vars]))</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>ff_plots <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_along</span>(ff_vars), <span class="cf">function</span>(i)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ff, <span class="fu">aes</span>(<span class="at">x =</span> .data[[labels[[ff_vars[i]]]]], <span class="at">y =</span> Killer)) <span class="sc">+</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_fourfold</span>(<span class="at">labels =</span> <span class="st">&quot;both&quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> ff_lab[i]) <span class="sc">+</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_fourfold</span>() <span class="sc">+</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;plain&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>)))</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">savefig</span>(<span class="st">&quot;fourfold&quot;</span>, {</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">wrap_plots</span>(ff_plots, <span class="at">nrow =</span> <span class="dv">2</span>))</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>}, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-fourfold" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2518,9 +2533,9 @@ Figure 1: Fourfold displays (ggfourfold) of Killer (top/bottom) by each predict
 <div class="cell">
 <details open class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># All the non-AI predictors together; LR test for dropping each one</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>full <span class="ot">&lt;-</span> <span class="fu">glm</span>(Killer <span class="sc">~</span> Female <span class="sc">+</span> Employed <span class="sc">+</span> Related <span class="sc">+</span> Financial, <span class="at">family =</span> binomial, <span class="at">data =</span> dat)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># All the non-AI predictors together; LR test for dropping each one</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>full <span class="ot">&lt;-</span> <span class="fu">glm</span>(Killer <span class="sc">~</span> Female <span class="sc">+</span> Employed <span class="sc">+</span> Related <span class="sc">+</span> Financial, <span class="at">family =</span> binomial, <span class="at">data =</span> dat)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -2548,7 +2563,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 <details open class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(full, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(full, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Single term deletions
@@ -2573,37 +2588,37 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Effect plot for the four-predictor model: fitted P(Killer) at each level of one predictor,</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># averaging over the others in proportion to their distribution (effects::Effect()).</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Refit with factors so each effect has two levels, not a line from 0 to 1.</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (ggeffects::predict_response() instead fixes the other factors at their reference level,</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># i.e. a character who is none of the four.) Drawn with ggplot on a logit scale, so all four</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># panels share one scale; the dashed line is the overall proportion of killers.</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>full_f <span class="ot">&lt;-</span> <span class="fu">glm</span>(Killer <span class="sc">~</span> Female <span class="sc">+</span> Employed <span class="sc">+</span> Related <span class="sc">+</span> Financial, <span class="at">family =</span> binomial, <span class="at">data =</span> fac)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(preds, <span class="cf">function</span>(v) {</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">Effect</span>(v, full_f))</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">Predictor =</span> labels[[v]], <span class="at">Level =</span> d[[v]],</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">fit =</span> d<span class="sc">$</span>fit, <span class="at">lower =</span> d<span class="sc">$</span>lower, <span class="at">upper =</span> d<span class="sc">$</span>upper)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>eff<span class="sc">$</span>Predictor <span class="ot">&lt;-</span> <span class="fu">factor</span>(eff<span class="sc">$</span>Predictor, <span class="at">levels =</span> labels[preds])</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="fu">savefig</span>(<span class="st">&quot;effects-full&quot;</span>, {</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  p_breaks <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">005</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">05</span>, .<span class="dv">1</span>, .<span class="dv">2</span>, .<span class="dv">5</span>, .<span class="dv">8</span>)</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(eff, <span class="fu">aes</span>(Level, fit)) <span class="sc">+</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">mean</span>(dat<span class="sc">$</span>Killer), <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>) <span class="sc">+</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="dv">1</span>), <span class="at">colour =</span> <span class="st">&quot;#B2182B&quot;</span>) <span class="sc">+</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">colour =</span> <span class="st">&quot;#B2182B&quot;</span>) <span class="sc">+</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(Predictor), <span class="at">nrow =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_continuous</span>(<span class="at">transform =</span> <span class="st">&quot;logit&quot;</span>, <span class="at">breaks =</span> p_breaks, <span class="at">labels =</span> <span class="fu">as.character</span>(p_breaks)) <span class="sc">+</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Probability of being the killer&quot;</span>) <span class="sc">+</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>}, <span class="at">width =</span> <span class="dv">9</span>, <span class="at">height =</span> <span class="dv">4</span>)</span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Standalone run: also draw the figures defined in figures.R (cv hit rates, AI flag table)</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>in_knitr) <span class="fu">source</span>(<span class="fu">file.path</span>(<span class="st">&quot;R&quot;</span>, <span class="st">&quot;figures.R&quot;</span>), <span class="at">print.eval =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Effect plot for the four-predictor model: fitted P(Killer) at each level of one predictor,</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># averaging over the others in proportion to their distribution (effects::Effect()).</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Refit with factors so each effect has two levels, not a line from 0 to 1.</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (ggeffects::predict_response() instead fixes the other factors at their reference level,</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># i.e. a character who is none of the four.) Drawn with ggplot on a logit scale, so all four</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># panels share one scale; the dashed line is the overall proportion of killers.</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>full_f <span class="ot">&lt;-</span> <span class="fu">glm</span>(Killer <span class="sc">~</span> Female <span class="sc">+</span> Employed <span class="sc">+</span> Related <span class="sc">+</span> Financial, <span class="at">family =</span> binomial, <span class="at">data =</span> fac)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(preds, <span class="cf">function</span>(v) {</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">Effect</span>(v, full_f))</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">Predictor =</span> labels[[v]], <span class="at">Level =</span> d[[v]],</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">fit =</span> d<span class="sc">$</span>fit, <span class="at">lower =</span> d<span class="sc">$</span>lower, <span class="at">upper =</span> d<span class="sc">$</span>upper)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>eff<span class="sc">$</span>Predictor <span class="ot">&lt;-</span> <span class="fu">factor</span>(eff<span class="sc">$</span>Predictor, <span class="at">levels =</span> labels[preds])</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">savefig</span>(<span class="st">&quot;effects-full&quot;</span>, {</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  p_breaks <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">005</span>, .<span class="dv">01</span>, .<span class="dv">02</span>, .<span class="dv">05</span>, .<span class="dv">1</span>, .<span class="dv">2</span>, .<span class="dv">5</span>, .<span class="dv">8</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(eff, <span class="fu">aes</span>(Level, fit)) <span class="sc">+</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">mean</span>(dat<span class="sc">$</span>Killer), <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="dv">1</span>), <span class="at">colour =</span> <span class="st">&quot;#B2182B&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">colour =</span> <span class="st">&quot;#B2182B&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(Predictor), <span class="at">nrow =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_continuous</span>(<span class="at">transform =</span> <span class="st">&quot;logit&quot;</span>, <span class="at">breaks =</span> p_breaks, <span class="at">labels =</span> <span class="fu">as.character</span>(p_breaks)) <span class="sc">+</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Probability of being the killer&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>}, <span class="at">width =</span> <span class="dv">9</span>, <span class="at">height =</span> <span class="dv">4</span>)</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Standalone run: also draw the figures defined in figures.R (cv hit rates, AI flag table)</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>in_knitr) <span class="fu">source</span>(<span class="fu">file.path</span>(<span class="st">&quot;R&quot;</span>, <span class="st">&quot;figures.R&quot;</span>), <span class="at">print.eval =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-effects" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2626,9 +2641,9 @@ Figure 2: Effect plot for the four-predictor logistic model: fitted probability
 <div class="cell">
 <details open class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Does the effect of financial gain depend on being related?</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>full_int <span class="ot">&lt;-</span> <span class="fu">update</span>(full, . <span class="sc">~</span> . <span class="sc">+</span> Related<span class="sc">:</span>Financial)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(full, full_int, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Does the effect of financial gain depend on being related?</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>full_int <span class="ot">&lt;-</span> <span class="fu">update</span>(full, . <span class="sc">~</span> . <span class="sc">+</span> Related<span class="sc">:</span>Financial)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(full, full_int, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
@@ -2650,18 +2665,18 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># reduced model: Related + Financial (joint test of dropping Female and Employed),</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># then add each AI predictor</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>base <span class="ot">&lt;-</span> <span class="fu">glm</span>(Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial, <span class="at">family =</span> binomial, <span class="at">data =</span> dat)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(base, full, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>ai_add <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(ai_preds, <span class="cf">function</span>(v) {</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">update</span>(base, <span class="fu">reformulate</span>(<span class="fu">c</span>(<span class="st">&quot;Related&quot;</span>, <span class="st">&quot;Financial&quot;</span>, v), <span class="st">&quot;Killer&quot;</span>))</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  lr  <span class="ot">&lt;-</span> <span class="fu">anova</span>(base, fit, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR_AI =</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit)[[v]]), <span class="at">LR_chisq =</span> lr<span class="sc">$</span>Deviance[<span class="dv">2</span>], <span class="at">p =</span> lr<span class="sc">$</span><span class="st">`</span><span class="at">Pr(&gt;Chi)</span><span class="st">`</span>[<span class="dv">2</span>],</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">AUC =</span> <span class="fu">aucval</span>(fit))</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(ai_add) <span class="ot">&lt;-</span> labels[<span class="fu">rownames</span>(ai_add)]</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(ai_add, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># reduced model: Related + Financial (joint test of dropping Female and Employed),</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># then add each AI predictor</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>base <span class="ot">&lt;-</span> <span class="fu">glm</span>(Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial, <span class="at">family =</span> binomial, <span class="at">data =</span> dat)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(base, full, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>ai_add <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(ai_preds, <span class="cf">function</span>(v) {</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">update</span>(base, <span class="fu">reformulate</span>(<span class="fu">c</span>(<span class="st">&quot;Related&quot;</span>, <span class="st">&quot;Financial&quot;</span>, v), <span class="st">&quot;Killer&quot;</span>))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  lr  <span class="ot">&lt;-</span> <span class="fu">anova</span>(base, fit, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR_AI =</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit)[[v]]), <span class="at">LR_chisq =</span> lr<span class="sc">$</span>Deviance[<span class="dv">2</span>], <span class="at">p =</span> lr<span class="sc">$</span><span class="st">`</span><span class="at">Pr(&gt;Chi)</span><span class="st">`</span>[<span class="dv">2</span>],</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">AUC =</span> <span class="fu">aucval</span>(fit))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(ai_add) <span class="ot">&lt;-</span> labels[<span class="fu">rownames</span>(ai_add)]</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(ai_add, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
@@ -2683,58 +2698,58 @@ AI: ~20% pasted    3.472    2.192 0.139 0.918</code></pre>
 <section id="conditional-logistic-regression-comparing-suspects-within-a-novel" class="level2">
 <h2 class="anchored" data-anchor-id="conditional-logistic-regression-comparing-suspects-within-a-novel">Conditional logistic regression: comparing suspects within a novel</h2>
 <p>Each novel is a closed circle of suspects with one (or two) killers, so the natural model compares the killer with the other characters <em>in the same book</em>: conditional logit with <code>strata(Title)</code>, e.g.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">clogit</span>(Killer <span class="sc">~</span> Female <span class="sc">+</span> Employed <span class="sc">+</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> <span class="fu">strata</span>(Title), <span class="at">data =</span> dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">clogit</span>(Killer <span class="sc">~</span> Female <span class="sc">+</span> Employed <span class="sc">+</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> <span class="fu">strata</span>(Title), <span class="at">data =</span> dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The output below shows, for each novel, the number of characters and killers and how many gain financially. It then gives univariate conditional ORs, LR tests for dropping each term from the full model, and LR tests for adding each AI guess to Related + Financial.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Conditional logit: each novel is a matched set, so the killer is compared only with the</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># other suspects in the same book. The novel-level baseline (number of characters, number of</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># killers) drops out.</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Financial gain is *separated* within novels: in every novel where some non-killer gains</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># financially, the killer gains too. So its conditional OR is infinite (clogit warns &quot;beta may</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># be infinite&quot;). Wald tests and CIs are then useless, but likelihood-ratio tests are fine,</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># so we report LR tests throughout.</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>within <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">split</span>(dat, dat<span class="sc">$</span>Novel), <span class="cf">function</span>(x)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">characters =</span> <span class="fu">nrow</span>(x), <span class="at">killers =</span> <span class="fu">sum</span>(x<span class="sc">$</span>Killer),</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">killer_gains =</span> <span class="fu">sum</span>(x<span class="sc">$</span>Financial[x<span class="sc">$</span>Killer <span class="sc">==</span> <span class="dv">1</span>]),</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">others_gain  =</span> <span class="fu">sum</span>(x<span class="sc">$</span>Financial[x<span class="sc">$</span>Killer <span class="sc">==</span> <span class="dv">0</span>]))))</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>within</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>clfit <span class="ot">&lt;-</span> <span class="cf">function</span>(f) <span class="fu">suppressWarnings</span>(<span class="fu">clogit</span>(f, <span class="at">data =</span> dat))</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># LR test against the null conditional model (loglik[1] is the loglik at beta = 0)</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>cl_lr <span class="ot">&lt;-</span> <span class="cf">function</span>(fit) {</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  chi <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">diff</span>(fit<span class="sc">$</span>loglik)</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">LR_chisq =</span> chi, <span class="at">p =</span> <span class="fu">pchisq</span>(chi, <span class="fu">length</span>(<span class="fu">coef</span>(fit)), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>cl_uni <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(preds, ai_preds), <span class="cf">function</span>(v) {</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">clfit</span>(<span class="fu">reformulate</span>(<span class="fu">c</span>(v, <span class="st">&quot;strata(Title)&quot;</span>), <span class="st">&quot;Killer&quot;</span>))</span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  or  <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit))[[<span class="dv">1</span>]]</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR =</span> <span class="cf">if</span> (or <span class="sc">&gt;</span> <span class="fl">1e6</span>) <span class="cn">Inf</span> <span class="cf">else</span> or, <span class="fu">cl_lr</span>(fit))</span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>}))</span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(cl_uni) <span class="ot">&lt;-</span> labels[<span class="fu">rownames</span>(cl_uni)]</span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cbind</span>(cl_uni, <span class="at">glm_OR =</span> uni[, <span class="st">&quot;OR&quot;</span>]), <span class="dv">3</span>)</span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="co"># all non-AI predictors: LR test for dropping each term</span></span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>cl_full <span class="ot">&lt;-</span> <span class="fu">clfit</span>(Killer <span class="sc">~</span> Female <span class="sc">+</span> Employed <span class="sc">+</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> <span class="fu">strata</span>(Title))</span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>cl_drop1 <span class="ot">&lt;-</span> <span class="cf">function</span>(fit, terms) {</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>(<span class="fu">sapply</span>(terms, <span class="cf">function</span>(v) {</span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>    red <span class="ot">&lt;-</span> <span class="fu">clfit</span>(<span class="fu">reformulate</span>(<span class="fu">c</span>(<span class="fu">setdiff</span>(terms, v), <span class="st">&quot;strata(Title)&quot;</span>), <span class="st">&quot;Killer&quot;</span>))</span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>    chi <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (fit<span class="sc">$</span>loglik[<span class="dv">2</span>] <span class="sc">-</span> red<span class="sc">$</span>loglik[<span class="dv">2</span>])</span>
-<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="at">LR_chisq =</span> chi, <span class="at">p =</span> <span class="fu">pchisq</span>(chi, <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>  }))</span>
-<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cl_drop1</span>(cl_full, preds), <span class="dv">4</span>)</span>
-<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>cl_base <span class="ot">&lt;-</span> <span class="fu">clfit</span>(Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> <span class="fu">strata</span>(Title))</span>
-<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>cl_ai <span class="ot">&lt;-</span> <span class="fu">lapply</span>(ai_preds, <span class="cf">function</span>(v)</span>
-<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clfit</span>(<span class="fu">reformulate</span>(<span class="fu">c</span>(<span class="st">&quot;Related&quot;</span>, <span class="st">&quot;Financial&quot;</span>, v, <span class="st">&quot;strata(Title)&quot;</span>), <span class="st">&quot;Killer&quot;</span>)))</span>
-<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cl_ai) <span class="ot">&lt;-</span> ai_preds</span>
-<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a><span class="co"># LR test for adding each AI predictor to Related + Financial</span></span>
-<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(cl_ai, <span class="cf">function</span>(fit) {</span>
-<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>  lr <span class="ot">&lt;-</span> <span class="fu">anova</span>(cl_base, fit)</span>
-<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR_AI =</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit))[[<span class="dv">3</span>]], <span class="at">LR_chisq =</span> lr<span class="sc">$</span>Chisq[<span class="dv">2</span>], <span class="at">p =</span> lr<span class="sc">$</span><span class="st">`</span><span class="at">Pr(&gt;|Chi|)</span><span class="st">`</span>[<span class="dv">2</span>])</span>
-<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>})), <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Conditional logit: each novel is a matched set, so the killer is compared only with the</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># other suspects in the same book. The novel-level baseline (number of characters, number of</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># killers) drops out.</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Financial gain is *separated* within novels: in every novel where some non-killer gains</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># financially, the killer gains too. So its conditional OR is infinite (clogit warns &quot;beta may</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># be infinite&quot;). Wald tests and CIs are then useless, but likelihood-ratio tests are fine,</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># so we report LR tests throughout.</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>within <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">split</span>(dat, dat<span class="sc">$</span>Novel), <span class="cf">function</span>(x)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">characters =</span> <span class="fu">nrow</span>(x), <span class="at">killers =</span> <span class="fu">sum</span>(x<span class="sc">$</span>Killer),</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">killer_gains =</span> <span class="fu">sum</span>(x<span class="sc">$</span>Financial[x<span class="sc">$</span>Killer <span class="sc">==</span> <span class="dv">1</span>]),</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">others_gain  =</span> <span class="fu">sum</span>(x<span class="sc">$</span>Financial[x<span class="sc">$</span>Killer <span class="sc">==</span> <span class="dv">0</span>]))))</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>within</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>clfit <span class="ot">&lt;-</span> <span class="cf">function</span>(f) <span class="fu">suppressWarnings</span>(<span class="fu">clogit</span>(f, <span class="at">data =</span> dat))</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># LR test against the null conditional model (loglik[1] is the loglik at beta = 0)</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>cl_lr <span class="ot">&lt;-</span> <span class="cf">function</span>(fit) {</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  chi <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">diff</span>(fit<span class="sc">$</span>loglik)</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">LR_chisq =</span> chi, <span class="at">p =</span> <span class="fu">pchisq</span>(chi, <span class="fu">length</span>(<span class="fu">coef</span>(fit)), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>cl_uni <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(preds, ai_preds), <span class="cf">function</span>(v) {</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">clfit</span>(<span class="fu">reformulate</span>(<span class="fu">c</span>(v, <span class="st">&quot;strata(Title)&quot;</span>), <span class="st">&quot;Killer&quot;</span>))</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  or  <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit))[[<span class="dv">1</span>]]</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR =</span> <span class="cf">if</span> (or <span class="sc">&gt;</span> <span class="fl">1e6</span>) <span class="cn">Inf</span> <span class="cf">else</span> or, <span class="fu">cl_lr</span>(fit))</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(cl_uni) <span class="ot">&lt;-</span> labels[<span class="fu">rownames</span>(cl_uni)]</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cbind</span>(cl_uni, <span class="at">glm_OR =</span> uni[, <span class="st">&quot;OR&quot;</span>]), <span class="dv">3</span>)</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="co"># all non-AI predictors: LR test for dropping each term</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>cl_full <span class="ot">&lt;-</span> <span class="fu">clfit</span>(Killer <span class="sc">~</span> Female <span class="sc">+</span> Employed <span class="sc">+</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> <span class="fu">strata</span>(Title))</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>cl_drop1 <span class="ot">&lt;-</span> <span class="cf">function</span>(fit, terms) {</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>(<span class="fu">sapply</span>(terms, <span class="cf">function</span>(v) {</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>    red <span class="ot">&lt;-</span> <span class="fu">clfit</span>(<span class="fu">reformulate</span>(<span class="fu">c</span>(<span class="fu">setdiff</span>(terms, v), <span class="st">&quot;strata(Title)&quot;</span>), <span class="st">&quot;Killer&quot;</span>))</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>    chi <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (fit<span class="sc">$</span>loglik[<span class="dv">2</span>] <span class="sc">-</span> red<span class="sc">$</span>loglik[<span class="dv">2</span>])</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="at">LR_chisq =</span> chi, <span class="at">p =</span> <span class="fu">pchisq</span>(chi, <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cl_drop1</span>(cl_full, preds), <span class="dv">4</span>)</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>cl_base <span class="ot">&lt;-</span> <span class="fu">clfit</span>(Killer <span class="sc">~</span> Related <span class="sc">+</span> Financial <span class="sc">+</span> <span class="fu">strata</span>(Title))</span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>cl_ai <span class="ot">&lt;-</span> <span class="fu">lapply</span>(ai_preds, <span class="cf">function</span>(v)</span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clfit</span>(<span class="fu">reformulate</span>(<span class="fu">c</span>(<span class="st">&quot;Related&quot;</span>, <span class="st">&quot;Financial&quot;</span>, v, <span class="st">&quot;strata(Title)&quot;</span>), <span class="st">&quot;Killer&quot;</span>)))</span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cl_ai) <span class="ot">&lt;-</span> ai_preds</span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a><span class="co"># LR test for adding each AI predictor to Related + Financial</span></span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(cl_ai, <span class="cf">function</span>(fit) {</span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>  lr <span class="ot">&lt;-</span> <span class="fu">anova</span>(cl_base, fit)</span>
+<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">OR_AI =</span> <span class="fu">exp</span>(<span class="fu">coef</span>(fit))[[<span class="dv">3</span>]], <span class="at">LR_chisq =</span> lr<span class="sc">$</span>Chisq[<span class="dv">2</span>], <span class="at">p =</span> lr<span class="sc">$</span><span class="st">`</span><span class="at">Pr(&gt;|Chi|)</span><span class="st">`</span>[<span class="dv">2</span>])</span>
+<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a>})), <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                    characters killers killer_gains others_gain
@@ -2779,28 +2794,28 @@ AIch20p       2.571    0.935 0.334</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;Whom would Miss Marple accuse?&quot; In each novel, accuse the character(s) with the highest</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># linear predictor. With binary predictors there are ties, so score each novel as the</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># expected hit rate of accusing one of the top-ranked suspects at random:</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   (killers among the top set) / (size of top set).</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Chance = (killers in novel) / (characters in novel).</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>accuse <span class="ot">&lt;-</span> <span class="cf">function</span>(score) {</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  by_novel <span class="ot">&lt;-</span> <span class="fu">split</span>(<span class="fu">data.frame</span>(<span class="at">k =</span> dat<span class="sc">$</span>Killer, <span class="at">s =</span> <span class="fu">round</span>(score, <span class="dv">8</span>)), dat<span class="sc">$</span>Title)</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">sapply</span>(by_novel, <span class="cf">function</span>(x) { top <span class="ot">&lt;-</span> x<span class="sc">$</span>s <span class="sc">==</span> <span class="fu">max</span>(x<span class="sc">$</span>s); <span class="fu">sum</span>(x<span class="sc">$</span>k[top]) <span class="sc">/</span> <span class="fu">sum</span>(top) }))</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>chance <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">tapply</span>(dat<span class="sc">$</span>Killer, dat<span class="sc">$</span>Title, mean))</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">Chance =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(dat))),</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(<span class="fu">setNames</span>(ai_preds, labels[ai_preds]), <span class="cf">function</span>(v) dat[[v]]),</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="st">&quot;Related&quot;</span>                   <span class="ot">=</span> dat<span class="sc">$</span>Related,</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Financial&quot;</span>                 <span class="ot">=</span> dat<span class="sc">$</span>Financial,</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Related + Financial&quot;</span>       <span class="ot">=</span> <span class="fu">predict</span>(cl_base, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>),</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;All non-AI (clogit)&quot;</span>       <span class="ot">=</span> <span class="fu">predict</span>(cl_full, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>),</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Rel + Fin + AI ch1 pasted&quot;</span> <span class="ot">=</span> <span class="fu">predict</span>(cl_ai<span class="sc">$</span>AIch1passage, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>),</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Rel + Fin + AI ch1 web&quot;</span>    <span class="ot">=</span> <span class="fu">predict</span>(cl_ai<span class="sc">$</span>AIch1web, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>),</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Rel + Fin + AI 20%&quot;</span>        <span class="ot">=</span> <span class="fu">predict</span>(cl_ai<span class="sc">$</span>AIch20p, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>)))</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>hit <span class="ot">&lt;-</span> <span class="fu">sapply</span>(scores, accuse)</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">sort</span>(hit), <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;Whom would Miss Marple accuse?&quot; In each novel, accuse the character(s) with the highest</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># linear predictor. With binary predictors there are ties, so score each novel as the</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># expected hit rate of accusing one of the top-ranked suspects at random:</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   (killers among the top set) / (size of top set).</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Chance = (killers in novel) / (characters in novel).</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>accuse <span class="ot">&lt;-</span> <span class="cf">function</span>(score) {</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  by_novel <span class="ot">&lt;-</span> <span class="fu">split</span>(<span class="fu">data.frame</span>(<span class="at">k =</span> dat<span class="sc">$</span>Killer, <span class="at">s =</span> <span class="fu">round</span>(score, <span class="dv">8</span>)), dat<span class="sc">$</span>Title)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">sapply</span>(by_novel, <span class="cf">function</span>(x) { top <span class="ot">&lt;-</span> x<span class="sc">$</span>s <span class="sc">==</span> <span class="fu">max</span>(x<span class="sc">$</span>s); <span class="fu">sum</span>(x<span class="sc">$</span>k[top]) <span class="sc">/</span> <span class="fu">sum</span>(top) }))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>chance <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">tapply</span>(dat<span class="sc">$</span>Killer, dat<span class="sc">$</span>Title, mean))</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">Chance =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(dat))),</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(<span class="fu">setNames</span>(ai_preds, labels[ai_preds]), <span class="cf">function</span>(v) dat[[v]]),</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="st">&quot;Related&quot;</span>                   <span class="ot">=</span> dat<span class="sc">$</span>Related,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Financial&quot;</span>                 <span class="ot">=</span> dat<span class="sc">$</span>Financial,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Related + Financial&quot;</span>       <span class="ot">=</span> <span class="fu">predict</span>(cl_base, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>),</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;All non-AI (clogit)&quot;</span>       <span class="ot">=</span> <span class="fu">predict</span>(cl_full, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>),</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Rel + Fin + AI ch1 pasted&quot;</span> <span class="ot">=</span> <span class="fu">predict</span>(cl_ai<span class="sc">$</span>AIch1passage, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>),</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Rel + Fin + AI ch1 web&quot;</span>    <span class="ot">=</span> <span class="fu">predict</span>(cl_ai<span class="sc">$</span>AIch1web, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>),</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Rel + Fin + AI 20%&quot;</span>        <span class="ot">=</span> <span class="fu">predict</span>(cl_ai<span class="sc">$</span>AIch20p, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>)))</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>hit <span class="ot">&lt;-</span> <span class="fu">sapply</span>(scores, accuse)</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">sort</span>(hit), <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   Chance           AI: ~20% pasted           AI: Ch.1 pasted 
@@ -2822,42 +2837,42 @@ AIch20p       2.571    0.935 0.334</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>cv_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Financial&quot;</span> <span class="ot">=</span> <span class="st">&quot;Family ties + financial gain&quot;</span>,</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;All non-AI&quot;</span> <span class="ot">=</span> <span class="st">&quot;All four character traits&quot;</span>,</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Rel + Fin + AI ch1 web&quot;</span> <span class="ot">=</span> <span class="st">&quot;Family ties + gain + web Chapter 1&quot;</span>,</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Rel + Fin + AI ch1 pasted&quot;</span> <span class="ot">=</span> <span class="st">&quot;Family ties + gain + pasted Chapter 1&quot;</span>,</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Rel + Fin + AI 20%&quot;</span> <span class="ot">=</span> <span class="st">&quot;Family ties + gain + pasted 20%-point chapter&quot;</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>cv_hits <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="fu">factor</span>(<span class="fu">unname</span>(cv_labels), <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">unname</span>(cv_labels))),</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">in_sample =</span> cv[<span class="fu">names</span>(cv_labels), <span class="st">&quot;hit_cl_in&quot;</span>],</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">held_out =</span> cv[<span class="fu">names</span>(cv_labels), <span class="st">&quot;hit_cl_cv&quot;</span>]</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>sample_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;In-sample&quot;</span> <span class="ot">=</span> <span class="st">&quot;#526777&quot;</span>, <span class="st">&quot;Held-out&quot;</span> <span class="ot">=</span> <span class="st">&quot;#A32740&quot;</span>)</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="fu">savefig</span>(<span class="st">&quot;cv-hit-rates&quot;</span>, {</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(</span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(cv_hits, <span class="fu">aes</span>(<span class="at">y =</span> model)) <span class="sc">+</span></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> chance, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>) <span class="sc">+</span></span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> in_sample, <span class="at">xend =</span> held_out, <span class="at">yend =</span> model),</span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>                   <span class="at">colour =</span> <span class="st">&quot;grey60&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> in_sample, <span class="at">colour =</span> <span class="st">&quot;In-sample&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;In-sample&quot;</span>),</span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size =</span> <span class="dv">4</span>, <span class="at">stroke =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> held_out, <span class="at">colour =</span> <span class="st">&quot;Held-out&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Held-out&quot;</span>), <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> sample_colors, <span class="at">breaks =</span> <span class="fu">names</span>(sample_colors)) <span class="sc">+</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;In-sample&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;Held-out&quot;</span> <span class="ot">=</span> <span class="dv">16</span>),</span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>                         <span class="at">breaks =</span> <span class="fu">names</span>(sample_colors)) <span class="sc">+</span></span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.2</span>),</span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_percent</span>()) <span class="sc">+</span></span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Accusation hit rate&quot;</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">colour =</span> <span class="cn">NULL</span>, <span class="at">shape =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>, <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>            <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span>
-<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>}, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="fl">3.4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>cv_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Related + Financial&quot;</span> <span class="ot">=</span> <span class="st">&quot;Family ties + financial gain&quot;</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;All non-AI&quot;</span> <span class="ot">=</span> <span class="st">&quot;All four character traits&quot;</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Rel + Fin + AI ch1 web&quot;</span> <span class="ot">=</span> <span class="st">&quot;Family ties + gain + web Chapter 1&quot;</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Rel + Fin + AI ch1 pasted&quot;</span> <span class="ot">=</span> <span class="st">&quot;Family ties + gain + pasted Chapter 1&quot;</span>,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Rel + Fin + AI 20%&quot;</span> <span class="ot">=</span> <span class="st">&quot;Family ties + gain + pasted 20%-point chapter&quot;</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>cv_hits <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="fu">factor</span>(<span class="fu">unname</span>(cv_labels), <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">unname</span>(cv_labels))),</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">in_sample =</span> cv[<span class="fu">names</span>(cv_labels), <span class="st">&quot;hit_cl_in&quot;</span>],</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">held_out =</span> cv[<span class="fu">names</span>(cv_labels), <span class="st">&quot;hit_cl_cv&quot;</span>]</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>sample_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;In-sample&quot;</span> <span class="ot">=</span> <span class="st">&quot;#526777&quot;</span>, <span class="st">&quot;Held-out&quot;</span> <span class="ot">=</span> <span class="st">&quot;#A32740&quot;</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="fu">savefig</span>(<span class="st">&quot;cv-hit-rates&quot;</span>, {</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(cv_hits, <span class="fu">aes</span>(<span class="at">y =</span> model)) <span class="sc">+</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> chance, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> in_sample, <span class="at">xend =</span> held_out, <span class="at">yend =</span> model),</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>                   <span class="at">colour =</span> <span class="st">&quot;grey60&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> in_sample, <span class="at">colour =</span> <span class="st">&quot;In-sample&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;In-sample&quot;</span>),</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size =</span> <span class="dv">4</span>, <span class="at">stroke =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> held_out, <span class="at">colour =</span> <span class="st">&quot;Held-out&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Held-out&quot;</span>), <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> sample_colors, <span class="at">breaks =</span> <span class="fu">names</span>(sample_colors)) <span class="sc">+</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;In-sample&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;Held-out&quot;</span> <span class="ot">=</span> <span class="dv">16</span>),</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>                         <span class="at">breaks =</span> <span class="fu">names</span>(sample_colors)) <span class="sc">+</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.2</span>),</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_percent</span>()) <span class="sc">+</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Accusation hit rate&quot;</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">colour =</span> <span class="cn">NULL</span>, <span class="at">shape =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>, <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>            <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>}, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="fl">3.4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-cv-hits" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Paired dot plot comparing five models. Family ties and financial gain score 68% both ways. All four traits drop from 72% to 55%. The web Chapter 1 model drops from 85% to 76%, and both models with pasted chapters score 75% held out.">
@@ -2879,18 +2894,18 @@ Figure 3: In-sample and leave-one-novel-out accusation hit rates for conditiona
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>no_coded_motive <span class="ot">&lt;-</span> <span class="fu">subset</span>(dat, Related <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> Financial <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>ai_flag_counts <span class="ot">&lt;-</span> <span class="cf">function</span>(predictor, flag) {</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  suspects <span class="ot">&lt;-</span> no_coded_motive<span class="sc">$</span>Killer[no_coded_motive[[predictor]] <span class="sc">==</span> flag]</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprintf</span>(<span class="st">&quot;%d/%d&quot;</span>, <span class="fu">sum</span>(suspects), <span class="fu">length</span>(suspects))</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>flag_predictors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;AIch1web&quot;</span>, <span class="st">&quot;AIch1passage&quot;</span>)</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">data.frame</span>(</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AI input&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;Web Chapter 1&quot;</span>, <span class="st">&quot;Pasted Chapter 1&quot;</span>),</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Flagged =</span> <span class="fu">vapply</span>(flag_predictors, ai_flag_counts, <span class="fu">character</span>(<span class="dv">1</span>), <span class="at">flag =</span> <span class="dv">1</span>),</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Unflagged =</span> <span class="fu">vapply</span>(flag_predictors, ai_flag_counts, <span class="fu">character</span>(<span class="dv">1</span>), <span class="at">flag =</span> <span class="dv">0</span>),</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>), <span class="at">align =</span> <span class="st">&quot;lcc&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>no_coded_motive <span class="ot">&lt;-</span> <span class="fu">subset</span>(dat, Related <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> Financial <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ai_flag_counts <span class="ot">&lt;-</span> <span class="cf">function</span>(predictor, flag) {</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  suspects <span class="ot">&lt;-</span> no_coded_motive<span class="sc">$</span>Killer[no_coded_motive[[predictor]] <span class="sc">==</span> flag]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprintf</span>(<span class="st">&quot;%d/%d&quot;</span>, <span class="fu">sum</span>(suspects), <span class="fu">length</span>(suspects))</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>flag_predictors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;AIch1web&quot;</span>, <span class="st">&quot;AIch1passage&quot;</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">data.frame</span>(</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AI input&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;Web Chapter 1&quot;</span>, <span class="st">&quot;Pasted Chapter 1&quot;</span>),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Flagged =</span> <span class="fu">vapply</span>(flag_predictors, ai_flag_counts, <span class="fu">character</span>(<span class="dv">1</span>), <span class="at">flag =</span> <span class="dv">1</span>),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Unflagged =</span> <span class="fu">vapply</span>(flag_predictors, ai_flag_counts, <span class="fu">character</span>(<span class="dv">1</span>), <span class="at">flag =</span> <span class="dv">0</span>),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>), <span class="at">align =</span> <span class="st">&quot;lcc&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-ai-flags" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
