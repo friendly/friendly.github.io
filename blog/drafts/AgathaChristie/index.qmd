@@ -22,6 +22,8 @@ execute:
 knitr::read_chunk("AgathaChristie.R")
 ```
 
+![](figs/manor_house.png){fig-alt="Miss Marple examines a will at a manor-house desk as the maid, butler, and three relatives look on. An amber poison bottle stands nearby."}
+
 Lutz (2026), "Statistical sleuths versus AI: Unmasking the killer in Agatha Christie
 novels", *Significance* 23(6), 10–15, coded 166 main characters in the 12 Miss Marple
 novels (14 killers) by gender, employment, relation to the victim, and financial gain, and
