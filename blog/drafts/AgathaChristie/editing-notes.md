@@ -22,6 +22,29 @@ The draft is clear for readers who know Lutz’s article. The distinction betwee
 
 Review based on index.qmd, Lutz’s six-page Significance article (pp. 10–15), and spot checks of AgathaChristie.R and the existing index.html. The models were not rerun.
 
+## Claude summary 
+
+The editing notes cover four areas:
+
+  1. Opening and framing. Open with the main finding: Related + Financial is right 68% of the time, and adding the web
+     AI guess gives 76% held out. Describe the three AI conditions clearly on first use; "~20% passage" is ambiguous.
+     Rewrite the description in the front matter and give the post a closing paragraph.
+  2. Rigor and wording.
+     - Show the financial-gain numbers early: 1.75 vs. an odds ratio of about 51.8.
+     - Define AUC with half credit for ties.
+     - Spell out what the hit rate is a fraction of, and how it differs from Lutz's 64% figure.
+     - Use conditional-logit hit rates throughout.
+     - Say exactly what the cross-validation holds out.
+     - Soften "irrelevant" and "clearly different from 1", and call the interaction exploratory.
+     - Explain why the infinite financial-gain odds ratio sits alongside a 57% hit rate.
+  3. Flow. Retitle the section to include Lutz's Figure 1. Cut details like the Yates correction, the No/Yes factor
+     copies and drop1() from the main text. Lead the cross-validation section with the hit rates and move the alternate
+     AUC range to a methods note.
+  4. Figures.
+     - Keep the fourfold display, with shared labels.
+     - Fold the effect plot and mosaic, or add a small counts table.
+     - Replace the two doubledeckers with a four-cell table: web guess 2/14 vs. 0/123, pasted 0/9 vs. 2/128.
+     - Replace the printed cross-validation table with a paired dot plot of in-sample vs. held-out hit rates.
 
 ## Figures
 
@@ -29,3 +52,62 @@ Review based on index.qmd, Lutz’s six-page Significance article (pp. 10–15),
 - **Fold the effect plot and mosaic.** The mosaic's 135-character cell dominates the area and the important 2-of-3 group is a sliver. A small table of observed killer counts over group totals would make the interaction easier to read. If the effect plot stays in the main text, use a shared linear percentage scale and label the 8.4% reference line.
 - **Replace the two doubledeckers with a four-cell table.** For the 137 characters with neither coded motive, show killers over suspects for flagged and unflagged groups. Web Chapter 1 is 2/14 flagged and 0/123 unflagged. Pasted Chapter 1 is 0/9 flagged and 2/128 unflagged. The current plots clip labels and make the two missed killers hard to see.
 - **Add one paired dot plot in place of the printed cross-validation table.** Plot in-sample and held-out conditional-logit hit rates on a shared 0–100% axis and mark random accusation at about 8%. The main comparisons are family ties plus financial gain (68% to 68%), all four character traits (72% to 55%), and family ties plus financial gain plus web AI (85% to 76%). If comparing AI inputs, include the pasted Chapter 1 and 20%-point conditions. Both scored 75% held out. Keep pooled AUC in the prose or folded output.
+
+## Codex work
+
+- Added [R/figures.R](R/figures.R) and loaded its labeled chunks from `index.qmd` with `knitr::read_chunk()`. The new displays use the existing model results and character data.
+- Replaced the printed cross-validation table with a paired dot plot for five conditional-logit models, with a dashed line at the 8.4% random-accusation rate. The text now explains what each fold holds out and reports the pooled logistic AUC separately.
+- Replaced the two doubledeckers with a four-cell table for the 137 characters with neither coded motive. The web Chapter 1 guess flagged 2 killers among 14 suspects and left 0 among 123 unflagged. The pasted Chapter 1 guess flagged 0 among 9 and left 2 among 128 unflagged.
+- Removed the mosaic from the draft and put the counts beside the exploratory interaction test. Among characters who stood to gain, 2 of 3 unrelated characters and 8 of 14 relatives were killers.
+- Added a closing paragraph after the caveats. It connects the corrected financial-gain odds ratio (about 52) to the held-out hit rates (68% with family ties and financial gain, 76% with the web AI guess) and ends with the question of what the AI knew about the endings.
+- Reran the models, checked the plotted rates and table counts, and verified both displays and the closing paragraph in the [rendered draft](index.html).
+
+## Still to do (Claude review, 2026-11-13)
+
+Checked `index.qmd` against the notes above after the Codex pass. Housekeeping (R script
+move, obsolete figures, stale notes) and a "What I learned" section are done; these remain.
+
+**Opening and framing**
+
+1. Open with the finding: 68% for family ties + financial gain, 76% held out once the web AI
+   guess is added. The intro still reads like a methods summary.
+2. Name the three AI inputs clearly on first use. "The ~20% passage" still appears in the
+   fourfold and AI-add sections.
+3. Fix the `description:` in the front matter (fragment after the colon), or replace it with
+   the main finding.
+
+**Rigor**
+
+4. Show the worked financial-gain numbers: 10/17 vs 4/149, exp(difference in proportions)
+   = 1.75 but the odds ratio is (10/7)/(4/145) ≈ 51.8.
+5. Define AUC with half credit for ties.
+6. Replace "So the problem is confined to the odds ratios" with: the AUCs reproduce, but
+   Table 1's odds-ratio inference needs revision. Say the linear fit also gave the CIs and
+   p-values.
+7. Say what the hit rate is a fraction of, and reconcile it with Lutz's 64% web figure
+   (which credits a hit even when other suspects are also named, p. 13).
+8. Beside the first held-out result, add Lutz's point (pp. 14–15) that financial motives
+   and family ties can be revealed late in a novel.
+9. Conditional logit: say four books have no character who gains (no contrast), and explain
+   why an infinite odds ratio sits alongside a 57% hit rate.
+10. Soften "Gender and employment are irrelevant" and "clearly different from 1".
+
+**Flow**
+
+11. Rename the section "Reproducing Lutz's Table 1 and Figure 1".
+12. Cut the Yates correction, the "No/Yes factor copies" and `drop1()` details from the main
+    text.
+13. Start the fourfold discussion with what to look at (Financial gain vs Employed panels);
+    leave how to read the rings to the caption.
+14. Check the opening on a narrow screen (the banner may push the finding below the fold).
+
+**Figures**
+
+15. Effect plot is still in the main text on a logit scale: fold it, or use a linear
+    percentage scale and label the 8.4% reference line.
+16. Fourfold: consider shared row/column labels instead of per-panel side labels, or show
+    only Financial gain and Employed with the full grid folded.
+
+**Also**
+
+17. Review the new "What I learned" section (LLM as consulting detective), then re-render.

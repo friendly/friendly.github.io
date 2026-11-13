@@ -16,9 +16,10 @@ Moved on 2026-11-10 from `C:\Dropbox\R\AgathaChristie` to the blog repo, as
 | File | What |
 |---|---|
 | `AgathaChristie_MissMarple_MainCharacters_v2.csv` | Lutz's data |
-| `AgathaChristie.R` | Reproduction + reanalysis; run standalone, writes `figs/*.png` |
+| `R/AgathaChristie.R` | Reproduction + reanalysis; run standalone from this folder (`Rscript R/AgathaChristie.R`), writes `figs/*.png` and sources `R/figures.R` |
+| `R/figures.R` | CV hit-rate dot plot and AI-flag table (added by Codex, 2026-11-13) |
 | `index.qmd` / `.html` | The blog draft; reads the script's `## ---- label` chunks via `knitr::read_chunk()`. Key-model code shown, the rest folded ("Show the code") |
-| `figs/` | fourfold, effects, mosaic, and doubledecker plots |
+| `figs/` | fourfold, effects, and CV hit-rate plots; header images |
 | `notes-for-Gavin.md` | ggfourfold vs. `vcd::fourfold()` feedback for Gavin Klorfine |
 
 Render in place from this folder: `quarto render index.qmd`. Drafts are excluded from the
@@ -73,7 +74,7 @@ site build, and the output stays here rather than going to `docs/`.
 4. Minor: the reported Pearson χ² = 58.3 for Related × Financial is the Yates-corrected
    value (uncorrected 63.8). Expected counts are small anyway; OR = (137·14)/(3·12) ≈ 53.
 
-## Reanalysis results (`AgathaChristie.R`)
+## Reanalysis results (`R/AgathaChristie.R`)
 
 - **All non-AI predictors** (glm): Financial dominates (LR χ² = 12.9, p < .001); Related
   is marginal once Financial is in (p = .10); Female and Employed add nothing (joint LR
@@ -123,9 +124,9 @@ site build, and the output stays here rather than going to `docs/`.
   because it fixes the other factors at "No". `plot.efflist()` was rejected because its
   layout and axis arguments fought back. Employed's adjusted OR ≈ 4.6 (p = .16) against
   1.1 alone: 6 of the 7 employed characters with financial gain are killers.
-- `mosaic-rel-fin.png`: Killer | Related × Financial, residual shading.
-- `doubledecker-ai-web.png`, `doubledecker-ai-pasted.png`: proportion of killers by
-  Related, Gain and AI guess.
+- `cv-hit-rates.png` (`R/figures.R`): in-sample vs. held-out clogit hit rates for five models.
+- The mosaic (`mosaic-rel-fin.png`) and two doubledeckers were dropped on 2026-11-13: replaced by
+  counts in the text and a four-cell AI-flag table (`tbl-ai-flags` in `R/figures.R`).
 
 **Render gotcha (in the old Dropbox location):** `quarto render` sometimes failed at
 cleanup, because Dropbox locked `AgathaChristie_files/`. Deleting that folder and rendering

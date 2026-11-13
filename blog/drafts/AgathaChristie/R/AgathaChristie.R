@@ -3,13 +3,14 @@
 # in Agatha Christie novels", Significance 23(6), 10-15.
 # Data: https://github.com/SharonLutz/Stats-vs-AI-whodunnit
 #
-# Run standalone (Rscript AgathaChristie.R) to print results and write figures to figs/,
-# or let AgathaChristie.qmd read the labeled chunks below with knitr::read_chunk().
+# Run standalone from the draft folder (Rscript R/AgathaChristie.R) to print results and
+# write figures to figs/ (this also sources R/figures.R),
+# or let index.qmd read the labeled chunks below with knitr::read_chunk().
 
 ## ---- setup ----
 library(survival)   # clogit()
 library(pROC)       # auc()
-library(vcd)        # mosaic(), doubledecker()
+library(vcd)        # oddsratio()
 library(vcdExtra)
 
 dat <- read.csv("AgathaChristie_MissMarple_MainCharacters_v2.csv",
@@ -296,29 +297,5 @@ savefig("effects-full", {
   )
 }, width = 9, height = 4)
 
-## ---- fig-mosaic ----
-# Mosaic: Related x Financial, shaded by residuals from the model that Killer is
-# independent of [Related, Financial]
-savefig("mosaic-rel-fin", {
-  mosaic(~ Related + Financial + Killer, data = fac,
-         expected = ~ Related * Financial + Killer,
-         shade = TRUE, legend = TRUE, labeling = labeling_values,
-         main = "Killer | Related x Financial")
-})
-
-## ---- fig-doubledecker ----
-# Doubledecker: proportion of killers (dark) in each combination of the predictors
-dd <- with(fac, data.frame(Killer, Related, Gain = Financial,
-                           AI.web = AIch1web, AI.ch1 = AIch1passage))
-savefig("doubledecker-ai-web", {
-  doubledecker(Killer ~ Related + Gain + AI.web, data = dd,
-               gp = gpar(fill = c("grey90", "#B2182B")),
-               margins = c(2, 6, 4, 1),
-               main = "Proportion of killers by Related, Gain, AI (ch.1 web)")
-}, width = 9, height = 5)
-savefig("doubledecker-ai-pasted", {
-  doubledecker(Killer ~ Related + Gain + AI.ch1, data = dd,
-               gp = gpar(fill = c("grey90", "#B2182B")),
-               margins = c(2, 6, 4, 1),
-               main = "Proportion of killers by Related, Gain, AI (ch.1 pasted)")
-}, width = 9, height = 5)
+# Standalone run: also draw the figures defined in figures.R (cv hit rates, AI flag table)
+if (!in_knitr) source(file.path("R", "figures.R"), print.eval = TRUE)

@@ -1,9 +1,10 @@
 ---
 title: "Whodunnit? Reanalyzing Lutz's Miss Marple data"
-description: "Lutz (2026, Significance) used statistics and AI to unmask the killers in Agatha Christie's Miss Marple novels. Her odds ratios turn out to come from a linear probability model; a reanalysis with logistic and within-novel conditional logit models, cross-validation, and fourfold, mosaic and effect displays."
+description: "Lutz (2026, Significance) used statistics and AI to unmask the killers in Agatha Christie's Miss Marple novels. A reanalysis uncovers some flaws and applies other techniques:
+logistic and within-novel conditional logit models, cross-validation, and statistical graphics."
 author: "Michael Friendly"
 date: today
-categories: [categorical data, logistic regression, mosaic displays, AI, reanalysis]
+categories: [categorical data, logistic regression, fourfold displays, AI, reanalysis]
 draft: true
 format:
   html:
@@ -19,19 +20,27 @@ execute:
 ```{r}
 #| label: read-chunks
 #| include: false
-knitr::read_chunk("AgathaChristie.R")
+knitr::read_chunk("R/AgathaChristie.R")
+knitr::read_chunk("R/figures.R")
 ```
 
 ![](figs/manor_house.png){fig-alt="Miss Marple examines a will at a manor-house desk as the maid, butler, and three relatives look on. An amber poison bottle stands nearby."}
 
-Lutz (2026), "Statistical sleuths versus AI: Unmasking the killer in Agatha Christie
-novels", *Significance* 23(6), 10–15, coded 166 main characters in the 12 Miss Marple
+A recent article by Lutz (2026), "Statistical sleuths versus AI: Unmasking the killer in Agatha Christie
+novels" in *Significance* 23(6), caught my eye.  I've always been a
+fan of Agatha Christie's books, and the idea of using AI to solve murder mysteries appealed to me.
+What would Hercule Poirot be able to do with a few extra "little grey cells", 
+the phrase he used to emphasize logical deduction, psychology, and quiet mental analysis over physical evidence or external clues?
+
+Lutz coded 166 main characters in the 12 Miss Marple
 novels (14 killers) by gender, employment, relation to the victim, and financial gain, and
 added three AI "guesses" (Harvard AI Sandbox, GPT 5.1/5.6) based on the opening of each
-novel. This document reproduces her analysis, corrects the odds ratios in her Table 1, and
+novel. Her question was "Could a LLM become a consulting detective?"
+
+This document reproduces her analysis, corrects the odds ratios in her Table 1, and
 extends it with multivariable and conditional (within-novel) logistic models.
 Only the code for the key models is shown here. All of the code, including the figures,
-is in `AgathaChristie.R`.
+is in [`AgathaChristie.R`](R/AgathaChristie.R) and [`figures.R`](R/figures.R).
 
 ```{r}
 #| label: setup
@@ -215,18 +224,8 @@ Related × Financial interaction tests this:
 #| label: full-interaction
 ```
 
-The interaction is significant (p = .02). With only 3 unrelated characters who gained
-financially, 2 of them killers, financial gain matters even more for the unrelated. The
-mosaic display in @fig-mosaic shows this.
-
-```{r}
-#| label: fig-mosaic
-#| code-fold: true
-#| results: hold
-#| fig-width: 7
-#| fig-height: 6
-#| fig-cap: "Mosaic display of Killer by Related and Financial gain, shaded by residuals from the model in which Killer is independent of the two predictors. 8 of the 14 related characters with something to gain are killers."
-```
+The exploratory interaction test gives p = .02. Among characters who stood to gain,
+2 of the 3 unrelated characters and 8 of the 14 relatives were killers.
 
 ### Reducing the model and adding the AI guesses
 
@@ -298,64 +297,49 @@ time, Related + Financial 68%, and adding the AI's web-based Chapter 1 guess, 85
 
 ## Leave-one-novel-out cross-validation
 
-All of the above is in-sample: 14 killers, and models chosen after looking at the data.
-To mimic predicting the killer in a novel you haven't read, each model is fit to 11
-novels and used to score the characters of the 12th, for each novel in turn.
-
-In the output, `AUC_in` and `AUC_cv` are the in-sample and cross-validated AUCs from the
-logistic models. The `hit_` columns are the accusation hit rates of the previous section,
-in-sample and cross-validated, for the logistic (`glm`) and conditional logit (`cl`)
-models. When a CV value is close to the in-sample one, the model is not just fitting
-the noise in these 166 characters.
+Each model is fit to 11 novels and used to rank suspects in the held-out novel using
+its existing character codes and AI guesses. Each of the 12 novels takes a turn.
 
 ```{r}
 #| label: cv
-#| code-fold: true
-#| results: hold
+#| include: false
 ```
 
-Scores use the fitted slopes only. A held-out novel's killer is missing from training
-exactly when it matters, which lowers that fold's intercept, and pooling scores across
-folds then biases the CV AUC downward. With intercepts included, the single-AI-predictor
-CV AUCs fall to 0.51–0.64, an artifact of pooling, not a real loss of
-discrimination. Within-novel rankings (hit rates) are unaffected either way.
-
-* **Related + Financial + AI web holds up**: CV AUC 0.94 (in-sample 0.97), and the
-  best CV hit rate (76%).
-* **Female and Employed are overfitting**: adding them raises in-sample AUC (0.91) but
-  *lowers* CV AUC (0.83 vs. 0.88 for Related + Financial alone), and the CV hit rate falls
-  to 55–63%.
-* Related + Financial alone is the most stable model: 68% hit rate in-sample and in CV.
-
-### Doubledecker plots: where the AI guess helps
-
-Where does the AI's web-based guess add to Related and Financial gain? A doubledecker plot
-divides the characters into a bar for each combination of the predictors, with width
-proportional to the number of characters. The height of the red part of each bar is the
-proportion of killers in that group.
+@fig-cv-hits compares the conditional-logit hit rates. Family ties and financial gain
+give 68% both in-sample and in held-out novels. The model with all four character
+traits falls from 72% to 55%. Adding the web Chapter 1 guess to family ties and
+financial gain gives the highest observed held-out hit rate, 76%, down from 85%
+in-sample. Both pasted inputs give 75% held out.
 
 ```{r}
-#| label: fig-doubledecker
+#| label: fig-cv-hits
 #| code-fold: true
-#| results: hold
-#| fig-width: 9
-#| fig-height: 5
-#| fig-cap: "Doubledecker plots: the proportion of killers (red) in each combination of Related, Gain and the AI's guess."
-#| fig-subcap:
-#|   - "AI guess from Chapter 1 on the web"
-#|   - "AI guess from Chapter 1 pasted in"
-#| layout-ncol: 1
+#| fig-width: 8
+#| fig-height: 3.4
+#| fig-cap: "In-sample and leave-one-novel-out accusation hit rates for conditional logistic regression. The dashed line marks random accusation within a novel (about 8%). A filled dot inside an open circle marks equal hit rates."
+#| fig-alt: "Paired dot plot comparing five models. Family ties and financial gain score 68% both ways. All four traits drop from 72% to 55%. The web Chapter 1 model drops from 85% to 76%, and both models with pasted chapters score 75% held out."
 ```
 
-The two plots differ in one group: the 137 characters who are neither related nor stand to
-gain, the wide bars at the left. Two killers hide among them, with no obvious motive. The
-web-based guess flags 14 of these characters, and both killers are among them; no killer
-is among the 123 it leaves out. The guess from the pasted Chapter 1 flags 9 of them, and
-misses both killers. Among related characters with something to gain, both guesses do
-about equally well (4 of 5 flagged are killers, against 4 of 9 not flagged).
+For ordinary logistic regression, the pooled AUC for family ties, financial gain
+and web Chapter 1 falls from 0.97 to 0.94. Adding Female and Employed to family ties
+and financial gain lowers the held-out AUC from 0.88 to 0.83. Pooled scores use the
+fitted slopes only because the intercept can shift scores across folds. Adding
+a fold's intercept leaves rankings within that novel unchanged.
 
-Finding the killers that motive can't find is exactly what an AI that remembers how the
-book ends would do. This is the leakage concern in the caveats below.
+### Where the AI guess helps
+
+Two killers are among the 137 characters with neither coded motive. The web Chapter 1
+guess flags both of them, while the pasted Chapter 1 guess misses both.
+
+```{r}
+#| label: tbl-ai-flags
+#| code-fold: true
+#| tbl-cap: "Killers over suspects flagged and unflagged by each Chapter 1 guess, among characters with neither family ties to the victim nor financial gain."
+```
+
+Among related characters with something to gain, both guesses flag 4 of the 8 killers.
+The web guess's two extra hits among characters with neither coded motive are consistent
+with the AI having access to plot knowledge.
 
 ## Caveats
 
@@ -365,3 +349,21 @@ book ends would do. This is the leakage concern in the caveats below.
 * Lutz notes that the "web" AI condition performed better than giving the AI the same text
   directly, which suggests it was drawing on outside knowledge of these famous books. Its
   advantage may be partly leakage, not reading.
+
+## What I learned
+
+The reanalysis gives Miss Marple good reason to follow the money. The corrected odds
+ratio puts the odds of being the killer at about 52 times as high for characters who
+stood to gain. When it comes to choosing one suspect in a held-out novel, family ties
+and financial gain give a 68% hit rate. The web-based AI guess brings that to 76%,
+and it flags both killers among the characters with neither coded motive. For those
+two cases, the mystery is what the AI knew about the ending when it made its guess.
+
+So, could an LLM become a consulting detective? On this evidence, it would make a useful
+assistant, but not yet a Miss Marple. On its own, its best guess (web Chapter 1) names
+the killer 53% of the time, a little below simply following the money (57%). Its value
+comes as one more clue added to motive and family ties. And the version that helped
+most was the one that could look things up, not the one that read the same chapter. A
+consulting detective reasons from the clues on the page; with books this famous, the AI
+may simply have remembered how they end. Poirot's "little grey cells" would want a
+fairer test: mysteries the AI could not have read.

@@ -69,7 +69,7 @@ The figure in the post now uses the patchwork version.
 Seven fourfold displays, one for each binary predictor (Female, Employed, Related,
 Financial, and three AI guesses) against `Killer`, for 166 characters in the 12 Miss
 Marple novels (Lutz, 2026, *Significance*). The data are individual-level: one row per
-character, with 0/1 columns. Code: `AgathaChristie.R`, chunk `fig-fourfold`.
+character, with 0/1 columns. Code: `R/AgathaChristie.R`, chunk `fig-fourfold`.
 
 ## Bottom line
 
