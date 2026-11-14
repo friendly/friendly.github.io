@@ -46,8 +46,28 @@ aucval <- function(fit) as.numeric(auc(dat$Killer, fitted(fit), quiet = TRUE))
 
 ## ---- describe ----
 cat(nrow(dat), "characters,", sum(dat$Killer), "killers,", nlevels(dat$Title), "novels\n")
-round(100 * colMeans(dat[, c("Killer", preds, ai_preds)]), 1)
-ftable(xtabs(~ Related + Financial + Killer, fac))
+cat("Percent of characters\n")
+cat("\nCharacter traits\n")
+round(100 * colMeans(dat[, c("Killer", preds)]), 1)
+cat("\nAI guesses\n")
+round(100 * colMeans(dat[, ai_preds]), 1)
+
+## ---- three-way ----
+# Shade by residuals from joint independence, [Related Financial][Killer]: does being the
+# killer depend on the combination of family ties and financial gain?
+# Financial is listed before Related on purpose: color_table() (vcdExtra 0.9.8) misplaces
+# residuals from a user-supplied model unless the last row variable in the formula varies
+# fastest in the table (see vcdExtra/issues/color_table-model-residuals.md)
+tab3 <- xtabs(~ Financial + Related + Killer, fac)
+dimnames(tab3)$Related   <- c("Not related", "Related")
+dimnames(tab3)$Financial <- c("No gain", "Gain")
+mod3 <- MASS::loglm(~ Related * Financial + Killer, data = tab3, fitted = TRUE)
+# capture.output() drops the console copy of the shading note, which legend = TRUE
+# already puts under the table
+invisible(capture.output(
+  ct3 <- color_table(tab3, formula = Killer ~ Related + Financial, model = mod3, legend = TRUE)
+))
+ct3
 
 ## ---- rel-fin-assoc ----
 # Lutz: Pearson chi-square for Related x Financial = 58.3 -- that's the Yates-corrected value
@@ -76,7 +96,8 @@ lutz_models <- list(
   "Related + Gain + AI web"   = Killer ~ Related + Financial + AIch1web,
   "Related + Gain + AI 20%"   = Killer ~ Related + Financial + AIch20p)
 lutz_fits <- lapply(lutz_models, glm, family = binomial, data = dat)
-round(sapply(lutz_fits, aucval), 3)   # Lutz: 0.89, 0.89, 0.97, 0.92
+data.frame(AUC  = round(sapply(lutz_fits, aucval), 3),
+           Lutz = c(0.89, 0.89, 0.97, 0.92))
 
 ## ---- uni-logit ----
 # Correct univariate logistic odds ratios (profile-likelihood CIs)
