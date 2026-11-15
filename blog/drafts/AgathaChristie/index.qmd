@@ -5,6 +5,7 @@ author: "Michael Friendly"
 date: today
 categories: [categorical data, logistic regression, fourfold displays, AI, reanalysis]
 draft: true
+bibliography: references.bib
 format:
   html:
     toc: true
@@ -27,7 +28,7 @@ knitr::read_chunk("R/figures.R")
 
 ## Introduction 
 
-A recent article by Lutz (2026), "Statistical sleuths versus AI: Unmasking the killer in Agatha Christie
+A recent article by @Lutz:2026, "Statistical sleuths versus AI: Unmasking the killer in Agatha Christie
 novels" in *Significance* 23(6), caught my eye.  I've always been a
 fan of Agatha Christie's books, and the idea of using AI to solve murder mysteries appealed to me.
 
@@ -49,7 +50,9 @@ novel. Her question was essentially "Could a LLM become a consulting detective?"
 This document reproduces her analysis, corrects the odds ratios in her Table 1, and
 extends it with multivariable and conditional (within-novel) logistic models.
 It also gives me a chance to try out some of my graphical methods for categorical data analysis
-in the [`vcd`](), [`vcdExtra`](), and [`ggfourfold`]() packages.
+in the [`vcd`](https://CRAN.R-project.org/package=vcd) [@R-vcd],
+[`vcdExtra`](https://friendly.github.io/vcdExtra/) [@R-vcdExtra], and
+[`ggfourfold`](https://gavinklorfine.com/ggfourfold/) [@R-ggfourfold] packages.
 
 Only the code for the key models is shown here. All of the code, including the figures,
 is in [`AgathaChristie.R`](R/AgathaChristie.R) and [`figures.R`](R/figures.R).
@@ -139,7 +142,7 @@ themselves that are wrong.
 
 The AUC (area under the ROC curve) is the probability that a randomly chosen killer gets a
 higher fitted score than a randomly chosen innocent character: 0.5 is chance, 1 is
-perfect. Her four multivariable models add each AI guess, in turn, to Related and
+perfect. Here it is computed with the `pROC` package [@Robin-etal:2011:pROC]. Her four multivariable models add each AI guess, in turn, to Related and
 Financial gain. Fitting them as logistic regressions, her AUCs (0.89, 0.89, 0.97, 0.92)
 reproduce too:
 
@@ -184,7 +187,7 @@ determined.
 
 ### Fourfold displays
 
-[A fourfold display](http://datavis.ca/papers/4fold/4fold.pdf) shows each 2 × 2 table as four quarter circles, one per cell, with
+[A fourfold display](http://datavis.ca/papers/4fold/4fold.pdf) [@Friendly:94:TR217; @FriendlyMeyer:2016:DDAR, Ch. 4] shows each 2 × 2 table as four quarter circles, one per cell, with
 area proportional to the cell count. Here the counts are first standardized so that both
 margins are equal. This removes the fact that only 8% of the characters are killers,
 leaving only the association.
@@ -236,7 +239,7 @@ nothing.
 
 ### Effect plot
 
-An effect plot shows the same model on the probability scale. Each panel gives the fitted
+An effect plot [@Fox:2003:effects] shows the same model on the probability scale. Each panel gives the fitted
 probability of being the killer at each level of one predictor, averaging over the other
 three, with 95% confidence intervals.
 
@@ -289,8 +292,8 @@ passage adds nothing significant (p = .14).
 ## Conditional logistic regression: comparing suspects within a novel
 
 Each novel is a closed circle of suspects with one (or two) killers, so the natural model
-compares the killer with the other characters *in the same book*: conditional logit with
-`strata(Title)`, e.g.
+compares the killer with the other characters *in the same book*: conditional logit, fit with `clogit()` from the `survival` package
+[@R-survival] using `strata(Title)`, e.g.
 
 ```r
 clogit(Killer ~ Female + Employed + Related + Financial + strata(Title), data = dat)
@@ -424,10 +427,10 @@ More generally, I thought of what was missing in the data used here, that would 
 question and framework for analysis wider scope and interest, in both literary analysis
 of detective fiction and the use of AI for this endeavor:
 
-* **complete text**: I understand why Lutz chose three different indicators of AI classification based on different criteria for what the AI model read. I find this interesting as a technique. But a better test of AI 
+* **Complete text**: I understand why Lutz chose three different indicators of AI classification based on different criteria for what the AI model read. I find this interesting as a technique. But a better test of AI 
 would be to use the complete text of these books for comparison.
 
-* **what's missing?**: What other variables could be coded? Lutz's four traits are easy
+* **What's missing?**: What other variables could be coded? Lutz's four traits are easy
 to code from a character list, but they cover only one kind of motive (money) and one
 kind of relationship (family). Christie's killers also act out of love, jealousy,
 revenge, or to hide a secret from the past, so a richer set of motive codes would help.
@@ -443,14 +446,18 @@ captivate their readers: create a scenario involving a murder, tell the story of
 planting clues & red herrings along the way. Enter the detective to the story in some way and
 end with a scene in which all the suspects are assembled together, and the detective points his
 finger at the killer. The game was meant to be played fairly. Members of the Detection
-Club, Christie among them, swore not to withhold vital clues from the reader. Within
+Club, Christie among them, swore not to withhold vital clues from the reader
+[@Edwards:2015]. Within
 those rules, Christie's skill lay in misdirection, and she was willing to bend the
 rules themselves: the narrator is the killer in *The Murder of Roger Ackroyd*, and in
-*Murder on the Orient Express* nearly every suspect is. Static traits like "related"
+*Murder on the Orient Express* nearly every suspect is [@Crampton:2019]. Static traits like "related"
 and "gains financially" capture what a careful reader could deduce, but not how
 Christie steers the reader away from it. Coding the story as it unfolds, such as which
 characters fall under suspicion chapter by chapter and when the decisive clue is
-planted, would let us ask how she does it. It would also give a fairer test for an AI:
+planted, would let us ask how she does it. Most importantly, it would also give a fairer test for an AI:
 could it follow the clues as a reader does, and not just recall the ending?
 
+## References {.unnumbered}
 
+::: {#refs}
+:::

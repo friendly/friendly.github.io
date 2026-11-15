@@ -118,9 +118,10 @@ move, obsolete figures, stale notes) and a "What I learned" section are done; th
     1994, TR 217; `vita.bib` key `Friendly:94:TR217`). datavis.ca was down on 2026-11-14 (PHP
     exploit, waiting on York IT), so the link couldn't be verified. Consider `https://`
     once the site is back.
-20. Add a References section (separate task): Lutz (2026), Friendly (1994) fourfold TR, and
-    any other works cited (vcd/vcdExtra, conditional logit). Take Friendly entries from
-    `vita.bib`, and add a `bibliography:` file local to the post.
+20. ~~Add a References section~~ Done 2026-11-14: `references.bib` + `## References`.
+    Christie facts now cited (2026-11-15): Edwards (2015) for the Detection Club oath,
+    Crampton (2019, agathachristie.com) for the rule-bending in *Ackroyd* and *Orient Express*.
+    Edwards wasn't checked page by page; the oath wording varies between sources. The DDAR URL (`ddar.datavis.ca`) also needs checking once datavis.ca is back.
 
 **After publishing**
 
