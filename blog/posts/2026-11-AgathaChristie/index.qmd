@@ -30,8 +30,7 @@ knitr::read_chunk("R/figures.R")
 
 ## Introduction 
 
-A recent article by @Lutz:2026, "Statistical sleuths versus AI: Unmasking the killer in Agatha Christie
-novels" in *Significance* 23(6), caught my eye.  I've always been a
+A recent article by @Lutz:2026 in *Significance* caught my eye.  I've always been a
 fan of Agatha Christie's books, and the idea of using AI to solve murder mysteries appealed to me.
 
 What would Hercule Poirot be able to do with a few extra "little grey cells", 
