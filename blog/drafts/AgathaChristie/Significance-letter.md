@@ -1,6 +1,6 @@
 # Letter to the editor of *Significance* (on Lutz, 2026)
 
-Status: **to do**, after the blog post is finished.
+Status: **ready to send**. Post published 2026-11-15.
 
 ## How to submit
 
@@ -28,33 +28,24 @@ Link the published blog post for the full reanalysis and code.
 4. **The web AI advantage** is consistent with the AI's prior knowledge of these famous
    plots (Lutz notes this too); a test on mysteries it couldn't have read would settle it.
 
-## Rough draft (~260 words; not yet checked against the final post)
+## Email text (checked against the published post, 2026-11-15)
 
-> **For publication**
->
-> Sharon Lutz's "Statistical sleuths versus AI" (*Significance*, 23(6), 10–15) is a
-> delightful use of Agatha Christie's Miss Marple novels to teach logistic regression.
-> Reanalysing her data, I found one numerical problem worth correcting and some
-> extensions readers may enjoy.
->
-> The odds ratios in Table 1 (0.98 to 1.75) are too small for binary predictors with
-> AUCs above 0.80. They are reproduced exactly by exponentiating the slopes of a linear
-> probability model, that is, exp(difference in proportions), which can never exceed
-> e ≈ 2.72. The logistic odds ratios are far larger: about 52 for financial gain (95% CI
-> 14–233), 21 for being related to the victim, and 19 for the AI's web-based Chapter 1
-> guess. The AUCs, and the conclusions about which predictors matter, are unaffected.
->
-> Each novel is a closed circle of suspects, so a conditional logistic model comparing
-> characters within the same book is natural. It also answers the reader's question:
-> whom should Miss Marple accuse? Accusing the top-scoring suspect(s) in each novel,
-> family ties plus financial gain names the killer 68% of the time, against 8% by
-> chance. Adding the web-based AI guess raises this to 85%, or 76% when each novel is
-> held out in turn.
->
-> As Lutz notes, the web condition may draw on what the AI already knows about these
-> famous books. Mysteries it could not have read would make a fairer test of whether an
-> LLM could become a consulting detective.
->
-> The full reanalysis, with R code, is at [blog URL].
->
-> Michael Friendly, York University, Toronto
+To: significance@rss.org.uk
+Subject: Letter for publication: Lutz, "Statistical sleuths versus AI" (Significance 23(6))
+
+```text
+For publication
+
+Sharon Lutz's "Statistical sleuths versus AI" (Significance, 23(6), 10-15) is a delightful use of Agatha Christie's Miss Marple novels to teach logistic regression. Reanalyzing her data, I found one numerical problem worth correcting and some extensions readers may enjoy.
+
+The odds ratios in Table 1 (0.98 to 1.75) are too small for binary predictors with AUCs above 0.80. They are reproduced exactly by exponentiating the slopes of a linear probability model, that is, exp(difference in proportions), which can never exceed e (about 2.72). The logistic odds ratios are far larger: about 52 for financial gain (95% CI 14 to 233), 21 for being related to the victim, and 19 for the AI's web-based Chapter 1 guess. The AUCs, and the conclusions about which predictors matter, are unaffected.
+
+Each novel is a closed circle of suspects, so a conditional logistic model comparing characters within the same book is natural. It also answers the reader's question: whom should Miss Marple accuse? Accusing the top-scoring suspect(s) in each novel, family ties plus financial gain names the killer 68% of the time, against 8% by chance. Adding the web-based AI guess raises this to 85%, or 76% when each novel is held out in turn.
+
+As Lutz notes, the web condition may draw on what the AI already knows about these famous books. Mysteries it could not have read would make a fairer test of whether an LLM could become a consulting detective.
+
+The full reanalysis, with R code, is at https://friendly.github.io/blog/posts/2026-11-AgathaChristie/
+
+Michael Friendly
+York University, Toronto
+```
