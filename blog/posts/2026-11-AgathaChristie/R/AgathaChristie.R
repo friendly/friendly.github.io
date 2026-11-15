@@ -4,7 +4,7 @@
 # Data: https://github.com/SharonLutz/Stats-vs-AI-whodunnit
 #
 # Run standalone from the draft folder (Rscript R/AgathaChristie.R) to print results and
-# write figures to figs/ (this also sources R/figures.R),
+# write figures to figures/ (this also sources R/figures.R),
 # or let index.qmd read the labeled chunks below with knitr::read_chunk().
 
 ## ---- setup ----
@@ -29,12 +29,12 @@ fac <- dat
 for (v in c("Killer", preds, ai_preds))
   fac[[v]] <- factor(dat[[v]], levels = 0:1, labels = c("No", "Yes"))
 
-# draw to the knitr device inside Quarto, otherwise save a PNG in figs/
+# draw to the knitr device inside Quarto, otherwise save a PNG in figures/
 in_knitr <- isTRUE(getOption("knitr.in.progress"))
-if (!in_knitr) dir.create("figs", showWarnings = FALSE)
+if (!in_knitr) dir.create("figures", showWarnings = FALSE)
 savefig <- function(name, expr, width = 7, height = 6) {
   if (!in_knitr) {
-    png(file.path("figs", paste0(name, ".png")), width = width, height = height,
+    png(file.path("figures", paste0(name, ".png")), width = width, height = height,
         units = "in", res = 150)
     on.exit(dev.off())
   }
@@ -52,7 +52,7 @@ round(100 * colMeans(dat[, c("Killer", preds)]), 1)
 cat("\nAI guesses\n")
 round(100 * colMeans(dat[, ai_preds]), 1)
 
-## ---- three-way ----
+## ---- fig-three-way ----
 # Shade by residuals from joint independence, [Related Financial][Killer]: does being the
 # killer depend on the combination of family ties and financial gain?
 # Financial is listed before Related on purpose: color_table() (vcdExtra 0.9.8) misplaces

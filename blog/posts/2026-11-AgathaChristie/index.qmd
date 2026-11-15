@@ -2,16 +2,18 @@
 title: "Whodunnit? Reanalyzing Lutz's Miss Marple data"
 description: "Lutz (2026, Significance) used statistics and AI to unmask the killers in Agatha Christie's Miss Marple novels. A reanalysis uncovers some flaws and applies other techniques: logistic and within-novel conditional logit models, cross-validation, and statistical graphics."
 author: "Michael Friendly"
-date: today
+date: "2026-11-15"
 categories: [categorical data, logistic regression, fourfold displays, AI, reanalysis]
-draft: true
 bibliography: references.bib
+image: figures/manor_house.png
+resources:
+  - AgathaChristie_MissMarple_MainCharacters_v2.csv
+  - R/*.R
 format:
   html:
     toc: true
     code-fold: show
     code-summary: "Show the code"
-    embed-resources: true
 execute:
   warning: false
   message: false
@@ -24,7 +26,7 @@ knitr::read_chunk("R/AgathaChristie.R")
 knitr::read_chunk("R/figures.R")
 ```
 
-![Miss Marple examines the will of a murder victim at the manor-house desk as the maid, butler, and three relatives look on. An amber poison bottle stands nearby.](figs/manor_house.png){fig-alt="Miss Marple examines the will of a murder victim at the manor-house desk as the maid, butler, and three relatives look on. An amber poison bottle stands nearby."}
+![Miss Marple examines the will of a murder victim at the manor-house desk as the maid, butler, and three relatives look on. An amber poison bottle stands nearby.](figures/manor_house.png){fig-alt="Miss Marple examines the will of a murder victim at the manor-house desk as the maid, butler, and three relatives look on. An amber poison bottle stands nearby."}
 
 ## Introduction 
 
@@ -69,7 +71,8 @@ is in [`AgathaChristie.R`](R/AgathaChristie.R) and [`figures.R`](R/figures.R).
 Lutz's data, from her [GitHub repository](https://github.com/SharonLutz/Stats-vs-AI-whodunnit),
 have one row per character, with the novel's title and 0/1 indicators for being the
 killer, the four character traits, and the three AI guesses. The setup code above reads
-them and makes No/Yes factor copies for tables and plots.
+them and makes No/Yes factor copies for tables and plots. A copy of the data file is here:
+[`AgathaChristie_MissMarple_MainCharacters_v2.csv`](AgathaChristie_MissMarple_MainCharacters_v2.csv).
 
 The output below gives the counts, the percentage of characters with each trait (or
 flagged by each AI guess), and a three-way table of Killer by Related and Financial gain,
@@ -87,13 +90,17 @@ half the characters are female and most are employed, but only 16% are related t
 victim and 10% stand to gain financially. Each AI guess flags 10–14% of the characters.
 
 ```{r}
-#| label: three-way
+#| label: fig-three-way
 #| code-fold: true
 #| code-summary: "Code: Killer by Related and Financial gain"
+#| fig-cap: "Three-way table of Killer by Related and Financial gain, drawn with `vcdExtra::color_table()`. Cells are shaded by Pearson residuals from the model in which being the killer is independent of the Related × Financial combination: blue cells hold more characters than that model expects, red cells fewer, and darker shades mean larger departures."
 ```
 
 The table already tells most of the story. Of the 14 characters who are both related and
 stand to gain, 8 are killers, while only 2 of the 137 with neither trait are.
+The shading in @fig-three-way makes this visible at a glance: blue marks cells with more
+characters than we would expect if being the killer had nothing to do with family ties or
+financial gain, red marks cells with fewer, and the darkest blue is those 8 related heirs.
 
 ### Related and Financial gain
 
@@ -456,6 +463,24 @@ Christie steers the reader away from it. Coding the story as it unfolds, such as
 characters fall under suspicion chapter by chapter and when the decisive clue is
 planted, would let us ask how she does it. Most importantly, it would also give a fairer test for an AI:
 could it follow the clues as a reader does, and not just recall the ending?
+
+::: {.callout-note icon=false}
+## To cite this article
+
+Friendly, M. (2026, November). Whodunnit? Reanalyzing Lutz's Miss Marple data.
+*Michael Friendly's blog*. <https://friendly.github.io/blog/posts/2026-11-AgathaChristie/>
+
+```bibtex
+@Misc{Friendly:2026:AgathaChristie,
+  author       = {Friendly, Michael},
+  title        = {Whodunnit? Reanalyzing {Lutz's} {Miss Marple} data},
+  year         = {2026},
+  month        = nov,
+  howpublished = {Blog post},
+  url          = {https://friendly.github.io/blog/posts/2026-11-AgathaChristie/},
+}
+```
+:::
 
 ## References {.unnumbered}
 

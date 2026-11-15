@@ -112,6 +112,9 @@ move, obsolete figures, stale notes) and a "What I learned" section are done; th
 
 17. Review the new "What I learned" section (LLM as consulting detective), then re-render.
 
+**Published 2026-11-15**: the post (index.qmd, R/, figures/, references.bib, CSV) moved to
+`blog/posts/2026-11-AgathaChristie/`. These working notes stay here in drafts.
+
 **Before publishing**
 
 19. Check the fourfold-display link (`http://datavis.ca/papers/4fold/4fold.pdf`, Friendly
