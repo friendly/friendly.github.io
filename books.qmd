@@ -104,8 +104,50 @@ The forerunner of *Discrete Data Analysis with R*, using SAS. It covers graphica
 :::
 :::
 
+::: {.card .book-card}
+::: {.card-body}
+
+::: {.book-card-content}
+<img src="images/VisualStatistics-cover.jpg" class="book-cover-large" alt="Visual Statistics: Seeing Data with Dynamic Interactive Graphics book cover">
+
+<div class="book-text">
+
+### Visual Statistics: Seeing Data with Dynamic Interactive Graphics
+
+Co-authored with Forrest W. Young and Pedro M. Valero-Mora, this book describes a paradigm for doing statistical analysis in a purely visual way with dynamic interactive graphics. It illustrates these ideas using [ViSta: The Visual Statistics System](https://www.uv.es/visualstats/Book/DownloadBook.htm), freely available on the internet.
+
+**Publication information**: Forrest W. Young, Pedro M. Valero-Mora and Michael Friendly, *Visual Statistics: Seeing Data with Dynamic Interactive Graphics*, 2006, Wiley Series in Probability and Statistics, New York, ISBN 978-0-471-68160-1.
+
+[Companion website →](https://www.uv.es/visualstats/Book/){.btn .btn-primary}
+
+</div>
+:::
+
+:::
+:::
+
+::: {.card .book-card}
+::: {.card-body}
+
+::: {.book-card-content}
+<img src="images/AdvancedLogo-cover.jpg" class="book-cover-large" alt="Advanced Logo: A Language for Learning book cover">
+
+<div class="book-text">
+
+### Advanced Logo: A Language for Learning
+
+**Publication information**: Michael Friendly, *Advanced Logo: A Language for Learning*, 1988, L. Erlbaum Associates, Hillsdale, NJ, ISBN 0-89859-933-4.
+
+[Google Books →](https://books.google.ca/books/about/Advanced_logo.html?id=zvF5wb12E0wC){.btn .btn-primary}
+
+</div>
+:::
+
+:::
+:::
+
 ## Additional Resources
 
-For more information about my books and related materials, visit my [books page at datavis.ca](https://www.datavis.ca/books/).
+For more information about my books and related materials, visit my [books page at datavis.ca](https://www.datavis.ca/books/) (presently down for maintenance).
 
 :::
