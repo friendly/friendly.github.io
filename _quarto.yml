@@ -41,9 +41,13 @@ website:
       - text: "R Packages"
         icon: box-seam
         href: packages.qmd
-      - text: "Books"
+      - text: "Publications"
         icon: book
-        href: books.qmd
+        menu:
+          - text: "Books"
+            href: books.qmd
+          - text: "Papers"
+            href: https://friendly.github.io/papers/
       - text: "Courses"
         icon: mortarboard
         href: courses.qmd
