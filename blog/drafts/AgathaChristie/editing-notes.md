@@ -117,7 +117,7 @@ move, obsolete figures, stale notes) and a "What I learned" section are done; th
 
 **Before publishing**
 
-19. Check the fourfold-display link (`http://datavis.ca/papers/4fold/4fold.pdf`, Friendly
+19. Check the fourfold-display link (`https://friendly.github.io/papers/4fold/4fold.pdf`, Friendly
     1994, TR 217; `vita.bib` key `Friendly:94:TR217`). datavis.ca was down on 2026-11-14 (PHP
     exploit, waiting on York IT), so the link couldn't be verified. Consider `https://`
     once the site is back.

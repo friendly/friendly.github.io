@@ -25,12 +25,12 @@ But, when I recently translated and read this, I thought, "Holy Moly, it actuall
 that it is worth a closer look."
 
 This was so typical of Antoine. He got me interested in the history of data visualization: the first time we met in Toulouse, he
-showed me the 1864 volume of the [_Albums de Statistique Graphique_](https://www.datavis.ca/papers/golden-STS268.pdf), containing beautiful statistical graphics I never thought existed. I was instantly hooked on datavis history.
+showed me the 1864 volume of the [_Albums de Statistique Graphique_](https://friendly.github.io/papers/golden-STS268.pdf), containing beautiful statistical graphics I never thought existed. I was instantly hooked on datavis history.
 
-We later formed [_Les Chevaliers_](https://www.datavis.ca/papers/ruderman-chevaliers.pdf) to purchase an entire collection of these albums, published by [Émile Cheysson](https://en.wikipedia.org/wiki/%C3%89mile_Cheysson) for the Ministry of Public Works
+We later formed [_Les Chevaliers_](https://friendly.github.io/papers/ruderman-chevaliers.pdf) to purchase an entire collection of these albums, published by [Émile Cheysson](https://en.wikipedia.org/wiki/%C3%89mile_Cheysson) for the Ministry of Public Works
 in France, 1879--1899. Over many years, Antoine would toss me many, many historical nuggets: the address in Paris where
-Charles Joseph Minard lived ([32 rue du Bac](https://www.google.com/maps/search/32+Rue+du+Bac,++Paris,+France)); where [Minard was buried](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) (Montparnasse Cemetery, Paris);
-the birth certificate of [André-Michel Guerry](https://www.datavis.ca/papers/guerry-STS241.pdf) which helped me track down his genealogy, and so on. Every one was an adventure.
+Charles Joseph Minard lived ([32 rue du Bac](https://www.google.com/maps/search/32+Rue+du+Bac,++Paris,+France)); where [Minard was buried](https://friendly.github.io/papers/Raiders_Lost_Tombs.pdf) (Montparnasse Cemetery, Paris);
+the birth certificate of [André-Michel Guerry](https://friendly.github.io/papers/guerry-STS241.pdf) which helped me track down his genealogy, and so on. Every one was an adventure.
 
 I could go on. But the point is not a list. It's the reflection of the nimble and playful mind behind it: the statistician and historian who kept finding things that mattered, and sharing them with characteristic lightness. This one, it turns out, mattered more than either of us realized.
 

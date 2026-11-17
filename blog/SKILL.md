@@ -112,21 +112,21 @@ corny/quirky narrative pieces — don't force the beach-towel voice onto these.
 ## History of Data Visualization reference material
 
 ### Papers index
-- Full list: https://www.datavis.ca/papers/
-- History papers: https://www.datavis.ca/papers/#history
+- Full list: https://friendly.github.io/papers/
+- History papers: https://friendly.github.io/papers/#history
 
 ### Commonly referenced papers
 | Topic | URL |
 |-------|-----|
-| Golden Age of Statistical Graphics | https://www.datavis.ca/papers/golden-STS268.pdf |
-| Raiders of the Lost Tombs (Minard's burial) | https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf |
-| A Brief History of Data Visualization | https://www.datavis.ca/papers/hbook.pdf |
-| Guerry's Moral Statistics of France | https://www.datavis.ca/papers/guerry-STS241.pdf |
-| Van Langren and the Secret of Longitude | https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html |
-| The Milestones Project | https://www.datavis.ca/papers/MilestonesProject.pdf |
-| Galton and Visual Thinking | https://www.datavis.ca/papers/Friendly2020-Galton-Gleam.pdf |
-| The radiant diagrams of Florence Nightingale | https://www.datavis.ca/papers/Nightingale-radiant.pdf |
-| A Brief History of the Mosaic Display | https://www.datavis.ca/papers/mosahist.pdf |
+| Golden Age of Statistical Graphics | https://friendly.github.io/papers/golden-STS268.pdf |
+| Raiders of the Lost Tombs (Minard's burial) | https://friendly.github.io/papers/Raiders_Lost_Tombs.pdf |
+| A Brief History of Data Visualization | https://friendly.github.io/papers/hbook.pdf |
+| Guerry's Moral Statistics of France | https://friendly.github.io/papers/guerry-STS241.pdf |
+| Van Langren and the Secret of Longitude | https://friendly.github.io/papers/vita/Friendly-etal2010langren.html |
+| The Milestones Project | https://friendly.github.io/papers/MilestonesProject.pdf |
+| Galton and Visual Thinking | https://friendly.github.io/papers/Friendly2020-Galton-Gleam.pdf |
+| The radiant diagrams of Florence Nightingale | https://friendly.github.io/papers/Nightingale-radiant.pdf |
+| A Brief History of the Mosaic Display | https://friendly.github.io/papers/moshist.pdf |
 
 **Milestones Project website**: http://datavis.ca/milestones/
 

@@ -305,7 +305,7 @@ happens to be. Cheysson's plates were engraved once, for one page, and every ele
 them knew how big it was. Mine never do.
 
 For maps, though, the old convention had more to teach than the size of the page. On the
-maps of [**André-Michel Guerry**](https://www.datavis.ca/papers/guerry-STS241.pdf), which
+maps of [**André-Michel Guerry**](https://friendly.github.io/papers/guerry-STS241.pdf), which
 Cheysson may well have known, the title runs nearly the whole width of the map. No default
 ggplot2 theme would ever choose that: the panel dominates, and the title is a modest line
 at the top. A single ratio of title to body text couldn't give me both, because a title
@@ -359,7 +359,7 @@ Two details of the *Carte figurative des expéditions de voyageurs et de marchan
 :::
 
 It is, in effect, a recursive mosaic display, subdivided at every station in France. I have spent a
-good part of my career on [mosaic displays](https://www.datavis.ca/papers/moshist.pdf),
+good part of my career on [mosaic displays](https://friendly.github.io/papers/moshist.pdf),
 which divide a rectangle by one variable of a table, and then each piece by the next. Here
 was Cheysson's office doing it by hand, on a map, with the railway company as the first
 variable and passengers versus goods as the second. I asked him how they had arrived at it.

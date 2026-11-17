@@ -193,7 +193,7 @@ determined.
 
 ### Fourfold displays
 
-[A fourfold display](http://datavis.ca/papers/4fold/4fold.pdf) [@Friendly:94:TR217; @FriendlyMeyer:2016:DDAR, Ch. 4] shows each 2 × 2 table as four quarter circles, one per cell, with
+[A fourfold display](https://friendly.github.io/papers/4fold/4fold.pdf) [@Friendly:94:TR217; @FriendlyMeyer:2016:DDAR, Ch. 4] shows each 2 × 2 table as four quarter circles, one per cell, with
 area proportional to the cell count. Here the counts are first standardized so that both
 margins are equal. This removes the fact that only 8% of the characters are killers,
 leaving only the association.

@@ -344,8 +344,8 @@ OKLCH is the newer fix, built specifically so its lightness axis matches what a 
 **Guerry**
 
 - Wikipedia, ["André-Michel Guerry"](https://en.wikipedia.org/wiki/André-Michel_Guerry)
-- Friendly, M. (2007), ["A.-M. Guerry's Moral Statistics of France: Challenges for Multivariable Spatial Analysis,"](https://www.datavis.ca/papers/guerry-STS241.pdf) *Statistical Science*
-- Friendly, M. (2022), ["The Life and Works of André-Michel Guerry, Revisited,"](https://www.datavis.ca/papers/guerryvie/GuerryLife2-SocSpectrum.pdf) *Sociological Spectrum*
+- Friendly, M. (2007), ["A.-M. Guerry's Moral Statistics of France: Challenges for Multivariable Spatial Analysis,"](https://friendly.github.io/papers/guerry-STS241.pdf) *Statistical Science*
+- Friendly, M. (2022), ["The Life and Works of André-Michel Guerry, Revisited,"](https://friendly.github.io/papers/guerryvie/GuerryLife2-SocSpectrum.pdf) *Sociological Spectrum*
 
 **Color maps**
 

@@ -42,7 +42,7 @@ or word processor window. Your cognitive focus (your **attention**) on the task 
 with interruptions in the flow of ideas → tasks-to-do → final product. The interruptions are like Bob Dylan's Wild Horses;
 they are detours along the path to getting it on the path draft → done → DONE → FINALLY DONE!!!.
 
-Over the years that's meant for me writing [journal articles](https://datavis.ca/papers)  on novel [graphical methods](https://www.datavis.ca/papers/#methods), the [history of data visualization](https://www.datavis.ca/papers/#history), also
+Over the years that's meant for me writing [journal articles](https://friendly.github.io/papers/)  on novel [graphical methods](https://friendly.github.io/papers/#methods), the [history of data visualization](https://friendly.github.io/papers/#history), also
 [book projects](https://friendly.github.io/books.html), and, now, this [blog](https://friendly.github.io/blog/).
 This body of work-- and what I had to do to "Get some writing done"--
 is all a happy cognitive family, all alike in some ways, the way siblings share a last name and a few
@@ -271,10 +271,10 @@ Another path put on hold, for the sake of "getting it DONE!"
 ## 🚧 Detour 2 — SLOW: MERGING TRAFFIC: chasing the data, the perfect image or correct citation
 
 
-My papers on data visualization history, for example on [Andre-Michel Guerry](https://www.datavis.ca/papers/guerry-STS241.pdf),
-[Michael Florent van Langren](https://www.datavis.ca/papers/vita/Friendly-etal2010langren.html), 
+My papers on data visualization history, for example on [Andre-Michel Guerry](https://friendly.github.io/papers/guerry-STS241.pdf),
+[Michael Florent van Langren](https://friendly.github.io/papers/vita/Friendly-etal2010langren.html), 
 [Florence Nightingale](https://www.idescat.cat/sort/sort451/45.1.0.friendly-andrews.pdf) and
-[under-recognized heroes](https://www.datavis.ca/papers/Raiders_Lost_Tombs.pdf) run into a different kind
+[under-recognized heroes](https://friendly.github.io/papers/Raiders_Lost_Tombs.pdf) run into a different kind
 of detour. There's a general theme and structure going in, but the devil is in the details
 of several recurring tasks, each its own kind of detour.
 
