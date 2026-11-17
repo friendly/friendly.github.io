@@ -130,6 +130,30 @@ Co-authored with Forrest W. Young and Pedro M. Valero-Mora, this book describes 
 ::: {.card-body}
 
 ::: {.book-card-content}
+<img src="images/SSSG-cover.png" class="book-cover-large" alt="SAS System for Statistical Graphics book cover">
+
+<div class="book-text">
+
+### SAS System for Statistical Graphics
+
+A book in SAS Institute's series of statistical applications guides, showing how to use the SAS System to produce meaningful displays of statistical data. It emphasizes displays that reveal aspects of data not easily captured in numerical summaries or tables, and diagnostic displays that help determine whether the assumptions of an analysis are met. The book contains almost 250 displays, and implements 15 graphical methods as general SAS macro programs that can be used with any data.
+
+**Publication information**: Michael Friendly, *SAS System for Statistical Graphics*, First Edition, 1991, SAS Institute, Cary, NC, ISBN 978-1-55544-441-9.
+
+**See also**: [Statistical graphics for multivariate data](https://friendly.github.io/papers/sugi/sugi16-paper.pdf) (SUGI 16 paper); [Designer graphics: Anatomy of some SAS macros for statistical graphics](https://friendly.github.io/papers/sugi/sugi20.pdf) (SUGI 20 paper).
+
+[SAS macros on GitHub →](https://github.com/friendly/SAS-macros){.btn .btn-primary}
+
+</div>
+:::
+
+:::
+:::
+
+::: {.card .book-card}
+::: {.card-body}
+
+::: {.book-card-content}
 <img src="images/AdvancedLogo-cover.jpg" class="book-cover-large" alt="Advanced Logo: A Language for Learning book cover">
 
 <div class="book-text">
