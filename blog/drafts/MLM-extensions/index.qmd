@@ -1,0 +1,306 @@
+---
+title: "On Extending `lm()` Methods to `\"mlm\"`"
+description: "R fits a multivariate linear model with the same `lm()` call as a univariate one, but many of the methods built around `lm` objects stop working, or quietly do something univariate. The underlying issue is that every object gains a dimension. This post describes what I've learned extending `lm` methods to `mlm` in the heplots, candisc, mvinfluence and genridge packages."
+author: "Michael Friendly"
+date: last-modified
+draft: true
+categories: [multivariate linear models, R packages, graphics, heplots, genridge]
+# bibliography: references.bib   # TODO: build from vita.bib keys listed in notes.md
+format:
+  html:
+    toc: true
+    code-fold: show
+    code-summary: "Show the code"
+execute:
+  warning: false
+  message: false
+---
+
+<!--
+WORKING COMMENTS are in HTML comments like this one; they don't render.
+Status (2026-11-19): introduction + framing drafted; later sections are a skeleton.
+Planning notes: notes.md (same folder).
+-->
+
+<!-- Framed quote for the thesis statement; uses Bootstrap variables so it follows light/dark themes -->
+```{=html}
+<style>
+.thesis blockquote {
+  border: 2px solid var(--bs-primary);
+  border-left-width: 6px;
+  border-radius: 6px;
+  background: var(--bs-tertiary-bg);
+  padding: 1em 1.25em;
+  margin: 1.5em 1em;
+  font-size: 1.1em;
+  font-style: italic;
+  color: var(--bs-body-color);
+}
+.thesis blockquote p:last-child { margin-bottom: 0; }
+</style>
+```
+
+## Introduction
+
+R makes it remarkably easy to fit a multivariate linear model. You don't need a special
+function. You just give `lm()` a matrix of responses instead of a single one:
+
+```{r}
+#| label: fit
+fit <- lm(cbind(mpg, qsec) ~ hp + wt, data = mtcars)
+class(fit)
+```
+
+<!--
+mtcars is just for the hook: two responses, fuel economy and quarter-mile time.
+A better-motivated example (Rohwer? iris? NeuroCog?) can take over in the package
+sections. Or use one dataset throughout?
+-->
+
+The result is an object of class `"mlm"` that *also* inherits from `"lm"`. That second
+class is a promise, or at least a hope: anything that works for a linear model should work
+here too. So, as you would for any regression, you ask for the diagnostic plots:
+
+```{r}
+#| label: plot-fails
+#| error: true
+plot(fit)
+```
+
+Well, that's honest, at least. Other functions fail less gracefully. Several old friends from
+the `car` package stop with messages that tell you nothing about why:
+
+```{r}
+#| label: car-fails
+#| error: true
+car::avPlots(fit)
+car::vif(fit)
+```
+
+The more interesting cases are the ones that *don't* fail. `cooks.distance()` runs without a
+murmur and gives you a Cook's D for each case, separately for each response:
+
+```{r}
+#| label: cooks-quiet
+head(cooks.distance(fit), 4)
+```
+
+That's two univariate answers to what was a multivariate question: which cases have an undue
+influence on the model as a whole? `summary(fit)` does the same thing, returning a list of
+separate regression summaries, one per response, as if you'd called `lm()` twice. Nothing
+warns you that the correlation between the responses, which is the whole point of fitting
+them together, has dropped out of the analysis.
+
+In short, the multivariate linear model is easy to fit and hard to see. @fig-techniques puts
+this in a wider frame. It classifies the familiar linear-model methods by the number and kind
+of predictors and responses. For one response ($q = 1$), we have a rich toolkit of graphical
+methods: added-variable plots, influence plots, effect plots and the rest. For several
+quantitative responses ($q > 1$), the methods are just as well developed on the statistical
+side (multivariate regression, MANOVA, canonical correlation), but the graphics have been
+thin. Mostly, the results arrive as tables of multivariate test statistics.
+
+![Techniques for linear models, classified by the number of predictors ($p$) and responses
+($q$), and whether these are quantitative or discrete. The $q > 1$ columns are where
+graphical methods have been thin. *Source*: [Visualizing Multivariate Data and Models in
+R](https://friendly.github.io/Vis-MLM-book), Figure 6.1.](figures/techniques-table.png){#fig-techniques width="90%" fig-alt="A table of linear-model techniques. Rows: predictors, quantitative or discrete, with p = 1 or p > 1. Columns: responses, quantitative or discrete, with q = 1 or q > 1. For quantitative responses, simple and multiple regression, t-test and ANOVA (q = 1) generalize to multivariate regression, canonical and partial correlation, Hotelling T-squared and MANOVA (q > 1). For discrete responses, logistic regression, chi-square, discriminant analysis, logit and loglinear models."}
+
+<!--
+The talk slide (Vis-MLM-talk.pptx, slide 9) adds a "Graphs: ✔ ? ✔ ?" row under the
+response columns. Could annotate the PNG the same way (magick), instead of saying it in
+the caption. Also: the book URL for Fig 6.1 is a chapter page; check whether to link
+directly to sec-linear-models.
+-->
+
+<!--
+Possibly a compact table here of the three outcomes (errors / quietly univariate /
+genuinely multivariate: hatvalues, vcov, anova, car::Anova). See notes.md, "Hook".
+Could be generated live with tryCatch so it stays true as packages change.
+-->
+
+## One more dimension
+
+Why should this be so hard? The statistics of the multivariate linear model have been
+settled for more than half a century. The trouble is more mundane, and I think it's worth
+naming, because it explains nearly every problem I've run into.
+
+When the response goes from a vector **y** to a matrix **Y**, every object the model produces
+gains a dimension:
+
+* a **scalar becomes a vector, or a matrix**. The residual variance $\sigma^2$ becomes a
+  $q \times q$ covariance matrix $\boldsymbol{\Sigma}$.
+* a **vector becomes a matrix**. The coefficients $\mathbf{b}$ become a $p \times q$ matrix
+  $\mathbf{B}$, and the residuals become an $n \times q$ matrix.
+* a **matrix becomes a 3-way array**, or a list of matrices. A table of confidence intervals
+  for the coefficients ($p \times 2$) becomes $p \times 2 \times q$. The standard error of each
+  fitted value becomes a $q \times q$ matrix, one for every case.
+
+@fig-dimension-ladder shows this ladder for a model with $p = 3$ coefficients and $q = 2$
+responses.
+
+![Going from `lm` to `mlm`, every object gains a dimension. Blue cells are what a univariate
+model gives you; orange cells are added by the second response. The residual for a case
+becomes a vector, the coefficient vector becomes a matrix, and the table of confidence
+intervals becomes a 3-way array.](figures/dimension-ladder.png){#fig-dimension-ladder width="75%" fig-alt="A three-row diagram. Left column, lm with one response: a single cell for the residual e_i, a column of three cells for the coefficients b, and a 3 by 2 grid for their confidence intervals. Right column, mlm with q responses: each object gains orange cells along a new dimension, becoming a 1 by 2 vector, a 3 by 2 matrix B, and a 3 by 2 by 2 array drawn as two stacked layers."}
+
+<!-- Drawn by R/dimension-ladder.R (run from this folder). Possible additions: a fourth
+rung for sigma^2 -> Sigma (scalar -> matrix, skipping a rung), or se.fit. -->
+
+That extra dimension shows up first in what a function *returns*, and then in every method that
+has to consume it: `print()`, `summary()`, `confint()`, `predict()`, and of course `plot()`.
+Code written for one shape is handed the next one up, and it has to do *something*.
+
+Base R takes several different approaches. Sometimes it simply returns the bigger object:
+`coef(fit)` is the $3 \times 2$ matrix you'd expect. Sometimes it **flattens** the extra
+dimension away. `confint()` strings the responses and coefficients together into one long
+list of intervals:
+
+```{r}
+#| label: confint-flat
+confint(fit)
+```
+
+The `broom` package does much the same thing in tidy form, stacking the responses in a
+long data frame with a `response` column. That's perfectly convenient for a table, but in both
+cases the answers for `mpg` and `qsec` sit side by side as if they had nothing to do with
+each other.
+
+And sometimes R just **refuses**:
+
+```{r}
+#| label: predict-refuses
+#| error: true
+predict(fit, newdata = mtcars[1:2, ], se.fit = TRUE)
+```
+
+I have some sympathy for that last one. For a univariate model, the standard error of a
+predicted value is a single number, and a confidence interval is a pair of numbers, `lwr` and
+`upr`. For an `mlm`, the uncertainty of each predicted point is a $q \times q$ covariance
+matrix, and the natural confidence region is an *ellipse* (an ellipsoid when $q > 2$) around
+it. What should `predict()` return? How should it print? There's no column in
+`cbind(fit, lwr, upr)` for an ellipse.
+
+<!--
+predict.mlm() is an unfinished item in heplots (dev/pred.mlm.R returns an n x q x 3
+array). Mention here briefly, or save it for "What's still missing"? I'd keep a
+one-sentence pointer here and the details at the end.
+-->
+
+So here's the argument of this post, in a nutshell:
+
+::: {.thesis}
+> A good multivariate extension isn't just "run the univariate method $q$ times". It has to
+> decide what to do with the extra dimension: find the matrix that plays the role of the
+> scalar, and then find a way to see it. Most often, as it turns out, that way is an ellipse.
+:::
+
+<!--
+That's the thesis line. Alternative endings for that last sentence:
+  - "...and very often, the picture of that matrix is an ellipse."
+  - tie to Elliptical Insights (Friendly, Monette & Fox, 2013) here or later.
+-->
+
+## Filling in the gaps
+
+Over the past twenty years or so I've been filling these gaps, one package at a time, often
+with John Fox and Georges Monette:
+
+<!-- CHECK: co-authors per package, and approximate start dates (from NEWS/DESCRIPTION).
+     Is a personal-history thread wanted here, or keep it impersonal? -->
+
+* [**heplots**](https://friendly.github.io/heplots/) shows multivariate hypothesis tests as
+  ellipses: the HE plot.
+* [**candisc**](https://friendly.github.io/candisc/) finds the low-dimensional view in which
+  those tests are easiest to see.
+* [**mvinfluence**](https://friendly.github.io/mvinfluence/) generalizes leverage and Cook's
+  distance to multivariate models.
+* `heplots::robmlm()` fits a robust version, downweighting cases with large residuals.
+* [**genridge**](https://friendly.github.io/genridge/), my package for visualizing ridge
+  regression, is now (in its development version) learning to handle a matrix of responses.
+
+<!-- verify the pkgdown URLs before publishing -->
+
+Each one is a case of the same problem: deciding what the extra dimension means, for the
+statistics and for the software. The sections below take them in turn.
+
+<!--
+=====================================================================
+SKELETON from here on. Suggested order and content; nothing below is final.
+Questions for MF are marked Q:.
+=====================================================================
+-->
+
+## Seeing the tests: HE plots
+
+<!--
+- The SSP matrices H and E replace SS_H and SS_E; tests come from eigenvalues of HE^{-1}.
+- heplot(fit) as the plot.mlm() that R doesn't have? (A nice callback to the intro.)
+- One figure: heplot() of a model with a factor + covariate. Dataset Q: Rohwer, iris, NeuroCog?
+- Mention pairs.mlm(), heplot3d(); in passing coefplot.mlm(), cqplot(), etasq(), glance.mlm().
+- Shape point: car::Anova() returns a list of H matrices, one per term; that's the
+  "list of matrices" rung of the ladder.
+- Cite Friendly (2007), Fox, Friendly & Monette (2009).
+-->
+
+## Seeing it in fewer dimensions: candisc
+
+<!--
+- With q responses the HE plot lives in q dimensions; candisc finds the s = min(q, df_h)
+  dimensional space that shows the effect best.
+- candisc.mlm(), candiscList.mlm(); heplot() of the result.
+- Short: one figure, or reuse the dataset from the HE section for continuity.
+-->
+
+## Influence: mvinfluence
+
+<!--
+- Callback to the intro: cooks.distance(fit) before and after library(mvinfluence).
+  Before: n x q matrix. After: one generalized Cook's D per case (Barrett & Ling, 1992).
+- Leverage is unchanged (depends only on X); residual "size" becomes a Mahalanobis distance.
+- influencePlot.mlm() figure.
+- Q: mention subset (multiple-case) deletion, or leave it?
+-->
+
+## Robustness: robmlm()
+
+<!--
+- MASS::rlm() fails on an mlm ("incompatible dimensions"); robmlm() is the mlm analog.
+- IWLS with weights from Mahalanobis distances of residuals; scale from MASS::cov.trob().
+- Design point: robmlm objects inherit from "mlm", so car::Anova() and heplot() just work.
+- Figure: plot.robmlm() case weights, or before/after HE plot overlay.
+-->
+
+## Now: multivariate ridge regression in genridge
+
+<!--
+The news hook. Development version on GitHub, not CRAN.
+- ridge(cbind(Y1, Y2) ~ ..., data, lambda) returns class "mlmridge".
+- Honest finding: with a shared lambda, each column of B(lambda) IS the univariate ridge.
+  The penalty involves only X. So df, shrinkage factors, VIFs are unchanged.
+- What's new is Var(vec B) = Sigma (x) V_lambda (Kronecker): the cross-response
+  coefficient ellipses all have Sigma's shape; only size and center change with lambda.
+- Figure: faceted traceplot() (all responses), and, if ready, the cross-response ellipses.
+- Design lesson: "mlmridge" deliberately does NOT inherit from "ridge" (plan section 10
+  audit found inherited methods that would silently give wrong answers). Same
+  "quietly univariate" theme as the intro, now from the developer's side.
+- Invite feedback / testers.
+- Q: does the post wait until the ridge HE plots exist?
+-->
+
+## What's still missing
+
+<!--
+- plot.mlm(): should someone write one? What would it show?
+- predict.mlm() with SEs and CIs/PIs (heplots dev/pred.mlm.R): return value, print, plot.
+- car::avPlots(), car::vif() for mlm.
+- Real multivariate shrinkage (Brown & Zidek 1980; curds and whey, Breiman & Friedman 1997).
+- effects for mlm.
+- Possibly a short "lessons for package developers" list here (see notes.md, Design lessons),
+  or as a callout box.
+-->
+
+## Further reading
+
+<!--
+- Vis-MLM book chapters 9, 11-14, 21: https://friendly.github.io/Vis-MLM-book
+- Papers: keys in notes.md. Make references.bib from vita.bib and turn on bibliography:.
+-->

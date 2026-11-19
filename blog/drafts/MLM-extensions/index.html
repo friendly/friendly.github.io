@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-11-19">
+<meta name="description" content="R fits a multivariate linear model with the same lm() call as a univariate one, but many of the methods built around lm objects stop working, or quietly do something univariate. The underlying issue is that every object gains a dimension. This post describes what I’ve learned extending lm methods to mlm in the heplots, candisc, mvinfluence and genridge packages.">
+
+<title>On Extending lm() Methods to "mlm"</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="quarto:status" content="draft">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#one-more-dimension" id="toc-one-more-dimension" class="nav-link" data-scroll-target="#one-more-dimension">One more dimension</a></li>
+  <li><a href="#filling-in-the-gaps" id="toc-filling-in-the-gaps" class="nav-link" data-scroll-target="#filling-in-the-gaps">Filling in the gaps</a></li>
+  <li><a href="#seeing-the-tests-he-plots" id="toc-seeing-the-tests-he-plots" class="nav-link" data-scroll-target="#seeing-the-tests-he-plots">Seeing the tests: HE plots</a></li>
+  <li><a href="#seeing-it-in-fewer-dimensions-candisc" id="toc-seeing-it-in-fewer-dimensions-candisc" class="nav-link" data-scroll-target="#seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</a></li>
+  <li><a href="#influence-mvinfluence" id="toc-influence-mvinfluence" class="nav-link" data-scroll-target="#influence-mvinfluence">Influence: mvinfluence</a></li>
+  <li><a href="#robustness-robmlm" id="toc-robustness-robmlm" class="nav-link" data-scroll-target="#robustness-robmlm">Robustness: robmlm()</a></li>
+  <li><a href="#now-multivariate-ridge-regression-in-genridge" id="toc-now-multivariate-ridge-regression-in-genridge" class="nav-link" data-scroll-target="#now-multivariate-ridge-regression-in-genridge">Now: multivariate ridge regression in genridge</a></li>
+  <li><a href="#whats-still-missing" id="toc-whats-still-missing" class="nav-link" data-scroll-target="#whats-still-missing">What’s still missing</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">On Extending <code>lm()</code> Methods to <code>"mlm"</code></h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">multivariate linear models</div>
+    <div class="quarto-category">R packages</div>
+    <div class="quarto-category">graphics</div>
+    <div class="quarto-category">heplots</div>
+    <div class="quarto-category">genridge</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    R fits a multivariate linear model with the same <code>lm()</code> call as a univariate one, but many of the methods built around <code>lm</code> objects stop working, or quietly do something univariate. The underlying issue is that every object gains a dimension. This post describes what I’ve learned extending <code>lm</code> methods to <code>mlm</code> in the heplots, candisc, mvinfluence and genridge packages.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 19, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+WORKING COMMENTS are in HTML comments like this one; they don't render.
+Status (2026-11-19): introduction + framing drafted; later sections are a skeleton.
+Planning notes: notes.md (same folder).
+-->
+<!-- Framed quote for the thesis statement; uses Bootstrap variables so it follows light/dark themes -->
+<style>
+.thesis blockquote {
+  border: 2px solid var(--bs-primary);
+  border-left-width: 6px;
+  border-radius: 6px;
+  background: var(--bs-tertiary-bg);
+  padding: 1em 1.25em;
+  margin: 1.5em 1em;
+  font-size: 1.1em;
+  font-style: italic;
+  color: var(--bs-body-color);
+}
+.thesis blockquote p:last-child { margin-bottom: 0; }
+</style>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>R makes it remarkably easy to fit a multivariate linear model. You don’t need a special function. You just give <code>lm()</code> a matrix of responses instead of a single one:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(mpg, qsec) <span class="sc">~</span> hp <span class="sc">+</span> wt, <span class="at">data =</span> mtcars)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "mlm" "lm" </code></pre>
+</div>
+</div>
+<!--
+mtcars is just for the hook: two responses, fuel economy and quarter-mile time.
+A better-motivated example (Rohwer? iris? NeuroCog?) can take over in the package
+sections. Or use one dataset throughout?
+-->
+<p>The result is an object of class <code>"mlm"</code> that <em>also</em> inherits from <code>"lm"</code>. That second class is a promise, or at least a hope: anything that works for a linear model should work here too. So, as you would for any regression, you ask for the diagnostic plots:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-error">
+<pre><code>Error:
+! 'plot.mlm' is not implemented yet</code></pre>
+</div>
+</div>
+<p>Well, that’s honest, at least. Other functions fail less gracefully. Several old friends from the <code>car</code> package stop with messages that tell you nothing about why:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">avPlots</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `complete.cases()`:
+! not all arguments have the same length</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `if (names(coefficients(mod)[1]) == "(Intercept)") ...`:
+! argument is of length zero</code></pre>
+</div>
+</div>
+<p>The more interesting cases are the ones that <em>don’t</em> fail. <code>cooks.distance()</code> runs without a murmur and gives you a Cook’s D for each case, separately for each response:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cooks.distance</span>(fit), <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                        mpg         qsec
+Mazda RX4      1.589652e-02 0.0454756076
+Mazda RX4 Wag  5.464779e-03 0.0280809974
+Datsun 710     2.070651e-02 0.0003741428
+Hornet 4 Drive 4.724822e-05 0.0051368087</code></pre>
+</div>
+</div>
+<p>That’s two univariate answers to what was a multivariate question: which cases have an undue influence on the model as a whole? <code>summary(fit)</code> does the same thing, returning a list of separate regression summaries, one per response, as if you’d called <code>lm()</code> twice. Nothing warns you that the correlation between the responses, which is the whole point of fitting them together, has dropped out of the analysis.</p>
+<p>In short, the multivariate linear model is easy to fit and hard to see. <a href="#fig-techniques" class="quarto-xref">Figure&nbsp;1</a> puts this in a wider frame. It classifies the familiar linear-model methods by the number and kind of predictors and responses. For one response (<span class="math inline">\(q = 1\)</span>), we have a rich toolkit of graphical methods: added-variable plots, influence plots, effect plots and the rest. For several quantitative responses (<span class="math inline">\(q &gt; 1\)</span>), the methods are just as well developed on the statistical side (multivariate regression, MANOVA, canonical correlation), but the graphics have been thin. Mostly, the results arrive as tables of multivariate test statistics.</p>
+<div id="fig-techniques" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A table of linear-model techniques. Rows: predictors, quantitative or discrete, with p = 1 or p > 1. Columns: responses, quantitative or discrete, with q = 1 or q > 1. For quantitative responses, simple and multiple regression, t-test and ANOVA (q = 1) generalize to multivariate regression, canonical and partial correlation, Hotelling T-squared and MANOVA (q > 1). For discrete responses, logistic regression, chi-square, discriminant analysis, logit and loglinear models.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-techniques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/techniques-table.png" class="img-fluid figure-img" style="width:90.0%" alt="A table of linear-model techniques. Rows: predictors, quantitative or discrete, with p = 1 or p > 1. Columns: responses, quantitative or discrete, with q = 1 or q > 1. For quantitative responses, simple and multiple regression, t-test and ANOVA (q = 1) generalize to multivariate regression, canonical and partial correlation, Hotelling T-squared and MANOVA (q > 1). For discrete responses, logistic regression, chi-square, discriminant analysis, logit and loglinear models.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-techniques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Techniques for linear models, classified by the number of predictors (<span class="math inline">\(p\)</span>) and responses (<span class="math inline">\(q\)</span>), and whether these are quantitative or discrete. The <span class="math inline">\(q &gt; 1\)</span> columns are where graphical methods have been thin. <em>Source</em>: <a href="https://friendly.github.io/Vis-MLM-book">Visualizing Multivariate Data and Models in R</a>, Figure 6.1.
+</figcaption>
+</figure>
+</div>
+<!--
+The talk slide (Vis-MLM-talk.pptx, slide 9) adds a "Graphs: ✔ ? ✔ ?" row under the
+response columns. Could annotate the PNG the same way (magick), instead of saying it in
+the caption. Also: the book URL for Fig 6.1 is a chapter page; check whether to link
+directly to sec-linear-models.
+-->
+<!--
+Possibly a compact table here of the three outcomes (errors / quietly univariate /
+genuinely multivariate: hatvalues, vcov, anova, car::Anova). See notes.md, "Hook".
+Could be generated live with tryCatch so it stays true as packages change.
+-->
+</section>
+<section id="one-more-dimension" class="level2">
+<h2 class="anchored" data-anchor-id="one-more-dimension">One more dimension</h2>
+<p>Why should this be so hard? The statistics of the multivariate linear model have been settled for more than half a century. The trouble is more mundane, and I think it’s worth naming, because it explains nearly every problem I’ve run into.</p>
+<p>When the response goes from a vector <strong>y</strong> to a matrix <strong>Y</strong>, every object the model produces gains a dimension:</p>
+<ul>
+<li>a <strong>scalar becomes a vector, or a matrix</strong>. The residual variance <span class="math inline">\(\sigma^2\)</span> becomes a <span class="math inline">\(q \times q\)</span> covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>.</li>
+<li>a <strong>vector becomes a matrix</strong>. The coefficients <span class="math inline">\(\mathbf{b}\)</span> become a <span class="math inline">\(p \times q\)</span> matrix <span class="math inline">\(\mathbf{B}\)</span>, and the residuals become an <span class="math inline">\(n \times q\)</span> matrix.</li>
+<li>a <strong>matrix becomes a 3-way array</strong>, or a list of matrices. A table of confidence intervals for the coefficients (<span class="math inline">\(p \times 2\)</span>) becomes <span class="math inline">\(p \times 2 \times q\)</span>. The standard error of each fitted value becomes a <span class="math inline">\(q \times q\)</span> matrix, one for every case.</li>
+</ul>
+<p><a href="#fig-dimension-ladder" class="quarto-xref">Figure&nbsp;2</a> shows this ladder for a model with <span class="math inline">\(p = 3\)</span> coefficients and <span class="math inline">\(q = 2\)</span> responses.</p>
+<div id="fig-dimension-ladder" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A three-row diagram. Left column, lm with one response: a single cell for the residual e_i, a column of three cells for the coefficients b, and a 3 by 2 grid for their confidence intervals. Right column, mlm with q responses: each object gains orange cells along a new dimension, becoming a 1 by 2 vector, a 3 by 2 matrix B, and a 3 by 2 by 2 array drawn as two stacked layers.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dimension-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/dimension-ladder.png" class="img-fluid figure-img" style="width:75.0%" alt="A three-row diagram. Left column, lm with one response: a single cell for the residual e_i, a column of three cells for the coefficients b, and a 3 by 2 grid for their confidence intervals. Right column, mlm with q responses: each object gains orange cells along a new dimension, becoming a 1 by 2 vector, a 3 by 2 matrix B, and a 3 by 2 by 2 array drawn as two stacked layers.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dimension-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Going from <code>lm</code> to <code>mlm</code>, every object gains a dimension. Blue cells are what a univariate model gives you; orange cells are added by the second response. The residual for a case becomes a vector, the coefficient vector becomes a matrix, and the table of confidence intervals becomes a 3-way array.
+</figcaption>
+</figure>
+</div>
+<!-- Drawn by R/dimension-ladder.R (run from this folder). Possible additions: a fourth
+rung for sigma^2 -> Sigma (scalar -> matrix, skipping a rung), or se.fit. -->
+<p>That extra dimension shows up first in what a function <em>returns</em>, and then in every method that has to consume it: <code>print()</code>, <code>summary()</code>, <code>confint()</code>, <code>predict()</code>, and of course <code>plot()</code>. Code written for one shape is handed the next one up, and it has to do <em>something</em>.</p>
+<p>Base R takes several different approaches. Sometimes it simply returns the bigger object: <code>coef(fit)</code> is the <span class="math inline">\(3 \times 2\)</span> matrix you’d expect. Sometimes it <strong>flattens</strong> the extra dimension away. <code>confint()</code> strings the responses and coefficients together into one long list of intervals:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       2.5 %      97.5 %
+mpg:(Intercept)  33.95738245 40.49715778
+mpg:hp           -0.05024078 -0.01330512
+mpg:wt           -5.17191604 -2.58374544
+qsec:(Intercept) 17.45146289 20.19970760
+qsec:hp          -0.03507046 -0.01954879
+qsec:wt           0.39771199  1.48535274</code></pre>
+</div>
+</div>
+<p>The <code>broom</code> package does much the same thing in tidy form, stacking the responses in a long data frame with a <code>response</code> column. That’s perfectly convenient for a table, but in both cases the answers for <code>mpg</code> and <code>qsec</code> sit side by side as if they had nothing to do with each other.</p>
+<p>And sometimes R just <strong>refuses</strong>:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit, <span class="at">newdata =</span> mtcars[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ], <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `predict.mlm()`:
+! the 'se.fit' argument is not yet implemented for "mlm" objects</code></pre>
+</div>
+</div>
+<p>I have some sympathy for that last one. For a univariate model, the standard error of a predicted value is a single number, and a confidence interval is a pair of numbers, <code>lwr</code> and <code>upr</code>. For an <code>mlm</code>, the uncertainty of each predicted point is a <span class="math inline">\(q \times q\)</span> covariance matrix, and the natural confidence region is an <em>ellipse</em> (an ellipsoid when <span class="math inline">\(q &gt; 2\)</span>) around it. What should <code>predict()</code> return? How should it print? There’s no column in <code>cbind(fit, lwr, upr)</code> for an ellipse.</p>
+<!--
+predict.mlm() is an unfinished item in heplots (dev/pred.mlm.R returns an n x q x 3
+array). Mention here briefly, or save it for "What's still missing"? I'd keep a
+one-sentence pointer here and the details at the end.
+-->
+<p>So here’s the argument of this post, in a nutshell:</p>
+<div class="thesis">
+<blockquote class="blockquote">
+<p>A good multivariate extension isn’t just “run the univariate method <span class="math inline">\(q\)</span> times”. It has to decide what to do with the extra dimension: find the matrix that plays the role of the scalar, and then find a way to see it. Most often, as it turns out, that way is an ellipse.</p>
+</blockquote>
+</div>
+<!--
+That's the thesis line. Alternative endings for that last sentence:
+  - "...and very often, the picture of that matrix is an ellipse."
+  - tie to Elliptical Insights (Friendly, Monette & Fox, 2013) here or later.
+-->
+</section>
+<section id="filling-in-the-gaps" class="level2">
+<h2 class="anchored" data-anchor-id="filling-in-the-gaps">Filling in the gaps</h2>
+<p>Over the past twenty years or so I’ve been filling these gaps, one package at a time, often with John Fox and Georges Monette:</p>
+<!-- CHECK: co-authors per package, and approximate start dates (from NEWS/DESCRIPTION).
+     Is a personal-history thread wanted here, or keep it impersonal? -->
+<ul>
+<li><a href="https://friendly.github.io/heplots/"><strong>heplots</strong></a> shows multivariate hypothesis tests as ellipses: the HE plot.</li>
+<li><a href="https://friendly.github.io/candisc/"><strong>candisc</strong></a> finds the low-dimensional view in which those tests are easiest to see.</li>
+<li><a href="https://friendly.github.io/mvinfluence/"><strong>mvinfluence</strong></a> generalizes leverage and Cook’s distance to multivariate models.</li>
+<li><code>heplots::robmlm()</code> fits a robust version, downweighting cases with large residuals.</li>
+<li><a href="https://friendly.github.io/genridge/"><strong>genridge</strong></a>, my package for visualizing ridge regression, is now (in its development version) learning to handle a matrix of responses.</li>
+</ul>
+<!-- verify the pkgdown URLs before publishing -->
+<p>Each one is a case of the same problem: deciding what the extra dimension means, for the statistics and for the software. The sections below take them in turn.</p>
+<!--
+=====================================================================
+SKELETON from here on. Suggested order and content; nothing below is final.
+Questions for MF are marked Q:.
+=====================================================================
+-->
+</section>
+<section id="seeing-the-tests-he-plots" class="level2">
+<h2 class="anchored" data-anchor-id="seeing-the-tests-he-plots">Seeing the tests: HE plots</h2>
+<!--
+- The SSP matrices H and E replace SS_H and SS_E; tests come from eigenvalues of HE^{-1}.
+- heplot(fit) as the plot.mlm() that R doesn't have? (A nice callback to the intro.)
+- One figure: heplot() of a model with a factor + covariate. Dataset Q: Rohwer, iris, NeuroCog?
+- Mention pairs.mlm(), heplot3d(); in passing coefplot.mlm(), cqplot(), etasq(), glance.mlm().
+- Shape point: car::Anova() returns a list of H matrices, one per term; that's the
+  "list of matrices" rung of the ladder.
+- Cite Friendly (2007), Fox, Friendly & Monette (2009).
+-->
+</section>
+<section id="seeing-it-in-fewer-dimensions-candisc" class="level2">
+<h2 class="anchored" data-anchor-id="seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</h2>
+<!--
+- With q responses the HE plot lives in q dimensions; candisc finds the s = min(q, df_h)
+  dimensional space that shows the effect best.
+- candisc.mlm(), candiscList.mlm(); heplot() of the result.
+- Short: one figure, or reuse the dataset from the HE section for continuity.
+-->
+</section>
+<section id="influence-mvinfluence" class="level2">
+<h2 class="anchored" data-anchor-id="influence-mvinfluence">Influence: mvinfluence</h2>
+<!--
+- Callback to the intro: cooks.distance(fit) before and after library(mvinfluence).
+  Before: n x q matrix. After: one generalized Cook's D per case (Barrett & Ling, 1992).
+- Leverage is unchanged (depends only on X); residual "size" becomes a Mahalanobis distance.
+- influencePlot.mlm() figure.
+- Q: mention subset (multiple-case) deletion, or leave it?
+-->
+</section>
+<section id="robustness-robmlm" class="level2">
+<h2 class="anchored" data-anchor-id="robustness-robmlm">Robustness: robmlm()</h2>
+<!--
+- MASS::rlm() fails on an mlm ("incompatible dimensions"); robmlm() is the mlm analog.
+- IWLS with weights from Mahalanobis distances of residuals; scale from MASS::cov.trob().
+- Design point: robmlm objects inherit from "mlm", so car::Anova() and heplot() just work.
+- Figure: plot.robmlm() case weights, or before/after HE plot overlay.
+-->
+</section>
+<section id="now-multivariate-ridge-regression-in-genridge" class="level2">
+<h2 class="anchored" data-anchor-id="now-multivariate-ridge-regression-in-genridge">Now: multivariate ridge regression in genridge</h2>
+<!--
+The news hook. Development version on GitHub, not CRAN.
+- ridge(cbind(Y1, Y2) ~ ..., data, lambda) returns class "mlmridge".
+- Honest finding: with a shared lambda, each column of B(lambda) IS the univariate ridge.
+  The penalty involves only X. So df, shrinkage factors, VIFs are unchanged.
+- What's new is Var(vec B) = Sigma (x) V_lambda (Kronecker): the cross-response
+  coefficient ellipses all have Sigma's shape; only size and center change with lambda.
+- Figure: faceted traceplot() (all responses), and, if ready, the cross-response ellipses.
+- Design lesson: "mlmridge" deliberately does NOT inherit from "ridge" (plan section 10
+  audit found inherited methods that would silently give wrong answers). Same
+  "quietly univariate" theme as the intro, now from the developer's side.
+- Invite feedback / testers.
+- Q: does the post wait until the ridge HE plots exist?
+-->
+</section>
+<section id="whats-still-missing" class="level2">
+<h2 class="anchored" data-anchor-id="whats-still-missing">What’s still missing</h2>
+<!--
+- plot.mlm(): should someone write one? What would it show?
+- predict.mlm() with SEs and CIs/PIs (heplots dev/pred.mlm.R): return value, print, plot.
+- car::avPlots(), car::vif() for mlm.
+- Real multivariate shrinkage (Brown & Zidek 1980; curds and whey, Breiman & Friedman 1997).
+- effects for mlm.
+- Possibly a short "lessons for package developers" list here (see notes.md, Design lessons),
+  or as a callout box.
+-->
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<!--
+- Vis-MLM book chapters 9, 11-14, 21: https://friendly.github.io/Vis-MLM-book
+- Papers: keys in notes.md. Make references.bib from vita.bib and turn on bibliography:.
+-->
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
