@@ -5,7 +5,7 @@ author: "Michael Friendly"
 date: last-modified
 draft: true
 categories: [multivariate linear models, R packages, graphics, heplots, genridge]
-# bibliography: references.bib   # TODO: build from vita.bib keys listed in notes.md
+bibliography: references.bib
 format:
   html:
     toc: true
@@ -117,7 +117,7 @@ In short, the multivariate linear model is **easy to fit** and **hard to see**.
   $\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}$ becomes
   $\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$.
   Once there's a covariance matrix, you can even ask whether it's the same in every group:
-  Box's $\mathcal{M}$ test [#ref: Box:1949 in statistics.bib].
+  Box's $\mathcal{M}$ test [@Box:1949].
 
 <!--
 LATER (MF, 2026-11-20): the Kronecker product's other role in lm(). For a crossed
@@ -163,8 +163,8 @@ settled for more than half a century. The trouble is more mundane, and I think i
 naming, because it explains nearly every problem I've run into in developing these ideas.
 
 It calls to mind the cognitive problems "A. Square" encountered in Edwin Abbott's
-_Flatland_ [#ref], when a Sphere entered the story and taught him how to think in
-one more dimension. I've told that story in my[ _Visualizing Multivariate Data and Models in R_]() book. 
+_Flatland_ [@Abbott:1884], when a Sphere entered the story and taught him how to think in
+one more dimension. I've told that story in my [_Visualizing Multivariate Data and Models in R_](https://friendly.github.io/Vis-MLM-book/) book [@Friendly:2024:VisMLM]. 
 
 In R, when the response goes from a vector **y** to a matrix **Y**, every object the model produces
 **gains a dimension**:
@@ -255,10 +255,15 @@ That's the thesis line. Alternative endings for that last sentence:
 ## Filling in the gaps
 
 Over the past twenty years or so I've been filling these gaps, one package at a time, often
-with John Fox and Georges Monette:
+with John Fox and Georges Monette, who have been my inspirations in most of this work.
+But, importantly here, also helping to fill in gaps in my understanding of software design in R and thinking multivariately with geometry and graphs
+[e.g., @FoxFriendlyMonette:09:compstat; @Friendly-etal:ellipses:2012; @FoxFriendlyWeisberg:13:rjournal].
 
 <!-- CHECK: co-authors per package, and approximate start dates (from NEWS/DESCRIPTION).
-     Is a personal-history thread wanted here, or keep it impersonal? -->
+     Is a personal-history thread wanted here, or keep it impersonal? 
+     MF: No need to do this in detail, but cite a couple of joint papers with John
+     and Georges here.
+-->
 
 * [**heplots**](https://friendly.github.io/heplots/) shows multivariate hypothesis tests as
   ellipses: the HE plot.
@@ -272,8 +277,21 @@ with John Fox and Georges Monette:
 
 <!-- verify the pkgdown URLs before publishing -->
 
-Each one is a case of the same problem: deciding what the extra dimension means, for the
-statistics and for the software. The sections below take them in turn.
+Each one of these was a special case of the same problem: deciding what the extra dimension means, for the
+statistics, for the software. 
+
+But, "filling the gaps" has a larger meaning for me. In data visualization,
+an over-arching motivation has been to pay attention to **Un-Vized Problems**:
+those for which the statistical machinery is largely developed, but which
+haven't been implemented in software to help you see, understand, and
+communicate  your results.[^tukey59]
+
+[^tukey59]: To paraphrase @Tukey:59, the "practical power" of any statistical method
+is the product of its statistical power, times the probability that anyone can or will
+actually use it.
+
+The sections below take these package ideas in turn, as I've learned about how to take
+these methods to "One more dimension".
 
 <!--
 =====================================================================
@@ -292,7 +310,7 @@ functions of the eigenvalues of $\mathbf{H}\mathbf{E}^{-1}$, the matrix analog o
 $SS_H / SS_E$.
 
 That's the matrix that plays the role of the scalar. The way to see it is the **HE plot**
-(Friendly, 2007; Fox, Friendly & Monette, 2009): draw $\mathbf{H}$ and $\mathbf{E}$ as
+[@Friendly:07:manova; @FoxFriendlyMonette:09:compstat]: draw $\mathbf{H}$ and $\mathbf{E}$ as
 ellipses in the space of two responses. The $\mathbf{E}$ ellipse shows the size and shape
 of the residual variation. The $\mathbf{H}$ ellipse for a term shows the variation of the
 fitted values due to that term. With the default "evidence" scaling, $\mathbf{H}$
@@ -373,8 +391,16 @@ examples.
 
 ## Seeing it in fewer dimensions: candisc
 
-An HE plot shows two responses at a time, and `pairs()` shows all of them, two at a time.
-But the effect of a term doesn't have to line up with any pair of responses. The
+An HE plot shows two responses at a time, and `pairs()`, which is actually `heplots::pairs.mlm()` in real life just does its `pairs()` thing for a
+new `"mlm"`-- it shows all the bivariate response pairs, two at a time.
+That was something I got essentially for free base R graphics and the S3
+object design.[^pairs]
+
+[^pairs]: Of course, there other, more modern views of the idea of a "scatterplot matrix" [@Hartigan:75b]
+in Trellis graphics, ... now `ggplot2` via `GGally` and other extensions ,,,
+
+But, in an MLM, there's something more:
+the effect of a term doesn't have to line up with any pair of responses. The
 $\mathbf{H}$ ellipsoid for a term lives in $s = \min(q, df_h)$ dimensions, in directions
 that are combinations of all the responses.
 
@@ -423,11 +449,18 @@ In terms of the ladder, `candisc()` doesn't need to ignore the extra dimensions;
 *rotates* them. It finds the directions that matter for one term, and lets you ignore the
 rest knowing how little you lose.
 
-The software followed the heplots design. `candisc()` gets $\mathbf{H}$ and $\mathbf{E}$
+The software followed the `heplots` design. 
+
+* `candisc()` gets $\mathbf{H}$ and $\mathbf{E}$
 from the same `car::Anova()` call, and returns a `"candisc"` object, for which there are
-`heplot()`, `heplot3d()` and `plot()` methods. `candiscList()` does this for every term in
-the model. `can_lm()` goes one step further, refitting the model with the canonical scores
-as responses. And `varOrder()` uses the angles of those arrows to order the responses in
+`heplot()`, `heplot3d()` and `plot()` methods.
+
+* But there's wrinkle here: there is a different $(\mathbf{H}, \mathbf{E})$ decomposition
+  for each $\mathbf{H}_i$ term in a MLM. `candiscList()` helps with this for every term
+  in the model. 
+`can_lm()` goes one step further, refitting the model with the canonical scores
+as responses. 
+And `varOrder()` uses the angles of those arrows to order the responses in
 other displays, like `pairs()`, so that related variables sit together.
 
 ## Influence: mvinfluence
@@ -442,7 +475,7 @@ library(mvinfluence)
 head(cooks.distance(fit), 4)
 ```
 
-The math came from Barrett & Ling (1992). Their generalized Cook's distance strings the
+The math came from @BarrettLing:92. Their generalized Cook's distance strings the
 coefficient matrix out into one long vector, $\textrm{vec}(\mathbf{B})$, and measures how
 far it moves when a case is deleted, in the metric of its covariance matrix. That metric is
 $\mathbf{S}^{-1} \otimes \mathbf{X}^\top \mathbf{X}$: the Kronecker product again. As in
@@ -452,7 +485,7 @@ residual is now a vector, so its size becomes
 $q_{ii} = \mathbf{e}_i^\top (\mathbf{E}^\top \mathbf{E})^{-1} \mathbf{e}_i$, a hat value
 for the residuals: one more scalar that has become a quadratic form.
 
-Is the multivariate version worth the trouble? Barrett (2003) gave a toy example, with one
+Is the multivariate version worth the trouble? @Barrett:2003 gave a toy example, with one
 predictor and two nearly identical responses, that makes the case:
 
 ```{r}
@@ -480,7 +513,7 @@ through this example in detail.
 
 Barrett & Ling's measures go further than single cases. They're defined for deleting any
 *subset* $I$ of $m$ cases, which matters because pairs of influential cases can mask each
-other, or have a joint influence far beyond their individual ones (Lawrence, 1995).
+other, or have a joint influence far beyond their individual ones [@Lawrence:95].
 For a subset, the leverage and residual quantities $\mathbf{H}_I$ and $\mathbf{Q}_I$ are
 $m \times m$ matrices. That's the ladder once more, and it set the design:
 
@@ -514,7 +547,7 @@ partially match the generic's arguments), and/or rename the argument in mvinflue
 The univariate influence plot in **car** shows studentized residuals against hat values,
 with bubbles whose area is proportional to Cook's distance. `influencePlot()` for an
 `"mlm"` does the same with the multivariate measures. It also offers a second form,
-`type = "LR"`, adapting an idea from McCulloch & Meeter (1983). Because $D$ is proportional
+`type = "LR"`, adapting an idea from @McCullochMeeter:1983. Because $D$ is proportional
 to the product $L \times R$ of the leverage and residual components, a plot of
 $\log R$ against $\log L$ turns contours of constant Cook's distance into straight lines
 with slope $-1$. Adjacent lines mark constant *multiples* of influence.
@@ -688,5 +721,5 @@ dimension again:
 
 <!--
 - Vis-MLM book chapters 9, 11-14, 21: https://friendly.github.io/Vis-MLM-book
-- Papers: keys in notes.md. Make references.bib from vita.bib and turn on bibliography:.
+- Papers: references.bib is built (2026-11-20); Further reading could list FriendlySigal:2015, FriendlySigal:2016:TQMP, Friendly:genridge:2013, Brown-Zidek-1980, BreimanFriedman:1997, FriendlyKwan:02:effect (all in references.bib, not yet cited).
 -->

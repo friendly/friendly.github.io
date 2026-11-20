@@ -61,7 +61,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="index_files/libs/clipboard/clipboard.min.js"></script>
@@ -264,7 +283,7 @@ Hornet 4 Drive 4.724822e-05 0.0051368087</code></pre>
 <p>In short, the multivariate linear model is <strong>easy to fit</strong> and <strong>hard to see</strong>.</p>
 <ul>
 <li>The model syntax in <code>lm()</code> is trivial &amp; expressive: <code>y</code> becomes <code>cbind(y1, y2, ...)</code>. You only need to understand the idea of <strong>“binding”</strong> rows or columns into a matrix. But the <code>cbind</code> base family also works for a sequence of vectors, matrices and dataframes.</li>
-<li>The matrix algebra extension is elegant &amp; beautiful: <span class="math inline">\(\mathbf{y}_{n \times 1} \rightarrow \mathbf{Y}_{n \times q}\)</span> — it largely just works! The residual variance <span class="math inline">\(\sigma^2\)</span> becomes a covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>. The <span class="math inline">\(F\)</span> ratio of hypothesis to error sums of squares becomes the eigenvalues of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>, which give Wilks’ <span class="math inline">\(\Lambda\)</span>, the Pillai trace, Hotelling-Lawley and their friend Roy. And <span class="math inline">\(\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}\)</span> becomes <span class="math inline">\(\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}\)</span>. Once there’s a covariance matrix, you can even ask whether it’s the same in every group: Box’s <span class="math inline">\(\mathcal{M}\)</span> test [#ref: Box:1949 in statistics.bib].</li>
+<li>The matrix algebra extension is elegant &amp; beautiful: <span class="math inline">\(\mathbf{y}_{n \times 1} \rightarrow \mathbf{Y}_{n \times q}\)</span> — it largely just works! The residual variance <span class="math inline">\(\sigma^2\)</span> becomes a covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>. The <span class="math inline">\(F\)</span> ratio of hypothesis to error sums of squares becomes the eigenvalues of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>, which give Wilks’ <span class="math inline">\(\Lambda\)</span>, the Pillai trace, Hotelling-Lawley and their friend Roy. And <span class="math inline">\(\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}\)</span> becomes <span class="math inline">\(\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}\)</span>. Once there’s a covariance matrix, you can even ask whether it’s the same in every group: Box’s <span class="math inline">\(\mathcal{M}\)</span> test <span class="citation" data-cites="Box:1949">(<a href="#ref-Box:1949" role="doc-biblioref">Box 1949</a>)</span>.</li>
 </ul>
 <!--
 LATER (MF, 2026-11-20): the Kronecker product's other role in lm(). For a crossed
@@ -301,7 +320,7 @@ Could be generated live with tryCatch so it stays true as packages change.
 <section id="one-more-dimension" class="level2">
 <h2 class="anchored" data-anchor-id="one-more-dimension">One more dimension</h2>
 <p>Why should this be so hard? The statistics of the multivariate linear model have been settled for more than half a century. The trouble is more mundane, and I think it’s worth naming, because it explains nearly every problem I’ve run into in developing these ideas.</p>
-<p>It calls to mind the cognitive problems “A. Square” encountered in Edwin Abbott’s <em>Flatland</em> [#ref], when a Sphere entered the story and taught him how to think in one more dimension. I’ve told that story in my<a href=""><em>Visualizing Multivariate Data and Models in R</em></a> book.</p>
+<p>It calls to mind the cognitive problems “A. Square” encountered in Edwin Abbott’s <em>Flatland</em> <span class="citation" data-cites="Abbott:1884">(<a href="#ref-Abbott:1884" role="doc-biblioref">Abbott 1884</a>)</span>, when a Sphere entered the story and taught him how to think in one more dimension. I’ve told that story in my <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> book <span class="citation" data-cites="Friendly:2024:VisMLM">(<a href="#ref-Friendly:2024:VisMLM" role="doc-biblioref">Friendly 2024</a>)</span>.</p>
 <p>In R, when the response goes from a vector <strong>y</strong> to a matrix <strong>Y</strong>, every object the model produces <strong>gains a dimension</strong>:</p>
 <ul>
 <li>a <strong>scalar becomes a vector, or a matrix</strong>. The residual variance <span class="math inline">\(\sigma^2\)</span> becomes a <span class="math inline">\(q \times q\)</span> covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>.</li>
@@ -369,9 +388,12 @@ That's the thesis line. Alternative endings for that last sentence:
 </section>
 <section id="filling-in-the-gaps" class="level2">
 <h2 class="anchored" data-anchor-id="filling-in-the-gaps">Filling in the gaps</h2>
-<p>Over the past twenty years or so I’ve been filling these gaps, one package at a time, often with John Fox and Georges Monette:</p>
+<p>Over the past twenty years or so I’ve been filling these gaps, one package at a time, often with John Fox and Georges Monette, who have been my inspirations in most of this work. But, importantly here, also helping to fill in gaps in my understanding of software design in R and thinking multivariately with geometry and graphs <span class="citation" data-cites="FoxFriendlyMonette:09:compstat Friendly-etal:ellipses:2012 FoxFriendlyWeisberg:13:rjournal">(e.g., <a href="#ref-FoxFriendlyMonette:09:compstat" role="doc-biblioref">Fox et al. 2009</a>; <a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013</a>; <a href="#ref-FoxFriendlyWeisberg:13:rjournal" role="doc-biblioref">Fox et al. 2013</a>)</span>.</p>
 <!-- CHECK: co-authors per package, and approximate start dates (from NEWS/DESCRIPTION).
-     Is a personal-history thread wanted here, or keep it impersonal? -->
+     Is a personal-history thread wanted here, or keep it impersonal? 
+     MF: No need to do this in detail, but cite a couple of joint papers with John
+     and Georges here.
+-->
 <ul>
 <li><a href="https://friendly.github.io/heplots/"><strong>heplots</strong></a> shows multivariate hypothesis tests as ellipses: the HE plot.</li>
 <li><a href="https://friendly.github.io/candisc/"><strong>candisc</strong></a> finds the low-dimensional view in which those tests are easiest to see.</li>
@@ -380,7 +402,9 @@ That's the thesis line. Alternative endings for that last sentence:
 <li><a href="https://friendly.github.io/genridge/"><strong>genridge</strong></a>, my package for visualizing ridge regression, is now (in its development version) learning to handle a matrix of responses.</li>
 </ul>
 <!-- verify the pkgdown URLs before publishing -->
-<p>Each one is a case of the same problem: deciding what the extra dimension means, for the statistics and for the software. The sections below take them in turn.</p>
+<p>Each one of these was a special case of the same problem: deciding what the extra dimension means, for the statistics, for the software.</p>
+<p>But, “filling the gaps” has a larger meaning for me. In data visualization, an over-arching motivation has been to pay attention to <strong>Un-Vized Problems</strong>: those for which the statistical machinery is largely developed, but which haven’t been implemented in software to help you see, understand, and communicate your results.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The sections below take these package ideas in turn, as I’ve learned about how to take these methods to “One more dimension”.</p>
 <!--
 =====================================================================
 SKELETON from here on. Suggested order and content; nothing below is final.
@@ -391,7 +415,7 @@ Questions for MF are marked Q:.
 <section id="seeing-the-tests-he-plots" class="level2">
 <h2 class="anchored" data-anchor-id="seeing-the-tests-he-plots">Seeing the tests: HE plots</h2>
 <p>In a univariate linear model, every <span class="math inline">\(F\)</span> test compares two sums of squares: <span class="math inline">\(SS_H\)</span> for the hypothesis and <span class="math inline">\(SS_E\)</span> for error. In the multivariate model, each of these becomes a <span class="math inline">\(q \times q\)</span> matrix of sums of squares and products: <span class="math inline">\(\mathbf{H}\)</span> for each term in the model, and one <span class="math inline">\(\mathbf{E}\)</span> for the residuals. All four multivariate test statistics are functions of the eigenvalues of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>, the matrix analog of <span class="math inline">\(SS_H / SS_E\)</span>.</p>
-<p>That’s the matrix that plays the role of the scalar. The way to see it is the <strong>HE plot</strong> (Friendly, 2007; Fox, Friendly &amp; Monette, 2009): draw <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span> as ellipses in the space of two responses. The <span class="math inline">\(\mathbf{E}\)</span> ellipse shows the size and shape of the residual variation. The <span class="math inline">\(\mathbf{H}\)</span> ellipse for a term shows the variation of the fitted values due to that term. With the default “evidence” scaling, <span class="math inline">\(\mathbf{H}\)</span> protrudes outside <span class="math inline">\(\mathbf{E}\)</span> somewhere in the full response space if and only if the term is significant by Roy’s test. (In a two-dimensional view, the rule works only one way: outside means significant, but inside doesn’t mean “not significant”.)</p>
+<p>That’s the matrix that plays the role of the scalar. The way to see it is the <strong>HE plot</strong> <span class="citation" data-cites="Friendly:07:manova FoxFriendlyMonette:09:compstat">(<a href="#ref-Friendly:07:manova" role="doc-biblioref">Friendly 2007</a>; <a href="#ref-FoxFriendlyMonette:09:compstat" role="doc-biblioref">Fox et al. 2009</a>)</span>: draw <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span> as ellipses in the space of two responses. The <span class="math inline">\(\mathbf{E}\)</span> ellipse shows the size and shape of the residual variation. The <span class="math inline">\(\mathbf{H}\)</span> ellipse for a term shows the variation of the fitted values due to that term. With the default “evidence” scaling, <span class="math inline">\(\mathbf{H}\)</span> protrudes outside <span class="math inline">\(\mathbf{E}\)</span> somewhere in the full response space if and only if the term is significant by Roy’s test. (In a two-dimensional view, the rule works only one way: outside means significant, but inside doesn’t mean “not significant”.)</p>
 <p>Here’s an example, from Rohwer’s study of how well paired-associate (PA) learning tasks predict three aptitude and achievement tests in kindergarten children of high and low socioeconomic status (SES). The model is a multivariate analysis of covariance: SES is a factor, and the five PA tasks are covariates.</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -459,7 +483,8 @@ Figure&nbsp;3: HE plot for the Rohwer MANCOVA model, in the space of SAT and PPV
 </section>
 <section id="seeing-it-in-fewer-dimensions-candisc" class="level2">
 <h2 class="anchored" data-anchor-id="seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</h2>
-<p>An HE plot shows two responses at a time, and <code>pairs()</code> shows all of them, two at a time. But the effect of a term doesn’t have to line up with any pair of responses. The <span class="math inline">\(\mathbf{H}\)</span> ellipsoid for a term lives in <span class="math inline">\(s = \min(q, df_h)\)</span> dimensions, in directions that are combinations of all the responses.</p>
+<p>An HE plot shows two responses at a time, and <code>pairs()</code>, which is actually <code>heplots::pairs.mlm()</code> in real life just does its <code>pairs()</code> thing for a new <code>"mlm"</code>– it shows all the bivariate response pairs, two at a time. That was something I got essentially for free base R graphics and the S3 object design.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>But, in an MLM, there’s something more: the effect of a term doesn’t have to line up with any pair of responses. The <span class="math inline">\(\mathbf{H}\)</span> ellipsoid for a term lives in <span class="math inline">\(s = \min(q, df_h)\)</span> dimensions, in directions that are combinations of all the responses.</p>
 <p>The eigenvectors of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span> point in those directions. They define the <em>canonical variates</em>: linear combinations of the responses that are uncorrelated within groups, ordered by how much of the effect they capture. Their eigenvalues are the same ones that go into the multivariate test statistics. So the canonical space is the low-dimensional view in which the test is easiest to see.</p>
 <p>The <code>Pottery</code> data give an example: the chemical composition (five oxides) of ancient pottery from four sites in Britain. With <span class="math inline">\(q = 5\)</span> responses and <span class="math inline">\(df_h = 3\)</span> for <code>Site</code>, the effect lives in <span class="math inline">\(s = 3\)</span> dimensions. <code>candisc()</code> finds them:</p>
 <div class="cell">
@@ -515,7 +540,11 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 </div>
 <p>The plot is a kind of biplot for the HE plot. The <span class="math inline">\(\mathbf{E}\)</span> ellipse becomes a circle, because the canonical variates are uncorrelated within groups and scaled to have equal error variance. Directions in this space are therefore comparable, and the size of <span class="math inline">\(\mathbf{H}\)</span> relative to the circle shows the strength of the effect. The arrows show how each oxide is correlated with the canonical dimensions. Here, <code>Can1</code> is mainly a contrast of aluminum against iron, magnesium and calcium, which separates Isle Thorns and Ashley Rails from Llanedyrn and Caldicot.</p>
 <p>In terms of the ladder, <code>candisc()</code> doesn’t need to ignore the extra dimensions; it <em>rotates</em> them. It finds the directions that matter for one term, and lets you ignore the rest knowing how little you lose.</p>
-<p>The software followed the heplots design. <code>candisc()</code> gets <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span> from the same <code>car::Anova()</code> call, and returns a <code>"candisc"</code> object, for which there are <code>heplot()</code>, <code>heplot3d()</code> and <code>plot()</code> methods. <code>candiscList()</code> does this for every term in the model. <code>can_lm()</code> goes one step further, refitting the model with the canonical scores as responses. And <code>varOrder()</code> uses the angles of those arrows to order the responses in other displays, like <code>pairs()</code>, so that related variables sit together.</p>
+<p>The software followed the <code>heplots</code> design.</p>
+<ul>
+<li><p><code>candisc()</code> gets <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span> from the same <code>car::Anova()</code> call, and returns a <code>"candisc"</code> object, for which there are <code>heplot()</code>, <code>heplot3d()</code> and <code>plot()</code> methods.</p></li>
+<li><p>But there’s wrinkle here: there is a different <span class="math inline">\((\mathbf{H}, \mathbf{E})\)</span> decomposition for each <span class="math inline">\(\mathbf{H}_i\)</span> term in a MLM. <code>candiscList()</code> helps with this for every term in the model. <code>can_lm()</code> goes one step further, refitting the model with the canonical scores as responses. And <code>varOrder()</code> uses the angles of those arrows to order the responses in other displays, like <code>pairs()</code>, so that related variables sit together.</p></li>
+</ul>
 </section>
 <section id="influence-mvinfluence" class="level2">
 <h2 class="anchored" data-anchor-id="influence-mvinfluence">Influence: mvinfluence</h2>
@@ -528,8 +557,8 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 0.052235697 0.029590855 0.023351805 0.005212763 </code></pre>
 </div>
 </div>
-<p>The math came from Barrett &amp; Ling (1992). Their generalized Cook’s distance strings the coefficient matrix out into one long vector, <span class="math inline">\(\textrm{vec}(\mathbf{B})\)</span>, and measures how far it moves when a case is deleted, in the metric of its covariance matrix. That metric is <span class="math inline">\(\mathbf{S}^{-1} \otimes \mathbf{X}^\top \mathbf{X}\)</span>: the Kronecker product again. As in the univariate case, <span class="math inline">\(D_i\)</span> is proportional to the product of a leverage component and a residual component. Leverage depends only on <span class="math inline">\(\mathbf{X}\)</span>, so it doesn’t change. The residual is now a vector, so its size becomes <span class="math inline">\(q_{ii} = \mathbf{e}_i^\top (\mathbf{E}^\top \mathbf{E})^{-1} \mathbf{e}_i\)</span>, a hat value for the residuals: one more scalar that has become a quadratic form.</p>
-<p>Is the multivariate version worth the trouble? Barrett (2003) gave a toy example, with one predictor and two nearly identical responses, that makes the case:</p>
+<p>The math came from <span class="citation" data-cites="BarrettLing:92">Barrett and Ling (<a href="#ref-BarrettLing:92" role="doc-biblioref">1992</a>)</span>. Their generalized Cook’s distance strings the coefficient matrix out into one long vector, <span class="math inline">\(\textrm{vec}(\mathbf{B})\)</span>, and measures how far it moves when a case is deleted, in the metric of its covariance matrix. That metric is <span class="math inline">\(\mathbf{S}^{-1} \otimes \mathbf{X}^\top \mathbf{X}\)</span>: the Kronecker product again. As in the univariate case, <span class="math inline">\(D_i\)</span> is proportional to the product of a leverage component and a residual component. Leverage depends only on <span class="math inline">\(\mathbf{X}\)</span>, so it doesn’t change. The residual is now a vector, so its size becomes <span class="math inline">\(q_{ii} = \mathbf{e}_i^\top (\mathbf{E}^\top \mathbf{E})^{-1} \mathbf{e}_i\)</span>, a hat value for the residuals: one more scalar that has become a quadratic form.</p>
+<p>Is the multivariate version worth the trouble? <span class="citation" data-cites="Barrett:2003">Barrett (<a href="#ref-Barrett:2003" role="doc-biblioref">2003</a>)</span> gave a toy example, with one predictor and two nearly identical responses, that makes the case:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Show the code</summary>
@@ -559,7 +588,7 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 <p>Case 9, at <span class="math inline">\(x = 10\)</span>, has high leverage, but it lies right on the line for each response, so its univariate Cook’s distances are tiny. Its multivariate <span class="math inline">\(D\)</span> is more than ten times that of any other case. Because <code>y1</code> and <code>y2</code> are so highly correlated, the covariance matrix of the coefficients is nearly singular, and small discrepancies in case 9’s position, invisible to either regression alone, are magnified in the joint fit. The <a href="https://friendly.github.io/mvinfluence/articles/uni-vs-multi.html">vignette</a> works through this example in detail.</p>
 <section id="design-challenges" class="level3">
 <h3 class="anchored" data-anchor-id="design-challenges">Design challenges</h3>
-<p>Barrett &amp; Ling’s measures go further than single cases. They’re defined for deleting any <em>subset</em> <span class="math inline">\(I\)</span> of <span class="math inline">\(m\)</span> cases, which matters because pairs of influential cases can mask each other, or have a joint influence far beyond their individual ones (Lawrence, 1995). For a subset, the leverage and residual quantities <span class="math inline">\(\mathbf{H}_I\)</span> and <span class="math inline">\(\mathbf{Q}_I\)</span> are <span class="math inline">\(m \times m\)</span> matrices. That’s the ladder once more, and it set the design:</p>
+<p>Barrett &amp; Ling’s measures go further than single cases. They’re defined for deleting any <em>subset</em> <span class="math inline">\(I\)</span> of <span class="math inline">\(m\)</span> cases, which matters because pairs of influential cases can mask each other, or have a joint influence far beyond their individual ones <span class="citation" data-cites="Lawrence:95">(<a href="#ref-Lawrence:95" role="doc-biblioref">Lawrence 1995</a>)</span>. For a subset, the leverage and residual quantities <span class="math inline">\(\mathbf{H}_I\)</span> and <span class="math inline">\(\mathbf{Q}_I\)</span> are <span class="math inline">\(m \times m\)</span> matrices. That’s the ladder once more, and it set the design:</p>
 <ul>
 <li><strong>The structure follows stats.</strong> As <code>influence.lm()</code> calls <code>lm.influence()</code>, <code>influence.mlm()</code> is a thin wrapper around <code>mlm.influence()</code>, which does the work. With <code>hatvalues()</code> and <code>cooks.distance()</code> methods for <code>"mlm"</code>, the familiar generic functions just work.</li>
 <li><strong>The results are lists of matrices</strong>, one for each of the <span class="math inline">\(\binom{n}{m}\)</span> subsets. To plot or sort them, you need a scalar, so the functions take an argument <code>FUN</code>, either <code>det()</code> or <code>tr()</code>, for the “size” of each matrix. For <span class="math inline">\(m = 1\)</span>, the two agree.</li>
@@ -577,7 +606,7 @@ partially match the generic's arguments), and/or rename the argument in mvinflue
 </section>
 <section id="new-influence-plots" class="level3">
 <h3 class="anchored" data-anchor-id="new-influence-plots">New influence plots</h3>
-<p>The univariate influence plot in <strong>car</strong> shows studentized residuals against hat values, with bubbles whose area is proportional to Cook’s distance. <code>influencePlot()</code> for an <code>"mlm"</code> does the same with the multivariate measures. It also offers a second form, <code>type = "LR"</code>, adapting an idea from McCulloch &amp; Meeter (1983). Because <span class="math inline">\(D\)</span> is proportional to the product <span class="math inline">\(L \times R\)</span> of the leverage and residual components, a plot of <span class="math inline">\(\log R\)</span> against <span class="math inline">\(\log L\)</span> turns contours of constant Cook’s distance into straight lines with slope <span class="math inline">\(-1\)</span>. Adjacent lines mark constant <em>multiples</em> of influence.</p>
+<p>The univariate influence plot in <strong>car</strong> shows studentized residuals against hat values, with bubbles whose area is proportional to Cook’s distance. <code>influencePlot()</code> for an <code>"mlm"</code> does the same with the multivariate measures. It also offers a second form, <code>type = "LR"</code>, adapting an idea from <span class="citation" data-cites="McCullochMeeter:1983">McCulloch and Meeter (<a href="#ref-McCullochMeeter:1983" role="doc-biblioref">1983</a>)</span>. Because <span class="math inline">\(D\)</span> is proportional to the product <span class="math inline">\(L \times R\)</span> of the leverage and residual components, a plot of <span class="math inline">\(\log R\)</span> against <span class="math inline">\(\log L\)</span> turns contours of constant Cook’s distance into straight lines with slope <span class="math inline">\(-1\)</span>. Adjacent lines mark constant <em>multiples</em> of influence.</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Show the code</summary>
@@ -745,14 +774,62 @@ Figure&nbsp;7: 95% confidence ellipses (blue) and prediction ellipses (red, dash
 </section>
 </section>
 <section id="further-reading" class="level2">
-<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+
 <!--
 - Vis-MLM book chapters 9, 11-14, 21: https://friendly.github.io/Vis-MLM-book
-- Papers: keys in notes.md. Make references.bib from vita.bib and turn on bibliography:.
+- Papers: references.bib is built (2026-11-20); Further reading could list FriendlySigal:2015, FriendlySigal:2016:TQMP, Friendly:genridge:2013, Brown-Zidek-1980, BreimanFriedman:1997, FriendlyKwan:02:effect (all in references.bib, not yet cited).
 -->
+
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Further reading</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Abbott:1884" class="csl-entry" role="listitem">
+Abbott, Edwin A. 1884. <em>Flatland: A Romance of Many Dimensions</em>. Buccaneer Books.
+</div>
+<div id="ref-Barrett:2003" class="csl-entry" role="listitem">
+Barrett, Bruce E. 2003. <span>“Understanding Influence in Multivariate Regression.”</span> <em>Communications in Statistics - Theory and Methods</em> 32 (3): 667–80. <a href="https://doi.org/10.1081/STA-120018557">https://doi.org/10.1081/STA-120018557</a>.
+</div>
+<div id="ref-BarrettLing:92" class="csl-entry" role="listitem">
+Barrett, Bruce E., and Robert F. Ling. 1992. <span>“General Classes of Influence Measures for Multivariate Regression.”</span> <em>Journal of the American Statistical Association</em> 87 (417): 184–91. <a href="https://www.jstor.org/stable/i314301">https://www.jstor.org/stable/i314301</a>.
+</div>
+<div id="ref-Box:1949" class="csl-entry" role="listitem">
+Box, G. E. P. 1949. <span>“A General Distribution Theory for a Class of Likelihood Criteria.”</span> <em>Biometrika</em> 36 (3-4): 317–46. <a href="https://doi.org/10.1093/biomet/36.3-4.317">https://doi.org/10.1093/biomet/36.3-4.317</a>.
+</div>
+<div id="ref-FoxFriendlyMonette:09:compstat" class="csl-entry" role="listitem">
+Fox, J., M. Friendly, and G. Monette. 2009. <span>“Visualizing Hypothesis Tests in Multivariate Linear Models: The <em>Heplots</em> Package for <span>R</span>.”</span> <em>Computational Statistics</em> 24: 233–46. <a href="https://doi.org/10.1007/s00180-008-0120-1">https://doi.org/10.1007/s00180-008-0120-1</a>.
+</div>
+<div id="ref-FoxFriendlyWeisberg:13:rjournal" class="csl-entry" role="listitem">
+Fox, John, Michael Friendly, and Sanford Weisberg. 2013. <span>“Hypothesis Tests for Multivariate Linear Models Using the <em>Car</em> Package.”</span> <em>The R Journal</em> 5 (1): 39–52.
+</div>
+<div id="ref-Friendly:07:manova" class="csl-entry" role="listitem">
+Friendly, M. 2007. <span>“<span>HE</span> Plots for Multivariate Linear Models.”</span> <em>Journal of Computational and Graphical Statistics</em> 16 (2): 421–44. <a href="https://doi.org/10.1198/106186007X208407">https://doi.org/10.1198/106186007X208407</a>.
+</div>
+<div id="ref-Friendly:2024:VisMLM" class="csl-entry" role="listitem">
+Friendly, Michael. 2024. <em>Visualizing Multivariate Data and Models in r</em>. Chapman &amp; Hall/CRC Press. <a href="https://friendly.github.io/Vis-MLM-book/">https://friendly.github.io/Vis-MLM-book/</a>.
+</div>
+<div id="ref-Friendly-etal:ellipses:2012" class="csl-entry" role="listitem">
+Friendly, Michael, Georges Monette, and John Fox. 2013. <span>“Elliptical Insights: Understanding Statistical Methods Through Elliptical Geometry.”</span> <em>Statistical Science</em> 28 (1): 1–39. <a href="https://doi.org/10.1214/12-STS402">https://doi.org/10.1214/12-STS402</a>.
+</div>
+<div id="ref-Hartigan:75b" class="csl-entry" role="listitem">
+Hartigan, J. A. 1975. <span>“Printer Graphics for Clustering.”</span> <em>Journal of Statistical Computing and Simulation</em> 4: 187–213.
+</div>
+<div id="ref-Lawrence:95" class="csl-entry" role="listitem">
+Lawrence, A. J. 1995. <span>“Deletion Influence and Masking in Regression.”</span> <em>Journal of the Royal Statistical Society. Series B (Methodological)</em> 57 (1): 181–89.
+</div>
+<div id="ref-McCullochMeeter:1983" class="csl-entry" role="listitem">
+McCulloch, Charles E., and Duane Meeter. 1983. <span>“Discussion of "Outliers..." by r. J. Beckman and r. D. Cook.”</span> <em>Technometrics</em> 25: 152–55.
+</div>
+<div id="ref-Tukey:59" class="csl-entry" role="listitem">
+Tukey, John W. 1959. <span>“A Quick, Compact, Two Sample Test to <span class="nocase">Duckworth’s</span> Specifications.”</span> <em>Technometrics</em> 1: 31–48. <a href="https://doi.org/10.2307/1266308">https://doi.org/10.2307/1266308</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>To paraphrase <span class="citation" data-cites="Tukey:59">Tukey (<a href="#ref-Tukey:59" role="doc-biblioref">1959</a>)</span>, the “practical power” of any statistical method is the product of its statistical power, times the probability that anyone can or will actually use it.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Of course, there other, more modern views of the idea of a “scatterplot matrix” <span class="citation" data-cites="Hartigan:75b">(<a href="#ref-Hartigan:75b" role="doc-biblioref">Hartigan 1975</a>)</span> in Trellis graphics, … now <code>ggplot2</code> via <code>GGally</code> and other extensions ,,,<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

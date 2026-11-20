@@ -1,0 +1,287 @@
+% references.bib for 'On Extending lm() Methods to "mlm"'
+% Extracted 2026-11-20 from vita.bib, statistics.bib, graphics.bib and timeref.bib
+% (C:/Dropbox/localtexmf/bibtex/bib); Lawrence:95 added by hand.
+
+@ARTICLE{Friendly:07:manova,
+  author = {M. Friendly},
+  title = {{HE} Plots for Multivariate Linear Models},
+  journal = {Journal of Computational and Graphical Statistics},
+  year = {2007},
+  volume = {16},
+  pages = {421-444},
+  number = {2},
+  abstract = {Multivariate analysis of variance (MANOVA) extends the ideas and methods
+	of univariate ANOVA in simple and straight-forward ways. But the
+	familiar graphical methods typically used for univariate ANOVA are
+	inadequate for showing how measures in a multivariate response vary
+	with each other, and how their means vary with explanatory factors.
+	Similarly, the graphical methods commonly used in multiple regression
+	are not widely available or used in multivariate multiple regression
+	(MMRA). We describe a variety of graphical methods for multiple-response
+	(MANOVA and MMRA) data aimed at understanding what is being tested
+	in a multivariate test, and how factor/predictor effects are expressed
+	across multiple response measures.
+	
+	In particular, we describe and illustrate: (a) Data ellipses and biplots
+	for multivariate data, (b) HE plots, showing the hypothesis and error
+	covariance matrices for a given pair of responses, and a given effect,
+	(c) HE plot matrices, showing all pairwise HE plots, and (d) reduced-rank
+	analogs of HE plots, showing all observations, group means, and their
+	relations to the response variables.
+	
+	All of these methods are implemented in a collection of easily used
+	SAS macro programs.},
+  doi = {10.1198/106186007X208407},
+  keywords = {biplot, canonical discriminant plot, data ellipse, HE plot, HE plot
+	matrix, MANOVA, multivariate multiple regression, MMRA, scatterplot
+	matrix},
+  url = {https://friendly.github.io/papers/jcgs-heplots.pdf}
+}
+
+@ARTICLE{FoxFriendlyMonette:09:compstat,
+  author = {J. Fox and M. Friendly and G. Monette},
+  title = {Visualizing hypothesis tests in multivariate linear models: The \emph{heplots}
+	package for {R}},
+  journal = {Computational Statistics},
+  year = {2009},
+  volume = {24},
+  pages = {233-246},
+  doi = {10.1007/s00180-008-0120-1},
+  url = {https://friendly.github.io/papers/FoxFriendlyMonette-2009.pdf}
+}
+
+@ARTICLE{FoxFriendlyWeisberg:13:rjournal,
+  author = {John Fox and Michael Friendly and Sanford Weisberg},
+  title = {Hypothesis tests for Multivariate Linear Models Using the \emph{car}
+	package},
+  journal = {The R Journal},
+  year = {2013},
+  volume = {5},
+  pages = {39--52},
+  number = {1}
+}
+
+@Article{Friendly-etal:ellipses:2012,
+  author   = {Friendly, Michael and Monette, Georges and Fox, John},
+  journal  = {Statistical Science},
+  title    = {Elliptical Insights: Understanding Statistical Methods Through Elliptical Geometry},
+  year     = {2013},
+  number   = {1},
+  pages    = {1--39},
+  volume   = {28},
+  abstract = {Visual insights into a wide variety of statistical methods, for both
+	didactic and data analytic purposes, can often be achieved through
+	geometric diagrams and geometrically based statistical graphs. This
+	paper extols and illustrates the virtues of the ellipse and her higher-dimensional
+	cousins for both these purposes in a variety of contexts, including
+	linear models, multivariate linear models, and mixed-effect models.
+	We emphasize the strong relationships among statistical methods,
+	matrix-algebraic solutions, and geometry that can often be easily
+	understood in terms of ellipses.},
+  doi      = {10.1214/12-STS402},
+  keywords = {added-variable plots; Bayesian estimation; concentration ellipse; data ellipse; discriminant analysis; Francis Galton; hypothesis-error plots; kissing ellipsoids; measurement error; mixed-effect models; multivariate meta-analysis; regression paradoxes; ridge regression; statistical geometry},
+  url      = {https://friendly.github.io/papers/ellipses.pdf},
+}
+
+@Article{FriendlySigal:2016:TQMP,
+  author  = {Michael Friendly and Matthew Sigal},
+  journal = {The Quantitative Methods for Psychology},
+  title   = {Graphical Methods for Multivariate Linear Models in Psychological Research: An {R} Tutorial},
+  year    = {2017},
+  number  = {1},
+  pages   = {20--45},
+  volume  = {13},
+  doi     = {10.20982/tqmp.13.1.p020},
+}
+
+@ARTICLE{FriendlySigal:2015,
+  author = {Michael Friendly and Matthew Sigal},
+  title = {Recent Advances in Visualizing Multivariate Linear Models},
+  journal = {Revista Colombiana de Estadist\'ica},
+  year = {2014},
+  volume = {37},
+  pages = {261--283},
+  number = {2},
+  doi = {http://dx.doi.org/10.15446/rce.v37n2spe.47934},
+  isn = {0120-1751},
+  url = {http://dx.doi.org/10.15446/rce.v37n2spe.47934}
+}
+
+@ARTICLE{Friendly:genridge:2013,
+  author = {Friendly, Michael},
+  title = {The Generalized Ridge Trace Plot: Visualizing Bias \emph{and} Precision},
+  journal = {Journal of Computational and Graphical Statistics},
+  year = {2013},
+  volume = {22},
+  pages = {50--68},
+  number = {1},
+  abstract = {In ridge regression and related shrinkage methods, the ridge trace
+	plot, a plot of estimated coefficients against a shrinkage parameter,
+	is a common graphical adjunct to help determine a favorable tradeoff
+	of bias against precision (inverse variance) of the estimates. However,
+	standard unidimensional versions of this plot are ill-suited for
+	this purpose because they show only bias directly and ignore the
+	multi-dimensional nature of the problem.
+	
+	We introduce a generalized version of the ridge trace plot, showing
+	covariance ellipsoids in parameter space, whose centers show bias
+	and whose size and shape show variance and covariance in relation
+	to the criteria for which these methods were developed. These provide
+	a direct visualization of \emph{both} bias and precision. Even 2D
+	bivariate versions of this plot show interesting features not revealed
+	in the standard univariate version. Low-rank versions of this plot,
+	based on an orthogonal transformation of predictor space extend these
+	ideas to larger numbers of predictor variables, by focusing on the
+	dimensions in the space of predictors that are likely to be most
+	informative about the nature of bias and precision. Two well-known
+	data sets are used to illustrate these graphical methods. The \texttt{genridge}
+	package for R implements computation and display.},
+  doi = {10.1080/10618600.2012.681237},
+  keywords = {biplot; model selection; multivariate bootstrap; regression shrinkage;
+	ridge regression; ridge trace plot; singular value decomposition;
+	variance-shrinkage tradeoff},
+  url = {https://friendly.github.io/papers/genridge.pdf}
+}
+
+@article{Box:1949,
+	Author = {Box, G. E. P.}, 
+	title = {A General Distribution Theory For A Class Of Likelihood Criteria},
+	volume = {36}, 
+	number = {3-4}, 
+	pages = {317-346}, 
+	year = {1949}, 
+	doi = {10.1093/biomet/36.3-4.317}, 
+	URL = {http://biomet.oxfordjournals.org/content/36/3-4/317.short}, 
+	eprint = {http://biomet.oxfordjournals.org/content/36/3-4/317.full.pdf+html}, 
+	journal = {Biometrika} 
+}
+
+@Article{Brown-Zidek-1980,
+  author    = {P. J. Brown and J. V. Zidek},
+  journal   = {The Annals of Statistics},
+  title     = {Adaptive Multivariate Ridge Regression},
+  year      = {1980},
+  issn      = {00905364, 21688966},
+  number    = {1},
+  pages     = {64--74},
+  volume    = {8},
+  abstract  = {A multivariate version of the Hoerl-Kennard ridge regression rule is introduced. The choice from among a large class of possible generalizations is guided by Bayesian considerations; the result is implicitly in the work of Lindley and Smith although not actually derived there. The proposed rule, in a variety of equivalent forms is discussed and the choice of its ridge matrix considered. As well, adaptive multivariate ridge rules and closely related empirical Bayes procedures are presented, these being for the most part formal extensions of certain univariate rules. Included is the Efron-Morris multivariate version of the James-Stein estimator. By means of an appropriate generalization of a result of Morris (see Thisted) the mean square error of these adaptive and empirical Bayes rules are compared.},
+  publisher = {Institute of Mathematical Statistics},
+  url       = {http://www.jstor.org/stable/2240743},
+  urldate   = {2024-11-09},
+}
+
+@Article{BreimanFriedman:1997,
+  author  = {Breiman, Leo and Friedman, Jerome H.},
+  title   = {Predicting Multivariate Responses in Multiple Linear Regression},
+  journal = {Journal of the Royal Statistical Society, Series B: Statistical Methodology},
+  year    = {1997},
+  volume  = {59},
+  number  = {1},
+  pages   = {3--54},
+  doi     = {10.1111/1467-9868.00054},
+}
+
+@Article{Tukey:59,
+  author  = {John W. Tukey},
+  journal = {Technometrics},
+  title   = {A Quick, Compact, Two Sample Test to {Duckworth's} Specifications},
+  year    = {1959},
+  pages   = {31--48},
+  volume  = {1},
+  doi     = {10.2307/1266308},
+  url     = {https://www.jstor.org/stable/1266308},
+}
+
+@Article{BarrettLing:92,
+  author   = {Barrett, Bruce E. and Ling, Robert F.},
+  journal  = {Journal of the American Statistical Association},
+  title    = {General classes of influence measures for multivariate regression},
+  year     = {1992},
+  issn     = {0162-1459},
+  number   = {417},
+  pages    = {184--191},
+  volume   = {87},
+  abstract = {Many of the existing measures for influential subsets in univariate
+	ordinary least-squares regression analysis have natural extensions
+	to the multivariate regression setting. Such measures may be characterized
+	by functions of the submatrices $H_I$ of the hat matrix $\bold H$,
+	where $I$ is an index set of deleted cases, and $Q_I$, the corresponding
+	submatrix of $\bold Q=\bold E(\bold E^{\ssf T}\bold E)^{-1}\bold
+	E^{\ssf T}$, where $\bold E$ is the matrix of ordinary residuals.},
+  coden    = {JSTNAL},
+  mrclass  = {62J20 (62H99)},
+  mrnumber = {MR1158636 (93m:62166)},
+  url      = {https://www.jstor.org/stable/i314301},
+}
+
+@article{Barrett:2003,
+	Author = {Bruce E. Barrett},
+	Doi = {10.1081/STA-120018557},
+	Journal = {Communications in Statistics - Theory and Methods},
+	Number = {3},
+	Pages = {667-680},
+	Title = {Understanding Influence in Multivariate Regression},
+	Url = {http://dx.doi.org/10.1081/STA-120018557},
+	Volume = {32},
+	Year = {2003},
+	Bdsk-Url-1 = {http://dx.doi.org/10.1081/STA-120018557}}
+
+@article{McCullochMeeter:1983,
+	Author = {McCulloch, Charles E. and Meeter, Duane},
+	Bibdate = {Monday, March 10, 2014 09:30:47},
+	Journal = {Technometrics},
+	Pages = {152--155},
+	Title = {Discussion of "Outliers..." by R. J. Beckman and R. D. Cook},
+	Volume = {25},
+	Year = {1983}}
+
+@article{Hartigan:75b,
+	Author = {J. A. Hartigan},
+	Journal = {Journal of Statistical Computing and Simulation},
+	Pages = {187--213},
+	Title = {Printer Graphics for Clustering},
+	Volume = {4},
+	Year = {1975}}
+
+@Article{FriendlyKwan:02:effect,
+  author  = {Friendly, M. and Kwan, E.},
+  journal = {Computational Statistics and Data Analysis},
+  title   = {Effect Ordering for Data Displays},
+  year    = {2003},
+  number  = {4},
+  pages   = {509--539},
+  volume  = {43},
+  comment = {\url{http://datavis.ca/papers/effect.pdf}},
+  doi     = {10.1016/S0167-9473(02)00290-6},
+  url     = {https://www.sciencedirect.com/science/article/abs/pii/S0167947302002906},
+}
+
+@article{Lawrence:95,
+  author  = {Lawrence, A. J.},
+  title   = {Deletion Influence and Masking in Regression},
+  journal = {Journal of the Royal Statistical Society. Series B (Methodological)},
+  volume  = {57},
+  number  = {1},
+  pages   = {181--189},
+  year    = {1995}
+}
+
+@BOOK{Abbott:1884,
+  title = {Flatland: A Romance of Many Dimensions},
+  publisher = {Buccaneer Books},
+  year = {1884},
+  author = {Abbott, Edwin A.},
+  address = {Cutchogue, NY},
+  note = {(1976 reprint of the 1884 edition)}
+}
+
+@Book{Friendly:2024:VisMLM,
+  author    = {Michael Friendly},
+  publisher = {Chapman \& Hall/CRC Press},
+  title     = {Visualizing Multivariate Data and Models in R},
+  year      = {2024},
+  note      = {To be published 2027},
+  url       = {https://friendly.github.io/Vis-MLM-book/},
+}
+
