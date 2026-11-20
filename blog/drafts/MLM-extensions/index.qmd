@@ -432,13 +432,110 @@ other displays, like `pairs()`, so that related variables sit together.
 
 ## Influence: mvinfluence
 
+In the introduction, `cooks.distance(fit)` quietly gave two univariate answers, one column
+per response. Load mvinfluence, and the same call gives one answer per case:
+
+```{r}
+#| label: cooks-mv
+#| code-fold: false
+library(mvinfluence)
+head(cooks.distance(fit), 4)
+```
+
+The math came from Barrett & Ling (1992). Their generalized Cook's distance strings the
+coefficient matrix out into one long vector, $\textrm{vec}(\mathbf{B})$, and measures how
+far it moves when a case is deleted, in the metric of its covariance matrix. That metric is
+$\mathbf{S}^{-1} \otimes \mathbf{X}^\top \mathbf{X}$: the Kronecker product again. As in
+the univariate case, $D_i$ is proportional to the product of a leverage component and a
+residual component. Leverage depends only on $\mathbf{X}$, so it doesn't change. The
+residual is now a vector, so its size becomes
+$q_{ii} = \mathbf{e}_i^\top (\mathbf{E}^\top \mathbf{E})^{-1} \mathbf{e}_i$, a hat value
+for the residuals: one more scalar that has become a quadratic form.
+
+Is the multivariate version worth the trouble? Barrett (2003) gave a toy example, with one
+predictor and two nearly identical responses, that makes the case:
+
+```{r}
+#| label: toy
+Toy <- data.frame(
+  x  = c(1, 1, 2, 2, 3, 3, 4, 4, 10),
+  y1 = c(0.10, 1.90, 1.00, 2.95, 2.10, 4.00, 2.95, 4.95, 10.00),
+  y2 = c(0.10, 1.80, 1.00, 2.93, 2.00, 4.10, 3.05, 4.93, 10.00)
+)
+Toy.mlm <- lm(cbind(y1, y2) ~ x, data = Toy)
+data.frame(D1  = cooks.distance(lm(y1 ~ x, data = Toy)),
+           D2  = cooks.distance(lm(y2 ~ x, data = Toy)),
+           D12 = cooks.distance(Toy.mlm)) |> round(3)
+```
+
+Case 9, at $x = 10$, has high leverage, but it lies right on the line for each response, so
+its univariate Cook's distances are tiny. Its multivariate $D$ is more than ten times
+that of any other case. Because `y1` and `y2` are so highly correlated, the covariance
+matrix of the coefficients is nearly singular, and small discrepancies in case 9's
+position, invisible to either regression alone, are magnified in the joint fit. The
+[vignette](https://friendly.github.io/mvinfluence/articles/uni-vs-multi.html) works
+through this example in detail.
+
+### Design challenges
+
+Barrett & Ling's measures go further than single cases. They're defined for deleting any
+*subset* $I$ of $m$ cases, which matters because pairs of influential cases can mask each
+other, or have a joint influence far beyond their individual ones (Lawrence, 1995).
+For a subset, the leverage and residual quantities $\mathbf{H}_I$ and $\mathbf{Q}_I$ are
+$m \times m$ matrices. That's the ladder once more, and it set the design:
+
+* **The structure follows stats.** As `influence.lm()` calls `lm.influence()`,
+  `influence.mlm()` is a thin wrapper around `mlm.influence()`, which does the work. With
+  `hatvalues()` and `cooks.distance()` methods for `"mlm"`, the familiar generic functions
+  just work.
+* **The results are lists of matrices**, one for each of the $\binom{n}{m}$ subsets. To
+  plot or sort them, you need a scalar, so the functions take an argument `FUN`, either
+  `det()` or `tr()`, for the "size" of each matrix. For $m = 1$, the two agree.
+* **Each subset is refit directly.** The coefficients and residuals for each deleted subset
+  come from direct matrix calculation, rather than from the QR decomposition that
+  `lm.influence()` uses. That's simple, but the number of subsets grows quickly with $m$.
+* **Barrett & Ling unify many measures** (Cook's $D$, DFFITS, and others) as the trace or
+  determinant of products like
+  $\mathbf{H}_I \mathbf{Q}_I (\mathbf{I} - \mathbf{H}_I - \mathbf{Q}_I)^a (\mathbf{I} - \mathbf{H}_I)^b$.
+  Computing these needs powers of matrices, so the package has `mpower()` and a `%^%`
+  operator.
+
 <!--
-- Callback to the intro: cooks.distance(fit) before and after library(mvinfluence).
-  Before: n x q matrix. After: one generalized Cook's D per case (Barrett & Ling, 1992).
-- Leverage is unchanged (depends only on X); residual "size" becomes a Mahalanobis distance.
-- influencePlot.mlm() figure.
-- Q: mention subset (multiple-case) deletion, or leave it?
+MF: a design pitfall found while drafting (2026-11-20). influence(fit, m = 2) fails:
+"no applicable method for 'influence' applied to an object of class
+c('double', 'numeric')". The stats generic is influence(model, ...), so `m = 2` partially
+matches `model`, and `fit` falls into `...`. influence(model = fit, m = 2) and
+mlm.influence(fit, m = 2) work. Mention here as a lesson (arguments of a method can
+partially match the generic's arguments), and/or rename the argument in mvinfluence?
 -->
+
+### New influence plots
+
+The univariate influence plot in **car** shows studentized residuals against hat values,
+with bubbles whose area is proportional to Cook's distance. `influencePlot()` for an
+`"mlm"` does the same with the multivariate measures. It also offers a second form,
+`type = "LR"`, adapting an idea from McCulloch & Meeter (1983). Because $D$ is proportional
+to the product $L \times R$ of the leverage and residual components, a plot of
+$\log R$ against $\log L$ turns contours of constant Cook's distance into straight lines
+with slope $-1$. Adjacent lines mark constant *multiples* of influence.
+
+```{r}
+#| label: fig-toy-influence
+#| fig-width: 10
+#| fig-height: 4.5
+#| fig-cap: "Multivariate influence plots for the toy example. Left: squared studentized residual against hat value. Right: the LR form, log residual component against log leverage component; the dashed diagonal lines are contours of constant Cook's distance. Bubble areas are proportional to the generalized Cook's D."
+#| fig-alt: "Two bubble plots. In both, cases 1, 2 and 6 and the other small cases sit at the lower left with tiny bubbles, and case 9 is a large red bubble at the upper right. In the right panel, dashed diagonal lines of slope minus one run across the plot, and case 9 lies several contours beyond all the other cases."
+op <- par(mfrow = c(1, 2), mar = c(4, 4, 1, 1) + 0.1)
+influencePlot(Toy.mlm, id.n = 2, scale = 5,
+              xlim = c(0, 1), ylim = c(0, 1.3))
+influencePlot(Toy.mlm, id.n = 2, scale = 5, type = "LR",
+              xlim = c(-2.5, 2.5), ylim = c(-2, 2.6))
+par(op)
+```
+
+In the LR plot, case 9 lies several contours beyond every other case, and its position shows
+why: it's extreme in *both* leverage and residual. The same plot works for univariate
+models too, as `lrPlot()`.
 
 ## Robustness: robmlm()
 

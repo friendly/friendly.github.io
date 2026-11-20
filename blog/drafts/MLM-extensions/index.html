@@ -125,7 +125,11 @@ window.Quarto = {
   <li><a href="#what-was-easy" id="toc-what-was-easy" class="nav-link" data-scroll-target="#what-was-easy">What was easy</a></li>
   </ul></li>
   <li><a href="#seeing-it-in-fewer-dimensions-candisc" id="toc-seeing-it-in-fewer-dimensions-candisc" class="nav-link" data-scroll-target="#seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</a></li>
-  <li><a href="#influence-mvinfluence" id="toc-influence-mvinfluence" class="nav-link" data-scroll-target="#influence-mvinfluence">Influence: mvinfluence</a></li>
+  <li><a href="#influence-mvinfluence" id="toc-influence-mvinfluence" class="nav-link" data-scroll-target="#influence-mvinfluence">Influence: mvinfluence</a>
+  <ul class="collapse">
+  <li><a href="#design-challenges" id="toc-design-challenges" class="nav-link" data-scroll-target="#design-challenges">Design challenges</a></li>
+  <li><a href="#new-influence-plots" id="toc-new-influence-plots" class="nav-link" data-scroll-target="#new-influence-plots">New influence plots</a></li>
+  </ul></li>
   <li><a href="#robustness-robmlm" id="toc-robustness-robmlm" class="nav-link" data-scroll-target="#robustness-robmlm">Robustness: robmlm()</a>
   <ul class="collapse">
   <li><a href="#what-took-more-work" id="toc-what-took-more-work" class="nav-link" data-scroll-target="#what-took-more-work">What took more work</a></li>
@@ -515,13 +519,110 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 </section>
 <section id="influence-mvinfluence" class="level2">
 <h2 class="anchored" data-anchor-id="influence-mvinfluence">Influence: mvinfluence</h2>
+<p>In the introduction, <code>cooks.distance(fit)</code> quietly gave two univariate answers, one column per response. Load mvinfluence, and the same call gives one answer per case:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mvinfluence)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cooks.distance</span>(fit), <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          1           2           3           4 
+0.052235697 0.029590855 0.023351805 0.005212763 </code></pre>
+</div>
+</div>
+<p>The math came from Barrett &amp; Ling (1992). Their generalized Cook’s distance strings the coefficient matrix out into one long vector, <span class="math inline">\(\textrm{vec}(\mathbf{B})\)</span>, and measures how far it moves when a case is deleted, in the metric of its covariance matrix. That metric is <span class="math inline">\(\mathbf{S}^{-1} \otimes \mathbf{X}^\top \mathbf{X}\)</span>: the Kronecker product again. As in the univariate case, <span class="math inline">\(D_i\)</span> is proportional to the product of a leverage component and a residual component. Leverage depends only on <span class="math inline">\(\mathbf{X}\)</span>, so it doesn’t change. The residual is now a vector, so its size becomes <span class="math inline">\(q_{ii} = \mathbf{e}_i^\top (\mathbf{E}^\top \mathbf{E})^{-1} \mathbf{e}_i\)</span>, a hat value for the residuals: one more scalar that has become a quadratic form.</p>
+<p>Is the multivariate version worth the trouble? Barrett (2003) gave a toy example, with one predictor and two nearly identical responses, that makes the case:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Toy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x  =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">10</span>),</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y1 =</span> <span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">1.90</span>, <span class="fl">1.00</span>, <span class="fl">2.95</span>, <span class="fl">2.10</span>, <span class="fl">4.00</span>, <span class="fl">2.95</span>, <span class="fl">4.95</span>, <span class="fl">10.00</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y2 =</span> <span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">1.80</span>, <span class="fl">1.00</span>, <span class="fl">2.93</span>, <span class="fl">2.00</span>, <span class="fl">4.10</span>, <span class="fl">3.05</span>, <span class="fl">4.93</span>, <span class="fl">10.00</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>Toy.mlm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(y1, y2) <span class="sc">~</span> x, <span class="at">data =</span> Toy)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">D1  =</span> <span class="fu">cooks.distance</span>(<span class="fu">lm</span>(y1 <span class="sc">~</span> x, <span class="at">data =</span> Toy)),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">D2  =</span> <span class="fu">cooks.distance</span>(<span class="fu">lm</span>(y2 <span class="sc">~</span> x, <span class="at">data =</span> Toy)),</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">D12 =</span> <span class="fu">cooks.distance</span>(Toy.mlm)) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     D1    D2   D12
+1 0.121 0.118 0.125
+2 0.124 0.103 0.298
+3 0.090 0.089 0.091
+4 0.083 0.082 0.083
+5 0.055 0.067 0.182
+6 0.069 0.085 0.232
+7 0.079 0.065 0.203
+8 0.066 0.064 0.069
+9 0.002 0.008 3.225</code></pre>
+</div>
+</div>
+<p>Case 9, at <span class="math inline">\(x = 10\)</span>, has high leverage, but it lies right on the line for each response, so its univariate Cook’s distances are tiny. Its multivariate <span class="math inline">\(D\)</span> is more than ten times that of any other case. Because <code>y1</code> and <code>y2</code> are so highly correlated, the covariance matrix of the coefficients is nearly singular, and small discrepancies in case 9’s position, invisible to either regression alone, are magnified in the joint fit. The <a href="https://friendly.github.io/mvinfluence/articles/uni-vs-multi.html">vignette</a> works through this example in detail.</p>
+<section id="design-challenges" class="level3">
+<h3 class="anchored" data-anchor-id="design-challenges">Design challenges</h3>
+<p>Barrett &amp; Ling’s measures go further than single cases. They’re defined for deleting any <em>subset</em> <span class="math inline">\(I\)</span> of <span class="math inline">\(m\)</span> cases, which matters because pairs of influential cases can mask each other, or have a joint influence far beyond their individual ones (Lawrence, 1995). For a subset, the leverage and residual quantities <span class="math inline">\(\mathbf{H}_I\)</span> and <span class="math inline">\(\mathbf{Q}_I\)</span> are <span class="math inline">\(m \times m\)</span> matrices. That’s the ladder once more, and it set the design:</p>
+<ul>
+<li><strong>The structure follows stats.</strong> As <code>influence.lm()</code> calls <code>lm.influence()</code>, <code>influence.mlm()</code> is a thin wrapper around <code>mlm.influence()</code>, which does the work. With <code>hatvalues()</code> and <code>cooks.distance()</code> methods for <code>"mlm"</code>, the familiar generic functions just work.</li>
+<li><strong>The results are lists of matrices</strong>, one for each of the <span class="math inline">\(\binom{n}{m}\)</span> subsets. To plot or sort them, you need a scalar, so the functions take an argument <code>FUN</code>, either <code>det()</code> or <code>tr()</code>, for the “size” of each matrix. For <span class="math inline">\(m = 1\)</span>, the two agree.</li>
+<li><strong>Each subset is refit directly.</strong> The coefficients and residuals for each deleted subset come from direct matrix calculation, rather than from the QR decomposition that <code>lm.influence()</code> uses. That’s simple, but the number of subsets grows quickly with <span class="math inline">\(m\)</span>.</li>
+<li><strong>Barrett &amp; Ling unify many measures</strong> (Cook’s <span class="math inline">\(D\)</span>, DFFITS, and others) as the trace or determinant of products like <span class="math inline">\(\mathbf{H}_I \mathbf{Q}_I (\mathbf{I} - \mathbf{H}_I - \mathbf{Q}_I)^a (\mathbf{I} - \mathbf{H}_I)^b\)</span>. Computing these needs powers of matrices, so the package has <code>mpower()</code> and a <code>%^%</code> operator.</li>
+</ul>
 <!--
-- Callback to the intro: cooks.distance(fit) before and after library(mvinfluence).
-  Before: n x q matrix. After: one generalized Cook's D per case (Barrett & Ling, 1992).
-- Leverage is unchanged (depends only on X); residual "size" becomes a Mahalanobis distance.
-- influencePlot.mlm() figure.
-- Q: mention subset (multiple-case) deletion, or leave it?
+MF: a design pitfall found while drafting (2026-11-20). influence(fit, m = 2) fails:
+"no applicable method for 'influence' applied to an object of class
+c('double', 'numeric')". The stats generic is influence(model, ...), so `m = 2` partially
+matches `model`, and `fit` falls into `...`. influence(model = fit, m = 2) and
+mlm.influence(fit, m = 2) work. Mention here as a lesson (arguments of a method can
+partially match the generic's arguments), and/or rename the argument in mvinfluence?
 -->
+</section>
+<section id="new-influence-plots" class="level3">
+<h3 class="anchored" data-anchor-id="new-influence-plots">New influence plots</h3>
+<p>The univariate influence plot in <strong>car</strong> shows studentized residuals against hat values, with bubbles whose area is proportional to Cook’s distance. <code>influencePlot()</code> for an <code>"mlm"</code> does the same with the multivariate measures. It also offers a second form, <code>type = "LR"</code>, adapting an idea from McCulloch &amp; Meeter (1983). Because <span class="math inline">\(D\)</span> is proportional to the product <span class="math inline">\(L \times R\)</span> of the leverage and residual components, a plot of <span class="math inline">\(\log R\)</span> against <span class="math inline">\(\log L\)</span> turns contours of constant Cook’s distance into straight lines with slope <span class="math inline">\(-1\)</span>. Adjacent lines mark constant <em>multiples</em> of influence.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">influencePlot</span>(Toy.mlm, <span class="at">id.n =</span> <span class="dv">2</span>, <span class="at">scale =</span> <span class="dv">5</span>,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          H         Q     CookD         L         R
+1 0.2018519 0.1769023 0.1249782 0.2529002 0.2216410
+2 0.2018519 0.4219189 0.2980779 0.2529002 0.5286223
+6 0.1129630 0.5872892 0.2321968 0.1273486 0.6620797
+9 0.8518519 1.0816364 3.2248790 5.7500000 7.3010459</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">influencePlot</span>(Toy.mlm, <span class="at">id.n =</span> <span class="dv">2</span>, <span class="at">scale =</span> <span class="dv">5</span>, <span class="at">type =</span> <span class="st">"LR"</span>,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="fl">2.6</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          H         Q     CookD         L         R
+1 0.2018519 0.1769023 0.1249782 0.2529002 0.2216410
+2 0.2018519 0.4219189 0.2980779 0.2529002 0.5286223
+6 0.1129630 0.5872892 0.2321968 0.1273486 0.6620797
+9 0.8518519 1.0816364 3.2248790 5.7500000 7.3010459</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-toy-influence" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two bubble plots. In both, cases 1, 2 and 6 and the other small cases sit at the lower left with tiny bubbles, and case 9 is a large red bubble at the upper right. In the right panel, dashed diagonal lines of slope minus one run across the plot, and case 9 lies several contours beyond all the other cases.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-toy-influence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-toy-influence-1.png" class="img-fluid figure-img" alt="Two bubble plots. In both, cases 1, 2 and 6 and the other small cases sit at the lower left with tiny bubbles, and case 9 is a large red bubble at the upper right. In the right panel, dashed diagonal lines of slope minus one run across the plot, and case 9 lies several contours beyond all the other cases." width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toy-influence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Multivariate influence plots for the toy example. Left: squared studentized residual against hat value. Right: the LR form, log residual component against log leverage component; the dashed diagonal lines are contours of constant Cook’s distance. Bubble areas are proportional to the generalized Cook’s D.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In the LR plot, case 9 lies several contours beyond every other case, and its position shows why: it’s extreme in <em>both</em> leverage and residual. The same plot works for univariate models too, as <code>lrPlot()</code>.</p>
+</section>
 </section>
 <section id="robustness-robmlm" class="level2">
 <h2 class="anchored" data-anchor-id="robustness-robmlm">Robustness: robmlm()</h2>
@@ -536,22 +637,22 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pottery.rlm <span class="ot">&lt;-</span> <span class="fu">robmlm</span>(pottery.mlm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pottery.rlm <span class="ot">&lt;-</span> <span class="fu">robmlm</span>(pottery.mlm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pottery.rlm, <span class="at">col =</span> Pottery<span class="sc">$</span>Site, <span class="at">segments =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(pottery.mlm, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"Al"</span>, <span class="st">"Fe"</span>),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"blue"</span>), <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>)</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(pottery.rlm, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"Al"</span>, <span class="st">"Fe"</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">error.ellipse =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"red"</span>), <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"Classical"</span>, <span class="st">"Robust"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>),</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pottery.rlm, <span class="at">col =</span> Pottery<span class="sc">$</span>Site, <span class="at">segments =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(pottery.mlm, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"Al"</span>, <span class="st">"Fe"</span>),</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"blue"</span>), <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(pottery.rlm, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"Al"</span>, <span class="st">"Fe"</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">error.ellipse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"red"</span>), <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"Classical"</span>, <span class="st">"Robust"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>),</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-pottery-robust" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. Left: an index plot of case weights. Most are near 1, but cases 1, 7, 11 and 25 have weights near 0, and cases 9 and 10 about 0.5. Right: HE plot of Fe against Al. The classical and robust Site ellipses nearly coincide, a long thin ellipse running from upper left to lower right. The robust Error ellipse is clearly smaller than the classical one.">
@@ -560,7 +661,7 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 <img src="index_files/figure-html/fig-pottery-robust-1.png" class="img-fluid figure-img" alt="Two panels. Left: an index plot of case weights. Most are near 1, but cases 1, 7, 11 and 25 have weights near 0, and cases 9 and 10 about 0.5. Right: HE plot of Fe against Al. The classical and robust Site ellipses nearly coincide, a long thin ellipse running from upper left to lower right. The robust Error ellipse is clearly smaller than the classical one." width="1056">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pottery-robust-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Robust MANOVA for the Pottery data. Left: final case weights from <code>robmlm()</code>, colored by site. Right: HE plots for the classical (blue, solid) and robust (red, dashed) fits, for Al and Fe.
+Figure&nbsp;6: Robust MANOVA for the Pottery data. Left: final case weights from <code>robmlm()</code>, colored by site. Right: HE plots for the classical (blue, solid) and robust (red, dashed) fits, for Al and Fe.
 </figcaption>
 </figure>
 </div>
@@ -595,23 +696,23 @@ The news hook. Development version on GitHub, not CRAN.
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>new <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">hp =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">150</span>, <span class="dv">250</span>), <span class="at">wt =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>X  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(fit)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>X0 <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> hp <span class="sc">+</span> wt, new)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(X); p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X); q <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>Sigma <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(<span class="fu">residuals</span>(fit)) <span class="sc">/</span> (n <span class="sc">-</span> p)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>h0    <span class="ot">&lt;-</span> <span class="fu">rowSums</span>((X0 <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">crossprod</span>(X))) <span class="sc">*</span> X0)   <span class="co"># leverage of each new case</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>c2    <span class="ot">&lt;-</span> q <span class="sc">*</span> (n <span class="sc">-</span> p) <span class="sc">/</span> (n <span class="sc">-</span> p <span class="sc">-</span> q <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">qf</span>(<span class="fl">0.95</span>, q, n <span class="sc">-</span> p <span class="sc">-</span> q <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>yhat  <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, new)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(qsec <span class="sc">~</span> mpg, <span class="at">data =</span> mtcars, <span class="at">col =</span> <span class="st">"gray50"</span>, <span class="at">pch =</span> <span class="dv">16</span>,</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">35</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">13</span>, <span class="dv">24</span>))</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(new))) {</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  car<span class="sc">::</span><span class="fu">ellipse</span>(yhat[i, ], h0[i] <span class="sc">*</span> Sigma, <span class="fu">sqrt</span>(c2),</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">center.pch =</span> <span class="dv">3</span>)</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  car<span class="sc">::</span><span class="fu">ellipse</span>(yhat[i, ], (<span class="dv">1</span> <span class="sc">+</span> h0[i]) <span class="sc">*</span> Sigma, <span class="fu">sqrt</span>(c2),</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">center.pch =</span> <span class="cn">NULL</span>)</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>new <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">hp =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">150</span>, <span class="dv">250</span>), <span class="at">wt =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>X  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(fit)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>X0 <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> hp <span class="sc">+</span> wt, new)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(X); p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X); q <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>Sigma <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(<span class="fu">residuals</span>(fit)) <span class="sc">/</span> (n <span class="sc">-</span> p)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>h0    <span class="ot">&lt;-</span> <span class="fu">rowSums</span>((X0 <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">crossprod</span>(X))) <span class="sc">*</span> X0)   <span class="co"># leverage of each new case</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>c2    <span class="ot">&lt;-</span> q <span class="sc">*</span> (n <span class="sc">-</span> p) <span class="sc">/</span> (n <span class="sc">-</span> p <span class="sc">-</span> q <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">qf</span>(<span class="fl">0.95</span>, q, n <span class="sc">-</span> p <span class="sc">-</span> q <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>yhat  <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, new)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(qsec <span class="sc">~</span> mpg, <span class="at">data =</span> mtcars, <span class="at">col =</span> <span class="st">"gray50"</span>, <span class="at">pch =</span> <span class="dv">16</span>,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">35</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">13</span>, <span class="dv">24</span>))</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(new))) {</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  car<span class="sc">::</span><span class="fu">ellipse</span>(yhat[i, ], h0[i] <span class="sc">*</span> Sigma, <span class="fu">sqrt</span>(c2),</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">center.pch =</span> <span class="dv">3</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  car<span class="sc">::</span><span class="fu">ellipse</span>(yhat[i, ], (<span class="dv">1</span> <span class="sc">+</span> h0[i]) <span class="sc">*</span> Sigma, <span class="fu">sqrt</span>(c2),</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">center.pch =</span> <span class="cn">NULL</span>)</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-pred-ellipses" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scatterplot of qsec against mpg for the mtcars data, in gray. Three small filled blue ellipses mark the confidence regions for three predicted points, at about (14, 16), (21, 17.5) and (26, 18). Much larger dashed red prediction ellipses surround each one. All six ellipses have the same orientation, tilted slightly upward.">
@@ -620,7 +721,7 @@ The news hook. Development version on GitHub, not CRAN.
 <img src="index_files/figure-html/fig-pred-ellipses-1.png" class="img-fluid figure-img" style="width:65.0%" alt="Scatterplot of qsec against mpg for the mtcars data, in gray. Three small filled blue ellipses mark the confidence regions for three predicted points, at about (14, 16), (21, 17.5) and (26, 18). Much larger dashed red prediction ellipses surround each one. All six ellipses have the same orientation, tilted slightly upward.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pred-ellipses-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: 95% confidence ellipses (blue) and prediction ellipses (red, dashed) for the predicted (mpg, qsec) of three new cars from the <code>mtcars</code> model. All have the shape of the residual covariance matrix; only their size changes, with each car’s leverage.
+Figure&nbsp;7: 95% confidence ellipses (blue) and prediction ellipses (red, dashed) for the predicted (mpg, qsec) of three new cars from the <code>mtcars</code> model. All have the shape of the residual covariance matrix; only their size changes, with each car’s leverage.
 </figcaption>
 </figure>
 </div>
