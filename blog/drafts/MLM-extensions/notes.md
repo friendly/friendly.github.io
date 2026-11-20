@@ -293,3 +293,52 @@ book repo.
     - Barrett (2003);
     - Breiman & Friedman (1997), JRSS B 59(1).
   - Check whether a candisc paper is in `vita.bib` (none showed up in a title search).
+
+## Polishing list (review of the full draft, 2026-11-20)
+
+**Consistency (fix first)**
+
+1. The Conclusion says the "gaps in the last section" include `plot.mlm()`, added-variable
+   plots and effect displays, but "What's still missing" only has `predict.mlm()`; the others
+   are in an HTML comment. Add a short "Other gaps" list (plot.mlm, `car::avPlots()`/`vif()`,
+   effects, multivariate shrinkage: Brown & Zidek 1980, Breiman & Friedman 1997, both already
+   in references.bib).
+2. Ladder bullets in "One more dimension": the first ("scalar becomes a vector, or a matrix")
+   uses σ² → Σ, but the figure's first rung is eᵢ → a q-vector. Use eᵢ, and mention σ² → Σ
+   as the case that jumps two rungs.
+3. "`dim(X) + 1`" ("One more dimension") and "`dim() + 1`" (genridge): **X** is the model
+   matrix elsewhere; pick one phrase for the response gaining a dimension.
+4. The Kronecker product now appears four times (intro, mvinfluence, genridge, predict). Worth
+   naming as a recurring motif, perhaps in the Conclusion; the LATER comment on factorial
+   design matrices could join it there.
+
+**Unfinished text (MF placeholders)**
+
+5. candisc: the `pairs()` paragraph and its footnote ("there other", ",,,", "for free base R
+   graphics"); the "wrinkle" bullet runs into the `can_lm()`/`varOrder()` lines.
+6. genridge: the three "..." bullets (covariance ellipses, PCA views, biplot). An example
+   figure could go here, e.g. `pca()` / `biplot()` for one response.
+7. Decide: the `influence(fit, m = 2)` pitfall comment (lesson in the post, or just the
+   mvinfluence TASKS.md); the `vcov.mlm` "think twice" sentence; the compact hook table
+   (comment in the intro).
+
+**Typos and rendering**
+
+8. Intro: `** *don't* fail**` renders with literal asterisks; use `***don't* fail**`-style or
+   reword. "as it currently does in for the `predict()` generic". The two bullets after
+   `cooks.distance()` aren't parallel (the second is a separate point).
+9. Intro: the predict paragraph ends without a period after "(`dev/pred.mlm.R`)".
+10. HE plots: "The **same design** S3 design principle" (repeated "design").
+11. genridge: "only in terms of ... only" (double "only").
+
+**Clean-up before publishing**
+
+12. Remove obsolete HTML comments: the Status line (2026-11-19), the mtcars/dataset question,
+    the SKELETON banner, the predict.mlm pointer note in "One more dimension", the CHECK
+    comment in "Filling in the gaps" (done).
+13. Verify the four pkgdown URLs and the Vis-MLM book link (Fig 6.1 is a chapter page).
+14. Categories: consider adding candisc and mvinfluence.
+15. Update the genridge 0.8.1 wording once CRAN accepts it.
+16. The removed "Further reading" note suggested Vis-MLM chapters 9, 11–14, 21; a one-line
+    pointer could go in the Conclusion. Uncited entries in references.bib (FriendlySigal 2015,
+    2016; Friendly & Kwan) can be cited or dropped.

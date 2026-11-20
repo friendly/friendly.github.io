@@ -892,9 +892,7 @@ A. Square, in _Flatland_, could not imagine a third dimension until the Sphere l
 out of his plane and showed him one. Most of us learned regression in a world of one
 response. Seeing what happens in one more dimension is, I think, worth the trip.
 
-## Further reading
+## References {.unnumbered}
 
-<!--
-- Vis-MLM book chapters 9, 11-14, 21: https://friendly.github.io/Vis-MLM-book
-- Papers: references.bib is built (2026-11-20); Further reading could list FriendlySigal:2015, FriendlySigal:2016:TQMP, Friendly:genridge:2013, Brown-Zidek-1980, BreimanFriedman:1997, FriendlyKwan:02:effect (all in references.bib, not yet cited).
--->
+::: {#refs}
+:::
