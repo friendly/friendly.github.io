@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Michael Friendly">
-<meta name="dcterms.date" content="2026-11-19">
+<meta name="dcterms.date" content="2026-11-20">
 <meta name="description" content="R fits a multivariate linear model with the same lm() call as a univariate one, but many of the methods built around lm objects stop working, or quietly do something univariate. The underlying issue is that every object gains a dimension. This post describes what I’ve learned extending lm methods to mlm in the heplots, candisc, mvinfluence and genridge packages.">
 
 <title>On Extending lm() Methods to "mlm"</title>
@@ -120,12 +120,21 @@ window.Quarto = {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#one-more-dimension" id="toc-one-more-dimension" class="nav-link" data-scroll-target="#one-more-dimension">One more dimension</a></li>
   <li><a href="#filling-in-the-gaps" id="toc-filling-in-the-gaps" class="nav-link" data-scroll-target="#filling-in-the-gaps">Filling in the gaps</a></li>
-  <li><a href="#seeing-the-tests-he-plots" id="toc-seeing-the-tests-he-plots" class="nav-link" data-scroll-target="#seeing-the-tests-he-plots">Seeing the tests: HE plots</a></li>
+  <li><a href="#seeing-the-tests-he-plots" id="toc-seeing-the-tests-he-plots" class="nav-link" data-scroll-target="#seeing-the-tests-he-plots">Seeing the tests: HE plots</a>
+  <ul class="collapse">
+  <li><a href="#what-was-easy" id="toc-what-was-easy" class="nav-link" data-scroll-target="#what-was-easy">What was easy</a></li>
+  </ul></li>
   <li><a href="#seeing-it-in-fewer-dimensions-candisc" id="toc-seeing-it-in-fewer-dimensions-candisc" class="nav-link" data-scroll-target="#seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</a></li>
   <li><a href="#influence-mvinfluence" id="toc-influence-mvinfluence" class="nav-link" data-scroll-target="#influence-mvinfluence">Influence: mvinfluence</a></li>
-  <li><a href="#robustness-robmlm" id="toc-robustness-robmlm" class="nav-link" data-scroll-target="#robustness-robmlm">Robustness: robmlm()</a></li>
+  <li><a href="#robustness-robmlm" id="toc-robustness-robmlm" class="nav-link" data-scroll-target="#robustness-robmlm">Robustness: robmlm()</a>
+  <ul class="collapse">
+  <li><a href="#what-took-more-work" id="toc-what-took-more-work" class="nav-link" data-scroll-target="#what-took-more-work">What took more work</a></li>
+  </ul></li>
   <li><a href="#now-multivariate-ridge-regression-in-genridge" id="toc-now-multivariate-ridge-regression-in-genridge" class="nav-link" data-scroll-target="#now-multivariate-ridge-regression-in-genridge">Now: multivariate ridge regression in genridge</a></li>
-  <li><a href="#whats-still-missing" id="toc-whats-still-missing" class="nav-link" data-scroll-target="#whats-still-missing">What’s still missing</a></li>
+  <li><a href="#whats-still-missing" id="toc-whats-still-missing" class="nav-link" data-scroll-target="#whats-still-missing">What’s still missing</a>
+  <ul class="collapse">
+  <li><a href="#not-done-yet-predict.mlm-with-standard-errors" id="toc-not-done-yet-predict.mlm-with-standard-errors" class="nav-link" data-scroll-target="#not-done-yet-predict.mlm-with-standard-errors">Not done yet: <code>predict.mlm()</code> with standard errors</a></li>
+  </ul></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
   </ul>
 </nav>
@@ -163,7 +172,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 19, 2026</p>
+      <p class="date">November 20, 2026</p>
     </div>
   </div>
   
@@ -199,11 +208,8 @@ Planning notes: notes.md (same folder).
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>R makes it remarkably easy to fit a multivariate linear model. You don’t need a special function. You just give <code>lm()</code> a matrix of responses instead of a single one:</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(mpg, qsec) <span class="sc">~</span> hp <span class="sc">+</span> wt, <span class="at">data =</span> mtcars)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "mlm" "lm" </code></pre>
 </div>
@@ -215,10 +221,7 @@ sections. Or use one dataset throughout?
 -->
 <p>The result is an object of class <code>"mlm"</code> that <em>also</em> inherits from <code>"lm"</code>. That second class is a promise, or at least a hope: anything that works for a linear model should work here too. So, as you would for any regression, you ask for the diagnostic plots:</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-error">
 <pre><code>Error:
 ! 'plot.mlm' is not implemented yet</code></pre>
@@ -226,29 +229,20 @@ sections. Or use one dataset throughout?
 </div>
 <p>Well, that’s honest, at least. Other functions fail less gracefully. Several old friends from the <code>car</code> package stop with messages that tell you nothing about why:</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">avPlots</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `complete.cases()`:
 ! not all arguments have the same length</code></pre>
 </div>
-<details open="" class="code-fold">
-<summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `if (names(coefficients(mod)[1]) == "(Intercept)") ...`:
 ! argument is of length zero</code></pre>
 </div>
 </div>
-<p>The more interesting cases are the ones that <em>don’t</em> fail. <code>cooks.distance()</code> runs without a murmur and gives you a Cook’s D for each case, separately for each response:</p>
+<p>The more interesting cases are the ones that ** <em>don’t</em> fail<strong>, but don’t give you anything </strong>useful**: <code>cooks.distance()</code> runs without a murmur and gives you a Cook’s D for each case, separately for each response:</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cooks.distance</span>(fit), <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                        mpg         qsec
 Mazda RX4      1.589652e-02 0.0454756076
@@ -257,8 +251,27 @@ Datsun 710     2.070651e-02 0.0003741428
 Hornet 4 Drive 4.724822e-05 0.0051368087</code></pre>
 </div>
 </div>
-<p>That’s two univariate answers to what was a multivariate question: which cases have an undue influence on the model as a whole? <code>summary(fit)</code> does the same thing, returning a list of separate regression summaries, one per response, as if you’d called <code>lm()</code> twice. Nothing warns you that the correlation between the responses, which is the whole point of fitting them together, has dropped out of the analysis.</p>
-<p>In short, the multivariate linear model is easy to fit and hard to see. <a href="#fig-techniques" class="quarto-xref">Figure&nbsp;1</a> puts this in a wider frame. It classifies the familiar linear-model methods by the number and kind of predictors and responses. For one response (<span class="math inline">\(q = 1\)</span>), we have a rich toolkit of graphical methods: added-variable plots, influence plots, effect plots and the rest. For several quantitative responses (<span class="math inline">\(q &gt; 1\)</span>), the methods are just as well developed on the statistical side (multivariate regression, MANOVA, canonical correlation), but the graphics have been thin. Mostly, the results arrive as tables of multivariate test statistics.</p>
+<p>That’s two <strong>univariate</strong> answers to what was a <strong>multivariate</strong> question: which cases have an undue influence on the model as a whole?</p>
+<ul>
+<li><code>summary(fit)</code> does the same thing, returning a list of separate regression summaries, one per response, as if you’d called <code>lm()</code> twice.</li>
+<li>Nothing warns you that the correlation between the responses, which is the whole point of fitting them together, has dropped out of the analysis.</li>
+</ul>
+<p>The question of <em>multivariate influence</em> is now largely solved in my <a href="https://friendly.github.io/mvinfluence/"><code>mvinfluence</code></a> package, which was part of my learning curve for the larger question I’m addressing here.</p>
+<p>In short, the multivariate linear model is <strong>easy to fit</strong> and <strong>hard to see</strong>.</p>
+<ul>
+<li>The model syntax in <code>lm()</code> is trivial &amp; expressive: <code>y</code> becomes <code>cbind(y1, y2, ...)</code>. You only need to understand the idea of <strong>“binding”</strong> rows or columns into a matrix. But the <code>cbind</code> base family also works for a sequence of vectors, matrices and dataframes.</li>
+<li>The matrix algebra extension is elegant &amp; beautiful: <span class="math inline">\(\mathbf{y}_{n \times 1} \rightarrow \mathbf{Y}_{n \times q}\)</span> — it largely just works! The residual variance <span class="math inline">\(\sigma^2\)</span> becomes a covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>. The <span class="math inline">\(F\)</span> ratio of hypothesis to error sums of squares becomes the eigenvalues of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>, which give Wilks’ <span class="math inline">\(\Lambda\)</span>, the Pillai trace, Hotelling-Lawley and their friend Roy. And <span class="math inline">\(\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}\)</span> becomes <span class="math inline">\(\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}\)</span>. Once there’s a covariance matrix, you can even ask whether it’s the same in every group: Box’s <span class="math inline">\(\mathcal{M}\)</span> test [#ref: Box:1949 in statistics.bib].</li>
+</ul>
+<!--
+LATER (MF, 2026-11-20): the Kronecker product's other role in lm(). For a crossed
+factorial design, the model matrix is built from per-factor pieces:
+(1, X_A) ⊗ (1, X_B) ⊗ (1, X_C) gives the columns of y ~ A*B*C (the main-effects model
+y ~ A + B + C is a subset of them). Strictly, that's one row per cell, in lexicographic
+order; replicates add ⊗ 1_n, and unbalanced data select rows. Where: possibly "One more
+dimension" (another way the algebra stays tidy) or a footnote near the genridge
+Σ ⊗ V_λ result.
+-->
+<p><a href="#fig-techniques" class="quarto-xref">Figure&nbsp;1</a> puts this in a wider frame. It classifies the familiar linear-model methods by the number and kind of predictors and responses. For one response (<span class="math inline">\(q = 1\)</span>), we have a rich toolkit of graphical methods: added-variable plots, influence plots, effect plots and the rest. For several quantitative responses (<span class="math inline">\(q &gt; 1\)</span>), the methods are just as well developed on the statistical side (multivariate regression, MANOVA, canonical correlation), but the graphics have been thin. Mostly, the results arrive as tables of multivariate test statistics.</p>
 <div id="fig-techniques" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A table of linear-model techniques. Rows: predictors, quantitative or discrete, with p = 1 or p > 1. Columns: responses, quantitative or discrete, with q = 1 or q > 1. For quantitative responses, simple and multiple regression, t-test and ANOVA (q = 1) generalize to multivariate regression, canonical and partial correlation, Hotelling T-squared and MANOVA (q > 1). For discrete responses, logistic regression, chi-square, discriminant analysis, logit and loglinear models.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-techniques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -283,8 +296,9 @@ Could be generated live with tryCatch so it stays true as packages change.
 </section>
 <section id="one-more-dimension" class="level2">
 <h2 class="anchored" data-anchor-id="one-more-dimension">One more dimension</h2>
-<p>Why should this be so hard? The statistics of the multivariate linear model have been settled for more than half a century. The trouble is more mundane, and I think it’s worth naming, because it explains nearly every problem I’ve run into.</p>
-<p>When the response goes from a vector <strong>y</strong> to a matrix <strong>Y</strong>, every object the model produces gains a dimension:</p>
+<p>Why should this be so hard? The statistics of the multivariate linear model have been settled for more than half a century. The trouble is more mundane, and I think it’s worth naming, because it explains nearly every problem I’ve run into in developing these ideas.</p>
+<p>It calls to mind the cognitive problems “A. Square” encountered in Edwin Abbott’s <em>Flatland</em> [#ref], when a Sphere entered the story and taught him how to think in one more dimension. I’ve told that story in my<a href=""><em>Visualizing Multivariate Data and Models in R</em></a> book.</p>
+<p>In R, when the response goes from a vector <strong>y</strong> to a matrix <strong>Y</strong>, every object the model produces <strong>gains a dimension</strong>:</p>
 <ul>
 <li>a <strong>scalar becomes a vector, or a matrix</strong>. The residual variance <span class="math inline">\(\sigma^2\)</span> becomes a <span class="math inline">\(q \times q\)</span> covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>.</li>
 <li>a <strong>vector becomes a matrix</strong>. The coefficients <span class="math inline">\(\mathbf{b}\)</span> become a <span class="math inline">\(p \times q\)</span> matrix <span class="math inline">\(\mathbf{B}\)</span>, and the residuals become an <span class="math inline">\(n \times q\)</span> matrix.</li>
@@ -303,13 +317,11 @@ Figure&nbsp;2: Going from <code>lm</code> to <code>mlm</code>, every object gain
 </div>
 <!-- Drawn by R/dimension-ladder.R (run from this folder). Possible additions: a fourth
 rung for sigma^2 -> Sigma (scalar -> matrix, skipping a rung), or se.fit. -->
-<p>That extra dimension shows up first in what a function <em>returns</em>, and then in every method that has to consume it: <code>print()</code>, <code>summary()</code>, <code>confint()</code>, <code>predict()</code>, and of course <code>plot()</code>. Code written for one shape is handed the next one up, and it has to do <em>something</em>.</p>
+<p>That extra dimension shows up first in what a function <em>returns</em>, and then in every method that has to consume it: <code>print()</code>, <code>summary()</code>, <code>confint()</code>, <code>predict()</code>, and of course <code>plot()</code>.</p>
+<p>Code written for one shape is handed the next one up. But this has to do <em>something</em> with the new <code>dim(X) + 1</code> object. The challenge has always been: How to do something more <strong>useful</strong> in a multivariate context.</p>
 <p>Base R takes several different approaches. Sometimes it simply returns the bigger object: <code>coef(fit)</code> is the <span class="math inline">\(3 \times 2\)</span> matrix you’d expect. Sometimes it <strong>flattens</strong> the extra dimension away. <code>confint()</code> strings the responses and coefficients together into one long list of intervals:</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                       2.5 %      97.5 %
 mpg:(Intercept)  33.95738245 40.49715778
@@ -321,18 +333,19 @@ qsec:wt           0.39771199  1.48535274</code></pre>
 </div>
 </div>
 <p>The <code>broom</code> package does much the same thing in tidy form, stacking the responses in a long data frame with a <code>response</code> column. That’s perfectly convenient for a table, but in both cases the answers for <code>mpg</code> and <code>qsec</code> sit side by side as if they had nothing to do with each other.</p>
-<p>And sometimes R just <strong>refuses</strong>:</p>
+<p>And sometimes R just <strong>refuses</strong>, as it currently does in for the <code>predict()</code> generic:</p>
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit, <span class="at">newdata =</span> mtcars[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ], <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `predict.mlm()`:
 ! the 'se.fit' argument is not yet implemented for "mlm" objects</code></pre>
 </div>
 </div>
-<p>I have some sympathy for that last one. For a univariate model, the standard error of a predicted value is a single number, and a confidence interval is a pair of numbers, <code>lwr</code> and <code>upr</code>. For an <code>mlm</code>, the uncertainty of each predicted point is a <span class="math inline">\(q \times q\)</span> covariance matrix, and the natural confidence region is an <em>ellipse</em> (an ellipsoid when <span class="math inline">\(q &gt; 2\)</span>) around it. What should <code>predict()</code> return? How should it print? There’s no column in <code>cbind(fit, lwr, upr)</code> for an ellipse.</p>
+<p>I have some sympathy for that last one.</p>
+<ul>
+<li><p>For a univariate model, the standard error of a predicted value is a single number, and a confidence interval is a pair of numbers, <code>lwr</code> and <code>upr</code>.</p></li>
+<li><p>For an <code>mlm</code>, the uncertainty of each predicted point is a <span class="math inline">\(q \times q\)</span> covariance matrix, and the natural confidence region is an <em>ellipse</em> (an ellipsoid when <span class="math inline">\(q &gt; 2\)</span>) around it. What should <code>predict()</code> return? How should it print? There’s no column in <code>cbind(fit, lwr, upr)</code> for an ellipse. Work on this is still unfinished in <code>heplots</code> (<code>dev/pred.mlm.R</code>)</p></li>
+</ul>
 <!--
 predict.mlm() is an unfinished item in heplots (dev/pred.mlm.R returns an n x q x 3
 array). Mention here briefly, or save it for "What's still missing"? I'd keep a
@@ -373,24 +386,132 @@ Questions for MF are marked Q:.
 </section>
 <section id="seeing-the-tests-he-plots" class="level2">
 <h2 class="anchored" data-anchor-id="seeing-the-tests-he-plots">Seeing the tests: HE plots</h2>
-<!--
-- The SSP matrices H and E replace SS_H and SS_E; tests come from eigenvalues of HE^{-1}.
-- heplot(fit) as the plot.mlm() that R doesn't have? (A nice callback to the intro.)
-- One figure: heplot() of a model with a factor + covariate. Dataset Q: Rohwer, iris, NeuroCog?
-- Mention pairs.mlm(), heplot3d(); in passing coefplot.mlm(), cqplot(), etasq(), glance.mlm().
-- Shape point: car::Anova() returns a list of H matrices, one per term; that's the
-  "list of matrices" rung of the ladder.
-- Cite Friendly (2007), Fox, Friendly & Monette (2009).
--->
+<p>In a univariate linear model, every <span class="math inline">\(F\)</span> test compares two sums of squares: <span class="math inline">\(SS_H\)</span> for the hypothesis and <span class="math inline">\(SS_E\)</span> for error. In the multivariate model, each of these becomes a <span class="math inline">\(q \times q\)</span> matrix of sums of squares and products: <span class="math inline">\(\mathbf{H}\)</span> for each term in the model, and one <span class="math inline">\(\mathbf{E}\)</span> for the residuals. All four multivariate test statistics are functions of the eigenvalues of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>, the matrix analog of <span class="math inline">\(SS_H / SS_E\)</span>.</p>
+<p>That’s the matrix that plays the role of the scalar. The way to see it is the <strong>HE plot</strong> (Friendly, 2007; Fox, Friendly &amp; Monette, 2009): draw <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span> as ellipses in the space of two responses. The <span class="math inline">\(\mathbf{E}\)</span> ellipse shows the size and shape of the residual variation. The <span class="math inline">\(\mathbf{H}\)</span> ellipse for a term shows the variation of the fitted values due to that term. With the default “evidence” scaling, <span class="math inline">\(\mathbf{H}\)</span> protrudes outside <span class="math inline">\(\mathbf{E}\)</span> somewhere in the full response space if and only if the term is significant by Roy’s test. (In a two-dimensional view, the rule works only one way: outside means significant, but inside doesn’t mean “not significant”.)</p>
+<p>Here’s an example, from Rohwer’s study of how well paired-associate (PA) learning tasks predict three aptitude and achievement tests in kindergarten children of high and low socioeconomic status (SES). The model is a multivariate analysis of covariance: SES is a factor, and the five PA tasks are covariates.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(heplots)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Rohwer, <span class="at">package =</span> <span class="st">"heplots"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>rohwer.mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(SAT, PPVT, Raven) <span class="sc">~</span> SES <span class="sc">+</span> n <span class="sc">+</span> s <span class="sc">+</span> ns <span class="sc">+</span> na <span class="sc">+</span> ss, <span class="at">data =</span> Rohwer)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(rohwer.mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Type II MANOVA Tests: Pillai test statistic
+    Df test stat approx F num Df den Df    Pr(&gt;F)    
+SES  1   0.37853  12.1818      3     60 2.507e-06 ***
+n    1   0.04030   0.8400      3     60  0.477330    
+s    1   0.09271   2.0437      3     60  0.117307    
+ns   1   0.19283   4.7779      3     60  0.004729 ** 
+na   1   0.23134   6.0194      3     60  0.001181 ** 
+ss   1   0.04990   1.0504      3     60  0.376988    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The <code>heplot()</code> below shows the <span class="math inline">\(\mathbf{H}\)</span> ellipses for all six terms in the space of <code>SAT</code> and <code>PPVT</code>, plus one more, <code>Regr</code>, for the joint hypothesis that all five PA coefficients are zero.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># colors: Error first, then the six terms, then the Regr hypothesis</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"darkgreen"</span>, <span class="st">"blue"</span>, <span class="st">"cyan3"</span>, <span class="st">"magenta"</span>, <span class="st">"brown"</span>, <span class="st">"darkgray"</span>, <span class="st">"purple"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(rohwer.mod,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">hypotheses =</span> <span class="fu">list</span>(<span class="st">"Regr"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"n"</span>, <span class="st">"s"</span>, <span class="st">"ns"</span>, <span class="st">"na"</span>, <span class="st">"ss"</span>)),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> col, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-rohwer-heplot" class="quarto-float quarto-figure quarto-figure-center anchored" alt="HE plot of PPVT against SAT. A red dashed Error ellipse is centered at the grand mean. A large green Regr ellipse, tilted upward, extends well outside it. Lines for SES, na and ns also extend outside the Error ellipse; the lines for n, s and ss stay inside. Points mark the Hi and Lo SES group means.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rohwer-heplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-rohwer-heplot-1.png" class="img-fluid figure-img" style="width:75.0%" alt="HE plot of PPVT against SAT. A red dashed Error ellipse is centered at the grand mean. A large green Regr ellipse, tilted upward, extends well outside it. Lines for SES, na and ns also extend outside the Error ellipse; the lines for n, s and ss stay inside. Points mark the Hi and Lo SES group means.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rohwer-heplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: HE plot for the Rohwer MANCOVA model, in the space of SAT and PPVT. Each 1-df term is a line; the <code>Regr</code> ellipse tests all five PA tasks together. Terms whose H ellipse or line extends outside the E ellipse are significant.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The plot tells most of the story of the <code>Anova()</code> table at a glance. SES and <code>na</code> extend beyond <span class="math inline">\(\mathbf{E}\)</span>, while <code>n</code>, <code>s</code> and <code>ss</code> stay well inside. <code>ns</code>, also significant, only just reaches the edge of <span class="math inline">\(\mathbf{E}\)</span> in this view: the one-way rule at work. The tilt of the <code>Regr</code> ellipse shows that the PA tasks predict <code>SAT</code> and <code>PPVT</code> together, in the same direction. There’s also a lesson about shape. Each term with 1 df has an <span class="math inline">\(\mathbf{H}\)</span> matrix of rank 1, so its “ellipse” collapses to a line. In general, the dimension of the <span class="math inline">\(\mathbf{H}\)</span> ellipse is the smaller of the term’s df and <span class="math inline">\(q\)</span>.</p>
+<section id="what-was-easy" class="level3">
+<h3 class="anchored" data-anchor-id="what-was-easy">What was easy</h3>
+<p>The <code>heplot()</code> functions were, honestly, the easy part, because the statistics were already done. John Fox’s <code>car::Anova()</code> computes <span class="math inline">\(\mathbf{H}\)</span> for every term, and <code>car::linearHypothesis()</code> does so for any linear hypothesis. <code>Anova()</code> returns these as a <em>list</em> of <span class="math inline">\(q \times q\)</span> matrices, one per term: the “list of matrices” rung of the ladder. So <code>heplot.mlm()</code> is “only” a plot method on that list:</p>
+<ul>
+<li>choose two (or three) responses and take the corresponding submatrices of <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span>;</li>
+<li>scale them (by the error df, and for evidence scaling, by the critical value of Roy’s test);</li>
+<li>draw each one as an ellipse, using its Cholesky factor to transform a circle.</li>
+</ul>
+<p>Everything that <code>Anova()</code> can test, <code>heplot()</code> can draw, including repeated-measures designs through its <code>idata</code> and <code>idesign</code> arguments. And because <code>heplot()</code> is an S3 generic, anything that inherits from <code>"mlm"</code> gets an HE plot for free.</p>
+<p>The <strong>same design</strong> S3 design principle in R gave a family of graphical methods for <code>"mlm"</code> objects: <code>pairs()</code> for all pairs of responses, <code>heplot3d()</code> for three, and <code>heplot1d()</code> for one. Other helpers came along:</p>
+<ul>
+<li><code>coefplot()</code> shows confidence ellipses for the coefficients, generalizing <code>car::confidenceEllipse()</code>;</li>
+<li><code>cqplot()</code> is a <span class="math inline">\(\chi^2\)</span> QQ plot of the squared Mahalanobis distances of the residuals;</li>
+<li><code>etasq()</code> gives multivariate measures of effect size, and <code>glance()</code> a <code>broom</code>-style one-row summary for each response.</li>
+</ul>
+<p>The <a href="https://friendly.github.io/heplots/articles/HE_manova.html">MANOVA</a> and <a href="https://friendly.github.io/heplots/articles/HE_mmra.html">MMRA</a> vignettes have many more examples.</p>
+</section>
 </section>
 <section id="seeing-it-in-fewer-dimensions-candisc" class="level2">
 <h2 class="anchored" data-anchor-id="seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</h2>
-<!--
-- With q responses the HE plot lives in q dimensions; candisc finds the s = min(q, df_h)
-  dimensional space that shows the effect best.
-- candisc.mlm(), candiscList.mlm(); heplot() of the result.
-- Short: one figure, or reuse the dataset from the HE section for continuity.
--->
+<p>An HE plot shows two responses at a time, and <code>pairs()</code> shows all of them, two at a time. But the effect of a term doesn’t have to line up with any pair of responses. The <span class="math inline">\(\mathbf{H}\)</span> ellipsoid for a term lives in <span class="math inline">\(s = \min(q, df_h)\)</span> dimensions, in directions that are combinations of all the responses.</p>
+<p>The eigenvectors of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span> point in those directions. They define the <em>canonical variates</em>: linear combinations of the responses that are uncorrelated within groups, ordered by how much of the effect they capture. Their eigenvalues are the same ones that go into the multivariate test statistics. So the canonical space is the low-dimensional view in which the test is easiest to see.</p>
+<p>The <code>Pottery</code> data give an example: the chemical composition (five oxides) of ancient pottery from four sites in Britain. With <span class="math inline">\(q = 5\)</span> responses and <span class="math inline">\(df_h = 3\)</span> for <code>Site</code>, the effect lives in <span class="math inline">\(s = 3\)</span> dimensions. <code>candisc()</code> finds them:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(candisc)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Pottery, <span class="at">package =</span> <span class="st">"carData"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>pottery.mlm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(Al, Fe, Mg, Ca, Na) <span class="sc">~</span> Site, <span class="at">data =</span> Pottery)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>pottery.can <span class="ot">&lt;-</span> <span class="fu">candisc</span>(pottery.mlm)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>pottery.can</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Canonical Discriminant Analysis for Site:
+
+    CanRsq Eigenvalue Difference  Percent Cumulative
+1 0.971559   34.16111     32.911 96.39480     96.395
+2 0.555575    1.25010     32.911  3.52749     99.922
+3 0.026802    0.02754     32.911  0.07771    100.000
+
+Test of H0: The canonical correlations in the 
+current row and all that follow are zero
+
+  LR test stat approx F numDF denDF  Pr(&gt; F)    
+1      0.01230  13.0885    15 50.09 1.84e-12 ***
+2      0.43251   2.4726     8 38.00  0.02896 *  
+3      0.97320   0.1836     3 20.00  0.90629    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The first dimension accounts for 96% of the differences among the sites, and only the first two are significant. A two-dimensional plot of the canonical space shows nearly everything:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(pottery.can, <span class="at">var.lwd =</span> <span class="dv">2</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Vector scale factor set to  14.83312 </code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-pottery-can" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Canonical HE plot, Can2 (3.5%) against Can1 (96.4%). The Site H ellipse is long and flat along Can1; the red Error ellipse is a small circle at the origin. Isle Thorns and Ashley Rails lie at the left, Llanedyrn and Caldicot at the right, with Caldicot lower. Arrows for Fe, Mg and Ca point right, Al points left, and Na points up and to the right.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pottery-can-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pottery-can-1.png" class="img-fluid figure-img" style="width:75.0%" alt="Canonical HE plot, Can2 (3.5%) against Can1 (96.4%). The Site H ellipse is long and flat along Can1; the red Error ellipse is a small circle at the origin. Isle Thorns and Ashley Rails lie at the left, Llanedyrn and Caldicot at the right, with Caldicot lower. Arrows for Fe, Mg and Ca point right, Al points left, and Na points up and to the right.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pottery-can-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the E ellipse is a circle. Arrows show the correlations of the oxides with the canonical dimensions.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The plot is a kind of biplot for the HE plot. The <span class="math inline">\(\mathbf{E}\)</span> ellipse becomes a circle, because the canonical variates are uncorrelated within groups and scaled to have equal error variance. Directions in this space are therefore comparable, and the size of <span class="math inline">\(\mathbf{H}\)</span> relative to the circle shows the strength of the effect. The arrows show how each oxide is correlated with the canonical dimensions. Here, <code>Can1</code> is mainly a contrast of aluminum against iron, magnesium and calcium, which separates Isle Thorns and Ashley Rails from Llanedyrn and Caldicot.</p>
+<p>In terms of the ladder, <code>candisc()</code> doesn’t need to ignore the extra dimensions; it <em>rotates</em> them. It finds the directions that matter for one term, and lets you ignore the rest knowing how little you lose.</p>
+<p>The software followed the heplots design. <code>candisc()</code> gets <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span> from the same <code>car::Anova()</code> call, and returns a <code>"candisc"</code> object, for which there are <code>heplot()</code>, <code>heplot3d()</code> and <code>plot()</code> methods. <code>candiscList()</code> does this for every term in the model. <code>can_lm()</code> goes one step further, refitting the model with the canonical scores as responses. And <code>varOrder()</code> uses the angles of those arrows to order the responses in other displays, like <code>pairs()</code>, so that related variables sit together.</p>
 </section>
 <section id="influence-mvinfluence" class="level2">
 <h2 class="anchored" data-anchor-id="influence-mvinfluence">Influence: mvinfluence</h2>
@@ -404,12 +525,49 @@ Questions for MF are marked Q:.
 </section>
 <section id="robustness-robmlm" class="level2">
 <h2 class="anchored" data-anchor-id="robustness-robmlm">Robustness: robmlm()</h2>
-<!--
-- MASS::rlm() fails on an mlm ("incompatible dimensions"); robmlm() is the mlm analog.
-- IWLS with weights from Mahalanobis distances of residuals; scale from MASS::cov.trob().
-- Design point: robmlm objects inherit from "mlm", so car::Anova() and heplot() just work.
-- Figure: plot.robmlm() case weights, or before/after HE plot overlay.
--->
+<p>For a univariate model, <code>MASS::rlm()</code> gives a robust fit, downweighting cases with large residuals. Give it a matrix response, and it stops with “incompatible dimensions”.</p>
+<p>The algorithm for a multivariate version, <code>heplots::robmlm()</code>, is short. It’s iteratively reweighted least squares, with one change, which is the ladder again. In <code>rlm()</code>, a case’s weight depends on the size of its residual, <span class="math inline">\(|e_i| / s\)</span>, a scalar. Here the residual is a vector, so its size becomes a squared Mahalanobis distance, <span class="math inline">\(\mathbf{e}_i^\top
+\mathbf{S}^{-1} \mathbf{e}_i\)</span>, using a robust estimate of the residual covariance matrix <span class="math inline">\(\mathbf{S}\)</span> from <code>MASS::cov.trob()</code>. Bisquare weights are computed from these distances, with a cutoff from the <span class="math inline">\(\chi^2_q\)</span> distribution, and the model is refit by weighted least squares until the coefficients stop changing.</p>
+<section id="what-took-more-work" class="level3">
+<h3 class="anchored" data-anchor-id="what-took-more-work">What took more work</h3>
+<p>The harder part was making the result a full citizen of the <code>"mlm"</code> world. A <code>robmlm</code> object has class <code>c("robmlm", "mlm", "lm")</code>, so <code>car::Anova()</code>, <code>heplot()</code> and the rest should accept it. But the weights got in the way. Ask base R for the covariance matrix of a weighted <code>mlm</code>, and it refuses: <code>'mlm' objects with weights are not supported</code>. So heplots provides its own <code>vcov.mlm()</code>, which takes the weights into account.</p>
+<p>That works, but it’s a sharp tool. Once heplots is loaded, its method replaces the one in <strong>stats</strong> for <em>every</em> <code>"mlm"</code> object, not just robust ones. It gives the same answers when there are no weights, but it’s the kind of design choice I’d think twice about today. Smaller things came later. <code>robmlm()</code> now has a method for an <code>mlm</code> object, so you can write <code>robmlm(mod)</code> instead of repeating the formula and data, and it stores its call, so <code>update()</code> works.</p>
+<p>Then there were the visualizations. What does a robust fit change, and how can you see it? <code>plot()</code> for a <code>robmlm</code> object shows the final weights for each case. Overlaying the HE plots for the classical and robust fits shows what the downweighting does to the test. Here it is for the <code>Pottery</code> model from the candisc section.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pottery.rlm <span class="ot">&lt;-</span> <span class="fu">robmlm</span>(pottery.mlm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pottery.rlm, <span class="at">col =</span> Pottery<span class="sc">$</span>Site, <span class="at">segments =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(pottery.mlm, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"Al"</span>, <span class="st">"Fe"</span>),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"blue"</span>), <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">heplot</span>(pottery.rlm, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"Al"</span>, <span class="st">"Fe"</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">error.ellipse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"red"</span>), <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">fill.alpha =</span> <span class="fl">0.1</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"Classical"</span>, <span class="st">"Robust"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>),</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-pottery-robust" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. Left: an index plot of case weights. Most are near 1, but cases 1, 7, 11 and 25 have weights near 0, and cases 9 and 10 about 0.5. Right: HE plot of Fe against Al. The classical and robust Site ellipses nearly coincide, a long thin ellipse running from upper left to lower right. The robust Error ellipse is clearly smaller than the classical one.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pottery-robust-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pottery-robust-1.png" class="img-fluid figure-img" alt="Two panels. Left: an index plot of case weights. Most are near 1, but cases 1, 7, 11 and 25 have weights near 0, and cases 9 and 10 about 0.5. Right: HE plot of Fe against Al. The classical and robust Site ellipses nearly coincide, a long thin ellipse running from upper left to lower right. The robust Error ellipse is clearly smaller than the classical one." width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pottery-robust-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Robust MANOVA for the Pottery data. Left: final case weights from <code>robmlm()</code>, colored by site. Right: HE plots for the classical (blue, solid) and robust (red, dashed) fits, for Al and Fe.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Four cases (1, 7, 11 and 25) get weights near zero, and two more (9 and 10) about one half. The robust <span class="math inline">\(\mathbf{H}\)</span> ellipse for <code>Site</code> is nearly the same as the classical one, but the <span class="math inline">\(\mathbf{E}\)</span> ellipse shrinks. Downweighting a few unusual pots makes the differences among sites stand out more: the <span class="math inline">\(F\)</span> for Pillai’s test rises from 4.3 to 6.6. The <a href="https://friendly.github.io/heplots/articles/Robust.html">Robust vignette</a> has the details, and a second example with a multivariate regression.</p>
+</section>
 </section>
 <section id="now-multivariate-ridge-regression-in-genridge" class="level2">
 <h2 class="anchored" data-anchor-id="now-multivariate-ridge-regression-in-genridge">Now: multivariate ridge regression in genridge</h2>
@@ -430,15 +588,60 @@ The news hook. Development version on GitHub, not CRAN.
 </section>
 <section id="whats-still-missing" class="level2">
 <h2 class="anchored" data-anchor-id="whats-still-missing">What’s still missing</h2>
+<section id="not-done-yet-predict.mlm-with-standard-errors" class="level3">
+<h3 class="anchored" data-anchor-id="not-done-yet-predict.mlm-with-standard-errors">Not done yet: <code>predict.mlm()</code> with standard errors</h3>
+<p>Back in the introduction, <code>predict(fit, se.fit = TRUE)</code> simply refused. The statistics aren’t hard. For a new case with predictors <span class="math inline">\(\mathbf{x}_0\)</span>, the predicted response vector is <span class="math inline">\(\hat{\mathbf{y}}_0^\top = \mathbf{x}_0^\top \widehat{\mathbf{B}}\)</span>, and its covariance matrix is <span class="math inline">\(h_0 \widehat{\boldsymbol{\Sigma}}\)</span>, where <span class="math inline">\(h_0 = \mathbf{x}_0^\top (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{x}_0\)</span> is its leverage. The standard error has become a <span class="math inline">\(q \times q\)</span> matrix, and the confidence interval has become a confidence <em>ellipse</em>, with a radius from Hotelling’s <span class="math inline">\(T^2\)</span>: <span class="math inline">\(c^2 = \frac{q (n-p)}{n-p-q+1} F_{q,\, n-p-q+1}(0.95)\)</span>. For a prediction ellipse, which includes the error for a new case, <span class="math inline">\(h_0\)</span> becomes <span class="math inline">\(1 + h_0\)</span>.</p>
+<p>Here’s what that looks like for three hypothetical cars, using the <code>mtcars</code> model from the introduction:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>new <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">hp =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">150</span>, <span class="dv">250</span>), <span class="at">wt =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>X  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(fit)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>X0 <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> hp <span class="sc">+</span> wt, new)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(X); p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X); q <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>Sigma <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(<span class="fu">residuals</span>(fit)) <span class="sc">/</span> (n <span class="sc">-</span> p)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>h0    <span class="ot">&lt;-</span> <span class="fu">rowSums</span>((X0 <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">crossprod</span>(X))) <span class="sc">*</span> X0)   <span class="co"># leverage of each new case</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>c2    <span class="ot">&lt;-</span> q <span class="sc">*</span> (n <span class="sc">-</span> p) <span class="sc">/</span> (n <span class="sc">-</span> p <span class="sc">-</span> q <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">qf</span>(<span class="fl">0.95</span>, q, n <span class="sc">-</span> p <span class="sc">-</span> q <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>yhat  <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, new)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(qsec <span class="sc">~</span> mpg, <span class="at">data =</span> mtcars, <span class="at">col =</span> <span class="st">"gray50"</span>, <span class="at">pch =</span> <span class="dv">16</span>,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">35</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">13</span>, <span class="dv">24</span>))</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(new))) {</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  car<span class="sc">::</span><span class="fu">ellipse</span>(yhat[i, ], h0[i] <span class="sc">*</span> Sigma, <span class="fu">sqrt</span>(c2),</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">center.pch =</span> <span class="dv">3</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  car<span class="sc">::</span><span class="fu">ellipse</span>(yhat[i, ], (<span class="dv">1</span> <span class="sc">+</span> h0[i]) <span class="sc">*</span> Sigma, <span class="fu">sqrt</span>(c2),</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">center.pch =</span> <span class="cn">NULL</span>)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-pred-ellipses" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scatterplot of qsec against mpg for the mtcars data, in gray. Three small filled blue ellipses mark the confidence regions for three predicted points, at about (14, 16), (21, 17.5) and (26, 18). Much larger dashed red prediction ellipses surround each one. All six ellipses have the same orientation, tilted slightly upward.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pred-ellipses-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pred-ellipses-1.png" class="img-fluid figure-img" style="width:65.0%" alt="Scatterplot of qsec against mpg for the mtcars data, in gray. Three small filled blue ellipses mark the confidence regions for three predicted points, at about (14, 16), (21, 17.5) and (26, 18). Much larger dashed red prediction ellipses surround each one. All six ellipses have the same orientation, tilted slightly upward.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pred-ellipses-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: 95% confidence ellipses (blue) and prediction ellipses (red, dashed) for the predicted (mpg, qsec) of three new cars from the <code>mtcars</code> model. All have the shape of the residual covariance matrix; only their size changes, with each car’s leverage.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Every ellipse has the shape of <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span>; only the size changes. So the math fits in a dozen lines. What’s not settled is the software, and that’s the extra dimension again:</p>
+<ul>
+<li><strong>What should it return?</strong> <code>predict.lm()</code> returns <code>fit</code>, <code>lwr</code> and <code>upr</code> as columns of a matrix. A draft in heplots returns an <span class="math inline">\(n \times q \times 3\)</span> array of per-response bounds, roughly the shadows of the ellipse on each axis, not the ellipse itself. The full answer is an <span class="math inline">\(n \times q \times q\)</span> array of covariance matrices.</li>
+<li><strong>How should it print?</strong> Nobody wants to read <span class="math inline">\(n\)</span> covariance matrices.</li>
+<li><strong>How should it plot?</strong> Probably as above, which puts it back in heplots territory.</li>
+</ul>
 <!--
 - plot.mlm(): should someone write one? What would it show?
-- predict.mlm() with SEs and CIs/PIs (heplots dev/pred.mlm.R): return value, print, plot.
+- predict.mlm(): draft in heplots dev/pred.mlm.R (pred.mlm0, from Helwig's notes).
 - car::avPlots(), car::vif() for mlm.
 - Real multivariate shrinkage (Brown & Zidek 1980; curds and whey, Breiman & Friedman 1997).
 - effects for mlm.
 - Possibly a short "lessons for package developers" list here (see notes.md, Design lessons),
   or as a callout box.
 -->
+</section>
 </section>
 <section id="further-reading" class="level2">
 <h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>

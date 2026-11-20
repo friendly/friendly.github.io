@@ -46,7 +46,7 @@ rung <- data.frame(x = -0.6, y = mid,
                    label = c("scalar → vector", "vector → matrix",
                              "matrix → 3-way array"))
 arrows <- data.frame(x = 3.2, xend = 5.8, y = mid)
-heads  <- data.frame(x = c(xl + 0.5, xr + 1), y = 2.3,
+heads  <- data.frame(x = c(xl + 1, xr + 1.2), y = 2.3,
                      label = c("lm:  one response", "mlm:  q responses"))
 
 p <- ggplot() +
@@ -58,10 +58,10 @@ p <- ggplot() +
                colour = "grey40", linewidth = 0.7) +
   geom_text(data = lab, aes(x, y, label = label), parse = TRUE,
             hjust = 0, vjust = 1, size = 4.2) +
-  geom_text(data = rung, aes(x, y, label = label), hjust = 1, size = 4.5,
-            fontface = "italic", colour = "grey30") +
-  geom_text(data = heads, aes(x, y, label = label), hjust = 0, size = 5, fontface = "bold") +
-  coord_equal(xlim = c(-5.5, 12.5), ylim = c(-11.6, 2.8), clip = "off") +
+  geom_text(data = rung, aes(x, y, label = label), hjust = 1, size = 5.5,
+            fontface = "bold", colour = "grey20") +
+  geom_text(data = heads, aes(x, y, label = label), hjust = 0.5, size = 6, fontface = "bold") +
+  coord_equal(xlim = c(-7, 12.5), ylim = c(-11.6, 2.8), clip = "off") +
   theme_void() +
   theme(plot.background = element_rect(fill = "white", colour = NA),
         plot.margin = margin(10, 10, 10, 10))

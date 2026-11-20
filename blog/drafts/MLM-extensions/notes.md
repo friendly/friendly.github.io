@@ -235,6 +235,13 @@ book repo.
 - It could be drawn in R (grid/ggplot) or as SVG. It would replace or accompany the bullet list
   in "One more dimension".
 
+## Decisions (MF, 2026-11-20)
+
+- **Title:** keep "On Extending `lm()` Methods to `"mlm"`".
+- **Audience:** package developers and statisticians.
+- **Code:** most code runs live. Short illustrative chunks in the intro get
+  `code-fold: false` (no Code button); chunks whose results aren't used can be `eval: false`.
+
 ## Open questions for MF
 
 - **Title.** Options:
