@@ -311,29 +311,57 @@ citation keys resolve.
 
 **Notation (MF to decide)**
 
-1. **E for two things.** In mvinfluence, `qᵢᵢ = eᵢ′(E′E)⁻¹eᵢ` uses **E** for the residual matrix,
-   but everywhere else **E** is the error SSP matrix. Vis-MLM-book uses
-   `\providecommand{\Epsilon}{\boldsymbol{\Large\varepsilon}}` for the residual matrix. Options:
-   adopt `\Epsilon` (define it in a hidden `$$ $$` macro block at the top), or write
-   `eᵢ′ E⁻¹ eᵢ` with **E** = the SSP matrix, which avoids the residual matrix altogether.
-   Check other places a residual matrix appears (robmlm: "residual covariance matrix S").
+1. ✔️ ~~**E for two things.**~~ *Done 2026-11-21.* Follows Friendly, Monette & Fox (2013,
+   eq. 14): residual matrix $\widehat{\mathbf{U}} = \mathbf{Y} - \mathbf{X}\widehat{\mathbf{B}}$,
+   and **E** = $\widehat{\mathbf{U}}^\top\widehat{\mathbf{U}}$ always means the error SSP matrix.
+   - Changes: "One more dimension" names the residual matrix $\widehat{\mathbf{U}}$; the HE
+     section defines **E** from it; mvinfluence now has $q_{ii} = \mathbf{e}_i^\top
+     \mathbf{E}^{-1} \mathbf{e}_i$, with $\mathbf{e}_i^\top$ the $i$th row of
+     $\widehat{\mathbf{U}}$; Cook's metric uses $\widehat{\boldsymbol{\Sigma}}^{-1}$ instead
+     of **S**, matching the introduction. robmlm keeps **S**, since it's a different (robust)
+     estimate.
+   - The Vis-MLM book uses `\Epsilon` for the residual matrix instead; the post follows the
+     STS paper it cites.
+   - **mvinfluence discrepancy found while checking (2026-11-21).** `mlm.influence()` computes
+     `Q` from *deleted* residuals, `EI <- (Y - X %*% BI)[I, ]` (line 139), so its `Q` equals
+     $q_{ii}/(1-h_{ii})^2$ (verified to 1e-14 on the mtcars fit), not Barrett & Ling's
+     $q_{ii}$ with ordinary residuals. `CookD` is unaffected: it is computed directly from
+     B − B₍ᵢ₎, and equals $(n-p)/p \cdot h/(1-h)^2 \cdot q_{ii}$ exactly. But `R = Q/(1-H)`
+     then equals $q_{ii}/(1-h)^3$, so the LR influence plot's residual axis, and the claim
+     that D ∝ L × R (the diagonal Cook's D contours), are off. Written up as
+     `mvinfluence/issues/Q-deleted-residuals.md`. **MF: not addressed in this post for now.**
 
 **Consistency**
 
-2. Conclusion says the "gaps in the last section" include `plot.mlm()`, AV plots and effect
+2. ✔️ ~~Conclusion says the "gaps in the last section" include `plot.mlm()`, AV plots and effect
    displays, but "What's still missing" only has `predict.mlm()`; the others are in an HTML
    comment. Add a short "Other gaps" list (plot.mlm, `car::avPlots()`/`vif()`, effects,
-   multivariate shrinkage: Brown & Zidek 1980, Breiman & Friedman 1997, both in references.bib).
+   multivariate shrinkage: Brown & Zidek 1980, Breiman & Friedman 1997, both in references.bib).~~
+   *Done 2026-11-21:* "### Other gaps" added after the `predict.mlm()` subsection:
+   - `plot.mlm()`;
+   - AV plots, with `heplots::pvPlot()` as a step towards them;
+   - `car::vif()`;
+   - effect displays, citing `Fox:03:effects` (added to references.bib from graphics.bib; the
+     earlier `FriendlyKwan:02:effect` is "Effect Ordering for Data Displays", the wrong paper);
+   - multivariate shrinkage.
    
-3. Ladder bullets in "One more dimension": the first uses σ² → Σ, but the figure's first rung
-   is eᵢ → a q-vector. Use eᵢ, and mention σ² → Σ as the case that jumps two rungs.
+3. ✔️ ~~Ladder bullets in "One more dimension": the first uses σ² → Σ, but the figure's first rung
+   is eᵢ → a q-vector. Use eᵢ, and mention σ² → Σ as the case that jumps two rungs.~~
+   *Done 2026-11-21.*
    
-4. "`dim(X) + 1`" ("One more dimension") and "`dim() + 1`" (genridge, in an awkward sentence
-   that also needs rewriting): **X** is the model matrix elsewhere; pick one phrase.
-5. The Kronecker product appears four times (intro, mvinfluence, genridge, predict).
-Name it
-   as a recurring motif, perhaps in the Conclusion; the LATER comment on factorial design
-   matrices could join it there.
+4. ✔️ ~~"`dim(X) + 1`" ("One more dimension") and "`dim() + 1`" (genridge, in an awkward sentence
+   that also needs rewriting): **X** is the model matrix elsewhere; pick one phrase.~~
+   *Done 2026-11-21:* both replaced with plain words ("the next one up", "one dimension
+   up"); the genridge sentence rewritten.
+5. ✔️ ~~The Kronecker product appears four times (intro, mvinfluence, genridge, predict).
+   Name it as a recurring motif, perhaps in the Conclusion; the LATER comment on factorial
+   design matrices could join it there.~~
+   *Done 2026-11-21:*
+   - the intro now names ⊗ as the Kronecker product, with a link;
+   - a new Conclusion bullet, "The Kronecker product keeps the two dimensions apart", ties the
+     four uses together;
+   - MF's LATER note on factorial model matrices became its footnote. Checked in R: the
+     `~ A*B*C` model matrix equals (1, X_A) ⊗ (1, X_B) ⊗ (1, X_C) up to column order.
    
 6. Hotelling radius: the post uses `F(q, n−p−q+1)`; the heplots draft (`dev/pred.mlm.R`) uses
    `qf(level, m, n-p-m)`. Reconcile the draft with the post.
@@ -343,6 +371,43 @@ Name it
    change"/"does change"/"design lesson"). A shared pattern (what gains a dimension → what
    was hard in the software → the display) would make the "same problem each time" argument
    easier to see.
+
+**Additions**
+
+[MF: I think this could be a major addition to the post, possibly title: Getting Dimensions Back, or, more directly, Reducing Dimensions. Or maybe it is too much for here, so should be a separate post]
+
+One thing not addressed here in the 'one more dimension' idea is how multivariate thinking
+and matrix notation can lead to reducing the dimensions of an R object or of making a complex
+statistical test simpler, by considering what is important, aided by geometry.
+
+- How "big" is $\mathbf{y}$, or $\mathbf{Y}$, or $\mathbf{X}$, or $\mathbf{H}$ relative to $\mathbf{E}$?
+  - This is the core of the ideas of variance ($\sigma^2$), covariance ($\Sigma^2$) and their sample friends,
+  s^2, S, H and E
+  
+  - Matrix algebra has some handy tools for this: Vector (||x||) and matrix (||X||) norm characterizes the size
+  of an object in a single number: its' "length" in some sense, most often in a least-squares, Euclidean. but also
+  accommodates other spaces: Manhattan (-> LASSO vs. ridge regression), ...
+  
+  - It is, of course also the central idea behind PCA, as a data dimension reduction method, and biplots
+  as a means to visualize your data in fewer dimensions, while seeing how the observations an variables
+  in "low-rank" space relate to your data.
+  
+  - In the MLM context, this was a problem that was solved by matrix algebra by different ways of calculating
+  a scalar measure of how big $\mathbf{H}$ is relative to $\mathbf{E}$. Wilks, Pillai, Hotelling-Lawley, Roy each
+  addressed this in different, but reasonable ways. But then, some statistical magic happened. Wills' Lambda ... were 
+  seen as measures with totally different distributions, but all could be converted to an F-statistic. 
+  Often the conversion was **exact**: p-values identical. When these could only be guarranteed asymptotically,
+  statisticians of the day provided conditions: s=1, 2-- exact, ...
+  
+  [MF: Table 3, in the ellipses paper gives the details of Wilks', ...: formula and geometric interpret of "mean".
+  fig 19 there shows the geometry of the tests.]
+  
+  - For HE plots this became a different challenge: how to visualize how big H vs. E --- the graphic design idea
+  involved just centering and scaling to put their data ellipsoids in the same visual frame, where they could be
+  compared for "size" to answer that question, but also show their orientation, "fatness" (variance), ...
+  For factors could show thier means, show contrasts, ... Scaling choices also gave an option for "significance scaling" ...
+  
+  [MF: Either put just a stubb for this in the current post, or leave this for another time...]
 
 **Unfinished or awkward text**
 
@@ -376,10 +441,14 @@ Name it
 
 **Figures**
 
-16. Ladder (`R/dimension-ladder.R`): crop ~15% empty space at the top; the back layer of the
+16. ✔️ *Done 2026-11-21 (MF: cropping and the label offset don't matter).* Redrawn with q = 3:
+    two orange cells/columns/layers added at each rung; the array's back layers are lighter the
+    farther back they are, so they read as planes; the bottom row moved down to clear the
+    **B** label. Caption, alt text and lead-in sentence updated. Original note:
+    ~~Ladder (`R/dimension-ladder.R`): crop ~15% empty space at the top; the back layer of the
     3-way array shows only as an orange L-strip and reads like a ragged matrix (bigger offset,
     perspective, or a "qsec" layer label); "CI for **B**" label sits a few px above
-    "CI for **b**".
+    "CI for **b**".~~
 17. Rohwer HE plot: `ss` label is faint gray; `ns` label at the frame edge. Minor.
 18. Pottery canonical: "IsleThorns"/"AshleyRails" overlap, "Mg"/"Fe" overlap, "Caldicot" sits
     on the ellipse boundary. Try `label.pos`, `cex`, or wider limits.

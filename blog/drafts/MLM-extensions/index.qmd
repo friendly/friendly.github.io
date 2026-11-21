@@ -115,19 +115,13 @@ In short, the multivariate linear model is **easy to fit** and **hard to see**.
   $\mathbf{H}\mathbf{E}^{-1}$, which give Wilks' $\Lambda$, the Pillai trace,
   Hotelling-Lawley and their friend Roy. And
   $\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}$ becomes
-  $\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$.
+  $\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$,
+  where $\otimes$ is the [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product).
   Once there's a covariance matrix, you can even ask whether it's the same in every group:
   Box's $\mathcal{M}$ test [@Box:1949].
 
-<!--
-LATER (MF, 2026-11-20): the Kronecker product's other role in lm(). For a crossed
-factorial design, the model matrix is built from per-factor pieces:
-(1, X_A) ⊗ (1, X_B) ⊗ (1, X_C) gives the columns of y ~ A*B*C (the main-effects model
-y ~ A + B + C is a subset of them). Strictly, that's one row per cell, in lexicographic
-order; replicates add ⊗ 1_n, and unbalanced data select rows. Where: possibly "One more
-dimension" (another way the algebra stays tidy) or a footnote near the genridge
-Σ ⊗ V_λ result.
--->
+<!-- MF's LATER note on Kronecker products in factorial model matrices is now a footnote
+in the Conclusion ("The Kronecker product keeps the two dimensions apart"). -->
 
 
 @fig-techniques puts
@@ -169,21 +163,25 @@ one more dimension. I've told that story in my [_Visualizing Multivariate Data a
 In R, when the response goes from a vector **y** to a matrix **Y**, every object the model produces
 **gains a dimension**:
 
-* a **scalar becomes a vector, or a matrix**. The residual variance $\sigma^2$ becomes a
-  $q \times q$ covariance matrix $\boldsymbol{\Sigma}$.
+* a **scalar becomes a vector**. The residual $e_i$ for case $i$ becomes a vector
+  $\mathbf{e}_i$ of $q$ residuals, one for each response. Some scalars jump two rungs at
+  once: the residual variance $\sigma^2$ becomes a $q \times q$ covariance matrix
+  $\boldsymbol{\Sigma}$, because along with $q$ variances it picks up the covariances between
+  every pair of responses.
 * a **vector becomes a matrix**. The coefficients $\mathbf{b}$ become a $p \times q$ matrix
-  $\mathbf{B}$, and the residuals become an $n \times q$ matrix.
+  $\mathbf{B}$, and the residuals become an $n \times q$ matrix $\widehat{\mathbf{U}}$.
 * a **matrix becomes a 3-way array**, or a list of matrices. A table of confidence intervals
-  for the coefficients ($p \times 2$) becomes $p \times 2 \times q$. The standard error of each
-  fitted value becomes a $q \times q$ matrix, one for every case.
+  for the coefficients ($p \times 2$) becomes $p \times 2 \times q$. The standard errors of
+  the fitted values also jump two rungs: a vector with one number per case becomes an
+  $n \times q \times q$ array, a $q \times q$ matrix for every case.
 
-@fig-dimension-ladder shows this ladder for a model with $p = 3$ coefficients and $q = 2$
+@fig-dimension-ladder shows this ladder for a model with $p = 3$ coefficients and $q = 3$
 responses.
 
 ![Going from `lm` to `mlm`, every object gains a dimension. Blue cells are what a univariate
-model gives you; orange cells are added by the second response. The residual for a case
+model gives you; orange cells are added by the other two responses. The residual for a case
 becomes a vector, the coefficient vector becomes a matrix, and the table of confidence
-intervals becomes a 3-way array.](figures/dimension-ladder.png){#fig-dimension-ladder width="75%" fig-alt="A three-row diagram. Left column, lm with one response: a single cell for the residual e_i, a column of three cells for the coefficients b, and a 3 by 2 grid for their confidence intervals. Right column, mlm with q responses: each object gains orange cells along a new dimension, becoming a 1 by 2 vector, a 3 by 2 matrix B, and a 3 by 2 by 2 array drawn as two stacked layers."}
+intervals becomes a 3-way array.](figures/dimension-ladder.png){#fig-dimension-ladder width="75%" fig-alt="A three-row diagram. Left column, lm with one response: a single cell for the residual e_i, a column of three cells for the coefficients b, and a 3 by 2 grid for their confidence intervals. Right column, mlm with q responses: each object gains orange cells along a new dimension, becoming a 1 by 3 vector, a 3 by 3 matrix B, and a 3 by 2 by 3 array drawn as three stacked layers, the two behind the blue one in orange."}
 
 <!-- Drawn by R/dimension-ladder.R (run from this folder). Possible additions: a fourth
 rung for sigma^2 -> Sigma (scalar -> matrix, skipping a rung), or se.fit. -->
@@ -191,9 +189,8 @@ rung for sigma^2 -> Sigma (scalar -> matrix, skipping a rung), or se.fit. -->
 That extra dimension shows up first in what a function *returns*, and then in every method that
 has to consume it: `print()`, `summary()`, `confint()`, `predict()`, and of course `plot()`.
 
-Code written for one shape is handed the next one up. But this has to do *something* with the
-new `dim(X) + 1` object. The challenge has always been: How to do something more **useful**
-in a multivariate context.
+Code written for one shape is handed the next one up, and it has to do *something* with it.
+The challenge has always been to make that something **useful** in a multivariate context.
 
 
 Base R takes several different approaches. Sometimes it simply returns the bigger object:
@@ -305,7 +302,9 @@ Questions for MF are marked Q:.
 In a univariate linear model, every $F$ test compares two sums of squares: $SS_H$ for the
 hypothesis and $SS_E$ for error. In the multivariate model, each of these becomes a
 $q \times q$ matrix of sums of squares and products: $\mathbf{H}$ for each term in the
-model, and one $\mathbf{E}$ for the residuals. All four multivariate test statistics are
+model, and one $\mathbf{E}$ for error. $\mathbf{E} = \widehat{\mathbf{U}}^\top \widehat{\mathbf{U}}$
+is the sums of squares and products of the residuals,
+$\widehat{\mathbf{U}} = \mathbf{Y} - \mathbf{X}\widehat{\mathbf{B}}$. All four multivariate test statistics are
 functions of the eigenvalues of $\mathbf{H}\mathbf{E}^{-1}$, the matrix analog of
 $SS_H / SS_E$.
 
@@ -478,12 +477,13 @@ head(cooks.distance(fit), 4)
 The math came from @BarrettLing:92. Their generalized Cook's distance strings the
 coefficient matrix out into one long vector, $\textrm{vec}(\mathbf{B})$, and measures how
 far it moves when a case is deleted, in the metric of its covariance matrix. That metric is
-$\mathbf{S}^{-1} \otimes \mathbf{X}^\top \mathbf{X}$: the Kronecker product again. As in
-the univariate case, $D_i$ is proportional to the product of a leverage component and a
-residual component. Leverage depends only on $\mathbf{X}$, so it doesn't change. The
-residual is now a vector, so its size becomes
-$q_{ii} = \mathbf{e}_i^\top (\mathbf{E}^\top \mathbf{E})^{-1} \mathbf{e}_i$, a hat value
-for the residuals: one more scalar that has become a quadratic form.
+$\widehat{\boldsymbol{\Sigma}}^{-1} \otimes \mathbf{X}^\top \mathbf{X}$: the Kronecker
+product again. As in the univariate case, $D_i$ is proportional to the product of a leverage
+component and a residual component. Leverage depends only on $\mathbf{X}$, so it doesn't
+change. The residual is now a vector, $\mathbf{e}_i^\top$, the $i$th row of
+$\widehat{\mathbf{U}}$, so its size becomes
+$q_{ii} = \mathbf{e}_i^\top \mathbf{E}^{-1} \mathbf{e}_i$, a hat value for the residuals: one
+more scalar that has become a quadratic form, and in the same $\mathbf{E}$ as the HE plot.
 
 Is the multivariate version worth the trouble? @Barrett:2003 gave a toy example, with one
 predictor and two nearly identical responses, that makes the case:
@@ -645,10 +645,9 @@ response, either in a formula or as an existing `mlm` fit, and returns an object
 `"mlmridge"`. The implementation was adapted from `lm_multiv_ridge()` in the
 **VARshrink** package. It's marked experimental, and I'd welcome comments.
 
-The essential idea was how to adapt the graphical methods I had developed for a
-single $\mathbf{y}$, when there are possibly many predictors in $\mathbf{X}$,
-whose effects on shrinkage are to be considered jointly, to the `dim() + 1`
-case of $\mathbf{y} \rightarrow \mathbf{Y}$ case with `q > 1` responses.
+The question was how to carry the graphical methods I had developed for a single
+$\mathbf{y}$, where the effects of many predictors on shrinkage are seen jointly, one
+dimension up, to $\mathbf{Y}$ with $q > 1$ responses.
 
 The `schooldata` data in heplots make a good test case. For 70 schools, three measures of
 student achievement (`reading`, `mathematics` and `selfesteem`) are predicted from five
@@ -836,14 +835,38 @@ settled:
 * **Printing.** Nobody wants to read $n$ covariance matrices.
 * **Plotting.** Probably as above, which puts it back in heplots territory.
 
+### Other gaps
+
+`predict()` isn't the only one. A few others, each a case of the same problem:
+
+* **An actual `plot.mlm()`.** R's error message from the introduction still stands. What
+  should the default diagnostic plots for an `mlm` be? A $\chi^2$ QQ plot of the residual
+  Mahalanobis distances (`cqplot()`), an influence plot and an HE plot would be a start.
+* **Added-variable plots.** `car::avPlots()` fails on an `mlm`. For a predictor $x_k$, the
+  multivariate version would plot the residuals of *all* the responses, adjusted for the other
+  predictors, against the residual of $x_k$: $q$ panels, or one panel with a data ellipse for
+  each pair of responses. `heplots::pvPlot()` is one step in that direction. It works on a data
+  frame, not a model, and shows the conditional relation of *any* two variables, $x$'s or
+  $y$'s, given all the others, as a scatterplot of their partial residuals with a data
+  ellipse. Plotting $y_j$ against $x_k$, with the other predictors partialled out, gives the
+  added-variable plot for one response. Plotting two responses against each other, with all
+  the predictors partialled out, shows their residual correlation, the shape of $\mathbf{E}$.
+* **`car::vif()`.** This one should be easy. VIFs depend only on $\mathbf{X}$, so they're
+  the same for every response; `vif()` stops only because it looks for coefficient names
+  in a vector, not a matrix.
+* **Effect displays.** The [effects](https://CRAN.R-project.org/package=effects) package plots
+  fitted values for each term, with confidence bands [@Fox:03:effects]. For an
+  `mlm`, each fitted value is a $q$-vector and each band becomes a set of confidence
+  ellipses: the `predict()` problem again, one term at a time.
+* **Shrinkage that borrows strength across responses.** genridge uses one ridge constant for
+  all responses, which leaves each column of $\widehat{\mathbf{B}}$ a univariate ridge.
+  Genuinely multivariate shrinkage, as in @Brown-Zidek-1980 or the "curds and whey" method of
+  @BreimanFriedman:1997, uses the correlations among the responses, and would need new
+  displays of its own.
+
 <!--
-- plot.mlm(): should someone write one? What would it show?
-- predict.mlm(): draft in heplots dev/pred.mlm.R (pred.mlm0, from Helwig's notes).
-- car::avPlots(), car::vif() for mlm.
-- Real multivariate shrinkage (Brown & Zidek 1980; curds and whey, Breiman & Friedman 1997).
-- effects for mlm.
-- Possibly a short "lessons for package developers" list here (see notes.md, Design lessons),
-  or as a callout box.
+Possibly a short "lessons for package developers" list here (see notes.md, Design lessons),
+or as a callout box.
 -->
 
 ## Conclusion: what I learned
@@ -875,6 +898,21 @@ Looking back, a few lessons stand out.
 * **Not everything needs a new display.** Leverage depends only on $\mathbf{X}$, and so do
   the ridge shrinkage factors and VIFs. Knowing what *doesn't* change is as useful as
   knowing what does, and it keeps the extension honest.
+
+* **The Kronecker product keeps the two dimensions apart.** It turned up again and again:
+  $\boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$ for the coefficients in the
+  introduction, the metric $\widehat{\boldsymbol{\Sigma}}^{-1} \otimes \mathbf{X}^\top \mathbf{X}$
+  for Cook's distance, $\boldsymbol{\Sigma} \otimes \mathbf{V}_\lambda$ for ridge, and
+  $h_0 \widehat{\boldsymbol{\Sigma}}$, one slice of it, for a predicted value. Each time,
+  one factor belongs to the responses and the other to the predictors. That's why leverage
+  and VIFs don't change when $\mathbf{y}$ becomes $\mathbf{Y}$, and why the ridge and
+  prediction ellipses all have the shape of $\boldsymbol{\Sigma}$: the extra dimension
+  enters through one factor and leaves the other alone.^[The Kronecker product does the same
+  tidy bookkeeping on the predictor side. For a full factorial design with one observation
+  per cell, in lexicographic order, the model matrix for `y ~ A * B * C` is
+  $(\mathbf{1}, \mathbf{X}_A) \otimes (\mathbf{1}, \mathbf{X}_B) \otimes (\mathbf{1}, \mathbf{X}_C)$,
+  up to the order of the columns, where each $\mathbf{X}$ holds the contrasts for one factor.
+  Replicates add a factor $\otimes \mathbf{1}_n$.]
 
 * **Inheritance is a promise.** S3 dispatch makes it cheap to add an `mlm` method, and an
   `"mlm"` class that inherits from `"lm"` invites every `lm` method to try. Some refuse,
