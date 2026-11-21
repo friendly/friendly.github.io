@@ -387,11 +387,14 @@ Name it
     Llanedyrn, red = Caldicot, green = Isle Thorns, black = Ashley Rails). Right panel: the
     two "Site" labels overlap and the blue one is clipped at the bottom; "Error" labels and
     IsleThorns/AshleyRails overlap.
+    
 20. School trace: HKB/LW labels overprint ("HKLW"); counseling/education collide in two
     panels; everything bunches near λ = 0 with the axis starting at −1. Try
     `traceplot(sridge, X = "df")` or a log-spaced λ grid.
+    
 21. School cross: stacked fills go muddy brown (lower `fill.alpha`); λ labels 0/0.05/0.1
     overprint (label a subset, e.g. 0, 0.25, 1, 5).
+    
 22. Prediction ellipses: text says all ellipses have the same shape, but unequal axis scales
     make that hard to see; `asp = 1`, or just say so.
 
@@ -403,6 +406,7 @@ Name it
 24. Verify the four pkgdown URLs and the Vis-MLM book link (Fig 6.1 is a chapter page).
 25. Categories: consider adding candisc and mvinfluence.
 26. Update the genridge 0.8.1 wording once CRAN accepts it.
+
 27. A one-line pointer to Vis-MLM chapters 9, 11–14, 21 could go in the Conclusion.
     Uncited entries in references.bib (FriendlySigal 2015, 2016; Friendly & Kwan) can be
     cited or dropped.
