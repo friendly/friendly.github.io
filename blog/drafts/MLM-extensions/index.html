@@ -269,7 +269,7 @@ sections. Or use one dataset throughout?
 ! argument is of length zero</code></pre>
 </div>
 </div>
-<p>The more interesting cases are the ones that ** <em>don’t</em> fail<strong>, but don’t give you anything </strong>useful**: <code>cooks.distance()</code> runs without a murmur and gives you a Cook’s D for each case, separately for each response:</p>
+<p>The more interesting cases are the ones that <strong><em>don’t</em> fail</strong>, but don’t give you anything <strong>useful</strong>: <code>cooks.distance()</code> runs without a murmur and gives you a Cook’s D for each case, separately for each response:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cooks.distance</span>(fit), <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -307,7 +307,7 @@ dimension" (another way the algebra stays tidy) or a footnote near the genridge
 <img src="figures/techniques-table.png" class="img-fluid figure-img" style="width:90.0%" alt="A table of linear-model techniques. Rows: predictors, quantitative or discrete, with p = 1 or p > 1. Columns: responses, quantitative or discrete, with q = 1 or q > 1. For quantitative responses, simple and multiple regression, t-test and ANOVA (q = 1) generalize to multivariate regression, canonical and partial correlation, Hotelling T-squared and MANOVA (q > 1). For discrete responses, logistic regression, chi-square, discriminant analysis, logit and loglinear models.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-techniques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Techniques for linear models, classified by the number of predictors (<span class="math inline">\(p\)</span>) and responses (<span class="math inline">\(q\)</span>), and whether these are quantitative or discrete. The <span class="math inline">\(q &gt; 1\)</span> columns are where graphical methods have been thin. <em>Source</em>: <a href="https://friendly.github.io/Vis-MLM-book">Visualizing Multivariate Data and Models in R</a>, Figure 6.1.
+Figure&nbsp;1: Techniques for linear models, classified by the number of predictors (<span class="math inline">\(p\)</span>) and responses (<span class="math inline">\(q\)</span>), and whether these are quantitative or discrete. The quantitative <span class="math inline">\(q &gt; 1\)</span> column is where graphical methods have been thin. <em>Source</em>: <a href="https://friendly.github.io/Vis-MLM-book">Visualizing Multivariate Data and Models in R</a>, Figure 6.1.
 </figcaption>
 </figure>
 </div>
@@ -362,7 +362,7 @@ qsec:wt           0.39771199  1.48535274</code></pre>
 </div>
 </div>
 <p>The <code>broom</code> package does much the same thing in tidy form, stacking the responses in a long data frame with a <code>response</code> column. That’s perfectly convenient for a table, but in both cases the answers for <code>mpg</code> and <code>qsec</code> sit side by side as if they had nothing to do with each other.</p>
-<p>And sometimes R just <strong>refuses</strong>, as it currently does in for the <code>predict()</code> generic:</p>
+<p>And sometimes R just <strong>refuses</strong>, as it currently does for <code>predict()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit, <span class="at">newdata =</span> mtcars[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ], <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
@@ -373,7 +373,7 @@ qsec:wt           0.39771199  1.48535274</code></pre>
 <p>I have some sympathy for that last one.</p>
 <ul>
 <li><p>For a univariate model, the standard error of a predicted value is a single number, and a confidence interval is a pair of numbers, <code>lwr</code> and <code>upr</code>.</p></li>
-<li><p>For an <code>mlm</code>, the uncertainty of each predicted point is a <span class="math inline">\(q \times q\)</span> covariance matrix, and the natural confidence region is an <em>ellipse</em> (an ellipsoid when <span class="math inline">\(q &gt; 2\)</span>) around it. What should <code>predict()</code> return? How should it print? There’s no column in <code>cbind(fit, lwr, upr)</code> for an ellipse. Work on this is still unfinished in <code>heplots</code> (<code>dev/pred.mlm.R</code>)</p></li>
+<li><p>For an <code>mlm</code>, the uncertainty of each predicted point is a <span class="math inline">\(q \times q\)</span> covariance matrix, and the natural confidence region is an <em>ellipse</em> (an ellipsoid when <span class="math inline">\(q &gt; 2\)</span>) around it. What should <code>predict()</code> return? How should it print? There’s no column in <code>cbind(fit, lwr, upr)</code> for an ellipse. Work on this is still unfinished in <code>heplots</code> (<code>dev/pred.mlm.R</code>).</p></li>
 </ul>
 <!--
 predict.mlm() is an unfinished item in heplots (dev/pred.mlm.R returns an n x q x 3
@@ -394,7 +394,7 @@ That's the thesis line. Alternative endings for that last sentence:
 </section>
 <section id="filling-in-the-gaps" class="level2">
 <h2 class="anchored" data-anchor-id="filling-in-the-gaps">Filling in the gaps</h2>
-<p>Over the past twenty years or so I’ve been filling these gaps, one package at a time, often with John Fox and Georges Monette, who have been my inspirations in most of this work. But, importantly here, also helping to fill in gaps in my understanding of software design in R and thinking multivariately with geometry and graphs <span class="citation" data-cites="FoxFriendlyMonette:09:compstat Friendly-etal:ellipses:2012 FoxFriendlyWeisberg:13:rjournal">(e.g., <a href="#ref-FoxFriendlyMonette:09:compstat" role="doc-biblioref">Fox et al. 2009</a>; <a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013</a>; <a href="#ref-FoxFriendlyWeisberg:13:rjournal" role="doc-biblioref">Fox et al. 2013</a>)</span>.</p>
+<p>Over the past twenty years or so I’ve been filling these gaps, one package at a time, often with John Fox and Georges Monette, who have been my inspirations in most of this work. Importantly here, they also helped fill in gaps in my understanding of software design in R, and of thinking multivariately with geometry and graphs <span class="citation" data-cites="FoxFriendlyMonette:09:compstat Friendly-etal:ellipses:2012 FoxFriendlyWeisberg:13:rjournal">(e.g., <a href="#ref-FoxFriendlyMonette:09:compstat" role="doc-biblioref">Fox et al. 2009</a>; <a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013</a>; <a href="#ref-FoxFriendlyWeisberg:13:rjournal" role="doc-biblioref">Fox et al. 2013</a>)</span>.</p>
 <!-- CHECK: co-authors per package, and approximate start dates (from NEWS/DESCRIPTION).
      Is a personal-history thread wanted here, or keep it impersonal? 
      MF: No need to do this in detail, but cite a couple of joint papers with John
@@ -408,7 +408,7 @@ That's the thesis line. Alternative endings for that last sentence:
 <li><a href="https://friendly.github.io/genridge/"><strong>genridge</strong></a>, my package for visualizing ridge regression, has just learned (in version 0.8.1) to handle a matrix of responses.</li>
 </ul>
 <!-- verify the pkgdown URLs before publishing -->
-<p>Each one of these was a special case of the same problem: deciding what the extra dimension means, for the statistics, for the software.</p>
+<p>Each one of these was a special case of the same problem: deciding what the extra dimension means, for the statistics and for the software.</p>
 <p>But, “filling the gaps” has a larger meaning for me. In data visualization, an over-arching motivation has been to pay attention to <strong>Un-Vized Problems</strong>: those for which the statistical machinery is largely developed, but which haven’t been implemented in software to help you see, understand, and communicate your results.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>The sections below take these package ideas in turn, as I’ve learned about how to take these methods to “One more dimension”.</p>
 <!--
@@ -478,7 +478,7 @@ Figure&nbsp;3: HE plot for the Rohwer MANCOVA model, in the space of SAT and PPV
 <li>draw each one as an ellipse, using its Cholesky factor to transform a circle.</li>
 </ul>
 <p>Everything that <code>Anova()</code> can test, <code>heplot()</code> can draw, including repeated-measures designs through its <code>idata</code> and <code>idesign</code> arguments. And because <code>heplot()</code> is an S3 generic, anything that inherits from <code>"mlm"</code> gets an HE plot for free.</p>
-<p>The <strong>same design</strong> S3 design principle in R gave a family of graphical methods for <code>"mlm"</code> objects: <code>pairs()</code> for all pairs of responses, <code>heplot3d()</code> for three, and <code>heplot1d()</code> for one. Other helpers came along:</p>
+<p>The same S3 design principle in R gave a family of graphical methods for <code>"mlm"</code> objects: <code>pairs()</code> for all pairs of responses, <code>heplot3d()</code> for three, and <code>heplot1d()</code> for one. Other helpers came along:</p>
 <ul>
 <li><code>coefplot()</code> shows confidence ellipses for the coefficients, generalizing <code>car::confidenceEllipse()</code>;</li>
 <li><code>cqplot()</code> is a <span class="math inline">\(\chi^2\)</span> QQ plot of the squared Mahalanobis distances of the residuals;</li>
@@ -489,7 +489,7 @@ Figure&nbsp;3: HE plot for the Rohwer MANCOVA model, in the space of SAT and PPV
 </section>
 <section id="seeing-it-in-fewer-dimensions-candisc" class="level2">
 <h2 class="anchored" data-anchor-id="seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</h2>
-<p>An HE plot shows two responses at a time, and <code>pairs()</code>, which is actually <code>heplots::pairs.mlm()</code> in real life just does its <code>pairs()</code> thing for a new <code>"mlm"</code>– it shows all the bivariate response pairs, two at a time. That was something I got essentially for free base R graphics and the S3 object design.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>An HE plot shows two responses at a time, and <code>pairs()</code>, which is actually <code>heplots::pairs.mlm()</code> in real life just does its <code>pairs()</code> thing for a new <code>"mlm"</code>– it shows all the bivariate response pairs, two at a time. That was something I got essentially for free from base R graphics and the S3 object design.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>But, in an MLM, there’s something more: the effect of a term doesn’t have to line up with any pair of responses. The <span class="math inline">\(\mathbf{H}\)</span> ellipsoid for a term lives in <span class="math inline">\(s = \min(q, df_h)\)</span> dimensions, in directions that are combinations of all the responses.</p>
 <p>The eigenvectors of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span> point in those directions. They define the <em>canonical variates</em>: linear combinations of the responses that are uncorrelated within groups, ordered by how much of the effect they capture. Their eigenvalues are the same ones that go into the multivariate test statistics. So the canonical space is the low-dimensional view in which the test is easiest to see.</p>
 <p>The <code>Pottery</code> data give an example: the chemical composition (five oxides) of ancient pottery from four sites in Britain. With <span class="math inline">\(q = 5\)</span> responses and <span class="math inline">\(df_h = 3\)</span> for <code>Site</code>, the effect lives in <span class="math inline">\(s = 3\)</span> dimensions. <code>candisc()</code> finds them:</p>
@@ -549,7 +549,7 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 <p>The software followed the <code>heplots</code> design.</p>
 <ul>
 <li><p><code>candisc()</code> gets <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span> from the same <code>car::Anova()</code> call, and returns a <code>"candisc"</code> object, for which there are <code>heplot()</code>, <code>heplot3d()</code> and <code>plot()</code> methods.</p></li>
-<li><p>But there’s wrinkle here: there is a different <span class="math inline">\((\mathbf{H}, \mathbf{E})\)</span> decomposition for each <span class="math inline">\(\mathbf{H}_i\)</span> term in a MLM. <code>candiscList()</code> helps with this for every term in the model. <code>can_lm()</code> goes one step further, refitting the model with the canonical scores as responses. And <code>varOrder()</code> uses the angles of those arrows to order the responses in other displays, like <code>pairs()</code>, so that related variables sit together.</p></li>
+<li><p>But there’s a wrinkle here: there is a different <span class="math inline">\((\mathbf{H}, \mathbf{E})\)</span> decomposition for each <span class="math inline">\(\mathbf{H}_i\)</span> term in an MLM. <code>candiscList()</code> helps with this for every term in the model. <code>can_lm()</code> goes one step further, refitting the model with the canonical scores as responses. And <code>varOrder()</code> uses the angles of those arrows to order the responses in other displays, like <code>pairs()</code>, so that related variables sit together.</p></li>
 </ul>
 </section>
 <section id="influence-mvinfluence" class="level2">
@@ -725,7 +725,7 @@ Figure&nbsp;6: Robust MANOVA for the Pottery data. Left: final case weights from
 <section id="what-the-extra-dimension-doesnt-change" class="level3">
 <h3 class="anchored" data-anchor-id="what-the-extra-dimension-doesnt-change">What the extra dimension doesn’t change</h3>
 <p>The first thing I learned was a little deflating. With the same ridge constant <span class="math inline">\(\lambda\)</span> for every response, each column of <span class="math inline">\(\widehat{\mathbf{B}}(\lambda)\)</span> is <em>exactly</em> the univariate ridge estimate for that response. The ridge penalty involves only <span class="math inline">\(\mathbf{X}\)</span>, so it can’t borrow strength across responses. For the same reason, the effective degrees of freedom, the shrinkage factors and the variance inflation factors depend only on <span class="math inline">\(\mathbf{X}\)</span>, and they’re the same for every response.</p>
-<p>So if you’re looking only at the effects of ridge shrinkage only in terms of <strong>bias</strong>, the univariate ridge trace plot is still the right display for each response. By default, <code>traceplot()</code> for an <code>"mlmridge"</code> object draws one panel for each:<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>So if you’re looking only at the effects of ridge shrinkage in terms of <strong>bias</strong>, the univariate ridge trace plot is still the right display for each response. By default, <code>traceplot()</code> for an <code>"mlmridge"</code> object draws one panel for each:<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Show the code</summary>
@@ -744,10 +744,10 @@ Figure&nbsp;7: Ridge trace plots for the three responses in the school data. The
 </div>
 </div>
 </div>
-<p>Not every method needs a new multivariate display. Knowing <em>which</em> ones don’t is part of the design. The important ones for <code>genridge</code> were the novel methods I implemented to show the effects of shrinkage on <strong>precision</strong> of the estimates of <span class="math inline">\(\mathbf{\beta} \rightarrow \mathbf{B}\)</span> along with <strong>bias</strong>:</p>
+<p>Not every method needs a new multivariate display. Knowing <em>which</em> ones don’t is part of the design. The important ones for <code>genridge</code> were the novel methods I implemented to show the effects of shrinkage on <strong>precision</strong> of the estimates of <span class="math inline">\(\boldsymbol{\beta} \rightarrow \mathbf{B}\)</span> along with <strong>bias</strong>:</p>
 <ul>
 <li>covariance ellipses for pairs of responses …</li>
-<li>low-rank views: projecting predictors in <span class="math inline">\(mathbf{X}\)</span> into PCA space …</li>
+<li>low-rank views: projecting predictors in <span class="math inline">\(\mathbf{X}\)</span> into PCA space …</li>
 <li>biplot view: show what happens to the observed predictors in this space …</li>
 </ul>
 </section>
@@ -779,7 +779,7 @@ Figure&nbsp;8: Coefficients of visit and counseling for reading and mathematics,
 </div>
 </div>
 </div>
-<p>This shows two things a univariate view can’t. <code>visit</code>’s coefficients cross zero for <em>both</em> responses together. And <code>counseling</code>’s coefficients move <em>away</em> from the origin: ridge regression shrinks the length of the whole coefficient vector, not each coefficient, so with correlated predictors some grow while others shrink. The other genuinely new piece is the choice of <span class="math inline">\(\lambda\)</span>. The GCV criterion can be pooled over the responses to choose one common value, the blue line in <a href="#fig-school-trace" class="quarto-xref">Figure&nbsp;7</a>.</p>
+<p>This shows two things a univariate view can’t. <code>visit</code>’s coefficients cross zero for <em>both</em> responses, at nearly the same <span class="math inline">\(\lambda\)</span>. And <code>counseling</code>’s coefficients move <em>away</em> from the origin: ridge regression shrinks the length of the whole coefficient vector, not each coefficient, so with correlated predictors some grow while others shrink. The other genuinely new piece is the choice of <span class="math inline">\(\lambda\)</span>. The GCV criterion can be pooled over the responses to choose one common value, the blue line in <a href="#fig-school-trace" class="quarto-xref">Figure&nbsp;7</a>.</p>
 </section>
 <section id="a-design-lesson-dont-always-inherit" class="level3">
 <h3 class="anchored" data-anchor-id="a-design-lesson-dont-always-inherit">A design lesson: don’t always inherit</h3>
@@ -961,7 +961,7 @@ Tukey, John W. 1959. <span>“A Quick, Compact, Two Sample Test to <span class="
 
 <ol>
 <li id="fn1"><p>To paraphrase <span class="citation" data-cites="Tukey:59">Tukey (<a href="#ref-Tukey:59" role="doc-biblioref">1959</a>)</span>, the “practical power” of any statistical method is the product of its statistical power, times the probability that anyone can or will actually use it.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Of course, there other, more modern views of the idea of a “scatterplot matrix” <span class="citation" data-cites="Hartigan:75b">(<a href="#ref-Hartigan:75b" role="doc-biblioref">Hartigan 1975</a>)</span> in Trellis graphics, … now <code>ggplot2</code> via <code>GGally</code> and other extensions ,,,<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Of course, there are other, more modern views of the idea of a “scatterplot matrix” <span class="citation" data-cites="Hartigan:75b">(<a href="#ref-Hartigan:75b" role="doc-biblioref">Hartigan 1975</a>)</span> in Trellis graphics, … now <code>ggplot2</code> via <code>GGally</code> and other extensions ,,,<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>This leaves open the question of how this should be done: <code>for()</code> loops, <code>apply()</code> or <code>map()</code> functions, faceted displays, etc.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
