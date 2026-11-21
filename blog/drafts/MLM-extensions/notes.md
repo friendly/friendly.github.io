@@ -294,51 +294,106 @@ book repo.
     - Breiman & Friedman (1997), JRSS B 59(1).
   - Check whether a candisc paper is in `vita.bib` (none showed up in a title search).
 
-## Polishing list (review of the full draft, 2026-11-20)
+## Polishing list (review of the full draft, updated 2026-11-20)
 
-**Consistency (fix first)**
+*Done 2026-11-20 (mechanical pass):* `***don't* fail**`; "does in for" → "does for `predict()`";
+period after `(dev/pred.mlm.R)`; "same design S3 design"; double "only"; `$mathbf{X}$` and
+`\mathbf{\beta}` → `\boldsymbol{\beta}`; techniques caption now says the *quantitative* q > 1
+column; "there are other", "a wrinkle", "an MLM", "for free from base R"; "statistics and for
+the software"; double space; the "But, importantly here…" fragment in "Filling in the gaps"
+made a sentence; school-cross text now says `visit` crosses zero "at nearly the same λ" (reading
+crosses at λ ≈ 1, mathematics between 1 and 2).
 
-1. The Conclusion says the "gaps in the last section" include `plot.mlm()`, added-variable
-   plots and effect displays, but "What's still missing" only has `predict.mlm()`; the others
-   are in an HTML comment. Add a short "Other gaps" list (plot.mlm, `car::avPlots()`/`vif()`,
-   effects, multivariate shrinkage: Brown & Zidek 1980, Breiman & Friedman 1997, both already
-   in references.bib).
-2. Ladder bullets in "One more dimension": the first ("scalar becomes a vector, or a matrix")
-   uses σ² → Σ, but the figure's first rung is eᵢ → a q-vector. Use eᵢ, and mention σ² → Σ
-   as the case that jumps two rungs.
-3. "`dim(X) + 1`" ("One more dimension") and "`dim() + 1`" (genridge): **X** is the model
-   matrix elsewhere; pick one phrase for the response gaining a dimension.
-4. The Kronecker product now appears four times (intro, mvinfluence, genridge, predict). Worth
-   naming as a recurring motif, perhaps in the Conclusion; the LATER comment on factorial
-   design matrices could join it there.
+*Numbers checked in R (2026-11-20):* Pillai F 4.30 → 6.55 (robust); case 9's D = 10.8× the next
+largest; candisc: dims 1–2 significant (p = .029 for dim 2), dim 3 not; `robmlm.default()` uses
+`cov.trob`, `mahalanobis()`, `psi.bisquare`, `qchisq(1 - P, df = p)`, as described. All
+citation keys resolve.
 
-**Unfinished text (MF placeholders)**
+**Notation (MF to decide)**
 
-5. candisc: the `pairs()` paragraph and its footnote ("there other", ",,,", "for free base R
-   graphics"); the "wrinkle" bullet runs into the `can_lm()`/`varOrder()` lines.
-6. genridge: the three "..." bullets (covariance ellipses, PCA views, biplot). An example
+1. **E for two things.** In mvinfluence, `qᵢᵢ = eᵢ′(E′E)⁻¹eᵢ` uses **E** for the residual matrix,
+   but everywhere else **E** is the error SSP matrix. Vis-MLM-book uses
+   `\providecommand{\Epsilon}{\boldsymbol{\Large\varepsilon}}` for the residual matrix. Options:
+   adopt `\Epsilon` (define it in a hidden `$$ $$` macro block at the top), or write
+   `eᵢ′ E⁻¹ eᵢ` with **E** = the SSP matrix, which avoids the residual matrix altogether.
+   Check other places a residual matrix appears (robmlm: "residual covariance matrix S").
+
+**Consistency**
+
+2. Conclusion says the "gaps in the last section" include `plot.mlm()`, AV plots and effect
+   displays, but "What's still missing" only has `predict.mlm()`; the others are in an HTML
+   comment. Add a short "Other gaps" list (plot.mlm, `car::avPlots()`/`vif()`, effects,
+   multivariate shrinkage: Brown & Zidek 1980, Breiman & Friedman 1997, both in references.bib).
+3. Ladder bullets in "One more dimension": the first uses σ² → Σ, but the figure's first rung
+   is eᵢ → a q-vector. Use eᵢ, and mention σ² → Σ as the case that jumps two rungs.
+4. "`dim(X) + 1`" ("One more dimension") and "`dim() + 1`" (genridge, in an awkward sentence
+   that also needs rewriting): **X** is the model matrix elsewhere; pick one phrase.
+5. The Kronecker product appears four times (intro, mvinfluence, genridge, predict). Name it
+   as a recurring motif, perhaps in the Conclusion; the LATER comment on factorial design
+   matrices could join it there.
+6. Hotelling radius: the post uses `F(q, n−p−q+1)`; the heplots draft (`dev/pred.mlm.R`) uses
+   `qf(level, m, n-p-m)`. Reconcile the draft with the post.
+7. Section rhythm: subheadings differ by package (heplots "What was easy"; mvinfluence "Design
+   challenges"/"New influence plots"; robmlm "What took more work"; genridge "doesn't
+   change"/"does change"/"design lesson"). A shared pattern (what gains a dimension → what
+   was hard in the software → the display) would make the "same problem each time" argument
+   easier to see.
+
+**Unfinished or awkward text**
+
+8. candisc: the `pairs()` paragraph ("which is actually `heplots::pairs.mlm()` in real life
+   just does its `pairs()` thing") and its footnote ("Trellis graphics, ... `GGally` and
+   other extensions ,,,"); the "wrinkle" bullet runs into the `can_lm()`/`varOrder()` lines.
+9. genridge: the three "..." bullets (covariance ellipses, PCA views, biplot). An example
    figure could go here, e.g. `pca()` / `biplot()` for one response.
-7. Decide: the `influence(fit, m = 2)` pitfall comment (lesson in the post, or just the
-   mvinfluence TASKS.md); the `vcov.mlm` "think twice" sentence; the compact hook table
-   (comment in the intro).
+10. genridge "design lesson": "that's a good outcome" refers to the seven methods that
+    errored, but "the same quietly univariate problem" refers to the one that silently lost
+    the predictor names, and the "confess" paragraph now sits between them. Put the silent
+    one next to its point.
+11. Intro: the `cbind` "also works for a sequence of vectors, matrices and dataframes"
+    sentence trails off; say why it matters or cut it. The two bullets after
+    `cooks.distance()` aren't parallel (the second is a separate point).
+12. End of "Filling in the gaps": "as I've learned about how to take these methods to 'One
+    more dimension'" is awkward.
+13. Decide: the `influence(fit, m = 2)` partial-matching pitfall (lesson in the post, or just
+    mvinfluence TASKS.md); the `vcov.mlm` "think twice" sentence; the compact hook table
+    (comment in the intro).
+14. Cite VARshrink where `lm_multiv_ridge()` is mentioned.
+15. robmlm: compute the Pillai Fs (4.3 → 6.6) with inline `` `r` `` code instead of typing them.
+    Note that the denominator df drops 60 → 51 in the robust fit (near-zero weights
+    effectively remove cases), so the two Fs aren't quite like for like. Also worth a
+    clause: three of the four downweighted cases (1, 7, 11) are Llanedyrn, the fourth (25)
+    Ashley Rails.
 
-**Typos and rendering**
+**Figures**
 
-8. Intro: `** *don't* fail**` renders with literal asterisks; use `***don't* fail**`-style or
-   reword. "as it currently does in for the `predict()` generic". The two bullets after
-   `cooks.distance()` aren't parallel (the second is a separate point).
-9. Intro: the predict paragraph ends without a period after "(`dev/pred.mlm.R`)".
-10. HE plots: "The **same design** S3 design principle" (repeated "design").
-11. genridge: "only in terms of ... only" (double "only").
+16. Ladder (`R/dimension-ladder.R`): crop ~15% empty space at the top; the back layer of the
+    3-way array shows only as an orange L-strip and reads like a ragged matrix (bigger offset,
+    perspective, or a "qsec" layer label); "CI for **B**" label sits a few px above
+    "CI for **b**".
+17. Rohwer HE plot: `ss` label is faint gray; `ns` label at the frame edge. Minor.
+18. Pottery canonical: "IsleThorns"/"AshleyRails" overlap, "Mg"/"Fe" overlap, "Caldicot" sits
+    on the ellipse boundary. Try `label.pos`, `cex`, or wider limits.
+19. Pottery robust: left panel colored by site with no key (legend, or say in caption: blue =
+    Llanedyrn, red = Caldicot, green = Isle Thorns, black = Ashley Rails). Right panel: the
+    two "Site" labels overlap and the blue one is clipped at the bottom; "Error" labels and
+    IsleThorns/AshleyRails overlap.
+20. School trace: HKB/LW labels overprint ("HKLW"); counseling/education collide in two
+    panels; everything bunches near λ = 0 with the axis starting at −1. Try
+    `traceplot(sridge, X = "df")` or a log-spaced λ grid.
+21. School cross: stacked fills go muddy brown (lower `fill.alpha`); λ labels 0/0.05/0.1
+    overprint (label a subset, e.g. 0, 0.25, 1, 5).
+22. Prediction ellipses: text says all ellipses have the same shape, but unequal axis scales
+    make that hard to see; `asp = 1`, or just say so.
 
 **Clean-up before publishing**
 
-12. Remove obsolete HTML comments: the Status line (2026-11-19), the mtcars/dataset question,
+23. Remove obsolete HTML comments: the Status line (2026-11-19), the mtcars/dataset question,
     the SKELETON banner, the predict.mlm pointer note in "One more dimension", the CHECK
     comment in "Filling in the gaps" (done).
-13. Verify the four pkgdown URLs and the Vis-MLM book link (Fig 6.1 is a chapter page).
-14. Categories: consider adding candisc and mvinfluence.
-15. Update the genridge 0.8.1 wording once CRAN accepts it.
-16. The removed "Further reading" note suggested Vis-MLM chapters 9, 11–14, 21; a one-line
-    pointer could go in the Conclusion. Uncited entries in references.bib (FriendlySigal 2015,
-    2016; Friendly & Kwan) can be cited or dropped.
+24. Verify the four pkgdown URLs and the Vis-MLM book link (Fig 6.1 is a chapter page).
+25. Categories: consider adding candisc and mvinfluence.
+26. Update the genridge 0.8.1 wording once CRAN accepts it.
+27. A one-line pointer to Vis-MLM chapters 9, 11–14, 21 could go in the Conclusion.
+    Uncited entries in references.bib (FriendlySigal 2015, 2016; Friendly & Kwan) can be
+    cited or dropped.

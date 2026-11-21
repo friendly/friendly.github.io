@@ -80,7 +80,7 @@ car::avPlots(fit)
 car::vif(fit)
 ```
 
-The more interesting cases are the ones that ** *don't* fail**, but don't give you anything **useful**:
+The more interesting cases are the ones that ***don't* fail**, but don't give you anything **useful**:
 `cooks.distance()` runs without a
 murmur and gives you a Cook's D for each case, separately for each response:
 
@@ -139,8 +139,8 @@ side (multivariate regression, MANOVA, canonical correlation), but the graphics 
 thin. Mostly, the results arrive as tables of multivariate test statistics.
 
 ![Techniques for linear models, classified by the number of predictors ($p$) and responses
-($q$), and whether these are quantitative or discrete. The $q > 1$ columns are where
-graphical methods have been thin. *Source*: [Visualizing Multivariate Data and Models in
+($q$), and whether these are quantitative or discrete. The quantitative $q > 1$ column is
+where graphical methods have been thin. *Source*: [Visualizing Multivariate Data and Models in
 R](https://friendly.github.io/Vis-MLM-book), Figure 6.1.](figures/techniques-table.png){#fig-techniques width="90%" fig-alt="A table of linear-model techniques. Rows: predictors, quantitative or discrete, with p = 1 or p > 1. Columns: responses, quantitative or discrete, with q = 1 or q > 1. For quantitative responses, simple and multiple regression, t-test and ANOVA (q = 1) generalize to multivariate regression, canonical and partial correlation, Hotelling T-squared and MANOVA (q > 1). For discrete responses, logistic regression, chi-square, discriminant analysis, logit and loglinear models."}
 
 <!--
@@ -212,7 +212,7 @@ long data frame with a `response` column. That's perfectly convenient for a tabl
 cases the answers for `mpg` and `qsec` sit side by side as if they had nothing to do with
 each other.
 
-And sometimes R just **refuses**, as it currently does in for the `predict()` generic:
+And sometimes R just **refuses**, as it currently does for `predict()`:
 
 ```{r}
 #| label: predict-refuses
@@ -230,7 +230,7 @@ predicted value is a single number, and a confidence interval is a pair of numbe
 * For an `mlm`, the uncertainty of each predicted point is a $q \times q$ covariance
 matrix, and the natural confidence region is an *ellipse* (an ellipsoid when $q > 2$) around it. What should `predict()` return? How should it print? There's no column in
 `cbind(fit, lwr, upr)` for an ellipse. Work on this is still unfinished in `heplots`
-(`dev/pred.mlm.R`)
+(`dev/pred.mlm.R`).
 
 <!--
 predict.mlm() is an unfinished item in heplots (dev/pred.mlm.R returns an n x q x 3
@@ -256,7 +256,7 @@ That's the thesis line. Alternative endings for that last sentence:
 
 Over the past twenty years or so I've been filling these gaps, one package at a time, often
 with John Fox and Georges Monette, who have been my inspirations in most of this work.
-But, importantly here, also helping to fill in gaps in my understanding of software design in R and thinking multivariately with geometry and graphs
+Importantly here, they also helped fill in gaps in my understanding of software design in R, and of thinking multivariately with geometry and graphs
 [e.g., @FoxFriendlyMonette:09:compstat; @Friendly-etal:ellipses:2012; @FoxFriendlyWeisberg:13:rjournal].
 
 <!-- CHECK: co-authors per package, and approximate start dates (from NEWS/DESCRIPTION).
@@ -278,13 +278,13 @@ But, importantly here, also helping to fill in gaps in my understanding of softw
 <!-- verify the pkgdown URLs before publishing -->
 
 Each one of these was a special case of the same problem: deciding what the extra dimension means, for the
-statistics, for the software. 
+statistics and for the software. 
 
 But, "filling the gaps" has a larger meaning for me. In data visualization,
 an over-arching motivation has been to pay attention to **Un-Vized Problems**:
 those for which the statistical machinery is largely developed, but which
 haven't been implemented in software to help you see, understand, and
-communicate  your results.[^tukey59]
+communicate your results.[^tukey59]
 
 [^tukey59]: To paraphrase @Tukey:59, the "practical power" of any statistical method
 is the product of its statistical power, times the probability that anyone can or will
@@ -376,7 +376,7 @@ Everything that `Anova()` can test, `heplot()` can draw, including repeated-meas
 designs through its `idata` and `idesign` arguments. And because `heplot()` is an S3
 generic, anything that inherits from `"mlm"` gets an HE plot for free.
 
-The **same design** S3 design principle in R gave a family of graphical methods for `"mlm"` objects: `pairs()` for all pairs of
+The same S3 design principle in R gave a family of graphical methods for `"mlm"` objects: `pairs()` for all pairs of
 responses, `heplot3d()` for three, and `heplot1d()` for one. Other helpers came along:
 
 * `coefplot()` shows confidence ellipses for the coefficients, generalizing
@@ -393,10 +393,10 @@ examples.
 
 An HE plot shows two responses at a time, and `pairs()`, which is actually `heplots::pairs.mlm()` in real life just does its `pairs()` thing for a
 new `"mlm"`-- it shows all the bivariate response pairs, two at a time.
-That was something I got essentially for free base R graphics and the S3
+That was something I got essentially for free from base R graphics and the S3
 object design.[^pairs]
 
-[^pairs]: Of course, there other, more modern views of the idea of a "scatterplot matrix" [@Hartigan:75b]
+[^pairs]: Of course, there are other, more modern views of the idea of a "scatterplot matrix" [@Hartigan:75b]
 in Trellis graphics, ... now `ggplot2` via `GGally` and other extensions ,,,
 
 But, in an MLM, there's something more:
@@ -455,8 +455,8 @@ The software followed the `heplots` design.
 from the same `car::Anova()` call, and returns a `"candisc"` object, for which there are
 `heplot()`, `heplot3d()` and `plot()` methods.
 
-* But there's wrinkle here: there is a different $(\mathbf{H}, \mathbf{E})$ decomposition
-  for each $\mathbf{H}_i$ term in a MLM. `candiscList()` helps with this for every term
+* But there's a wrinkle here: there is a different $(\mathbf{H}, \mathbf{E})$ decomposition
+  for each $\mathbf{H}_i$ term in an MLM. `candiscList()` helps with this for every term
   in the model. 
 `can_lm()` goes one step further, refitting the model with the canonical scores
 as responses. 
@@ -675,7 +675,7 @@ $\mathbf{X}$, so it can't borrow strength across responses. For the same reason,
 effective degrees of freedom, the shrinkage factors and the variance inflation factors
 depend only on $\mathbf{X}$, and they're the same for every response.
 
-So if you're looking only at the effects of ridge shrinkage only in terms of
+So if you're looking only at the effects of ridge shrinkage in terms of
 **bias**,
 the univariate ridge trace plot is still the right display for each response. By
 default, `traceplot()` for an `"mlmridge"` object draws one panel for each:[^panel]
@@ -693,10 +693,10 @@ traceplot(sridge)
 ```
 
 Not every method needs a new multivariate display. Knowing *which* ones don't is part of
-the design. The important ones for `genridge` were the novel methods I implemented to show the effects of shrinkage on **precision** of the estimates of $\mathbf{\beta} \rightarrow \mathbf{B}$ along with **bias**: 
+the design. The important ones for `genridge` were the novel methods I implemented to show the effects of shrinkage on **precision** of the estimates of $\boldsymbol{\beta} \rightarrow \mathbf{B}$ along with **bias**: 
 
 * covariance ellipses for pairs of responses ...
-* low-rank views: projecting predictors in $mathbf{X}$ into PCA space ...
+* low-rank views: projecting predictors in $\mathbf{X}$ into PCA space ...
 * biplot view: show what happens to the observed predictors in this space ...
 
 ### What it does change
@@ -728,7 +728,7 @@ par(op)
 ```
 
 This shows two things a univariate view can't. `visit`'s coefficients cross zero for
-*both* responses together. And `counseling`'s coefficients move *away* from the origin:
+*both* responses, at nearly the same $\lambda$. And `counseling`'s coefficients move *away* from the origin:
 ridge regression shrinks the length of the whole coefficient vector, not each coefficient,
 so with correlated predictors some grow while others shrink. The other genuinely new
 piece is the choice of $\lambda$. The GCV criterion can be pooled over the responses to
