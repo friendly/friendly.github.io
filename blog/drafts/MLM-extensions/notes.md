@@ -363,14 +363,22 @@ citation keys resolve.
    - MF's LATER note on factorial model matrices became its footnote. Checked in R: the
      `~ A*B*C` model matrix equals (1, X_A) ⊗ (1, X_B) ⊗ (1, X_C) up to column order.
    
-6. Hotelling radius: the post uses `F(q, n−p−q+1)`; the heplots draft (`dev/pred.mlm.R`) uses
-   `qf(level, m, n-p-m)`. Reconcile the draft with the post.
+6. ✔️ ~~Hotelling radius: the post uses `F(q, n−p−q+1)`; the heplots draft (`dev/pred.mlm.R`) uses
+   `qf(level, m, n-p-m)`. Reconcile the draft with the post.~~
+   *Done 2026-11-21:* no conflict: `dev/pred.mlm.R` uses p = ncol(X) − 1 (no intercept), so
+   `qf(level, m, n-p-m)` · m(n−p−1)/(n−p−m) is the same c² as the post's formula with p counting
+   the intercept. The post's text now gives the radius as the `qf()` expression used in its code,
+   and says p counts the intercept.
    
-7. Section rhythm: subheadings differ by package (heplots "What was easy"; mvinfluence "Design
+7. ✔️ ~~Section rhythm: subheadings differ by package (heplots "What was easy"; mvinfluence "Design
    challenges"/"New influence plots"; robmlm "What took more work"; genridge "doesn't
    change"/"does change"/"design lesson"). A shared pattern (what gains a dimension → what
    was hard in the software → the display) would make the "same problem each time" argument
-   easier to see.
+   easier to see.~~
+   *Reviewed 2026-11-21, no changes (MF: change only where it really improves flow; the
+   subheadings are package-specific).* The sections already run statistics → software →
+   display in order, and the headings echo each other where it matters (heplots "What was
+   easy" / robmlm "What took more work"; genridge "doesn't change" / "does change").
 
 **Additions**
 
@@ -411,33 +419,56 @@ statistical test simpler, by considering what is important, aided by geometry.
 
 **Unfinished or awkward text**
 
-8. candisc: the `pairs()` paragraph ("which is actually `heplots::pairs.mlm()` in real life
+8. ✔️ ~~candisc: the `pairs()` paragraph ("which is actually `heplots::pairs.mlm()` in real life
    just does its `pairs()` thing") and its footnote ("Trellis graphics, ... `GGally` and
-   other extensions ,,,"); the "wrinkle" bullet runs into the `can_lm()`/`varOrder()` lines.
-9. genridge: the three "..." bullets (covariance ellipses, PCA views, biplot). An example
-   figure could go here, e.g. `pca()` / `biplot()` for one response.
-10. genridge "design lesson": "that's a good outcome" refers to the seven methods that
+   other extensions ,,,"); the "wrinkle" bullet runs into the `can_lm()`/`varOrder()` lines.~~
+   *Done 2026-11-21:*
+   - the `pairs()` paragraph is rewritten: `pairs()` dispatches to `heplots::pairs.mlm()`, an HE
+     plot for every pair of responses;
+   - the footnote is finished (Hartigan 1975; Trellis/lattice; `GGally::ggpairs()`);
+   - the software bullets are split into four parallel items, and the wrinkle says each term
+     has its own **H** and canonical space while **E** is shared.
+9. ✔️ ~~genridge: the three "..." bullets (covariance ellipses, PCA views, biplot). An example
+   figure could go here, e.g. `pca()` / `biplot()` for one response.~~ *Done 2026-11-21:*
+   bullets finished; new @fig-school-pca (`pca()` for reading, dims 1–2 vs 4–5), with inline
+   `r` numbers for the shrinkage of the first and last components.
+10. ✔️ ~~genridge "design lesson": "that's a good outcome" refers to the seven methods that
     errored, but "the same quietly univariate problem" refers to the one that silently lost
     the predictor names, and the "confess" paragraph now sits between them. Put the silent
-    one next to its point.
-11. Intro: the `cbind` "also works for a sequence of vectors, matrices and dataframes"
+    one next to its point.~~ *Done 2026-11-21:* now in order: the errors ("a good outcome"),
+    the silent one ("quietly univariate"), "confess", the class paragraph, the
+    inheritance-promise close.
+11. ✔️ ~~Intro: the `cbind` "also works for a sequence of vectors, matrices and dataframes"
     sentence trails off; say why it matters or cut it. The two bullets after
-    `cooks.distance()` aren't parallel (the second is a separate point).
+    `cooks.distance()` aren't parallel (the second is a separate point).~~
+    *MF 2026-11-21: looks OK, no change.*
     
-12. End of "Filling in the gaps": "as I've learned about how to take these methods to 'One
-    more dimension'" is awkward.
+12. ✔️ ~~End of "Filling in the gaps": "as I've learned about how to take these methods to 'One
+    more dimension'" is awkward.~~ *Done 2026-11-21:* now "The sections below take the
+    packages in turn. For each one, the question is the same: what did it take to carry these
+    methods one more dimension?"
     
-13. Decide: the `influence(fit, m = 2)` partial-matching pitfall (lesson in the post, or just
+13. ✔️ ~~Decide: the `influence(fit, m = 2)` partial-matching pitfall (lesson in the post, or just
     mvinfluence TASKS.md); the `vcov.mlm` "think twice" sentence; the compact hook table
-    (comment in the intro).
+    (comment in the intro).~~
+    - *Partial matching, done 2026-11-21:* not in the post (MF: too far in the weeds); it stays
+      in mvinfluence dev/TASKS.md. The post now shows the call that works,
+      `mlm.influence(fit, m = 2)`, in the "structure follows stats" bullet.
+    - *`vcov.mlm` "think twice", 2026-11-21:* keep as is (parallels the genridge
+      "inheritance is a promise" lesson).
+    - *Compact hook table, 2026-11-21:* not used; the comment stays in the intro, marked as such.
     
-14. Cite VARshrink where `lm_multiv_ridge()` is mentioned.
+14. ✔️ ~~Cite VARshrink where `lm_multiv_ridge()` is mentioned.~~ *Done 2026-11-21:*
+    `[@R-VARshrink]` (CRAN package, v0.5.0; entry copied from Rpackages-4.6.1.bib).
 
-15. robmlm: compute the Pillai Fs (4.3 → 6.6) with inline `` `r` `` code instead of typing them.
+15. ✔️ ~~robmlm: compute the Pillai Fs (4.3 → 6.6) with inline `` `r` `` code instead of typing them.
     Note that the denominator df drops 60 → 51 in the robust fit (near-zero weights
     effectively remove cases), so the two Fs aren't quite like for like. Also worth a
     clause: three of the four downweighted cases (1, 7, 11) are Llanedyrn, the fourth (25)
-    Ashley Rails.
+    Ashley Rails.~~ *Done 2026-11-21:* re-checked: Pillai F 4.30 (df 15, 60) and 6.55
+    (df 15, 51), from `car::Anova()`. The df drop is because 3 weights (cases 1, 11, 25) are
+    exactly zero, so error df 22 → 19; case 7 is 0.033, not zero. The Fs and dfs are now inline
+    `r` code (hidden chunk `pottery-pillai`), plus the Llanedyrn / Ashley Rails clause.
 
 **Figures**
 
@@ -449,23 +480,35 @@ statistical test simpler, by considering what is important, aided by geometry.
     3-way array shows only as an orange L-strip and reads like a ragged matrix (bigger offset,
     perspective, or a "qsec" layer label); "CI for **B**" label sits a few px above
     "CI for **b**".~~
-17. Rohwer HE plot: `ss` label is faint gray; `ns` label at the frame edge. Minor.
-18. Pottery canonical: "IsleThorns"/"AshleyRails" overlap, "Mg"/"Fe" overlap, "Caldicot" sits
-    on the ellipse boundary. Try `label.pos`, `cex`, or wider limits.
-19. Pottery robust: left panel colored by site with no key (legend, or say in caption: blue =
+17. ✔️ ~~Rohwer HE plot: `ss` label is faint gray; `ns` label at the frame edge. Minor.~~
+    *Done 2026-11-21:* `ss` is now darkorange2; `ns` position left as is (MF). Also fixed the
+    fig-alt, which called the Regr ellipse green (it is purple).
+18. ✔️ ~~Pottery canonical: "IsleThorns"/"AshleyRails" overlap, "Mg"/"Fe" overlap, "Caldicot" sits
+    on the ellipse boundary. Try `label.pos`, `cex`, or wider limits.~~
+    *MF 2026-11-21: minor, left as is.* The site-label overlap can't be fixed from the post:
+    `heplot()` always labels means with `pos = 3`, and `heplot.candisc()` hard-codes
+    `factor.means`. A possible candisc/heplots TODO (a `means.pos` argument).
+19. ✔️ ~~Pottery robust: left panel colored by site with no key (legend, or say in caption: blue =
     Llanedyrn, red = Caldicot, green = Isle Thorns, black = Ashley Rails). Right panel: the
     two "Site" labels overlap and the blue one is clipped at the bottom; "Error" labels and
-    IsleThorns/AshleyRails overlap.
+    IsleThorns/AshleyRails overlap.~~ *Done 2026-11-21:* site colors named in the caption;
+    no legend; right-panel label overlaps left as is.
     
-20. School trace: HKB/LW labels overprint ("HKLW"); counseling/education collide in two
+20. ✔️ ~~School trace: HKB/LW labels overprint ("HKLW"); counseling/education collide in two
     panels; everything bunches near λ = 0 with the axis starting at −1. Try
-    `traceplot(sridge, X = "df")` or a log-spaced λ grid.
+    `traceplot(sridge, X = "df")` or a log-spaced λ grid.~~ *Done 2026-11-21:* now
+    `traceplot(sridge, X = "df")`, with a sentence on why df. Caption, fig-alt and the GCV
+    sentence fixed: they referred to a blue GCV line that `traceplot()` never draws; the GCV
+    sentence now gives the pooled λ inline (0.05).
     
-21. School cross: stacked fills go muddy brown (lower `fill.alpha`); λ labels 0/0.05/0.1
-    overprint (label a subset, e.g. 0, 0.25, 1, 5).
+21. ✔️ ~~School cross: stacked fills go muddy brown (lower `fill.alpha`); λ labels 0/0.05/0.1
+    overprint (label a subset, e.g. 0, 0.25, 1, 5).~~ *Done 2026-11-21:* `fill.alpha = 0.1`;
+    labels only at λ = 0, 0.25, 1, 5 (via `labels =`); caption and fig-alt updated.
     
-22. Prediction ellipses: text says all ellipses have the same shape, but unequal axis scales
-    make that hard to see; `asp = 1`, or just say so.
+22. ✔️ ~~Prediction ellipses: text says all ellipses have the same shape, but unequal axis scales
+    make that hard to see; `asp = 1`, or just say so.~~ *Done 2026-11-21:* `asp = 1`, figure
+    8 × 4.5; the ellipses now show Σ̂'s true shape (wide in mpg, flat in qsec). Caption and
+    fig-alt say so.
 
 **Clean-up before publishing**
 

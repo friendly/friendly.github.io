@@ -148,6 +148,7 @@ directly to sec-linear-models.
 Possibly a compact table here of the three outcomes (errors / quietly univariate /
 genuinely multivariate: hatvalues, vcov, anova, car::Anova). See notes.md, "Hook".
 Could be generated live with tryCatch so it stays true as packages change.
+MF 2026-11-21: not used; the intro bullets already make this point.
 -->
 
 ## One more dimension
@@ -287,8 +288,8 @@ communicate your results.[^tukey59]
 is the product of its statistical power, times the probability that anyone can or will
 actually use it.
 
-The sections below take these package ideas in turn, as I've learned about how to take
-these methods to "One more dimension".
+The sections below take the packages in turn. For each one, the question is the same:
+what did it take to carry these methods one more dimension?
 
 <!--
 =====================================================================
@@ -340,9 +341,9 @@ coefficients are zero.
 #| fig-height: 6
 #| out-width: "75%"
 #| fig-cap: "HE plot for the Rohwer MANCOVA model, in the space of SAT and PPVT. Each 1-df term is a line; the `Regr` ellipse tests all five PA tasks together. Terms whose H ellipse or line extends outside the E ellipse are significant."
-#| fig-alt: "HE plot of PPVT against SAT. A red dashed Error ellipse is centered at the grand mean. A large green Regr ellipse, tilted upward, extends well outside it. Lines for SES, na and ns also extend outside the Error ellipse; the lines for n, s and ss stay inside. Points mark the Hi and Lo SES group means."
+#| fig-alt: "HE plot of PPVT against SAT. A red dashed Error ellipse is centered at the grand mean. A large purple Regr ellipse, tilted upward, extends well outside it. Lines for SES, na and ns also extend outside the Error ellipse; the lines for n, s and ss stay inside. Points mark the Hi and Lo SES group means."
 # colors: Error first, then the six terms, then the Regr hypothesis
-col <- c("red", "darkgreen", "blue", "cyan3", "magenta", "brown", "darkgray", "purple")
+col <- c("red", "darkgreen", "blue", "cyan3", "magenta", "brown", "darkorange2", "purple")
 heplot(rohwer.mod,
        hypotheses = list("Regr" = c("n", "s", "ns", "na", "ss")),
        col = col, fill = TRUE, fill.alpha = 0.1)
@@ -390,15 +391,16 @@ examples.
 
 ## Seeing it in fewer dimensions: candisc
 
-An HE plot shows two responses at a time, and `pairs()`, which is actually `heplots::pairs.mlm()` in real life just does its `pairs()` thing for a
-new `"mlm"`-- it shows all the bivariate response pairs, two at a time.
-That was something I got essentially for free from base R graphics and the S3
-object design.[^pairs]
+An HE plot shows two responses at a time. To see more of them, `pairs()` on an `"mlm"`
+dispatches to `heplots::pairs.mlm()`, which draws the HE plot for every pair of responses,
+laid out as a scatterplot matrix. That came essentially for free, from base R graphics and
+S3 dispatch.[^pairs]
 
-[^pairs]: Of course, there are other, more modern views of the idea of a "scatterplot matrix" [@Hartigan:75b]
-in Trellis graphics, ... now `ggplot2` via `GGally` and other extensions ,,,
+[^pairs]: The idea of a scatterplot matrix goes back at least to @Hartigan:75b. It has
+been reworked many times since, in Trellis graphics (now **lattice**) and, for **ggplot2**,
+in `GGally::ggpairs()` and other extensions.
 
-But, in an MLM, there's something more:
+But in an MLM there's something more:
 the effect of a term doesn't have to line up with any pair of responses. The
 $\mathbf{H}$ ellipsoid for a term lives in $s = \min(q, df_h)$ dimensions, in directions
 that are combinations of all the responses.
@@ -448,19 +450,18 @@ In terms of the ladder, `candisc()` doesn't need to ignore the extra dimensions;
 *rotates* them. It finds the directions that matter for one term, and lets you ignore the
 rest knowing how little you lose.
 
-The software followed the `heplots` design. 
+The software followed the heplots design:
 
-* `candisc()` gets $\mathbf{H}$ and $\mathbf{E}$
-from the same `car::Anova()` call, and returns a `"candisc"` object, for which there are
-`heplot()`, `heplot3d()` and `plot()` methods.
-
-* But there's a wrinkle here: there is a different $(\mathbf{H}, \mathbf{E})$ decomposition
-  for each $\mathbf{H}_i$ term in an MLM. `candiscList()` helps with this for every term
-  in the model. 
-`can_lm()` goes one step further, refitting the model with the canonical scores
-as responses. 
-And `varOrder()` uses the angles of those arrows to order the responses in
-other displays, like `pairs()`, so that related variables sit together.
+* `candisc()` gets $\mathbf{H}$ and $\mathbf{E}$ from the same `car::Anova()` call, and
+  returns a `"candisc"` object, for which there are `heplot()`, `heplot3d()` and `plot()`
+  methods.
+* There's a wrinkle: each term in the model has its own $\mathbf{H}$, and so its own
+  canonical space, while $\mathbf{E}$ is shared. `candiscList()` does the analysis for
+  every term at once.
+* `can_lm()` goes one step further, refitting the model with the canonical scores as
+  responses.
+* `varOrder()` uses the angles of the structure arrows to order the responses in other
+  displays, like `pairs()`, so that related variables sit together.
 
 ## Influence: mvinfluence
 
@@ -518,7 +519,8 @@ For a subset, the leverage and residual quantities $\mathbf{H}_I$ and $\mathbf{Q
 $m \times m$ matrices. That's the ladder once more, and it set the design:
 
 * **The structure follows stats.** As `influence.lm()` calls `lm.influence()`,
-  `influence.mlm()` is a thin wrapper around `mlm.influence()`, which does the work. With
+  `influence.mlm()` is a thin wrapper around `mlm.influence()`, which does the work, for
+  subsets of any size: `mlm.influence(fit, m = 2)` gives all pairs of cases. With
   `hatvalues()` and `cooks.distance()` methods for `"mlm"`, the familiar generic functions
   just work.
 * **The results are lists of matrices**, one for each of the $\binom{n}{m}$ subsets. To
@@ -533,14 +535,8 @@ $m \times m$ matrices. That's the ladder once more, and it set the design:
   Computing these needs powers of matrices, so the package has `mpower()` and a `%^%`
   operator.
 
-<!--
-MF: a design pitfall found while drafting (2026-11-20). influence(fit, m = 2) fails:
-"no applicable method for 'influence' applied to an object of class
-c('double', 'numeric')". The stats generic is influence(model, ...), so `m = 2` partially
-matches `model`, and `fit` falls into `...`. influence(model = fit, m = 2) and
-mlm.influence(fit, m = 2) work. Mention here as a lesson (arguments of a method can
-partially match the generic's arguments), and/or rename the argument in mvinfluence?
--->
+<!-- influence(fit, m = 2) partial-matching pitfall: left out of the post on purpose
+(MF 2026-11-21); tracked in mvinfluence dev/TASKS.md. -->
 
 ### New influence plots
 
@@ -614,7 +610,7 @@ pottery.rlm <- robmlm(pottery.mlm)
 #| label: fig-pottery-robust
 #| fig-width: 11
 #| fig-height: 5
-#| fig-cap: "Robust MANOVA for the Pottery data. Left: final case weights from `robmlm()`, colored by site. Right: HE plots for the classical (blue, solid) and robust (red, dashed) fits, for Al and Fe."
+#| fig-cap: "Robust MANOVA for the Pottery data. Left: final case weights from `robmlm()`, colored by site (blue: Llanedyrn, red: Caldicot, green: Isle Thorns, black: Ashley Rails). Right: HE plots for the classical (blue, solid) and robust (red, dashed) fits, for Al and Fe."
 #| fig-alt: "Two panels. Left: an index plot of case weights. Most are near 1, but cases 1, 7, 11 and 25 have weights near 0, and cases 9 and 10 about 0.5. Right: HE plot of Fe against Al. The classical and robust Site ellipses nearly coincide, a long thin ellipse running from upper left to lower right. The robust Error ellipse is clearly smaller than the classical one."
 op <- par(mfrow = c(1, 2), mar = c(4, 4, 1, 1) + 0.1)
 plot(pottery.rlm, col = Pottery$Site, segments = TRUE)
@@ -628,10 +624,31 @@ legend("topright", c("Classical", "Robust"), col = c("blue", "red"),
 par(op)
 ```
 
+```{r}
+#| label: pottery-pillai
+#| include: false
+# Pillai's F for Site, from the H and E matrices in car::Anova()
+pillai_F <- function(mod, term = "Site") {
+  a <- car::Anova(mod)
+  H <- a$SSP[[term]]; E <- a$SSPE; dfh <- a$df[[term]]; dfe <- a$error.df
+  V <- sum(diag(H %*% solve(H + E)))
+  q <- ncol(H); s <- min(q, dfh); m <- (abs(q - dfh) - 1) / 2; n <- (dfe - q - 1) / 2
+  c(F = (2 * n + s + 1) / (2 * m + s + 1) * V / (s - V), df2 = s * (2 * n + s + 1), dfe = dfe)
+}
+pf_cls <- pillai_F(pottery.mlm)
+pf_rob <- pillai_F(pottery.rlm)
+n_zero <- sum(pottery.rlm$weights == 0)
+```
+
 Four cases (1, 7, 11 and 25) get weights near zero, and two more (9 and 10) about one half.
+Three of the four are from Llanedyrn; the fourth is from Ashley Rails.
 The robust $\mathbf{H}$ ellipse for `Site` is nearly the same as the classical one, but the
 $\mathbf{E}$ ellipse shrinks. Downweighting a few unusual pots makes the differences among
-sites stand out more: the $F$ for Pillai's test rises from 4.3 to 6.6. The
+sites stand out more: the $F$ for Pillai's test rises from `r round(pf_cls[["F"]], 1)` to
+`r round(pf_rob[["F"]], 1)`. That isn't quite like for like. The weights of
+`r n_zero` cases are exactly zero, so the robust fit drops them, and its error df falls from
+`r pf_cls[["dfe"]]` to `r pf_rob[["dfe"]]` (the denominator df of $F$, from
+`r pf_cls[["df2"]]` to `r pf_rob[["df2"]]`). The
 [Robust vignette](https://friendly.github.io/heplots/articles/Robust.html) has the details,
 and a second example with a multivariate regression.
 
@@ -643,7 +660,7 @@ The newest member of the family is in genridge, my package for visualizing ridge
 regression [@Friendly:genridge:2013]. In version 0.8.1, `ridge()` accepts a matrix
 response, either in a formula or as an existing `mlm` fit, and returns an object of class
 `"mlmridge"`. The implementation was adapted from `lm_multiv_ridge()` in the
-**VARshrink** package. It's marked experimental, and I'd welcome comments.
+**VARshrink** package [@R-VARshrink]. It's marked experimental, and I'd welcome comments.
 
 The question was how to carry the graphical methods I had developed for a single
 $\mathbf{y}$, where the effects of many predictors on shrinkage are seen jointly, one
@@ -677,7 +694,10 @@ depend only on $\mathbf{X}$, and they're the same for every response.
 So if you're looking only at the effects of ridge shrinkage in terms of
 **bias**,
 the univariate ridge trace plot is still the right display for each response. By
-default, `traceplot()` for an `"mlmridge"` object draws one panel for each:[^panel]
+default, `traceplot()` for an `"mlmridge"` object draws one panel for each.[^panel] Here the
+horizontal axis is the effective degrees of freedom (`X = "df"`) rather than $\lambda$. It's
+easier to interpret, and because it depends only on $\mathbf{X}$, it's the same for every
+response:
 
 [^panel]: This leaves open the question of how this should be done: `for()` loops,
 `apply()` or `map()` functions, faceted displays, etc.
@@ -686,17 +706,43 @@ default, `traceplot()` for an `"mlmridge"` object draws one panel for each:[^pan
 #| label: fig-school-trace
 #| fig-width: 10
 #| fig-height: 4
-#| fig-cap: "Ridge trace plots for the three responses in the school data. The blue line marks the common ridge constant chosen by GCV pooled over the responses; gray lines mark the HKB and LW estimates for each response."
-#| fig-alt: "Three panels of coefficient against ridge constant, for reading, mathematics and selfesteem. In each, the large coefficient for occupation drops steeply as the ridge constant increases. For reading and mathematics, visit starts negative and crosses zero at a ridge constant of about 1 to 2. A vertical blue line labeled GCV sits near zero in all three panels."
-traceplot(sridge)
+#| fig-cap: "Ridge trace plots for the three responses in the school data, against the effective degrees of freedom. At the right, df = 5 is the OLS fit; shrinkage increases to the left."
+#| fig-alt: "Three panels of coefficient against degrees of freedom, from about 2.9 to 5, for reading, mathematics and selfesteem. In each, the large coefficient for occupation falls steeply as the degrees of freedom decrease from 5. For reading and mathematics, visit is negative at 5 df and rises, crossing zero near 4 df. For selfesteem, visit stays near 4 throughout."
+traceplot(sridge, X = "df")
 ```
 
 Not every method needs a new multivariate display. Knowing *which* ones don't is part of
 the design. The important ones for `genridge` were the novel methods I implemented to show the effects of shrinkage on **precision** of the estimates of $\boldsymbol{\beta} \rightarrow \mathbf{B}$ along with **bias**: 
 
-* covariance ellipses for pairs of responses ...
-* low-rank views: projecting predictors in $\mathbf{X}$ into PCA space ...
-* biplot view: show what happens to the observed predictors in this space ...
+* **covariance ellipses** for pairs of coefficients: `plot()` and `pairs()` draw the
+  confidence ellipse of $(\beta_j, \beta_k)$ for each $\lambda$, so the bias (centers
+  moving towards zero) and the gain in precision (ellipses shrinking) are seen together.
+* **low-rank views**: `pca()` rotates the coefficients into the principal component space
+  of $\mathbf{X}$. There, ridge shrinks each component separately, and most strongly in the
+  dimensions with the smallest singular values, which is where the collinearity lives.
+* **biplot view**: `biplot()` adds the observed predictors as vectors in the space of the
+  smallest dimensions, to show which of them are responsible for the collinearity.
+
+All three depend on $\mathbf{X}$ and one column of $\widehat{\mathbf{B}}(\lambda)$, so for an
+`"mlmridge"` object they work one response at a time, selected with `response =`. For
+`reading`, @fig-school-pca shows the two ends of the PCA space:
+
+```{r}
+#| label: fig-school-pca
+#| fig-width: 10
+#| fig-height: 4.5
+#| fig-cap: "Ridge estimates for reading in the principal component space of the predictors, with their covariance ellipses for each ridge constant. Left: the two largest dimensions, where ridge has almost no effect. Right: the two smallest dimensions, where the coefficients and their variances shrink a great deal."
+#| fig-alt: "Two panels of overlapping filled ellipses, one per ridge constant. Left, dim2 against dim1: the ellipses are nearly circular and almost on top of each other, their centers all near (-8, -3). Right, dim5 against dim4: the ellipses are wide and shrink steadily, their centers moving down from about (-3.4, 18) at a ridge constant of 0 to about (-0.5, 2) at 5."
+pr <- pca(sridge, response = "reading")
+op <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
+plot(pr, variables = 1:2, fill = TRUE, main = "Dimensions 1 and 2")
+plot(pr, variables = 4:5, fill = TRUE, main = "Dimensions 4 and 5")
+par(op)
+```
+
+Between $\lambda = 0$ and $5$ the coefficient on the first component hardly changes
+(`r round(coef(pr)[1, 1], 1)` to `r round(coef(pr)[8, 1], 1)`), while the one on the last
+drops from `r round(coef(pr)[1, 5], 1)` to `r round(coef(pr)[8, 5], 1)`.
 
 ### What it does change
 
@@ -718,11 +764,13 @@ With `predictor =`, `plot()` shows exactly this view:
 #| label: fig-school-cross
 #| fig-width: 10
 #| fig-height: 4
-#| fig-cap: "Coefficients of visit and counseling for reading and mathematics, with their covariance ellipses, as the ridge constant (labels) increases. All the ellipses have the same shape, that of the residual covariance of reading and mathematics."
-#| fig-alt: "Two panels plotting the coefficient for mathematics against the coefficient for reading, with a sequence of overlapping filled ellipses labeled by ridge constant from 0 to 5. For visit, the path runs from about (-5, -10) up to the upper right, crossing zero for both responses near a ridge constant of 1. For counseling, the path moves from near (-2, 3) away from the origin, to the right. All ellipses are long, thin and tilted upward, and shrink as the ridge constant grows."
+#| fig-cap: "Coefficients of visit and counseling for reading and mathematics, with their covariance ellipses, as the ridge constant increases (labels for 0, 0.25, 1 and 5). All the ellipses have the same shape, that of the residual covariance of reading and mathematics."
+#| fig-alt: "Two panels plotting the coefficient for mathematics against the coefficient for reading, with a sequence of overlapping, lightly filled ellipses, some labeled by ridge constant (0, 0.25, 1, 5). For visit, the path runs from about (-5, -10) up to the upper right, crossing zero for both responses near a ridge constant of 1. For counseling, the path moves from near (-2, 3) away from the origin, to the right. All ellipses are long, thin and tilted upward, and shrink as the ridge constant grows."
+lab <- ifelse(lambda %in% c(0, 0.25, 1, 5), lambda, "")   # label a few ridge constants
 op <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
 for (p in c("visit", "counseling"))
-  plot(sridge, predictor = p, responses = c("reading", "mathematics"), fill = TRUE)
+  plot(sridge, predictor = p, responses = c("reading", "mathematics"),
+       fill = TRUE, fill.alpha = 0.1, labels = lab)
 par(op)
 ```
 
@@ -731,25 +779,23 @@ This shows two things a univariate view can't. `visit`'s coefficients cross zero
 ridge regression shrinks the length of the whole coefficient vector, not each coefficient,
 so with correlated predictors some grow while others shrink. The other genuinely new
 piece is the choice of $\lambda$. The GCV criterion can be pooled over the responses to
-choose one common value, the blue line in @fig-school-trace.
+choose one common value, here $\lambda =$ `r sridge$kGCV.pooled`.
 
 ### A design lesson: don't always inherit
 
 My first plan was to give the new object class `c("mlmridge", "ridge")`, so that all of
 genridge's existing methods would be inherited. Before committing to that, I built a mock
 object and called every inherited method on it. Seven of the twelve stopped with an
-error. One ran and silently lost the names of the predictors.
-
-But, viewed generously, that's a good outcome for telling you what's wrong.
-Good R developers often learn from this, but don't often confess.
-
+error. Viewed generously, that's a good outcome: an error tells you what's wrong. Another
+one ran and silently lost the names of the predictors. That is the same "quietly
+univariate" problem from the introduction, seen from the developer's side. Good R
+developers often learn from this, but don't often confess.
 
 So, in the genridge package `"mlmridge"` became a class of its own. Its methods either handle the matrix of
 coefficients directly (`coef()`, `vcov()`, `print()`, `best()`), or delegate to the
 univariate method one response at a time through `as.ridge(x, response = )`.
 
-That is the same "quietly univariate" problem from the introduction, seen from the
-developer's side. Inheritance is a promise that the parent's methods will do something
+Inheritance is a promise that the parent's methods will do something
 sensible with the child. For a model that gains a dimension, it's a promise worth
 checking before you make it.
 
@@ -785,8 +831,9 @@ matrix is $h_0 \widehat{\boldsymbol{\Sigma}}$, where
 $h_0 = \mathbf{x}_0^\top (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{x}_0$ is its leverage.
 
 * The standard error has become a $q \times q$ matrix, and the confidence interval has become
-a confidence *ellipse*, with a radius from Hotelling's $T^2$:
-$c^2 = \frac{q (n-p)}{n-p-q+1} F_{q,\, n-p-q+1}(0.95)$.
+a confidence *ellipse*, with a radius $c$ from Hotelling's $T^2$. In R, with $p$
+counting the intercept,
+`c2 <- q * (n - p) / (n - p - q + 1) * qf(0.95, q, n - p - q + 1)`.
 
 * For a prediction ellipse, which includes the error for a new case, $h_0$ becomes
 $1 + h_0$.
@@ -796,11 +843,11 @@ introduction:
 
 ```{r}
 #| label: fig-pred-ellipses
-#| fig-width: 6
-#| fig-height: 5
-#| out-width: "65%"
-#| fig-cap: "95% confidence ellipses (blue) and prediction ellipses (red, dashed) for the predicted (mpg, qsec) of three new cars from the `mtcars` model. All have the shape of the residual covariance matrix; only their size changes, with each car's leverage."
-#| fig-alt: "Scatterplot of qsec against mpg for the mtcars data, in gray. Three small filled blue ellipses mark the confidence regions for three predicted points, at about (14, 16), (21, 17.5) and (26, 18). Much larger dashed red prediction ellipses surround each one. All six ellipses have the same orientation, tilted slightly upward."
+#| fig-width: 8
+#| fig-height: 4.5
+#| out-width: "85%"
+#| fig-cap: "95% confidence ellipses (blue) and prediction ellipses (red, dashed) for the predicted (mpg, qsec) of three new cars from the `mtcars` model. All have the shape of the residual covariance matrix; only their size changes, with each car's leverage. The axes have equal scales (`asp = 1`), so the shapes are true to that matrix."
+#| fig-alt: "Scatterplot of qsec against mpg for the mtcars data, in gray. Three small filled blue ellipses mark the confidence regions for three predicted points, at about (14, 16), (21, 17.5) and (26, 18). Much larger dashed red prediction ellipses surround each one. The axes have equal scales; all six ellipses have the same shape, wide in mpg and flat in qsec, tilted slightly upward."
 new <- data.frame(hp = c(100, 150, 250), wt = c(2, 3, 4))
 X  <- model.matrix(fit)
 X0 <- model.matrix(~ hp + wt, new)
@@ -811,7 +858,7 @@ c2    <- q * (n - p) / (n - p - q + 1) * qf(0.95, q, n - p - q + 1)
 yhat  <- predict(fit, new)
 
 plot(qsec ~ mpg, data = mtcars, col = "gray50", pch = 16,
-     xlim = c(5, 35), ylim = c(13, 24))
+     xlim = c(5, 35), ylim = c(13, 24), asp = 1)
 for (i in seq_len(nrow(new))) {
   car::ellipse(yhat[i, ], h0[i] * Sigma, sqrt(c2),
                col = "blue", fill = TRUE, lwd = 2, center.pch = 3)
