@@ -324,15 +324,20 @@ citation keys resolve.
    displays, but "What's still missing" only has `predict.mlm()`; the others are in an HTML
    comment. Add a short "Other gaps" list (plot.mlm, `car::avPlots()`/`vif()`, effects,
    multivariate shrinkage: Brown & Zidek 1980, Breiman & Friedman 1997, both in references.bib).
+   
 3. Ladder bullets in "One more dimension": the first uses σ² → Σ, but the figure's first rung
    is eᵢ → a q-vector. Use eᵢ, and mention σ² → Σ as the case that jumps two rungs.
+   
 4. "`dim(X) + 1`" ("One more dimension") and "`dim() + 1`" (genridge, in an awkward sentence
    that also needs rewriting): **X** is the model matrix elsewhere; pick one phrase.
-5. The Kronecker product appears four times (intro, mvinfluence, genridge, predict). Name it
+5. The Kronecker product appears four times (intro, mvinfluence, genridge, predict).
+Name it
    as a recurring motif, perhaps in the Conclusion; the LATER comment on factorial design
    matrices could join it there.
+   
 6. Hotelling radius: the post uses `F(q, n−p−q+1)`; the heplots draft (`dev/pred.mlm.R`) uses
    `qf(level, m, n-p-m)`. Reconcile the draft with the post.
+   
 7. Section rhythm: subheadings differ by package (heplots "What was easy"; mvinfluence "Design
    challenges"/"New influence plots"; robmlm "What took more work"; genridge "doesn't
    change"/"does change"/"design lesson"). A shared pattern (what gains a dimension → what
@@ -353,12 +358,16 @@ citation keys resolve.
 11. Intro: the `cbind` "also works for a sequence of vectors, matrices and dataframes"
     sentence trails off; say why it matters or cut it. The two bullets after
     `cooks.distance()` aren't parallel (the second is a separate point).
+    
 12. End of "Filling in the gaps": "as I've learned about how to take these methods to 'One
     more dimension'" is awkward.
+    
 13. Decide: the `influence(fit, m = 2)` partial-matching pitfall (lesson in the post, or just
     mvinfluence TASKS.md); the `vcov.mlm` "think twice" sentence; the compact hook table
     (comment in the intro).
+    
 14. Cite VARshrink where `lm_multiv_ridge()` is mentioned.
+
 15. robmlm: compute the Pillai Fs (4.3 → 6.6) with inline `` `r` `` code instead of typing them.
     Note that the denominator df drops 60 → 51 in the robust fit (near-zero weights
     effectively remove cases), so the two Fs aren't quite like for like. Also worth a
