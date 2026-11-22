@@ -249,6 +249,12 @@ window.Quarto = {
   color: #B85708;
   font-weight: bold;
 }
+.precept .precept-motto {
+  display: block;
+  margin-top: 0.4em;
+  font-style: italic;
+  color: #B85708;
+}
 </style>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -353,8 +359,9 @@ MF 2026-11-21: not used; the intro bullets already make this point.
 <p>Why should this be so hard? The statistics of the multivariate linear model have been settled for more than half a century. The trouble is more mundane, and I think it’s worth naming, because it explains nearly every problem I’ve run into in developing these ideas.</p>
 <p>It calls to mind the cognitive problems “A. Square” encountered in Edwin Abbott’s <em>Flatland</em> <span class="citation" data-cites="Abbott:1884">(<a href="#ref-Abbott:1884" role="doc-biblioref">Abbott 1884</a>)</span>, when a Sphere entered the story and taught him how to think in one more dimension. I’ve told that story in my <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> book <span class="citation" data-cites="Friendly:2024:VisMLM">(<a href="#ref-Friendly:2024:VisMLM" role="doc-biblioref">Friendly 2024</a>)</span>.</p>
 <div class="precept">
-<p><span class="precept-title">The Gospel of One More Dimension</span> In R, when the response goes from a vector <strong>y</strong> to a matrix <strong>Y</strong>, every object the model produces <strong>gains a dimension</strong>.</p>
+<p><span class="precept-title">The Gospel of One More Dimension</span> In R, when the response goes from a vector <strong>y</strong> to a matrix <strong>Y</strong>, every object the model produces <strong>gains a dimension</strong>. <span class="precept-motto">Upward, not Northward</span></p>
 </div>
+<p>A. Square saw the light and was saved, though preaching this Gospel landed him in prison, without a single convert. Even the Sphere, who had scoffed at a <em>fourth</em> dimension as “utterly inconceivable”, later repented and was saved. In R, salvation comes one rung at a time:</p>
 <ul>
 <li>a <strong>scalar becomes a vector</strong>. The residual <span class="math inline">\(e_i\)</span> for case <span class="math inline">\(i\)</span> becomes a vector <span class="math inline">\(\mathbf{e}_i\)</span> of <span class="math inline">\(q\)</span> residuals, one for each response. Some scalars jump two rungs at once: the residual variance <span class="math inline">\(\sigma^2\)</span> becomes a <span class="math inline">\(q \times q\)</span> covariance matrix <span class="math inline">\(\boldsymbol{\Sigma}\)</span>, because along with <span class="math inline">\(q\)</span> variances it picks up the covariances between every pair of responses.</li>
 <li>a <strong>vector becomes a matrix</strong>. The coefficients <span class="math inline">\(\mathbf{b}\)</span> become a <span class="math inline">\(p \times q\)</span> matrix <span class="math inline">\(\mathbf{B}\)</span>, and the residuals become an <span class="math inline">\(n \times q\)</span> matrix <span class="math inline">\(\widehat{\mathbf{U}}\)</span>.</li>

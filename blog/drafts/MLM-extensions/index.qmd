@@ -52,6 +52,12 @@ execute:
   color: #B85708;
   font-weight: bold;
 }
+.precept .precept-motto {
+  display: block;
+  margin-top: 0.4em;
+  font-style: italic;
+  color: #B85708;
+}
 </style>
 ```
 
@@ -203,7 +209,12 @@ one more dimension. I've told that story in my [_Visualizing Multivariate Data a
 [The Gospel of One More Dimension]{.precept-title}
 In R, when the response goes from a vector **y** to a matrix **Y**,
 every object the model produces **gains a dimension**.
+[Upward, not Northward]{.precept-motto}
 :::
+
+A. Square saw the light and was saved, though preaching this Gospel landed him in prison,
+without a single convert. Even the Sphere, who had scoffed at a *fourth* dimension as
+"utterly inconceivable", later repented and was saved. In R, salvation comes one rung at a time:
 
 * a **scalar becomes a vector**. The residual $e_i$ for case $i$ becomes a vector
   $\mathbf{e}_i$ of $q$ residuals, one for each response. Some scalars jump two rungs at
