@@ -315,8 +315,14 @@ ellipses in the space of two responses. The $\mathbf{E}$ ellipse shows the size 
 of the residual variation. The $\mathbf{H}$ ellipse for a term shows the variation of the
 fitted values due to that term. With the default "evidence" scaling, $\mathbf{H}$
 protrudes outside $\mathbf{E}$ somewhere in the full response space if and only if the
-term is significant by Roy's test. (In a two-dimensional view, the rule works only one
-way: outside means significant, but inside doesn't mean "not significant".)
+term is significant by Roy's test, using its usual $F$ approximation.[^roy] (In a
+two-dimensional view, the rule works only one way: outside means significant by that test,
+but inside doesn't mean "not significant".)
+
+[^roy]: This is exact when $s = \min(q, df_h) = 1$, as it is for any 1-df term. When $s > 1$,
+the $F$ for Roy's test is an upper bound, so its $p$-value is too small and the visual test
+is too liberal, sometimes very much so. An ellipse that pokes only a little way outside
+$\mathbf{E}$ should then be checked against another test, such as Pillai's or Wilks'.
 
 Here's an example, from Rohwer's study of how well paired-associate (PA) learning tasks
 predict three aptitude and achievement tests in kindergarten children of high and low
@@ -472,7 +478,9 @@ per response. Load mvinfluence, and the same call gives one answer per case:
 #| label: cooks-mv
 #| code-fold: false
 library(mvinfluence)
-head(cooks.distance(fit), 4)
+D <- cooks.distance(fit)
+names(D) <- rownames(mtcars)   # mvinfluence 0.9.4 names cases by row number
+head(D, 4)
 ```
 
 The math came from @BarrettLing:92. Their generalized Cook's distance strings the

@@ -382,40 +382,8 @@ citation keys resolve.
 
 **Additions**
 
-[MF: I think this could be a major addition to the post, possibly title: Getting Dimensions Back, or, more directly, Reducing Dimensions. Or maybe it is too much for here, so should be a separate post]
-
-One thing not addressed here in the 'one more dimension' idea is how multivariate thinking
-and matrix notation can lead to reducing the dimensions of an R object or of making a complex
-statistical test simpler, by considering what is important, aided by geometry.
-
-- How "big" is $\mathbf{y}$, or $\mathbf{Y}$, or $\mathbf{X}$, or $\mathbf{H}$ relative to $\mathbf{E}$?
-  - This is the core of the ideas of variance ($\sigma^2$), covariance ($\Sigma^2$) and their sample friends,
-  s^2, S, H and E
-  
-  - Matrix algebra has some handy tools for this: Vector (||x||) and matrix (||X||) norm characterizes the size
-  of an object in a single number: its' "length" in some sense, most often in a least-squares, Euclidean. but also
-  accommodates other spaces: Manhattan (-> LASSO vs. ridge regression), ...
-  
-  - It is, of course also the central idea behind PCA, as a data dimension reduction method, and biplots
-  as a means to visualize your data in fewer dimensions, while seeing how the observations an variables
-  in "low-rank" space relate to your data.
-  
-  - In the MLM context, this was a problem that was solved by matrix algebra by different ways of calculating
-  a scalar measure of how big $\mathbf{H}$ is relative to $\mathbf{E}$. Wilks, Pillai, Hotelling-Lawley, Roy each
-  addressed this in different, but reasonable ways. But then, some statistical magic happened. Wills' Lambda ... were 
-  seen as measures with totally different distributions, but all could be converted to an F-statistic. 
-  Often the conversion was **exact**: p-values identical. When these could only be guarranteed asymptotically,
-  statisticians of the day provided conditions: s=1, 2-- exact, ...
-  
-  [MF: Table 3, in the ellipses paper gives the details of Wilks', ...: formula and geometric interpret of "mean".
-  fig 19 there shows the geometry of the tests.]
-  
-  - For HE plots this became a different challenge: how to visualize how big H vs. E --- the graphic design idea
-  involved just centering and scaling to put their data ellipsoids in the same visual frame, where they could be
-  compared for "size" to answer that question, but also show their orientation, "fatness" (variance), ...
-  For factors could show thier means, show contrasts, ... Scaling choices also gave an option for "significance scaling" ...
-  
-  [MF: Either put just a stubb for this in the current post, or leave this for another time...]
+*Moved 2026-11-21 to [Reducing-dimensions-notes.md](Reducing-dimensions-notes.md), to become a
+separate post when this one is done.*
 
 **Unfinished or awkward text**
 
