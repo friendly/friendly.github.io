@@ -422,8 +422,8 @@ direction.
 There's also a lesson about **shape**. Each term with 1 df has an $\mathbf{H}$
 matrix of rank 1, so its "ellipse" collapses to a line. In general, the dimension of the
 $\mathbf{H}$ ellipse is the smaller of the term's df and $q$.
-Factors, with `df > 2`, are fatter in ellipsoids of up to df dimensions, which
-also allows them to be filled and marked with their factor means.
+A factor with more than two levels (`df > 1`) gets fatter: an ellipse or ellipsoid of up to
+$\min(df, q)$ dimensions, which can be filled, as well as marked with the factor means.
 The Sphere knows exactly what I'm referring to here.
 
 ### What was easy
