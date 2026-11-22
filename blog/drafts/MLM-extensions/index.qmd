@@ -221,14 +221,18 @@ without a single convert. Even the Sphere, who had scoffed at a *fourth* dimensi
   once: the residual variance $\sigma^2$ becomes a $q \times q$ covariance matrix
   $\boldsymbol{\Sigma}$, because along with $q$ variances it picks up the covariances between
   every pair of responses.
+  
 * a **vector becomes a matrix**. The coefficients $\mathbf{b}$ become a $p \times q$ matrix
   $\mathbf{B}$, and the residuals become an $n \times q$ matrix $\widehat{\mathbf{U}}$.
-* a **matrix becomes a 3-way array**, or a list of matrices. A table of confidence intervals
+  
+* a **matrix becomes a 3-way array**, or a list of matrices, or a tensor in some households.
+  A table of confidence intervals
   for the coefficients ($p \times 2$) becomes $p \times 2 \times q$. The standard errors of
   the fitted values also jump two rungs: a vector with one number per case becomes an
-  $n \times q \times q$ array, a $q \times q$ matrix for every case.
+  $n \times q \times q$ array, a $q \times q$ matrix for every case. That's where things
+  begin to get hairy for a developer.
 
-@fig-dimension-ladder shows this ladder for a model with $p = 3$ coefficients and $q = 3$
+@fig-dimension-ladder shows a simple version of this ladder for a model with $p = 3$ coefficients and $q = 3$
 responses.
 
 ![Going from `lm` to `mlm`, every object gains a dimension. Blue cells are what a univariate
@@ -361,7 +365,8 @@ $\widehat{\mathbf{U}} = \mathbf{Y} - \mathbf{X}\widehat{\mathbf{B}}$. All four m
 functions of the eigenvalues of $\mathbf{H}\mathbf{E}^{-1}$, the matrix analog of
 $SS_H / SS_E$.
 
-That's the matrix that plays the role of the scalar. The way to see it is the **HE plot**
+That's the matrix ($\mathbf{H}\mathbf{E}^{-1}$) that plays the role of the scalar ($F$).
+The way to see it is the **HE plot**
 [@Friendly:07:manova; @FoxFriendlyMonette:09:compstat]: draw $\mathbf{H}$ and $\mathbf{E}$ as
 ellipses in the space of two responses. The $\mathbf{E}$ ellipse shows the size and shape
 of the residual variation. The $\mathbf{H}$ ellipse for a term shows the variation of the
@@ -412,9 +417,14 @@ extend beyond $\mathbf{E}$, while `n`, `s` and `ss` stay well inside. `ns`, also
 significant, only just reaches the edge of $\mathbf{E}$ in this view: the one-way rule at
 work. The tilt of the
 `Regr` ellipse shows that the PA tasks predict `SAT` and `PPVT` together, in the same
-direction. There's also a lesson about shape. Each term with 1 df has an $\mathbf{H}$
+direction. 
+
+There's also a lesson about **shape**. Each term with 1 df has an $\mathbf{H}$
 matrix of rank 1, so its "ellipse" collapses to a line. In general, the dimension of the
 $\mathbf{H}$ ellipse is the smaller of the term's df and $q$.
+Factors, with `df > 2`, are fatter in ellipsoids of up to df dimensions, which
+also allows them to be filled and marked with their factor means.
+The Sphere knows exactly what I'm referring to here.
 
 ### What was easy
 
