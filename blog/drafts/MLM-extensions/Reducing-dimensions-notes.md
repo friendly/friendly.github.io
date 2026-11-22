@@ -61,29 +61,8 @@ statistical test simpler, by considering what is important, aided by geometry.
 
 ### Banner
 
-*Added 2026-11-22.* Candidate: `figures/fireside-HE-chat.png`; cast and prompts are in
-`figures/fireside-HE-chat.md`. Roy points to the largest extent of **H** relative to **E**.
-
-The geometry works: estimated from the drawing, the direction of Roy's root is about 13° above
-horizontal, and the long axis of **H**, where his finger is, about 17°. With
-$\lambda_1 \approx 5.3$ and $\lambda_2 \approx 0.2$, it's the concentrated case that favors Roy.
-
-Before using it:
-
-- [ ] **Redraw Roy.** S. N. Roy (1906–1964) was Indian, from Bengal. The figure was generated as
-  Lawley and relabeled, so he doesn't look like Roy. Attach a photo, and use this prompt:
-
-  > Edit only the fourth seated man from the left. Make him S. N. Roy, an Indian (Bengali)
-  > statistician in his fifties, as he looked around 1960, using the attached photograph for
-  > likeness. Keep his pose, suit, gaze and pointing hand exactly as they are. Make him clearly
-  > distinct from the third man. Change nothing else.
-
-- [ ] **Lawley is missing**, though his name is on one of the four tests. Perhaps in the caption:
-  "(Lawley sends his regrets.)"
-- [ ] **Hadley Wickham** is a living person in an invented scene: if the caption will name him,
-  send him the picture first.
-- [ ] **Size:** the PNG is 3.1 MB. From the final version, make a 1400 px JPEG (about 310 KB in a
-  trial) for the post and its `image:` line, and commit that rather than the PNG.
+Candidate: `figures/fireside-HE-chat.png`. What to fix, with prompts, reference photos and a
+checklist: [images/fireside-image-notes.md](images/fireside-image-notes.md).
 
 Also for section 3, on the four tests: the bar cartoon,
 `../VisMLM/jokes/images/four-tests-cartoon-v3.png` (Roy: "HIM!"), as the payoff to "their maximum
