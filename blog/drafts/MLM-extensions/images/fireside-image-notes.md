@@ -1,13 +1,14 @@
 # Fireside HE chat: notes on editing the banner
 
-*2026-11-22.* For `../figures/fireside-HE-chat.png`, the candidate banner for *How Big Is a
-Matrix?* The original cast and prompts are in `../figures/fireside-HE-chat.md`.
+*2026-11-22.* For the banner of *How Big Is a Matrix?* The candidate is now
+`fireside-HE-chat-V2.jpg`, with the redraws done. The table and prompts below refer to the original,
+`fireside-HE-chat.png`. The cast and original prompts are in `fireside-HE-chat.md`.
 
-![The current image](../figures/fireside-HE-chat.png)
+![The current image, V2](fireside-HE-chat-V2.jpg)
 
 ## In brief
 
-Comparing the drawing with photographs, more than Roy needs fixing.
+Comparing the original drawing with photographs, more than Roy needed fixing.
 
 | Seat (from left) | Cast as | As drawn | In the photos | What to do |
 |---|---|---|---|---|
@@ -31,7 +32,8 @@ Comparing the drawing with photographs, more than Roy needs fixing.
 ## Editing prompts
 
 Edit one seat at a time, in this order, starting each edit from the last good result. Attach only
-the reference photo for that seat. If there's a selection tool, select just the head (plus the
+something based on the reference photo for that seat. If there's a selection tool from the reference photo,
+select just the head (plus the
 hands, only if skin tone must change). After each step, check that the ellipses, the two letters
 and the pointing finger haven't moved.
 
@@ -86,14 +88,13 @@ references only. The links above will find them again on another machine.
 
 ## Before using the banner
 
-- [ ] Redraw seats 4, 3 and 2.
-- [ ] Update the cast in `../figures/fireside-HE-chat.md`: Wilks, Hotelling, Pillai, Roy, Friendly,
+- [x] Redraw seats 4, 3 and 2 (done in V2, along with touch-ups to 1 and 5).
+- [x] Update the cast in `fireside-HE-chat.md`: Wilks, Hotelling, Pillai, Roy, Friendly,
       Wickham, left to right.
 - [ ] Account for Lawley, perhaps in the caption: "(Lawley sends his regrets.)" With no photo,
       don't add an invented likeness.
 - [ ] If the caption will name Hadley Wickham, send him the picture first.
-- [ ] Recheck that Roy's finger is still at the right-hand end of **H**.
-- [ ] Make a 1400 px JPEG (about 310 KB) from the final version, for the post and its `image:`
-      line. When the post is published, only that gets copied; the PNG can stay behind in drafts:
-      `magick fireside-HE-chat.png -resize 1400x -quality 88 fireside-HE-chat.jpg`
+- [x] Recheck that Roy's finger is still at the right-hand end of **H**.
+- [x] Make a 1400 px JPEG from the final version, for the post and its `image:` line: V2 is one
+      (252 KB). When the post is published, only that gets copied; the PNG can stay behind in drafts.
 - [ ] Write the `fig-alt` from the final image.

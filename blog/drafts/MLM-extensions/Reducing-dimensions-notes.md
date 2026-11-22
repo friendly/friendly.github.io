@@ -61,8 +61,8 @@ statistical test simpler, by considering what is important, aided by geometry.
 
 ### Banner
 
-Candidate: `figures/fireside-HE-chat.png`. What to fix, with prompts, reference photos and a
-checklist: [images/fireside-image-notes.md](images/fireside-image-notes.md).
+Candidate: `images/fireside-HE-chat-V2.jpg`. Editing notes, reference photos and what's left to do:
+[images/fireside-image-notes.md](images/fireside-image-notes.md).
 
 Also for section 3, on the four tests: the bar cartoon,
 `../VisMLM/jokes/images/four-tests-cartoon-v3.png` (Roy: "HIM!"), as the payoff to "their maximum

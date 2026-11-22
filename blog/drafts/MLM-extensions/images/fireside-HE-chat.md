@@ -4,8 +4,8 @@ Banner for *How Big Is a Matrix?*, the follow-up to *On Extending lm() Methods t
 
 ## Around the table, left to right
 
-1. Harold Hotelling
-2. Samuel Stanley Wilks
+1. Samuel Stanley Wilks
+2. Harold Hotelling
 3. K. C. S. Pillai
 4. S. N. Roy
 5. Michael Friendly
@@ -13,7 +13,7 @@ Banner for *How Big Is a Matrix?*, the follow-up to *On Extending lm() Methods t
 
 The joke is that Roy, fourth from the left, is pointing at the largest dimension of H relative to E, a nod to Roy’s largest root. The sketch serves as a visual joke about the largest generalized eigenvalue.
 
-The first prompt named D. N. Lawley in the fourth seat. The approved interpretation casts that figure as Roy. The portraits are loose illustrations. For a future pass, use Michael Friendly’s avatar at https://friendly.github.io/ as a likeness reference.
+The first prompt named D. N. Lawley in the fourth seat, and had Hotelling and Wilks in the opposite order. In the current version, `fireside-HE-chat-V2.jpg`, the figures were redrawn from photographs, with the fourth as Roy; see `fireside-image-notes.md`. The portraits are loose illustrations.
 
 ## Initial image generation prompt
 
