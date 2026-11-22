@@ -482,11 +482,17 @@ separate post when this one is done.*
 
 23. Remove obsolete HTML comments: the Status line (2026-11-19), the mtcars/dataset question,
     the SKELETON banner, the predict.mlm pointer note in "One more dimension", the CHECK
-    comment in "Filling in the gaps" (done).
-24. Verify the four pkgdown URLs and the Vis-MLM book link (Fig 6.1 is a chapter page).
-25. Categories: consider adding candisc and mvinfluence.
-26. Update the genridge 0.8.1 wording once CRAN accepts it.
+    comment in "Filling in the gaps" (done). [MF: leave these for now; clean-up after this is published]
+24. ✔️ ~~Verify the four pkgdown URLs and the Vis-MLM book link (Fig 6.1 is a chapter page).~~
+    *Done 2026-11-22:* all links in the post resolve; the Fig 6.1 link now goes to
+    `06-linear_models.html#fig-techniques` rather than the book's home page.
+25. ✔️ Categories: consider adding candisc and mvinfluence. [MF: added Vis-MLM, candisc]
+26. ✔️ ~~Update the genridge 0.8.1 wording once CRAN accepts it.~~ [MF: it was accepted]
+    *Done 2026-11-22:* "now on CRAN", with link, in the genridge section.
 
-27. A one-line pointer to Vis-MLM chapters 9, 11–14, 21 could go in the Conclusion.
+27. ✔️ ~~A one-line pointer to Vis-MLM chapters 9, 11–14, 21 could go in the Conclusion.~~
     Uncited entries in references.bib (FriendlySigal 2015, 2016; Friendly & Kwan) can be
-    cited or dropped.
+    cited or dropped. [MF: Only cite if relevant; unused entries can be left in references.bib]
+    *Checked 2026-11-22:* none of the three is needed, so none cited.
+    *Done 2026-11-22:* pointer added before the closing Flatland paragraph, to chapters 9 and 11–15
+    (`21-discrim` is published as Chapter 15).

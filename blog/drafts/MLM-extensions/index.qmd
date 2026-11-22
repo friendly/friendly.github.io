@@ -4,7 +4,8 @@ description: "R fits a multivariate linear model with the same `lm()` call as a 
 author: "Michael Friendly"
 date: last-modified
 draft: true
-categories: [multivariate linear models, R packages, graphics, heplots, genridge]
+image: "figures/increasing-dimensions.jpg"
+categories: [Vis-MLM, multivariate linear models, R packages, graphics, heplots, genridge, candisc]
 bibliography: references.bib
 format:
   html:
@@ -16,11 +17,6 @@ execute:
   message: false
 ---
 
-<!--
-WORKING COMMENTS are in HTML comments like this one; they don't render.
-Status (2026-11-19): introduction + framing drafted; later sections are a skeleton.
-Planning notes: notes.md (same folder).
--->
 
 <!-- Framed quote for the thesis statement; uses Bootstrap variables so it follows light/dark themes -->
 ```{=html}
@@ -39,6 +35,8 @@ Planning notes: notes.md (same folder).
 .thesis blockquote p:last-child { margin-bottom: 0; }
 </style>
 ```
+
+![Going from univariate to multivariate models always involves increasing the dimensions of statistical and graphical objects.](figures/increasing-dimensions.jpg){fig-alt="A blue square, a column of blue squares, a blue-and-orange matrix, and a stack of matrices appear from left to right. A green arrow thickens as it curves upward beneath them."}
 
 ## Introduction
 
@@ -103,22 +101,29 @@ The question of _multivariate influence_
 is now largely solved in my [`mvinfluence`](https://friendly.github.io/mvinfluence/) package, which was part of my learning curve
 for the larger question I'm addressing here.
 
-In short, the multivariate linear model is **easy to fit** and **hard to see**. 
+In short, the multivariate linear model is **easy to fit** yet **hard to see**. 
 
-* The model syntax in `lm()` is trivial & expressive: `y` becomes `cbind(y1, y2, ...)`. You only need to
+* The *model syntax* extension in `lm()` is trivial & expressive: `y` becomes `cbind(y1, y2, ...)`. You only need to
   understand the idea of **"binding"** rows or columns into a matrix. But the `cbind` base family
-  also works for a sequence of vectors, matrices and dataframes. 
-* The matrix algebra extension is elegant & beautiful:
+  also works for a sequence of vectors, matrices and dataframes. Further extensions, such as `|`
+  to indicate *conditioning*, and `family =` for non-Gaussian models, make it easy to think of 
+  `lm()` and its' friends as more general classes and write the model syntax without breaking a sweat.
+  
+* The _matrix algebra_ extension is elegant & beautiful:
   $\mathbf{y}_{n \times 1} \rightarrow \mathbf{Y}_{n \times q}$ --- it largely just works!
-  The residual variance $\sigma^2$ becomes a covariance matrix $\boldsymbol{\Sigma}$. The
-  $F$ ratio of hypothesis to error sums of squares becomes the eigenvalues of
+  -  The residual variance $\sigma^2$ becomes a covariance matrix $\boldsymbol{\Sigma}$. 
+  - The $F$ ratio of hypothesis to error sums of squares becomes the eigenvalues of
   $\mathbf{H}\mathbf{E}^{-1}$, which give Wilks' $\Lambda$, the Pillai trace,
-  Hotelling-Lawley and their friend Roy. And
-  $\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}$ becomes
+  Hotelling-Lawley and their friend Roy. 
+  - And $\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}$ becomes
   $\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$,
   where $\otimes$ is the [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product).
-  Once there's a covariance matrix, you can even ask whether it's the same in every group:
-  Box's $\mathcal{M}$ test [@Box:1949].
+  - Once there's a covariance matrix, you can even ask whether it's the same in every group:
+  Box's $\mathcal{M}$ test [@Box:1949], ...
+
+<!-- MF: Somewhere, but perhaps just with a twinkle here, expanded later, use `heplots::plot.boxM()` as an expression of how multivariate thinking
+suggested various ways to visualize Box's M tests -->
+
 
 <!-- MF's LATER note on Kronecker products in factorial model matrices is now a footnote
 in the Conclusion ("The Kronecker product keeps the two dimensions apart"). -->
@@ -135,7 +140,7 @@ thin. Mostly, the results arrive as tables of multivariate test statistics.
 ![Techniques for linear models, classified by the number of predictors ($p$) and responses
 ($q$), and whether these are quantitative or discrete. The quantitative $q > 1$ column is
 where graphical methods have been thin. *Source*: [Visualizing Multivariate Data and Models in
-R](https://friendly.github.io/Vis-MLM-book), Figure 6.1.](figures/techniques-table.png){#fig-techniques width="90%" fig-alt="A table of linear-model techniques. Rows: predictors, quantitative or discrete, with p = 1 or p > 1. Columns: responses, quantitative or discrete, with q = 1 or q > 1. For quantitative responses, simple and multiple regression, t-test and ANOVA (q = 1) generalize to multivariate regression, canonical and partial correlation, Hotelling T-squared and MANOVA (q > 1). For discrete responses, logistic regression, chi-square, discriminant analysis, logit and loglinear models."}
+R](https://friendly.github.io/Vis-MLM-book/06-linear_models.html#fig-techniques), Figure 6.1.](figures/techniques-table.png){#fig-techniques width="90%" fig-alt="A table of linear-model techniques. Rows: predictors, quantitative or discrete, with p = 1 or p > 1. Columns: responses, quantitative or discrete, with q = 1 or q > 1. For quantitative responses, simple and multiple regression, t-test and ANOVA (q = 1) generalize to multivariate regression, canonical and partial correlation, Hotelling T-squared and MANOVA (q > 1). For discrete responses, logistic regression, chi-square, discriminant analysis, logit and loglinear models."}
 
 <!--
 The talk slide (Vis-MLM-talk.pptx, slide 9) adds a "Graphs: ✔ ? ✔ ?" row under the
@@ -665,7 +670,8 @@ and a second example with a multivariate regression.
 <!-- MF: genridge 0.8.1 was submitted to CRAN 2026-11-20. Update the wording once it's accepted. -->
 
 The newest member of the family is in genridge, my package for visualizing ridge
-regression [@Friendly:genridge:2013]. In version 0.8.1, `ridge()` accepts a matrix
+regression [@Friendly:genridge:2013]. In version 0.8.1, now on
+[CRAN](https://CRAN.R-project.org/package=genridge), `ridge()` accepts a matrix
 response, either in a formula or as an existing `mlm` fit, and returns an object of class
 `"mlmridge"`. The implementation was adapted from `lm_multiv_ridge()` in the
 **VARshrink** package [@R-VARshrink]. It's marked experimental, and I'd welcome comments.
@@ -739,12 +745,14 @@ All three depend on $\mathbf{X}$ and one column of $\widehat{\mathbf{B}}(\lambda
 #| label: fig-school-pca
 #| fig-width: 10
 #| fig-height: 4.5
-#| fig-cap: "Ridge estimates for reading in the principal component space of the predictors, with their covariance ellipses for each ridge constant. Left: the two largest dimensions, where ridge has almost no effect. Right: the two smallest dimensions, where the coefficients and their variances shrink a great deal."
+#| fig-cap: "Ridge estimates for reading in the principal component space of the predictors, with their covariance ellipses for each ridge constant. Left: the two largest dimensions, where ridge has almost no effect. Right: the two smallest dimensions, where the coefficients and their variances shrink a great deal (labels: ridge constants 0, 0.25, 1 and 5)."
 #| fig-alt: "Two panels of overlapping filled ellipses, one per ridge constant. Left, dim2 against dim1: the ellipses are nearly circular and almost on top of each other, their centers all near (-8, -3). Right, dim5 against dim4: the ellipses are wide and shrink steadily, their centers moving down from about (-3.4, 18) at a ridge constant of 0 to about (-0.5, 2) at 5."
 pr <- pca(sridge, response = "reading")
+lab <- ifelse(lambda %in% c(0, 0.25, 1, 5), lambda, "")   # label a few ridge constants
 op <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
-plot(pr, variables = 1:2, fill = TRUE, main = "Dimensions 1 and 2")
-plot(pr, variables = 4:5, fill = TRUE, main = "Dimensions 4 and 5")
+plot(pr, variables = 1:2, fill = TRUE, fill.alpha = 0.1, main = "Dimensions 1 and 2")
+plot(pr, variables = 4:5, fill = TRUE, fill.alpha = 0.1, labels = lab,
+     main = "Dimensions 4 and 5")
 par(op)
 ```
 
@@ -774,7 +782,6 @@ With `predictor =`, `plot()` shows exactly this view:
 #| fig-height: 4
 #| fig-cap: "Coefficients of visit and counseling for reading and mathematics, with their covariance ellipses, as the ridge constant increases (labels for 0, 0.25, 1 and 5). All the ellipses have the same shape, that of the residual covariance of reading and mathematics."
 #| fig-alt: "Two panels plotting the coefficient for mathematics against the coefficient for reading, with a sequence of overlapping, lightly filled ellipses, some labeled by ridge constant (0, 0.25, 1, 5). For visit, the path runs from about (-5, -10) up to the upper right, crossing zero for both responses near a ridge constant of 1. For counseling, the path moves from near (-2, 3) away from the origin, to the right. All ellipses are long, thin and tilted upward, and shrink as the ridge constant grows."
-lab <- ifelse(lambda %in% c(0, 0.25, 1, 5), lambda, "")   # label a few ridge constants
 op <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
 for (p in c("visit", "counseling"))
   plot(sridge, predictor = p, responses = c("reading", "mathematics"),
@@ -815,7 +822,7 @@ across responses (Brown & Zidek, 1980; Breiman & Friedman's curds and whey, 1997
 
 ## What's still missing
 
-### Not done yet: `predict.mlm()` with standard errors
+### `predict.mlm()` with standard errors
 
 Back in the introduction, `predict(fit, se.fit = TRUE)` simply refused. The harder
 problem isn't the statistics; it's what `predict()` should give back. For a univariate
@@ -897,6 +904,7 @@ settled:
 * **An actual `plot.mlm()`.** R's error message from the introduction still stands. What
   should the default diagnostic plots for an `mlm` be? A $\chi^2$ QQ plot of the residual
   Mahalanobis distances (`cqplot()`), an influence plot and an HE plot would be a start.
+  
 * **Added-variable plots.** `car::avPlots()` fails on an `mlm`. For a predictor $x_k$, the
   multivariate version would plot the residuals of *all* the responses, adjusted for the other
   predictors, against the residual of $x_k$: $q$ panels, or one panel with a data ellipse for
@@ -906,13 +914,16 @@ settled:
   ellipse. Plotting $y_j$ against $x_k$, with the other predictors partialled out, gives the
   added-variable plot for one response. Plotting two responses against each other, with all
   the predictors partialled out, shows their residual correlation, the shape of $\mathbf{E}$.
+  
 * **`car::vif()`.** This one should be easy. VIFs depend only on $\mathbf{X}$, so they're
   the same for every response; `vif()` stops only because it looks for coefficient names
   in a vector, not a matrix.
+  
 * **Effect displays.** The [effects](https://CRAN.R-project.org/package=effects) package plots
   fitted values for each term, with confidence bands [@Fox:03:effects]. For an
   `mlm`, each fitted value is a $q$-vector and each band becomes a set of confidence
   ellipses: the `predict()` problem again, one term at a time.
+  
 * **Shrinkage that borrows strength across responses.** genridge uses one ridge constant for
   all responses, which leaves each column of $\widehat{\mathbf{B}}$ a univariate ridge.
   Genuinely multivariate shrinkage, as in @Brown-Zidek-1980 or the "curds and whey" method of
@@ -980,6 +991,9 @@ last section, `predict.mlm()` with standard errors, an actual `plot.mlm()`, adde
 plots and effect displays for multivariate models, are all Un-Vized Problems, with the
 statistics in hand and the software still to be written. I'd be glad to hear from anyone
 who wants to take one on.
+
+For the longer story, with many more examples, see Chapters 9 and 11--15 of
+[_Visualizing Multivariate Data and Models in R_](https://friendly.github.io/Vis-MLM-book/).
 
 A. Square, in _Flatland_, could not imagine a third dimension until the Sphere lifted him
 out of his plane and showed him one. Most of us learned regression in a world of one

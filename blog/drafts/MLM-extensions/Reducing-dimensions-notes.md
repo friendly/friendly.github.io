@@ -57,10 +57,11 @@ statistical test simpler, by considering what is important, aided by geometry.
 - **Reducing Dimensions**: direct, but sounds like a post on PCA alone.
 - **How Big Is a Matrix?** The question that runs through all of your note. My suggestion, perhaps
   with the subtitle "Reducing dimensions in multivariate linear models".
+  [MF: Use this title]
 
 ### The idea in one paragraph
 
-The first post climbs the ladder: scalar → vector → matrix → array. This one climbs back down.
+The first post climbs up the ladder: scalar → vector → matrix → array. This one climbs back down.
 Each step down answers "how big is it?", and to answer that you first have to say *compared to
 what* (a metric: **I**, **E**, **H** + **E**) and *in what sense* (total, largest, volume).
 The algebra tells you how few numbers you need. The geometry shows what they measure, and
@@ -92,7 +93,21 @@ need to measure it, and draw a picture of what's left.
 - Change the metric and the circle becomes an ellipse: $\mathbf{e}^\top\mathbf{S}^{-1}\mathbf{e}$,
   the Mahalanobis distance already used in robmlm and mvinfluence.
 
-### 2. How big is **Y**, or **X**? Singular values
+### 2a. How big is a covariance matrix: Determinant
+
+cite: A Geometric Approach to Determinants
+Author(s): John Hannah
+Source:
+The American Mathematical Monthly, Vol. 103, No. 5 (May, 1996), pp. 401-409
+Published by: Mathematical Association of America
+Stable URL: http://www.jstor.org/stable/2974931
+https://sites.cos.unt.edu/~tushar/project%20ideas/monthly%2096%20hannah%20geometric%20determinant.pdf
+
+
+Locke, P. (1994). THE GEOMETRY OF DETERMINANTS. PRIMUS, 4(1), 1–8. https://doi.org/10.1080/10511979408965726
+
+
+### 2b. How big is **Y**, or **X**? Singular values
 
 For a centered matrix with singular values $d_1 \ge d_2 \ge \dots$, up to constants and df:
 
@@ -105,6 +120,7 @@ For a centered matrix with singular values $d_1 \ge d_2 \ge \dots$, up to consta
 - **PCA** keeps the largest $d_i$, giving the best rank-$k$ approximation in both the
   Frobenius and spectral norms (Eckart & Young 1936). The **biplot** draws observations and
   variables together in that space (Gabriel 1971).
+  
 - **For X, the small end matters.** $d_1/d_p$ is the condition number. With ridge constant $k$,
   component $i$ is shrunk by $d_i^2/(d_i^2 + k)$, and the sum of these factors is the
   effective df: a matrix reduced to a scalar. Pillai's trace has the same form (section 4).
