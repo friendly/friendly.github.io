@@ -483,7 +483,7 @@ names(D) <- rownames(mtcars)   # mvinfluence 0.9.4 names cases by row number
 head(D, 4)
 ```
 
-The math came from @BarrettLing:92. Their generalized Cook's distance strings the
+[The math](https://friendly.github.io/mvinfluence/reference/mvinfluence-package.html) came from @BarrettLing:92. Their generalized Cook's distance strings the
 coefficient matrix out into one long vector, $\textrm{vec}(\mathbf{B})$, and measures how
 far it moves when a case is deleted, in the metric of its covariance matrix. That metric is
 $\widehat{\boldsymbol{\Sigma}}^{-1} \otimes \mathbf{X}^\top \mathbf{X}$: the Kronecker
