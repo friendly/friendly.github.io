@@ -115,7 +115,7 @@ In short, the multivariate linear model is **easy to fit** yet **hard to see**.
   -  The residual variance $\sigma^2$ becomes a covariance matrix $\boldsymbol{\Sigma}$. 
   - The $F$ ratio of hypothesis to error sums of squares becomes the eigenvalues of
   $\mathbf{H}\mathbf{E}^{-1}$, which give Wilks' $\Lambda$, the Pillai trace,
-  Hotelling-Lawley and their friend Roy. 
+  Hotelling-Lawley and their maximum friend Roy. 
   - And $\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}$ becomes
   $\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$,
   where $\otimes$ is the [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product).
