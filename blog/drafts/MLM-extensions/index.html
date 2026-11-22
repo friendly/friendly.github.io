@@ -138,7 +138,10 @@ window.Quarto = {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#one-more-dimension" id="toc-one-more-dimension" class="nav-link" data-scroll-target="#one-more-dimension">One more dimension</a></li>
-  <li><a href="#filling-in-the-gaps" id="toc-filling-in-the-gaps" class="nav-link" data-scroll-target="#filling-in-the-gaps">Filling in the gaps</a></li>
+  <li><a href="#filling-in-the-gaps" id="toc-filling-in-the-gaps" class="nav-link" data-scroll-target="#filling-in-the-gaps">Filling in the gaps</a>
+  <ul class="collapse">
+  <li><a href="#un-vized-problems" id="toc-un-vized-problems" class="nav-link" data-scroll-target="#un-vized-problems">Un-Vized Problems</a></li>
+  </ul></li>
   <li><a href="#seeing-the-tests-he-plots" id="toc-seeing-the-tests-he-plots" class="nav-link" data-scroll-target="#seeing-the-tests-he-plots">Seeing the tests: HE plots</a>
   <ul class="collapse">
   <li><a href="#what-was-easy" id="toc-what-was-easy" class="nav-link" data-scroll-target="#what-was-easy">What was easy</a></li>
@@ -443,7 +446,9 @@ That's the thesis line. Alternative endings for that last sentence:
 </ul>
 <!-- verify the pkgdown URLs before publishing -->
 <p>Each one of these was a special case of the same problem: deciding what the extra dimension means, for the statistics and for the software.</p>
-<p>But, “filling the gaps” has a larger meaning for me. In data visualization, an over-arching motivation has been to pay attention to <strong>Un-Vized Problems</strong>: those for which the statistical machinery is largely developed, but which haven’t been implemented in software to help you see, understand, and communicate your results.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<section id="un-vized-problems" class="level3">
+<h3 class="anchored" data-anchor-id="un-vized-problems">Un-Vized Problems</h3>
+<p>But, “filling the gaps” has a larger meaning for me. In data visualization, an over-arching motivation has been to pay attention to <strong>Un-Vized Problems</strong>: those for which the statistical machinery is largely developed, but which haven’t been implemented in software to help you see, understand, and communicate your results.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> That’s also a path I took in working on visualizing categorical data <span class="citation" data-cites="Friendly:94a Friendly:99:EMD Friendly:00:VCD FriendlyMeyer:2016:DDAR">(e.g., <a href="#ref-Friendly:94a" role="doc-biblioref">Friendly 1994</a>, <a href="#ref-Friendly:99:EMD" role="doc-biblioref">1999</a>, <a href="#ref-Friendly:00:VCD" role="doc-biblioref">2000</a>; <a href="#ref-FriendlyMeyer:2016:DDAR" role="doc-biblioref">Friendly and Meyer 2016</a>)</span>.</p>
 <p>The sections below take the packages in turn. For each one, the question is the same: what did it take to carry these methods one more dimension?</p>
 <!--
 =====================================================================
@@ -451,6 +456,7 @@ SKELETON from here on. Suggested order and content; nothing below is final.
 Questions for MF are marked Q:.
 =====================================================================
 -->
+</section>
 </section>
 <section id="seeing-the-tests-he-plots" class="level2">
 <h2 class="anchored" data-anchor-id="seeing-the-tests-he-plots">Seeing the tests: HE plots</h2>
@@ -1005,6 +1011,15 @@ Fox, John. 2003. <span>“Effect Displays in <span>R</span> for Generalized Line
 <div id="ref-FoxFriendlyWeisberg:13:rjournal" class="csl-entry" role="listitem">
 Fox, John, Michael Friendly, and Sanford Weisberg. 2013. <span>“Hypothesis Tests for Multivariate Linear Models Using the <em>Car</em> Package.”</span> <em>The R Journal</em> 5 (1): 39–52.
 </div>
+<div id="ref-Friendly:94a" class="csl-entry" role="listitem">
+Friendly, M. 1994. <span>“Mosaic Displays for Multi-Way Contingency Tables.”</span> <em>Journal of the American Statistical Association</em> 89: 190–200. <a href="https://doi.org/10.1080/01621459.1994.10476460">https://doi.org/10.1080/01621459.1994.10476460</a>.
+</div>
+<div id="ref-Friendly:99:EMD" class="csl-entry" role="listitem">
+Friendly, M. 1999. <span>“Extending Mosaic Displays: Marginal, Conditional, and Partial Views of Categorical Data.”</span> <em>Journal of Computational and Graphical Statistics</em> 8 (3): 373–95. <a href="https://doi.org/10.1080/10618600.1999.10474820">https://doi.org/10.1080/10618600.1999.10474820</a>.
+</div>
+<div id="ref-Friendly:00:VCD" class="csl-entry" role="listitem">
+Friendly, M. 2000. <em>Visualizing Categorical Data</em>. SAS Institute. <a href="http://datavis.ca/books/vcd/">http://datavis.ca/books/vcd/</a>.
+</div>
 <div id="ref-Friendly:07:manova" class="csl-entry" role="listitem">
 Friendly, M. 2007. <span>“<span>HE</span> Plots for Multivariate Linear Models.”</span> <em>Journal of Computational and Graphical Statistics</em> 16 (2): 421–44. <a href="https://doi.org/10.1198/106186007X208407">https://doi.org/10.1198/106186007X208407</a>.
 </div>
@@ -1013,6 +1028,9 @@ Friendly, Michael. 2013. <span>“The Generalized Ridge Trace Plot: Visualizing 
 </div>
 <div id="ref-Friendly:2024:VisMLM" class="csl-entry" role="listitem">
 Friendly, Michael. 2024. <em>Visualizing Multivariate Data and Models in r</em>. Chapman &amp; Hall/CRC Press. <a href="https://friendly.github.io/Vis-MLM-book/">https://friendly.github.io/Vis-MLM-book/</a>.
+</div>
+<div id="ref-FriendlyMeyer:2016:DDAR" class="csl-entry" role="listitem">
+Friendly, Michael, and David Meyer. 2016. <em>Discrete Data Analysis with <span>R</span>: Visualization and Modeling Techniques for Categorical and Count Data</em>. Chapman &amp; Hall/CRC. <a href="https://doi.org/10.1201/b19022">https://doi.org/10.1201/b19022</a>.
 </div>
 <div id="ref-Friendly-etal:ellipses:2012" class="csl-entry" role="listitem">
 Friendly, Michael, Georges Monette, and John Fox. 2013. <span>“Elliptical Insights: Understanding Statistical Methods Through Elliptical Geometry.”</span> <em>Statistical Science</em> 28 (1): 1–39. <a href="https://doi.org/10.1214/12-STS402">https://doi.org/10.1214/12-STS402</a>.

@@ -334,11 +334,15 @@ Importantly here, they also helped fill in gaps in my understanding of software 
 Each one of these was a special case of the same problem: deciding what the extra dimension means, for the
 statistics and for the software. 
 
+### Un-Vized Problems
+
 But, "filling the gaps" has a larger meaning for me. In data visualization,
 an over-arching motivation has been to pay attention to **Un-Vized Problems**:
 those for which the statistical machinery is largely developed, but which
 haven't been implemented in software to help you see, understand, and
 communicate your results.[^tukey59]
+That's also a path I took in working on visualizing categorical data
+[e.g., @Friendly:94a; @Friendly:99:EMD; @Friendly:00:VCD; @FriendlyMeyer:2016:DDAR].
 
 [^tukey59]: To paraphrase @Tukey:59, the "practical power" of any statistical method
 is the product of its statistical power, times the probability that anyone can or will
