@@ -104,10 +104,11 @@ for the larger question I'm addressing here.
 In short, the multivariate linear model is **easy to fit** yet **hard to see**. 
 
 * The *model syntax* extension in `lm()` is trivial & expressive: `y` becomes `cbind(y1, y2, ...)`. You only need to
-  understand the idea of **"binding"** rows or columns into a matrix. But the `cbind` base family
-  also works for a sequence of vectors, matrices and dataframes. Further extensions, such as `|`
-  to indicate *conditioning*, and `family =` for non-Gaussian models, make it easy to think of 
-  `lm()` and its' friends as more general classes and write the model syntax without breaking a sweat.
+  understand the idea of **"binding"** rows or columns into a matrix. But `cbind()` and `rbind()`
+  also work for a sequence of vectors, matrices and dataframes. The same formula language
+  stretches further in the relatives of `lm()`: `|` indicates *grouping* or *conditioning* in
+  **lme4** and **lattice**, and `glm()` adds `family =` for non-Gaussian responses. It's easy
+  to think of all these as one general class, and write the model syntax without breaking a sweat.
   
 * The _matrix algebra_ extension is elegant & beautiful:
   $\mathbf{y}_{n \times 1} \rightarrow \mathbf{Y}_{n \times q}$ --- it largely just works!
@@ -119,7 +120,12 @@ In short, the multivariate linear model is **easy to fit** yet **hard to see**.
   $\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$,
   where $\otimes$ is the [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product).
   - Once there's a covariance matrix, you can even ask whether it's the same in every group:
-  Box's $\mathcal{M}$ test [@Box:1949], ...
+  Box's $\mathcal{M}$ test [@Box:1949]. And once you can ask, you want to *look*:
+  [`heplots::plot.boxM()`](https://friendly.github.io/heplots/reference/plot.boxM.html) draws
+  $\ln |\mathbf{S}|$ as a dot for each group and one for the pooled matrix, so you see *which*
+  groups stand out, not just *whether* they differ [@FriendlySigal:2018:eqcov]. But why stop
+  at the determinant, when there are other ways to say how big a matrix is? Ah, but that's
+  another story.
 
 <!-- MF: Somewhere, but perhaps just with a twinkle here, expanded later, use `heplots::plot.boxM()` as an expression of how multivariate thinking
 suggested various ways to visualize Box's M tests -->
