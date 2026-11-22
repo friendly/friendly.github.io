@@ -112,20 +112,24 @@ In short, the multivariate linear model is **easy to fit** yet **hard to see**.
   
 * The _matrix algebra_ extension is elegant & beautiful:
   $\mathbf{y}_{n \times 1} \rightarrow \mathbf{Y}_{n \times q}$ --- it largely just works!
+  
   -  The residual variance $\sigma^2$ becomes a covariance matrix $\boldsymbol{\Sigma}$. 
+  
   - The $F$ ratio of hypothesis to error sums of squares becomes the eigenvalues of
   $\mathbf{H}\mathbf{E}^{-1}$, which give Wilks' $\Lambda$, the Pillai trace,
   Hotelling-Lawley and their maximum friend Roy. 
+  
   - And $\textrm{Var}(\widehat{\mathbf{b}}) = \sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}$ becomes
   $\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$,
   where $\otimes$ is the [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product).
+  
   - Once there's a covariance matrix, you can even ask whether it's the same in every group:
-  Box's $\mathcal{M}$ test [@Box:1949]. And once you can ask, you want to *look*:
+  Box's $\mathcal{M}$ test [@Box:1949] gives you the numbers. And once you can ask, you want to *look*:
   [`heplots::plot.boxM()`](https://friendly.github.io/heplots/reference/plot.boxM.html) draws
   $\ln |\mathbf{S}|$ as a dot for each group and one for the pooled matrix, so you see *which*
   groups stand out, not just *whether* they differ [@FriendlySigal:2018:eqcov]. But why stop
-  at the determinant, when there are other ways to say how big a matrix is? Ah, but that's
-  another story.
+  at the determinant, when there are other ways to ask "How big is a matrix?" Ah, but that's
+  another story, better left for another chat around my multivariate fireplace.
 
 <!-- MF: Somewhere, but perhaps just with a twinkle here, expanded later, use `heplots::plot.boxM()` as an expression of how multivariate thinking
 suggested various ways to visualize Box's M tests -->
