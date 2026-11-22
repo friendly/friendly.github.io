@@ -33,6 +33,25 @@ execute:
   color: var(--bs-body-color);
 }
 .thesis blockquote p:last-child { margin-bottom: 0; }
+
+/* Precept: the problem, in the orange of the dimension figures (the thesis, in blue, is the answer) */
+.precept {
+  border-top: 3px solid #F58518;
+  border-bottom: 3px solid #F58518;
+  background: rgba(245, 133, 24, 0.08);
+  padding: 0.7em 1.25em;
+  margin: 1.5em 1em;
+  font-size: 1.15em;
+  text-align: center;
+}
+.precept p { margin: 0; }
+.precept .precept-title {
+  display: block;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  color: #B85708;
+  font-weight: bold;
+}
 </style>
 ```
 
@@ -103,7 +122,11 @@ for the larger question I'm addressing here.
 
 In short, the multivariate linear model is **easy to fit** yet **hard to see**. 
 
-* The *model syntax* extension in `lm()` is trivial & expressive: `y` becomes `cbind(y1, y2, ...)`. You only need to
+* The *model syntax* extension in `lm()` is trivial & expressive:^[For this we can
+  thank @WilkinsonRogers1973. Their symbolic notation for ANOVA models, which came to R by way of
+  GenStat, GLIM and S, helped reduce a whole pantheon of functions and programs for special
+  cases ($t$-tests, ANOVA, ANCOVA, regression, ...) to one God Formula Notation,
+  `response ~ terms`.] `y` becomes `cbind(y1, y2, ...)`. You only need to
   understand the idea of **"binding"** rows or columns into a matrix. But `cbind()` and `rbind()`
   also work for a sequence of vectors, matrices and dataframes. The same formula language
   stretches further in the relatives of `lm()`: `|` indicates *grouping* or *conditioning* in
@@ -176,8 +199,11 @@ It calls to mind the cognitive problems "A. Square" encountered in Edwin Abbott'
 _Flatland_ [@Abbott:1884], when a Sphere entered the story and taught him how to think in
 one more dimension. I've told that story in my [_Visualizing Multivariate Data and Models in R_](https://friendly.github.io/Vis-MLM-book/) book [@Friendly:2024:VisMLM]. 
 
-In R, when the response goes from a vector **y** to a matrix **Y**, every object the model produces
-**gains a dimension**:
+::: {.precept}
+[The Gospel of One More Dimension]{.precept-title}
+In R, when the response goes from a vector **y** to a matrix **Y**,
+every object the model produces **gains a dimension**.
+:::
 
 * a **scalar becomes a vector**. The residual $e_i$ for case $i$ becomes a vector
   $\mathbf{e}_i$ of $q$ residuals, one for each response. Some scalars jump two rungs at
