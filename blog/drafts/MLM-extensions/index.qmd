@@ -433,7 +433,14 @@ The Sphere knows exactly what I'm referring to here.
 ### What was easy
 
 The `heplot()` functions were, honestly, the easy part, because the statistics were
-already done. John Fox's `car::Anova()` computes $\mathbf{H}$ for every term, and
+already done.^[Well, "already done" is a bit glib. John Fox and I worked closely together,
+  both on the details of `car::Anova()` and `linearHypothesis()` for multivariate models and
+  on `heplot()`, so that each did what we both wanted for our purposes. The change logs in
+  the source code tell the story: the first entry in `heplot.R` is John's (January 2007), and
+  his December 2009 changes to `Anova.mlm()` for repeated-measures designs were matched a few
+  days later by mine to `heplot()` ("made it work with car 2.0"). That give and take was part
+  of the beauty of our collaboration
+  [see @FoxFriendlyMonette:09:compstat; @FoxFriendlyWeisberg:13:rjournal].] John Fox's `car::Anova()` computes $\mathbf{H}$ for every term, and
 `car::linearHypothesis()` does so for any linear hypothesis. `Anova()` returns these as a
 *list* of $q \times q$ matrices, one per term: the "list of matrices" rung of the ladder.
 So `heplot.mlm()` is "only" a plot method on that list:
