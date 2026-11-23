@@ -234,6 +234,7 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 </figure>
 </div>
 <!-- Before naming Hadley Wickham in the caption, send him the picture (fireside-image-notes.md).
+     MF may replace him with Georges Monette (see the same notes); then update the caption.
      fig-alt: check against the final image. -->
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
@@ -269,6 +270,13 @@ Figure&nbsp;1: Coming down the ladder for the Pottery MANOVA. Each step keeps fe
 <li><span class="math inline">\(V\)</span> becomes a <span class="math inline">\(p\)</span>-value, which sets aside the size itself and keeps only the evidence.</li>
 </ul>
 <p>Each step is a choice, and each choice is a reasonable answer to “how big?”. The rest of this post is about those choices, and about the pictures that show what each one keeps.</p>
+<p>There’s a trade-off in coming down the ladder, and Hadley Wickham put it neatly. In a 2013 talk, as <a href="https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/">John D. Cook paraphrased it</a>, “Visualization can surprise you, but it doesn’t scale well. Modeling scales well, but it can’t surprise you.” In <em>R for Data Science</em> he and his co-authors give the reason <span class="citation" data-cites="Wickham-etal:2023:r4ds WickhamGrolemund:2017">(<a href="#ref-Wickham-etal:2023:r4ds" role="doc-biblioref">Wickham et al. 2023</a>; first edition <a href="#ref-WickhamGrolemund:2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>: “Visualizations can surprise you, but they don’t scale particularly well because they require a human to interpret them.” Models scale, but every model makes assumptions it can’t question, and so “a model cannot fundamentally surprise you.”</p>
+<p>Every step down the ladder trades a little more surprise for a little more scale. A single number, like a <span class="math inline">\(p\)</span>-value, scales to any number of tests, but it will never show you something you didn’t think to ask. That’s why I want to stop at each rung and look.</p>
+<!-- Quotes: 2nd ed. (American spelling), Introduction, "What you will learn". Check against
+     the book before publishing; the 1st ed. (2017) has the same passage in British spelling.
+     Wickham's slides use the short form: "Surprises, but doesn't scale" (Visualise) and
+     "Scales, but doesn't (fundamentally) surprise" (Model), e.g. "Big data pipelines",
+     Fields Institute, Feb. 2015. -->
 </section>
 <section id="how-big-is-a-vector" class="level2">
 <h2 class="anchored" data-anchor-id="how-big-is-a-vector">How big is a vector?</h2>
@@ -390,6 +398,12 @@ Friendly, Michael, Georges Monette, and John Fox. 2013. <span>“Elliptical Insi
 </div>
 <div id="ref-Monette:90" class="csl-entry" role="listitem">
 Monette, Georges. 1990. <span>“Geometry of Multiple Regression and Interactive 3-<span>D</span> Graphics.”</span> Chap. 5 in <em>Modern Methods of Data Analysis</em>, edited by J. Fox and S. Long. SAGE Publications.
+</div>
+<div id="ref-Wickham-etal:2023:r4ds" class="csl-entry" role="listitem">
+Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. 2023. <em><span>R</span> for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. 2nd ed. O’Reilly Media. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.
+</div>
+<div id="ref-WickhamGrolemund:2017" class="csl-entry" role="listitem">
+Wickham, Hadley, and Garrett Grolemund. 2017. <em><span>R</span> for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. O’Reilly Media. <a href="https://r4ds.had.co.nz/">https://r4ds.had.co.nz/</a>.
 </div>
 </div>
 </section>

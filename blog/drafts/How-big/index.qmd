@@ -120,6 +120,27 @@ Reading @fig-reducing-ladder from left to right:
 Each step is a choice, and each choice is a reasonable answer to "how big?". The rest of this
 post is about those choices, and about the pictures that show what each one keeps.
 
+There's a trade-off in coming down the ladder, and Hadley Wickham put it neatly. In a 2013
+talk, as [John D. Cook paraphrased
+it](https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/),
+"Visualization can surprise you, but it doesn't scale well. Modeling scales well, but it can't
+surprise you." In *R for Data Science* he and his co-authors give the reason
+[@Wickham-etal:2023:r4ds; first edition @WickhamGrolemund:2017]: "Visualizations can surprise
+you, but they don't scale particularly well because they require a human to interpret them."
+Models scale, but every model makes assumptions it can't question, and so "a model cannot
+fundamentally surprise you."
+
+Every step down the ladder trades a little more surprise for a little more scale. A single
+number, like a $p$-value, scales to any number of tests, but it will never show you
+something you didn't think to ask. That's why I want to stop at each rung and look.
+
+<!-- Quotes: 2nd ed. (American spelling), Introduction, "What you will learn". Check against
+     the book before publishing; the 1st ed. (2017) has the same passage in British spelling.
+     Wickham's slides use the short form: "Surprises, but doesn't scale" (Visualise) and
+     "Scales, but doesn't (fundamentally) surprise" (Model), e.g. "Big data pipelines",
+     Fields Institute, Feb. 2015. -->
+
+
 ## How big is a vector?
 
 Start at the bottom, with a single vector. Its size is its *length*, and even that needs a

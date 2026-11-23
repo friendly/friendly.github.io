@@ -315,6 +315,31 @@ The other half of your first sentence: structure tells you what needn't be store
 A possible design lesson: store the factors, and let the methods expand or reduce them. That
 may also answer the open `predict.mlm()` question in the first post.
 
+### 8a. Surprise vs. scale: Wickham's trade-off
+
+*Added 2026-11-23. In the draft at the end of "Climbing back down"; it could also go in
+section 7.*
+
+- **The idea:** visualization can surprise you but doesn't scale; modeling scales but can't
+  (fundamentally) surprise you. Each step down the ladder trades surprise for scale, which is
+  the case for stopping to look at each rung (HE plots, section 7).
+- **2013 talk:** [John D. Cook's post, 7 Feb 2013](https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/),
+  a paraphrase of "a great talk on data analysis" that afternoon. No title, venue or link;
+  Cook was in Houston and Wickham at Rice, but that's unconfirmed. Cook's words: "Visualization
+  can surprise you, but it doesn't scale well. Modeling scales well, but it can't surprise you."
+- **Citable source:** *R for Data Science*, Introduction, "What you will learn".
+  2nd ed. (2023, `Wickham-etal:2023:r4ds`): "Visualizations can surprise you, but they don't
+  scale particularly well because they require a human to interpret them." … "That means a
+  model cannot fundamentally surprise you." 1st ed. (2017, `WickhamGrolemund:2017`): the same,
+  in British spelling ("Visualisations…"). Quoted via a web fetch limited to short excerpts:
+  check against the book.
+- **Slides:** "Surprises, but doesn't scale" (Visualise) and "Scales, but doesn't
+  (fundamentally) surprise" (Model): "Big data pipelines", Fields Institute, Feb 2015
+  (fields.utoronto.ca/programs/scientific/14-15/bigdata/visualization/hw.pdf), and "You can't
+  do data science in a GUI" (Speaker Deck, 2018). Not in his July 2012 "Future of data
+  analysis" deck.
+- Both book entries added to `graphics.bib` on 2026-11-23.
+
 ### 9. Closing
 
 Every summary is a projection, and has things it can't see. The first post warned about
