@@ -203,6 +203,61 @@ $a = \sqrt{1+\lambda_1}$ and $b = \sqrt{1+\lambda_2}$. For $q = 2$:
 
 Four tests, four ways of taking a ruler to one ellipse.
 
+### 5a. Ellipses have shadows
+
+*Added 2026-11-23, from MF: "Ellipses have shadows", an idea MF attributes to Georges Monette.
+Source: the ellipses paper (`Friendly-etal:ellipses:2012`, Section 4.6, Figs. 12–13), which in
+turn cites @Monette:90 for the geometry. [Check: is the phrase itself in print anywhere, or
+just Georges's way of saying it? Attribute accordingly.]*
+
+**The idea.** A shadow (projection) of an ellipse onto a line is a step down from two
+dimensions to one. The ellipse holds *all* of these at once: for any linear combination
+$\mathbf{a}^\top \boldsymbol{\beta}$, the interval for it is the ellipse's shadow on the
+$\mathbf{a}$ axis. So a confidence ellipse is a compact store of infinitely many univariate
+answers, and you pick the one you want by choosing where the light comes from.
+
+**Why it belongs in this post.** It's the gentlest answer to "how big?": each shadow is a
+one-number-plus-interval summary, and the ellipse keeps every one of them. That's the
+argument of section 7 (don't reduce too soon) and the design lesson of section 8 (store
+$\boldsymbol{\Sigma}$, expand or reduce on demand), in one picture.
+
+**Fig. 13 of the paper, in numbers.** `matlib::coffee` (n = 20), `lm(Heart ~ Coffee + Stress)`.
+Checked in R 2026-11-23:
+
+| Shadow | What it gives | 95% interval |
+|---|---|---|
+| on the $\beta_\text{Coffee}$ axis | CI for Coffee, controlling for Stress | (−1.02, 0.21): includes 0 |
+| on the $\beta_\text{Stress}$ axis | CI for Stress, controlling for Coffee | (0.73, 1.67) |
+| oblique, onto the line $\beta_\text{Stress} = 0$ | slope for Coffee in the *simple* regression | (0.88, 1.33): excludes 0 |
+| on an axis of slope −1 | $\beta_\text{Stress} - \beta_\text{Coffee}$ | excludes 0 |
+
+The sign flip for Coffee is the Simpson-like surprise, and here it's just two different
+shadows of one ellipse: one straight down, one along the ellipse's own tilt.
+
+**Two sizes of ellipse.** The same ellipse, scaled two ways:
+
+- radius $\sqrt{F_{1,\nu}} = t_\nu$ ($d = 1$, the "confidence-interval generating ellipse"):
+  each shadow is an ordinary 95% interval, one at a time;
+- radius $\sqrt{2 F_{2,\nu}}$ ($d = 2$, the joint confidence ellipse): each shadow is a
+  Scheffé interval, simultaneous over *every* linear combination. That's the price of
+  looking in all directions, "fishing", paid in advance.
+
+**Link to the four tests (section 5).** Roy's test is the shadow idea run in reverse: the
+largest root is the biggest univariate $F$ over all linear combinations
+$\mathbf{a}^\top \mathbf{y}$ of the responses (union–intersection, @Roy1957). In an HE plot,
+"**H** protrudes outside **E** somewhere" says there's a direction in which the shadow of **H**
+is longer than the shadow of **E**. It also explains the one-way rule in the first post's Roy
+footnote: a 2D HE plot is itself a shadow of the $q$-dimensional ellipsoids, so protrusion
+can show up in it, but its absence there doesn't rule it out elsewhere.
+
+**Side note, not the main thread: linear hypotheses and Scheffé.** Every $\mathbf{L}\boldsymbol{\beta} = \mathbf{0}$
+with one row asks about one shadow; Scheffé's method protects all of them at once, which is
+why its ellipse is bigger. A sentence or a footnote, pointing to the first post's
+$\mathbf{L}\mathbf{B}\mathbf{M} = \mathbf{0}$, may be enough.
+
+**Possible line:** "Ellipses have shadows, and every shadow is an answer to some question.
+The ellipse is the set of all the answers."
+
 ### 6. The magic: all roads lead to $F$
 
 The statistics have different null distributions, yet each converts to an $F$:
@@ -294,6 +349,19 @@ MF: Do these in `images/` for now, where I have other things related to a new po
    that function always labels the means and Isle Thorns and Ashley Rails overlap. Fe and Mg
    share an arrow label. Still crowded around the Al arrow; a candisc option to suppress or
    place mean labels would help.
+6. Ellipses have shadows (section 5a). Redraw Fig. 13 of the ellipses paper from
+   `matlib::coffee`, in $\beta$ space: the $d = 1$ and $d = 2$ ellipses, their shadows on both
+   axes, the oblique shadow onto $\beta_\text{Stress} = 0$, and the $\beta_\text{Stress} - \beta_\text{Coffee}$
+   axis. `car::confidenceEllipse()` with `dfn = 1` and `dfn = 2` draws the two ellipses. Not
+   **Draft:** `images/coffee-shadows.png`, from `R/coffee-shadows.R` (2026-11-23). Two panels:
+   shadows on the axes (d = 1 CIs in orange; d = 2 Scheffé intervals in grey, just outside the
+   axes), and shadows in other directions (oblique onto b_Stress = 0; orthogonal onto the
+   Stress − Coffee axis). Shadows drawn as light strips with dashed rays. The script checks the
+   axis shadows against `confint()` and the oblique centre against the simple-regression slope.
+   The original, for comparison: `images/refs/fig13-original.png` (git-ignored).
+   **Note:** the oblique shadow (0.97, 1.25) is narrower than the simple-regression CI
+   (0.88, 1.33). Only the centre is exact; the paper's blue line is the actual CI. Say so
+   in the post, or show both.
 
 ## Starter code
 
@@ -360,6 +428,10 @@ round(eta2, 3)
   `Friendly:genridge:2013`, `Abbott:1884`.
 - In `statistics.bib`: `Hotelling:1931`, `Schatzoff1966`, `Olson:1974`, `Roy1957`.
 - In `timeref.bib`: `Gabriel:1971`.
+- For section 5a: `Monette:90` (`graphics.bib`; Fox & Long, eds., *Modern Methods of Data
+  Analysis*, ch. 5) and `Scheffe1960` (`statistics.bib`, *The Analysis of Variance*).
+  Scheffé (1953), "A method for judging all contrasts in the analysis of variance",
+  *Biometrika*, wasn't found; from memory, so check it.
 - Not found searching the bib files by author. **These are from memory, so check them:**
   - Wilks (1932), Certain generalizations in the analysis of variance, *Biometrika*;
   - Eckart & Young (1936), The approximation of one matrix by another of lower rank, *Psychometrika*;
