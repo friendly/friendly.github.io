@@ -277,8 +277,16 @@ MF: Do these in `images/` for now, where I have other things related to a new po
    **Draft:** `images/unit-balls.png`, from `R/unit-balls.R` (2026-11-22). Right panel: A and B
    are both at Euclidean distance 1, but at Mahalanobis distance 0.76 and 2.00 (rho = 0.75).
 3. Figure 19 in four panels, one measurement highlighted in each (section 5). Redraw.
+   **Draft:** `images/four-rulers.png`, from `R/four-rulers.R` (2026-11-22). Toy roots
+   lambda = (3, 1), so a = 2, b = sqrt(2); the script checks each formula against the usual
+   definition of the statistic.
 4. Contours of the four statistics in the $(\lambda_1, \lambda_2)$ plane, with the concentrated
    and diffuse effects as points (section 4). New.
+   **Draft:** `images/four-contours.png`, from `R/four-contours.R` (2026-11-22). One contour per
+   statistic, the one through the concentrated effect (1, 0). The diffuse effect lies on the HL
+   line, outside the Pillai and Wilks curves, inside Roy's. On the diagonal the curves cross at
+   1/3, sqrt(2) - 1, 1/2 and 1: the ordering of section 4. The shapes echo the unit balls: HL is
+   an L1 diamond and Roy an L-infinity square.
 5. HE plot beside its canonical version, for Pottery (section 7). Adapt from `index.qmd`.
 
 ## Starter code
