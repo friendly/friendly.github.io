@@ -288,6 +288,12 @@ MF: Do these in `images/` for now, where I have other things related to a new po
    1/3, sqrt(2) - 1, 1/2 and 1: the ordering of section 4. The shapes echo the unit balls: HL is
    an L1 diamond and Roy an L-infinity square.
 5. HE plot beside its canonical version, for Pottery (section 7). Adapt from `index.qmd`.
+   **Draft:** `images/he-vs-canonical.png`, from `R/he-vs-canonical.R` (2026-11-22). Left: Al
+   against Fe in data space, where E is a tilted ellipse. Right: canonical space, where E is a
+   circle and H lies along Can1. The right panel rebuilds what `heplot.candisc()` does, because
+   that function always labels the means and Isle Thorns and Ashley Rails overlap. Fe and Mg
+   share an arrow label. Still crowded around the Al arrow; a candisc option to suppress or
+   place mean labels would help.
 
 ## Starter code
 
