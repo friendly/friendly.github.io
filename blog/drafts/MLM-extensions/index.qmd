@@ -25,7 +25,7 @@ execute:
   border: 2px solid var(--bs-primary);
   border-left-width: 6px;
   border-radius: 6px;
-  background: var(--bs-tertiary-bg);
+  background: rgba(var(--bs-primary-rgb), 0.08);  /* pale blue, from the border color */
   padding: 1em 1.25em;
   margin: 1.5em 1em;
   font-size: 1.1em;
@@ -348,15 +348,11 @@ That's also a path I took in working on visualizing categorical data
 is the product of its statistical power, times the probability that anyone can or will
 actually use it.
 
-The sections below take the packages in turn. For each one, the question is the same:
-what did it take to carry these methods one more dimension?
+The sections below take the packages in turn. For each one, the questions are the same:
 
-<!--
-=====================================================================
-SKELETON from here on. Suggested order and content; nothing below is final.
-Questions for MF are marked Q:.
-=====================================================================
--->
+* what does it take to carry these methods one more dimension?
+* how can a univariate display be re-imagined to show relationships among responses?
+
 
 ## Seeing the tests: HE plots
 
@@ -399,8 +395,27 @@ car::Anova(rohwer.mod)
 ```
 
 The `heplot()` below shows the $\mathbf{H}$ ellipses for all six terms in the space of
-`SAT` and `PPVT`, plus one more, `Regr`, for the joint hypothesis that all five PA
-coefficients are zero.
+`SAT` and `PPVT`. But there's one more, `Regr`, for the joint hypothesis
+
+$$
+H_0 : \mathbf{B}_{\textrm{PA}} =
+\begin{bmatrix}
+\beta_{n,\textrm{SAT}}  & \beta_{n,\textrm{PPVT}}  & \beta_{n,\textrm{Raven}}  \\
+\beta_{s,\textrm{SAT}}  & \beta_{s,\textrm{PPVT}}  & \beta_{s,\textrm{Raven}}  \\
+\beta_{ns,\textrm{SAT}} & \beta_{ns,\textrm{PPVT}} & \beta_{ns,\textrm{Raven}} \\
+\beta_{na,\textrm{SAT}} & \beta_{na,\textrm{PPVT}} & \beta_{na,\textrm{Raven}} \\
+\beta_{ss,\textrm{SAT}} & \beta_{ss,\textrm{PPVT}} & \beta_{ss,\textrm{Raven}}
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0
+\end{bmatrix} ,
+$$
+
+that all five PA coefficients are zero, for all three responses. That was the beauty of `car::linearHypothesis()`: the `"mlm"`
+method returns the same structures of objects for $\mathbf{H}$ and $\mathbf{E}$ as
+`car::Anova()`. To `heplot()` that's just one more $\mathbf{H}$ matrix looking for its
+ellipsoid in a plot.
 
 ```{r}
 #| label: fig-rohwer-heplot
@@ -416,14 +431,14 @@ heplot(rohwer.mod,
        col = col, fill = TRUE, fill.alpha = 0.1)
 ```
 
-The plot tells most of the story of the `Anova()` table at a glance. SES and `na`
+HE plots tell most of the story of the `Anova()` table at a glance, once you know how to read them. SES and `na`
 extend beyond $\mathbf{E}$, while `n`, `s` and `ss` stay well inside. `ns`, also
 significant, only just reaches the edge of $\mathbf{E}$ in this view: the one-way rule at
 work. The tilt of the
 `Regr` ellipse shows that the PA tasks predict `SAT` and `PPVT` together, in the same
 direction. 
 
-There's also a lesson about **shape**. Each term with 1 df has an $\mathbf{H}$
+There's also a lesson about **shape** and **dimension**. Each term with 1 df has an $\mathbf{H}$
 matrix of rank 1, so its "ellipse" collapses to a line. In general, the dimension of the
 $\mathbf{H}$ ellipse is the smaller of the term's df and $q$.
 A factor with more than two levels (`df > 1`) gets fatter: an ellipse or ellipsoid of up to
@@ -452,7 +467,7 @@ So `heplot.mlm()` is "only" a plot method on that list:
 * draw each one as an ellipse, using its Cholesky factor to transform a circle.
 
 Everything that `Anova()` can test, `heplot()` can draw, including repeated-measures
-designs through its `idata` and `idesign` arguments. And because `heplot()` is an S3
+designs through its `idata` and `idesign` arguments [@Friendly:2010:repeated]. And because `heplot()` is an S3
 generic, anything that inherits from `"mlm"` gets an HE plot for free.
 
 The same S3 design principle in R gave a family of graphical methods for `"mlm"` objects: `pairs()` for all pairs of
@@ -467,6 +482,68 @@ responses, `heplot3d()` for three, and `heplot1d()` for one. Other helpers came 
 The [MANOVA](https://friendly.github.io/heplots/articles/HE_manova.html) and
 [MMRA](https://friendly.github.io/heplots/articles/HE_mmra.html) vignettes have many more
 examples.
+
+### Repeated measures too!
+
+<!-- New subsection, drafted from Friendly (2010), JSS 37(4), pp. 4-5, eqs. (6)-(9). Rework freely. -->
+
+Repeated-measures designs come along almost for free, too. Any linear hypothesis about the
+coefficients in a multivariate linear model can be written as
+$\mathbf{L} \mathbf{B} = \mathbf{0}$, where the rows of $\mathbf{L}$ pick out or contrast the
+coefficients for a term. When the $q$ responses are the same measure taken over time or
+conditions, the only change is a second matrix, $\mathbf{M}$, on the other side:
+
+$$
+H_0 : \mathbf{L} \mathbf{B} \mathbf{M} = \mathbf{0} .
+$$
+
+$\mathbf{L}$ works on the rows of $\mathbf{B}$ and specifies the between-subject effects. The
+columns of $\mathbf{M}$ are contrasts among the responses and specify the within-subject
+effects. A unit vector, $\mathbf{M} = \mathbf{1}$, averages over the responses, which tests the
+between-subject terms. A matrix of contrasts for a within-subject factor C tests C itself
+(with $\mathbf{L}$ for the intercept), and its interactions with each between-subject term.
+The $\mathbf{H}$ and $\mathbf{E}$ matrices are the usual ones, computed for the transformed
+responses $\mathbf{Y}\mathbf{M}$, so this is just the ordinary multivariate linear model again,
+and the HE plot doesn't need to know the difference.
+
+With two or more within-subject factors, there's nothing new to learn, just another
+Kronecker product. If factor C has $c$ levels and D has $d$, with contrast matrices
+$\mathbf{M}_C$ and $\mathbf{M}_D$, then
+
+$$
+(\mathbf{1}_c, \mathbf{M}_C) \otimes (\mathbf{1}_d, \mathbf{M}_D)
+ = (\mathbf{1}_c \otimes \mathbf{1}_d, \;
+    \mathbf{1}_c \otimes \mathbf{M}_D, \;
+    \mathbf{M}_C \otimes \mathbf{1}_d, \;
+    \mathbf{M}_C \otimes \mathbf{M}_D)
+$$
+
+gives the $\mathbf{M}$ matrices for the average, D, C, and the C:D interaction, in that order.
+It's the same bookkeeping that builds the model matrix for a factorial design on the
+between-subject side, now applied to the responses. @Friendly:2010:repeated works through
+examples, including "doubly multivariate" designs, where several different measures are each
+observed over the same occasions.
+
+But this creates another data visualization challenge. The math and the code work wonderfully
+here, but reading an HE plot now requires some understanding of what is encoded on each side
+of $\mathbf{L} \mathbf{B} \mathbf{M} = \mathbf{0}$. On the left, $\mathbf{L}$ reflects the
+standard ANOVA ideas about differences among groups of subjects (the "between-S design"). On
+the right, $\mathbf{M}$ reflects the differences among the responses (the "within-S design").
+For a within-S term, the HE plot is drawn in the space of the transformed responses
+$\mathbf{Y}\mathbf{M}$, such as the linear and quadratic trends over time, not the original
+measures, so the axes themselves are contrasts.
+
+Hierarchical, or multilevel, models solve the same problem in a different, but also elegant
+way: they model the repeated measures directly, adding random effects for subjects
+[@PinheiroBates:2000]. That approach burdened us with spaghetti plots, one line per subject,
+but it also taught important lessons about *pooling*, how the estimates for individuals
+borrow strength from the group [@EfronMorris:1977; @GelmanHill:07].[^framing]
+
+[^framing]: There's a larger question here, about how an extension is *framed*. The classical,
+univariate approach tries to account for correlated responses through special, simple cases,
+such as the assumption of sphericity and the corrections for its failure. The multilevel
+approach just adds another term to the model, for the random effects. That's a story for
+another day.
 
 ## Seeing it in fewer dimensions: candisc
 
@@ -1066,6 +1143,24 @@ For the longer story, with many more examples, see Chapters 9 and 11--15 of
 A. Square, in _Flatland_, could not imagine a third dimension until the Sphere lifted him
 out of his plane and showed him one. Most of us learned regression in a world of one
 response. Seeing what happens in one more dimension is, I think, worth the trip.
+
+::: {.callout-note icon=false}
+## To cite this article
+
+Friendly, M. (2026, November). On Extending `lm()` Methods to `"mlm"`. *Michael Friendly's blog*.
+<https://friendly.github.io/blog/posts/2026-11-MLM-extensions/>
+
+```bibtex
+@Misc{Friendly:2026:MLMext,
+  author       = {Friendly, Michael},
+  title        = {On Extending {\texttt{lm()}} Methods to {\texttt{"mlm"}}},
+  year         = {2026},
+  month        = nov,
+  howpublished = {Blog post},
+  url          = {https://friendly.github.io/blog/posts/2026-11-MLM-extensions/},
+}
+```
+:::
 
 ## References {.unnumbered}
 
