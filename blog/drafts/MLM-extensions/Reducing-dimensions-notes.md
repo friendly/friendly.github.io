@@ -139,12 +139,15 @@ For a centered matrix with singular values $d_1 \ge d_2 \ge \dots$, up to consta
 - You can't just divide matrices, so change the metric. Transform the responses to make **E**
   a circle:
   $$\mathbf{H}^\star = \mathbf{E}^{-1/2}\,\mathbf{H}\,\mathbf{E}^{-1/2}, \qquad \mathbf{E}^\star = \mathbf{I}.$$
+  
 - Rotate to the axes of $\mathbf{H}^\star$, and all that remains are
   $\lambda_1 \ge \dots \ge \lambda_s$, the nonzero roots of $\mathbf{HE}^{-1}$, with
   $s = \min(q, df_h)$.
+  
 - **Why this is enough:** the hypothesis doesn't care about the units of the responses, or
   which (nonsingular) combinations of them you use. Invariant tests can depend only on the
   $\lambda_i$. Invariance does the reducing.
+  
 - **What is lost:** the directions. candisc gets them back from the eigenvectors.
 
 The Pottery MANOVA from the first post, coming down the ladder:
@@ -264,9 +267,15 @@ multivariate answer and forget what was averaged to get it.
 
 ## Figures
 
+MF: Do these in `images/` for now, where I have other things related to a new post
+
 1. The descending ladder, or a funnel, for Pottery (section 3). New, in the style of
    `R/dimension-ladder.R`; probably the key figure.
+   **Draft:** `images/reducing-ladder.png`, from `R/reducing-ladder.R` (2026-11-22). Numbers are
+   computed in the script, and match the table in section 3.
 2. Unit balls for $L_1$, $L_2$, $L_\infty$, and Mahalanobis (section 1). New, small.
+   **Draft:** `images/unit-balls.png`, from `R/unit-balls.R` (2026-11-22). Right panel: A and B
+   are both at Euclidean distance 1, but at Mahalanobis distance 0.76 and 2.00 (rho = 0.75).
 3. Figure 19 in four panels, one measurement highlighted in each (section 5). Redraw.
 4. Contours of the four statistics in the $(\lambda_1, \lambda_2)$ plane, with the concentrated
    and diffuse effects as points (section 4). New.
@@ -318,12 +327,15 @@ round(eta2, 3)
 
 ### Decisions for MF
 
-- **Title**, and whether this is "Part 2" or stands alone.
+- **Title**, and whether this is "Part 2" or stands alone. [MF: It stands alone, with a link in the intro to the earler post]
+
 - **Scope:** are sections 1–2 the way in, or a detour before H vs. E? I'd keep them short and
   make 3–7 the core. Section 8 could shrink to a paragraph.
+  
 - **Notation:** $\lambda$ is the ridge constant in the first post and an eigenvalue here (the
   sketch uses $k$ for ridge). $U$ is used for HL since **H** is taken, but is close to
   $\widehat{\mathbf{U}}$. The paper uses $p$ for responses, the posts $q$.
+  
 - **Stub in the first post?** If so, one sentence in the Conclusion would do: "Going up a
   dimension is half the story; the other half, for another post, is how to come back down
   without losing what matters."
