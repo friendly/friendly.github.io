@@ -382,7 +382,7 @@ citation keys resolve.
 
 **Additions**
 
-*Moved 2026-11-21 to [Reducing-dimensions-notes.md](Reducing-dimensions-notes.md), to become a
+*Moved 2026-11-21 to [Reducing-dimensions-notes.md](../How-big/Reducing-dimensions-notes.md), to become a
 separate post when this one is done.*
 
 **Unfinished or awkward text**
