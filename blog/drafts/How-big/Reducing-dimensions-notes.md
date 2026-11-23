@@ -55,8 +55,9 @@ statistical test simpler, by considering what is important, aided by geometry.
 
 - **Getting Dimensions Back**: answers "One more dimension", but could be read as *regaining* them.
 - **Reducing Dimensions**: direct, but sounds like a post on PCA alone.
-- **How Big Is a Matrix?** The question that runs through all of your note. My suggestion, perhaps
-  with the subtitle "Reducing dimensions in multivariate linear models".
+- **How Big Is My Matrix?** The question that runs through all of your note. My suggestion, perhaps
+  with the subtitle "Reducing dimensions in multivariate linear models and in graphical methods: Stories
+  from a fireside chat".
   [MF: Use this title]
 
 ### Banner

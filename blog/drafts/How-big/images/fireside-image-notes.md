@@ -94,6 +94,11 @@ references only. The links above will find them again on another machine.
 - [ ] Account for Lawley, perhaps in the caption: "(Lawley sends his regrets.)" With no photo,
       don't add an invented likeness.
 - [ ] If the caption will name Hadley Wickham, send him the picture first.
+- [ ] *2026-11-23, MF considering:* replace Wickham (seat 6) with **Georges Monette**, who
+      gets credit for "ellipses have shadows" in the post. MF will do this edit in ChatGPT
+      separately. If so: add a reference photo to `refs/` (with permission, since Georges is
+      living), update the cast in `fireside-HE-chat.md`, and send Georges the picture
+      before the caption names him.
 - [x] Recheck that Roy's finger is still at the right-hand end of **H**.
 - [x] Make a 1400 px JPEG from the final version, for the post and its `image:` line: V2 is one
       (252 KB). When the post is published, only that gets copied; the PNG can stay behind in drafts.

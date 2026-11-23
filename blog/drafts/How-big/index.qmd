@@ -1,0 +1,257 @@
+---
+title: "How Big Is My Matrix?"
+subtitle: "Reducing dimensions in multivariate linear models and in graphical methods: Stories from a fireside chat"
+description: "Multivariate statistics climbs up a ladder of dimensions, from scalars to matrices. This post climbs back down. Every step asks the same question, 'how big is it?', and answering it means deciding what to compare against and what 'big' means."
+author: "Michael Friendly"
+date: last-modified
+draft: true
+image: "images/fireside-HE-chat-V2.jpg"
+categories: [Vis-MLM, multivariate linear models, graphics, HE plots, ellipses]
+bibliography: references.bib
+format:
+  html:
+    toc: true
+    code-fold: show
+    code-summary: "Show the code"
+execute:
+  warning: false
+  message: false
+---
+
+<!--
+FIRST DRAFT, 2026-11-23: the framing and the illustrations. Sections after "Ellipses have
+shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md.
+-->
+
+<!-- The precept box, as in the first post: orange for the question -->
+```{=html}
+<style>
+.precept {
+  border-top: 3px solid #F58518;
+  border-bottom: 3px solid #F58518;
+  background: rgba(245, 133, 24, 0.08);
+  padding: 0.7em 1.25em;
+  margin: 1.5em 1em;
+  font-size: 1.15em;
+  text-align: center;
+}
+.precept p { margin: 0; }
+.precept .precept-title {
+  display: block;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  color: #B85708;
+  font-weight: bold;
+}
+.precept .precept-motto {
+  display: block;
+  margin-top: 0.4em;
+  font-style: italic;
+  color: #B85708;
+}
+</style>
+```
+
+![A fireside chat on how big **H** is, relative to **E**. Left to right: Wilks, Hotelling, Pillai
+(holding the HE plot), Roy (pointing to the largest dimension of **H**), me, and a younger R
+developer. (Lawley sends his regrets.)](images/fireside-HE-chat-V2.jpg){fig-alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. Coffee cups and a blue book sit on the table."}
+
+<!-- Before naming Hadley Wickham in the caption, send him the picture (fireside-image-notes.md).
+     MF may replace him with Georges Monette (see the same notes); then update the caption.
+     fig-alt: check against the final image. -->
+
+## Introduction
+
+When we left A. Square, in my last post, [On Extending `lm()` Methods to
+`"mlm"`](https://friendly.github.io/blog/posts/2026-11-extending-lm/), the Sphere had just
+shown him what one more dimension looks like [@Abbott:1884]. Going from a univariate linear
+model to a multivariate one, every object the model produces gains a dimension: a residual
+becomes a vector, a coefficient vector a matrix, a variance a covariance matrix.
+
+But earlier in the story, A. Square dreams of a trip the other way, to Lineland, whose King
+can't conceive of anything but length. I used to feel a little sorry for the King. Then I
+noticed how much of multivariate statistics consists of working out, very carefully, how to
+get to Lineland. You start with a matrix of 130 numbers. You'd like to finish with one, and be
+able to say "that's big". (Pointland, whose only inhabitant is entirely pleased with himself,
+is there for the $p$-value.)
+
+This post is about the trip back down. Each step down answers the same question, and the
+question turns out to be harder than it looks:
+
+::: {.precept}
+[How big is my matrix?]{.precept-title}
+First say *compared to what*, and *in what sense*.
+[Every summary is a shadow]{.precept-motto}
+:::
+
+*Compared to what* means choosing a metric: the identity, the error covariance, or the total.
+*In what sense* means choosing what counts as size: the total, the largest part, or the volume.
+Algebra tells you how few numbers you need to keep. Geometry shows you what those numbers
+measure, and what was thrown away to get them.
+
+<!-- Possible thesis line, from the notes: "to reduce dimensions well, decide what 'big'
+     means, keep what you need to measure it, and draw a picture of what's left." -->
+
+The title comes from the scene in the banner. Imagine the people who invented the classical
+multivariate tests sitting around a fire with an HE plot, arguing about how big **H** is
+compared to **E**. Each one had a different, and perfectly reasonable, answer.
+
+## Climbing back down
+
+Here's the whole trip in one picture, for the Pottery data used in the first post: the
+chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four
+kiln sites. The question is whether the sites differ.
+
+![Coming down the ladder for the Pottery MANOVA. Each step keeps fewer numbers, and each
+sets something aside.](images/reducing-ladder.png){#fig-reducing-ladder width="100%" fig-alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, p = 2.4e-05, from F = 4.30 on 15 and 60 df. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; the size itself."}
+
+Reading @fig-reducing-ladder from left to right:
+
+* The 130 numbers in **Y** become two $5 \times 5$ matrices, **H** for the differences among the
+  site means and **E** for the variation within sites. These keep 15 distinct numbers each, and
+  set aside the individual cases and the grand means.
+* **H** and **E** become $s = 3$ eigenvalues, $\lambda_i$, the nonzero roots of
+  $\mathbf{H}\mathbf{E}^{-1}$. These set aside the units of the responses and the directions
+  of the effect.
+* The eigenvalues become one number, here Pillai's trace, $V$. This sets aside how the size of
+  the effect is spread over the dimensions.
+* $V$ becomes a $p$-value, which sets aside the size itself and keeps only the evidence.
+
+Each step is a choice, and each choice is a reasonable answer to "how big?". The rest of this
+post is about those choices, and about the pictures that show what each one keeps.
+
+## How big is a vector?
+
+Start at the bottom, with a single vector. Its size is its *length*, and even that needs a
+choice.
+
+![Left: three ways to measure length. The "unit circle", the set of points of length 1, is a
+diamond for $L_1$, a circle for $L_2$ and a square for $L_\infty$. Right: changing the metric.
+With correlated variables, the Mahalanobis unit circle is an ellipse, and two points at the
+same Euclidean distance can be very different distances away.](images/unit-balls.png){#fig-unit-balls width="90%" fig-alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00."}
+
+* The familiar length is Euclidean, $L_2$: $\|\mathbf{y}\|^2 = \mathbf{y}^\top\mathbf{y}$.
+  Centered, that's the total sum of squares, and divided by its df, it's the variance. **A
+  variance is a squared length.**
+* Pythagoras splits it: $SS_T = SS_H + SS_E$. The $F$ ratio compares two squared lengths, each
+  per df. So even the univariate test is already asking "how big is H, relative to E?"
+* Other lengths are useful too. $L_1$ adds absolute values (city-block distance), and
+  $L_\infty$ takes the largest one. The corners of the $L_1$ diamond are why the lasso sets
+  some coefficients exactly to zero, and ridge regression, with its round $L_2$ penalty,
+  doesn't.
+* *Compared to what?* With correlated variables, Euclidean distance is the wrong ruler. The
+  Mahalanobis distance, $\mathbf{e}^\top \mathbf{S}^{-1} \mathbf{e}$, measures length in
+  the metric of the data, and its unit circle is the data ellipse. In the right panel of
+  @fig-unit-balls, A and B are both 1 unit from the origin by Euclid, but B is more than
+  twice as far as A in the metric of the ellipse.
+
+<!-- Notes section 1. Section 2 (determinants, singular values: Frobenius and spectral
+     norms, generalized variance, PCA and biplots, condition number and ridge df) could
+     follow here as "How big is a matrix of data?", or be folded in briefly. -->
+
+## Ellipses have shadows
+
+<!-- MF attributes the phrase to Georges Monette. Check whether it's in print anywhere, or
+     credit it as his way of saying it. -->
+
+Georges Monette has a short way of putting one of the most useful ideas in this business:
+**ellipses have shadows**. Shine a light on an ellipse, and its shadow on a line is an
+interval. That is a step down from two dimensions to one, and the ellipse holds *every* such
+step at once: for any linear combination of the parameters, the confidence interval is the
+shadow of the confidence ellipse on that direction [@Monette:90; @Friendly-etal:ellipses:2012].
+
+Here's the example from our ellipses paper (Fig. 13 there), with contrived data on 20
+university people: an index of heart damage, predicted from their coffee consumption and
+their occupational stress. Coffee and stress are strongly
+correlated, so the confidence ellipse for the two slopes is long and thin.
+
+```{r}
+#| label: coffee
+#| code-fold: true
+data(coffee, package = "matlib")
+coffee.mod <- lm(Heart ~ Coffee + Stress, data = coffee)
+round(cbind(coef(coffee.mod), confint(coffee.mod)), 3)
+```
+
+![The confidence ellipse for $(\beta_\text{Coffee}, \beta_\text{Stress})$ and some of its
+shadows. Left: shadows on the axes give the usual confidence intervals (orange), from the
+95% CI ellipse, and the Scheffé intervals (grey), from the larger joint ellipse. Right:
+shadows in other directions give the slope for Coffee ignoring Stress, and the difference
+between the two slopes.](images/coffee-shadows.png){#fig-coffee-shadows width="100%" fig-alt="Two panels in the space of beta-Coffee (horizontal) and beta-Stress (vertical). In each, a long thin blue ellipse tilts down to the right, centered near (-0.4, 1.2). Left, Shadows on the axes: light orange strips run from the ellipse to both axes, ending in thick orange intervals. The interval for Coffee, on the horizontal axis, includes 0; the one for Stress, on the vertical axis, excludes 0. A larger grey ellipse surrounds the blue one, and its slightly longer grey shadows lie just outside the axes. Right, Shadows in other directions: one strip runs obliquely down to the right, landing on the horizontal axis near 1.1, labeled Coffee, ignoring Stress (the simple regression). Another runs down to the left onto a diagonal axis through the origin, labeled Stress minus Coffee, with tick marks from 0 to 2; that interval excludes 0."}
+
+The shadows tell the whole story of this regression:
+
+* **Straight down**, on the $\beta_\text{Coffee}$ axis, the shadow is the 95% confidence interval
+  for Coffee, controlling for Stress. It includes 0. **Straight across**, the interval for
+  Stress excludes 0. Once you know a person's stress, coffee adds nothing.
+* **Along the tilt of the ellipse**, onto the line $\beta_\text{Stress} = 0$, the shadow lands
+  on the slope for Coffee in the *simple* regression, ignoring Stress. That slope is positive
+  and clearly not zero. The apparent paradox, that coffee "matters" in one model and not the
+  other, is just two shadows of the same ellipse, cast from two directions.
+* **On a diagonal axis**, the shadow gives an interval for $\beta_\text{Stress} - \beta_\text{Coffee}$,
+  which excludes 0: the two slopes differ.
+
+<!-- TO RESOLVE (see notes, Figures item 6): the oblique shadow's centre is exactly the
+     simple-regression slope (1.108), but its width (0.97, 1.25) is narrower than the
+     simple-regression CI (0.88, 1.33). Say so here, or show both in the figure. -->
+
+The size of the ellipse depends on how many questions you want to ask of it. Scaled by
+$t_{\nu}$, its shadows are ordinary 95% intervals, good for one question at a time. Scaled by
+$\sqrt{2 F_{2,\nu}}$, it becomes the joint 95% confidence region, and its shadows are
+Scheffé intervals, which hold simultaneously for *every* direction you might look. That's
+the price of going fishing, paid in advance.
+
+<!-- Side note, not the main thread: each one-row linear hypothesis L beta = 0 asks about one
+     shadow; Scheffé protects all of them at once. A footnote pointing back to L B M = 0 in
+     the first post may be enough. -->
+
+So an ellipse is a remarkably economical summary. It stores every one-dimensional answer,
+and you choose which one you want by choosing where the light comes from. That idea comes
+back below, as Roy's largest root: the direction in which **H** casts its longest shadow
+relative to **E**.
+
+## How big is H, relative to E?
+
+<!-- STUB. Notes section 3: change the metric so E is a circle, H* = E^{-1/2} H E^{-1/2};
+     rotate; what's left are the eigenvalues lambda_i, s = min(q, df_h). Invariance does the
+     reducing. What's lost: the directions (candisc gets them back). Pottery numbers are in
+     the ladder figure. -->
+
+## Four kinds of mean
+
+<!-- STUB. Notes section 4: with u_i = 1/(1 + lambda_i), Pillai, Wilks, HL and Roy are the
+     arithmetic, geometric, harmonic and minimum means of the same s numbers, so eta^2 is
+     always ordered Pillai <= Wilks <= HL <= Roy. Concentrated vs. diffuse effects.
+     Figure: images/four-contours.png. The bar cartoon (Roy: "HIM!") could go here. -->
+
+## Four rulers for one ellipse
+
+<!-- STUB. Notes section 5: Fig. 19 of the ellipses paper; Roy = major axis, Wilks = area,
+     HL = diagonal, Pillai = perpendicular. Figure: images/four-rulers.png. Link back to
+     the shadows: Roy is the longest shadow. -->
+
+## All roads lead to F
+
+<!-- STUB. Notes section 6: exact vs. approximate F conversions; the simulation table. -->
+
+## Don't reduce too soon: HE plots
+
+<!-- STUB. Notes section 7: center, scale, rescale for significance; read what the scalar
+     lost; rotate with candisc. Figure: images/he-vs-canonical.png. A 2D HE plot is itself a
+     shadow of the q-dimensional ellipsoids. -->
+
+## Smaller R objects, too
+
+<!-- STUB. Notes section 8: store the factors (Sigma, (X'X)^{-1}, leverages), and let
+     methods expand or reduce them. Maybe just a paragraph. -->
+
+## Conclusion
+
+<!-- STUB. Notes section 9: every summary is a projection, a shadow, and has things it
+     can't see. The first post warned about q univariate answers; the opposite mistake is
+     one multivariate answer that forgets what was averaged to get it. -->
+
+## References {.unnumbered}
+
+::: {#refs}
+:::
