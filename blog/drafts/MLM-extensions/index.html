@@ -585,7 +585,7 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 </div>
 </div>
 </div>
-<p>The plot is a kind of biplot for the HE plot. The <span class="math inline">\(\mathbf{E}\)</span> ellipse becomes a circle, because the canonical variates are uncorrelated within groups and scaled to have equal error variance. Directions in this space are therefore comparable, and the size of <span class="math inline">\(\mathbf{H}\)</span> relative to the circle shows the strength of the effect. The arrows show how each oxide is correlated with the canonical dimensions. Here, <code>Can1</code> is mainly a contrast of aluminum against iron, magnesium and calcium, which separates Isle Thorns and Ashley Rails from Llanedyrn and Caldicot.</p>
+<p>The plot is a kind of <a href="https://friendly.github.io/Vis-MLM-book/05-pca-biplot.html#sec-biplot">biplot</a> <span class="citation" data-cites="Gabriel:71">(<a href="#ref-Gabriel:71" role="doc-biblioref">Gabriel 1971</a>)</span> for the HE plot. The <span class="math inline">\(\mathbf{E}\)</span> ellipse becomes a circle, because the canonical variates are uncorrelated within groups and scaled to have equal error variance. Directions in this space are therefore comparable, and the size of <span class="math inline">\(\mathbf{H}\)</span> relative to the circle shows the strength of the effect. The arrows show how each oxide is correlated with the canonical dimensions. Here, <code>Can1</code> is mainly a contrast of aluminum against iron, magnesium and calcium, which separates Isle Thorns and Ashley Rails from Llanedyrn and Caldicot.</p>
 <p>In terms of the ladder, <code>candisc()</code> doesn’t need to ignore the extra dimensions; it <em>rotates</em> them. It finds the directions that matter for one term, and lets you ignore the rest knowing how little you lose.</p>
 <p>The software followed the heplots design:</p>
 <ul>
@@ -1037,6 +1037,9 @@ Friendly, Michael, Georges Monette, and John Fox. 2013. <span>“Elliptical Insi
 </div>
 <div id="ref-FriendlySigal:2018:eqcov" class="csl-entry" role="listitem">
 Friendly, Michael, and Matthew Sigal. 2020. <span>“Visualizing Tests for Equality of Covariance Matrices.”</span> <em>The American Statistician</em> 74 (2): 144–55. <a href="https://doi.org/10.1080/00031305.2018.1497537">https://doi.org/10.1080/00031305.2018.1497537</a>.
+</div>
+<div id="ref-Gabriel:71" class="csl-entry" role="listitem">
+Gabriel, K. R. 1971. <span>“The Biplot Graphic Display of Matrices with Application to Principal Components Analysis.”</span> <em>Biometrika</em> 58 (3): 453–67. <a href="https://doi.org/10.1093/biomet/58.3.453">https://doi.org/10.1093/biomet/58.3.453</a>.
 </div>
 <div id="ref-Hartigan:75b" class="csl-entry" role="listitem">
 Hartigan, J. A. 1975. <span>“Printer Graphics for Clustering.”</span> <em>Journal of Statistical Computing and Simulation</em> 4: 187–213.

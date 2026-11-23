@@ -517,7 +517,7 @@ everything:
 heplot(pottery.can, var.lwd = 2, fill = TRUE, fill.alpha = 0.1)
 ```
 
-The plot is a kind of biplot for the HE plot. The $\mathbf{E}$ ellipse becomes a circle,
+The plot is a kind of [biplot](https://friendly.github.io/Vis-MLM-book/05-pca-biplot.html#sec-biplot) [@Gabriel:71] for the HE plot. The $\mathbf{E}$ ellipse becomes a circle,
 because the canonical variates are uncorrelated within groups and scaled to have equal
 error variance. Directions in this space are therefore comparable, and the size of
 $\mathbf{H}$ relative to the circle shows the strength of the effect. The arrows show how
