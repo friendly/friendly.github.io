@@ -353,7 +353,7 @@ MF: Do these in `images/` for now, where I have other things related to a new po
 6. Ellipses have shadows (section 5a). Redraw Fig. 13 of the ellipses paper from
    `matlib::coffee`, in $\beta$ space: the $d = 1$ and $d = 2$ ellipses, their shadows on both
    axes, the oblique shadow onto $\beta_\text{Stress} = 0$, and the $\beta_\text{Stress} - \beta_\text{Coffee}$
-   axis. `car::confidenceEllipse()` with `dfn = 1` and `dfn = 2` draws the two ellipses. Not
+   axis. `car::confidenceEllipse()` with `dfn = 1` and `dfn = 2` draws the two ellipses.
    **Draft:** `images/coffee-shadows.png`, from `R/coffee-shadows.R` (2026-11-23). Two panels:
    shadows on the axes (d = 1 CIs in orange; d = 2 Scheffé intervals in grey, just outside the
    axes), and shadows in other directions (oblique onto b_Stress = 0; orthogonal onto the
