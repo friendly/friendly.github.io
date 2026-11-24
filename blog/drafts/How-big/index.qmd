@@ -288,6 +288,16 @@ interval. That is a step down from two dimensions to one, and the ellipse holds 
 step at once: for any linear combination of the parameters, the confidence interval is the
 shadow of the confidence ellipse on that direction [@Monette:90; @Friendly-etal:ellipses:2012].
 
+This helps you to think constructively about univariate tests in relation to joint tests
+of parameters and ideas like Scheffé tests accounting for multiplicity. But it goes
+further, because 3D (and higher-D) ellipsoids also have their 2D shadows, whose properties
+are illuminating.[^cover] Those are harder to draw, however.
+
+[^cover]: That was the idea that inspired the cover for my Vis-MLM book: Data ellipsoids
+for the penguin species, with their 2D shadows shown in different forms on the planes
+for pairs of variables. The general class of ellipsoids is explored in my experimental
+[`gellipsoid`](https://github.com/friendly/gellipsoid) package.
+
 Here's the example from our ellipses paper (Fig. 13 there), with contrived data on 20
 university people: an index of heart damage, predicted from their coffee consumption and
 their occupational stress. Coffee and stress are strongly
@@ -340,10 +350,85 @@ relative to **E**.
 
 ## How big is H, relative to E?
 
-<!-- STUB. Notes section 3: change the metric so E is a circle, H* = E^{-1/2} H E^{-1/2};
-     rotate; what's left are the eigenvalues lambda_i, s = min(q, df_h). Invariance does the
-     reducing. What's lost: the directions (candisc gets them back). Pottery numbers are in
-     the ladder figure. -->
+<!-- DRAFT 2026-11-24. Example: heplots::mathscore, as in the book's Hotelling chapter.
+     Figure: R/h-relative-e.R. Notes section 3. -->
+
+With one response, this question is easy, because **H** and **E** are just numbers: the
+sums of squares for the hypothesis and for error. "How big is $SS_H$ relative to $SS_E$?" is
+answered by dividing,
+$$\lambda = \frac{SS_H}{SS_E}, \qquad F = \lambda \cdot \frac{df_e}{df_h} .$$
+The $F$ statistic is just this ratio, put on a scale where its distribution is known.
+
+Take the smallest multivariate example I know, the `mathscore` data from heplots, which I
+used to introduce Hotelling's $T^2$ in the book [@Friendly:2024:VisMLM]. Two groups of six
+students, taught by different instructors, have scores on basic math (BM) and word problems
+(WP). One response at a time:
+
+| Response | $SS_H / SS_E$ | $F(1, 10)$ | $p$ |
+|---|--:|--:|--:|
+| BM | 0.42 | 4.24 | 0.066 |
+| WP | 1.05 | 10.45 | 0.009 |
+
+So the groups differ on word problems, but not quite on basic math. Keep those two numbers
+in mind.
+
+With both responses, **H** and **E** are $2 \times 2$ matrices, and you can't divide one matrix
+by another. The product $\mathbf{H}\mathbf{E}^{-1}$ exists, but its entries don't mean much on
+their own. The way out is to **change the units** (@fig-h-relative-e):
+
+![How big is **H** relative to **E**, for the `mathscore` data. (A) In the units of the data,
+**E** (red) is the within-group covariance ellipse, and **H** (blue) is a line, because two
+groups can differ in only one direction. (B) Re-expressed in units of **E**, the error ellipse
+becomes the unit circle, and **H** becomes **H**\*. (C) Rotated to the axes of **H**\*, all
+that's left is how far **H**\* sticks out beyond the circle: $\sqrt{\lambda_1}$.](figures/h-relative-e.png){#fig-h-relative-e width="100%" fig-alt="Three panels. A, In the units of the data: the 12 students as grey points, with basic math on the horizontal axis and word problems on the vertical. A red ellipse, E, tilts up to the right. A thick blue line, H, runs down to the right between the two group means, group 2 at upper left and group 1 at lower right. B, Measure in units of E: the same picture transformed so that E is a unit circle; H* is a longer blue line through the center, running down to the right. C, Rotate to the axes of H*: the unit circle with the blue line now horizontal, reaching 2.53 from the center, labeled square root of lambda 1, against the circle's radius of 1. A note reads lambda 1 = 6.42, lambda 2 = 0."}
+
+* **Measure in units of E.** Transform the responses so that the error ellipse becomes a
+  circle of radius 1:
+  $$\mathbf{H}^\star = \mathbf{E}^{-1/2}\,\mathbf{H}\,\mathbf{E}^{-1/2}, \qquad \mathbf{E}^\star = \mathbf{I} .$$
+  Now every direction has the same error variance, and **H**\* says how big the effect is in
+  each direction, in units of error. This is the matrix version of dividing by $SS_E$, and the
+  same change of metric that turns Euclidean distance into Mahalanobis distance.
+* **Rotate to the axes of H\*.** A circle looks the same after any rotation, so turn the
+  picture until **H**\* lines up with the axes. All that's left are the lengths of its axes:
+  the eigenvalues $\lambda_1 \ge \lambda_2 \ge \dots$ of $\mathbf{H}\mathbf{E}^{-1}$. Only
+  $s = \min(q, df_h)$ of them can be nonzero. Here there are two responses but only one
+  degree of freedom between two groups, so $s = 1$: **H** is a line, and
+  $\lambda_1 = 6.42$, $\lambda_2 = 0$.
+
+Now compare. Basic math alone gave 0.42, and word problems alone 1.05. Both responses
+together give 6.42, six times the better of the two. The reason is in panel A: within groups,
+BM and WP go up together (the red ellipse tilts up), but the group means differ in opposite
+directions (the blue line tilts down). The groups are best told apart by a contrast, roughly
+BM minus WP, and along that direction the difference is huge relative to error.
+
+This is where [shadows](#ellipses-have-shadows) come back, and they tie the matrix answer to
+the univariate one. Pick any weighted combination of the responses, $y = a_1 \text{BM} + a_2 \text{WP}$.
+Its sums of squares are the squared shadows of the two ellipses in the direction $\mathbf{a}$:
+$$SS_H(y) = \mathbf{a}^\top \mathbf{H}\, \mathbf{a}, \qquad SS_E(y) = \mathbf{a}^\top \mathbf{E}\, \mathbf{a} .$$
+So the ratio of the shadows, squared, is the ordinary univariate $\lambda$ for that one variable,
+a ratio of variances. Shine the light straight down the BM axis and you get 0.42; straight
+across, along WP, 1.05. Turn the light, and the ratio changes. Its largest value, over every
+direction you could choose, is $\lambda_1 = 6.42$, and the direction that gives it is the
+best combination of the responses. So the multivariate answer is the univariate answer, for the
+best variable you could have measured. The axes, BM and WP, are just two of the directions,
+and here not good ones. As a test, $F = 28.9$ on 2 and 9 df, $p = 0.0001$.
+
+**Why the eigenvalues are enough.** A sensible answer to "how big?" shouldn't depend on the
+units of the responses (points or percent), or on which combinations of them you choose to
+analyze (BM and WP, or their sum and difference). Any such change transforms **H** and **E**
+together, and leaves the $\lambda$s unchanged. So any test that ignores these arbitrary
+choices can depend on the data only through the $\lambda$s. That's how a matrix question
+becomes a question about $s$ numbers: invariance does the reducing.
+
+**What's set aside.** The directions. The $\lambda$s say how big, but not which way. Here the
+direction is the contrast between BM and WP, given by the eigenvector of
+$\mathbf{E}^{-1}\mathbf{H}$, the weights of the linear discriminant function. Getting the
+directions back, and showing them, is the job of HE plots and canonical plots
+([below](#dont-reduce-too-soon-he-plots)).
+
+With $s = 1$ there's one number, and nothing more to decide: Pillai, Wilks, Hotelling-Lawley
+and Roy all give the same $F$. The Pottery data have $s = 3$ eigenvalues, 34.16, 1.25 and
+0.028 (@fig-reducing-ladder), and that's where the four tests part company.
 
 ## Four kinds of mean
 

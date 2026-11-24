@@ -376,6 +376,7 @@ Figure&nbsp;4: Left: the determinant of <span class="math inline">\(\mathbf{A}\)
 <!-- MF attributes the phrase to Georges Monette. Check whether it's in print anywhere, or
      credit it as his way of saying it. -->
 <p>Georges Monette has a short way of putting one of the most useful ideas in this business: <strong>ellipses have shadows</strong>. Shine a light on an ellipse, and its shadow on a line is an interval. That is a step down from two dimensions to one, and the ellipse holds <em>every</em> such step at once: for any linear combination of the parameters, the confidence interval is the shadow of the confidence ellipse on that direction <span class="citation" data-cites="Monette:90 Friendly-etal:ellipses:2012">(<a href="#ref-Monette:90" role="doc-biblioref">Monette 1990</a>; <a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013</a>)</span>.</p>
+<p>This helps you to think constructively about univariate tests in relation to joint tests of parameters and ideas like Scheffé tests accounting for multiplicity. But it goes further, because 3D (and higher-D) ellipsoids also have their 2D shadows, whose properties are illuminating.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Those are harder to draw, however.</p>
 <p>Here’s the example from our ellipses paper (Fig. 13 there), with contrived data on 20 university people: an index of heart damage, predicted from their coffee consumption and their occupational stress. Coffee and stress are strongly correlated, so the confidence ellipse for the two slopes is long and thin.</p>
 <div class="cell">
 <details class="code-fold">
@@ -418,10 +419,55 @@ Figure&nbsp;5: The confidence ellipse for <span class="math inline">\((\beta_\te
 </section>
 <section id="how-big-is-h-relative-to-e" class="level2">
 <h2 class="anchored" data-anchor-id="how-big-is-h-relative-to-e">How big is H, relative to E?</h2>
-<!-- STUB. Notes section 3: change the metric so E is a circle, H* = E^{-1/2} H E^{-1/2};
-     rotate; what's left are the eigenvalues lambda_i, s = min(q, df_h). Invariance does the
-     reducing. What's lost: the directions (candisc gets them back). Pottery numbers are in
-     the ladder figure. -->
+<!-- DRAFT 2026-11-24. Example: heplots::mathscore, as in the book's Hotelling chapter.
+     Figure: R/h-relative-e.R. Notes section 3. -->
+<p>With one response, this question is easy, because <strong>H</strong> and <strong>E</strong> are just numbers: the sums of squares for the hypothesis and for error. “How big is <span class="math inline">\(SS_H\)</span> relative to <span class="math inline">\(SS_E\)</span>?” is answered by dividing, <span class="math display">\[\lambda = \frac{SS_H}{SS_E}, \qquad F = \lambda \cdot \frac{df_e}{df_h} .\]</span> The <span class="math inline">\(F\)</span> statistic is just this ratio, put on a scale where its distribution is known.</p>
+<p>Take the smallest multivariate example I know, the <code>mathscore</code> data from heplots, which I used to introduce Hotelling’s <span class="math inline">\(T^2\)</span> in the book <span class="citation" data-cites="Friendly:2024:VisMLM">(<a href="#ref-Friendly:2024:VisMLM" role="doc-biblioref">Friendly 2024</a>)</span>. Two groups of six students, taught by different instructors, have scores on basic math (BM) and word problems (WP). One response at a time:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Response</th>
+<th style="text-align: right;"><span class="math inline">\(SS_H / SS_E\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(F(1, 10)\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(p\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BM</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">4.24</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+<tr class="even">
+<td>WP</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: right;">10.45</td>
+<td style="text-align: right;">0.009</td>
+</tr>
+</tbody>
+</table>
+<p>So the groups differ on word problems, but not quite on basic math. Keep those two numbers in mind.</p>
+<p>With both responses, <strong>H</strong> and <strong>E</strong> are <span class="math inline">\(2 \times 2\)</span> matrices, and you can’t divide one matrix by another. The product <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span> exists, but its entries don’t mean much on their own. The way out is to <strong>change the units</strong> (<a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;6</a>):</p>
+<div id="fig-h-relative-e" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Three panels. A, In the units of the data: the 12 students as grey points, with basic math on the horizontal axis and word problems on the vertical. A red ellipse, E, tilts up to the right. A thick blue line, H, runs down to the right between the two group means, group 2 at upper left and group 1 at lower right. B, Measure in units of E: the same picture transformed so that E is a unit circle; H* is a longer blue line through the center, running down to the right. C, Rotate to the axes of H*: the unit circle with the blue line now horizontal, reaching 2.53 from the center, labeled square root of lambda 1, against the circle's radius of 1. A note reads lambda 1 = 6.42, lambda 2 = 0.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-h-relative-e-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/h-relative-e.png" class="img-fluid figure-img" style="width:100.0%" alt="Three panels. A, In the units of the data: the 12 students as grey points, with basic math on the horizontal axis and word problems on the vertical. A red ellipse, E, tilts up to the right. A thick blue line, H, runs down to the right between the two group means, group 2 at upper left and group 1 at lower right. B, Measure in units of E: the same picture transformed so that E is a unit circle; H* is a longer blue line through the center, running down to the right. C, Rotate to the axes of H*: the unit circle with the blue line now horizontal, reaching 2.53 from the center, labeled square root of lambda 1, against the circle's radius of 1. A note reads lambda 1 = 6.42, lambda 2 = 0.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-h-relative-e-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: How big is <strong>H</strong> relative to <strong>E</strong>, for the <code>mathscore</code> data. (A) In the units of the data, <strong>E</strong> (red) is the within-group covariance ellipse, and <strong>H</strong> (blue) is a line, because two groups can differ in only one direction. (B) Re-expressed in units of <strong>E</strong>, the error ellipse becomes the unit circle, and <strong>H</strong> becomes <strong>H</strong>*. (C) Rotated to the axes of <strong>H</strong>*, all that’s left is how far <strong>H</strong>* sticks out beyond the circle: <span class="math inline">\(\sqrt{\lambda_1}\)</span>.
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><strong>Measure in units of E.</strong> Transform the responses so that the error ellipse becomes a circle of radius 1: <span class="math display">\[\mathbf{H}^\star = \mathbf{E}^{-1/2}\,\mathbf{H}\,\mathbf{E}^{-1/2}, \qquad \mathbf{E}^\star = \mathbf{I} .\]</span> Now every direction has the same error variance, and <strong>H</strong>* says how big the effect is in each direction, in units of error. This is the matrix version of dividing by <span class="math inline">\(SS_E\)</span>, and the same change of metric that turns Euclidean distance into Mahalanobis distance.</li>
+<li><strong>Rotate to the axes of H*.</strong> A circle looks the same after any rotation, so turn the picture until <strong>H</strong>* lines up with the axes. All that’s left are the lengths of its axes: the eigenvalues <span class="math inline">\(\lambda_1 \ge \lambda_2 \ge \dots\)</span> of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>. Only <span class="math inline">\(s = \min(q, df_h)\)</span> of them can be nonzero. Here there are two responses but only one degree of freedom between two groups, so <span class="math inline">\(s = 1\)</span>: <strong>H</strong> is a line, and <span class="math inline">\(\lambda_1 = 6.42\)</span>, <span class="math inline">\(\lambda_2 = 0\)</span>.</li>
+</ul>
+<p>Now compare. Basic math alone gave 0.42, and word problems alone 1.05. Both responses together give 6.42, six times the better of the two. The reason is in panel A: within groups, BM and WP go up together (the red ellipse tilts up), but the group means differ in opposite directions (the blue line tilts down). The groups are best told apart by a contrast, roughly BM minus WP, and along that direction the difference is huge relative to error.</p>
+<p>This is where <a href="#ellipses-have-shadows">shadows</a> come back, and they tie the matrix answer to the univariate one. Pick any weighted combination of the responses, <span class="math inline">\(y = a_1 \text{BM} + a_2 \text{WP}\)</span>. Its sums of squares are the squared shadows of the two ellipses in the direction <span class="math inline">\(\mathbf{a}\)</span>: <span class="math display">\[SS_H(y) = \mathbf{a}^\top \mathbf{H}\, \mathbf{a}, \qquad SS_E(y) = \mathbf{a}^\top \mathbf{E}\, \mathbf{a} .\]</span> So the ratio of the shadows, squared, is the ordinary univariate <span class="math inline">\(\lambda\)</span> for that one variable, a ratio of variances. Shine the light straight down the BM axis and you get 0.42; straight across, along WP, 1.05. Turn the light, and the ratio changes. Its largest value, over every direction you could choose, is <span class="math inline">\(\lambda_1 = 6.42\)</span>, and the direction that gives it is the best combination of the responses. So the multivariate answer is the univariate answer, for the best variable you could have measured. The axes, BM and WP, are just two of the directions, and here not good ones. As a test, <span class="math inline">\(F = 28.9\)</span> on 2 and 9 df, <span class="math inline">\(p = 0.0001\)</span>.</p>
+<p><strong>Why the eigenvalues are enough.</strong> A sensible answer to “how big?” shouldn’t depend on the units of the responses (points or percent), or on which combinations of them you choose to analyze (BM and WP, or their sum and difference). Any such change transforms <strong>H</strong> and <strong>E</strong> together, and leaves the <span class="math inline">\(\lambda\)</span>s unchanged. So any test that ignores these arbitrary choices can depend on the data only through the <span class="math inline">\(\lambda\)</span>s. That’s how a matrix question becomes a question about <span class="math inline">\(s\)</span> numbers: invariance does the reducing.</p>
+<p><strong>What’s set aside.</strong> The directions. The <span class="math inline">\(\lambda\)</span>s say how big, but not which way. Here the direction is the contrast between BM and WP, given by the eigenvector of <span class="math inline">\(\mathbf{E}^{-1}\mathbf{H}\)</span>, the weights of the linear discriminant function. Getting the directions back, and showing them, is the job of HE plots and canonical plots (<a href="#dont-reduce-too-soon-he-plots">below</a>).</p>
+<p>With <span class="math inline">\(s = 1\)</span> there’s one number, and nothing more to decide: Pillai, Wilks, Hotelling-Lawley and Roy all give the same <span class="math inline">\(F\)</span>. The Pottery data have <span class="math inline">\(s = 3\)</span> eigenvalues, 34.16, 1.25 and 0.028 (<a href="#fig-reducing-ladder" class="quarto-xref">Figure&nbsp;1</a>), and that’s where the four tests part company.</p>
 </section>
 <section id="four-kinds-of-mean" class="level2">
 <h2 class="anchored" data-anchor-id="four-kinds-of-mean">Four kinds of mean</h2>
@@ -463,6 +509,9 @@ Figure&nbsp;5: The confidence ellipse for <span class="math inline">\((\beta_\te
 <div id="ref-Abbott:1884" class="csl-entry" role="listitem">
 Abbott, Edwin A. 1884. <em>Flatland: A Romance of Many Dimensions</em>. Buccaneer Books.
 </div>
+<div id="ref-Friendly:2024:VisMLM" class="csl-entry" role="listitem">
+Friendly, Michael. 2024. <em>Visualizing Multivariate Data and Models in r</em>. Chapman &amp; Hall/CRC Press. <a href="https://friendly.github.io/Vis-MLM-book/">https://friendly.github.io/Vis-MLM-book/</a>.
+</div>
 <div id="ref-Friendly-etal:ellipses:2012" class="csl-entry" role="listitem">
 Friendly, Michael, Georges Monette, and John Fox. 2013. <span>“Elliptical Insights: Understanding Statistical Methods Through Elliptical Geometry.”</span> <em>Statistical Science</em> 28 (1): 1–39. <a href="https://doi.org/10.1214/12-STS402">https://doi.org/10.1214/12-STS402</a>.
 </div>
@@ -487,7 +536,13 @@ Wilks, S. S. 1932. <span>“Certain Generalizations in the Analysis of Variance.
 </div>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>That was the idea that inspired the cover for my Vis-MLM book: Data ellipsoids for the penguin species, with their 2D shadows shown in different forms on the planes for pairs of variables. The general class of ellipsoids is explored in my experimental <a href="https://github.com/friendly/gellipsoid"><code>gellipsoid</code></a> package.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

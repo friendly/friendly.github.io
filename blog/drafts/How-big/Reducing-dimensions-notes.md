@@ -107,6 +107,64 @@ need to measure it, and draw a picture of what's left.
 - Change the metric and the circle becomes an ellipse: $\mathbf{e}^\top\mathbf{S}^{-1}\mathbf{e}$,
   the Mahalanobis distance already used in robmlm and mvinfluence.
 
+### 1a. How far is X from Y? The "Distance metrics" animation
+
+*Added 2026-11-24.* Length and distance are the same question: how big is $\mathbf{x} - \mathbf{y}$?
+
+**Source.** A post on X by @mathemetica ("Mathematica"), 2026-11-24:
+<https://x.com/mathemetica/status/2125197661607514521>. Text: "Nine ways to measure how far apart
+A and B are. Minkowski ties three together: d = (|Δx|ᵖ + |Δy|ᵖ)^(1/p). It gives Manhattan,
+Euclidean or Chebyshev depending on p. The purple shape shows all points at the same distance from
+A. Cosine ignores length and keeps only the angle."
+
+**What it shows.** A 16 s animation, a 3 × 3 grid titled "Distance metrics":
+
+| | | |
+|---|---|---|
+| Euclidean, *d* = 5.92 | Cosine, cos θ = 0.62 | Hamming, *d* = 4 (bit strings) |
+| Manhattan, *d* = 8.36 | Minkowski, *p* animated, purple unit ball | Chebyshev, *d* = 4.41 |
+| Jaccard, *J* = 0.29 (sets) | Haversine, *d* = 6,883 km (sphere) | Sørensen–Dice, DSC = 0.45 (sets) |
+
+The Minkowski panel animates *p*, and its unit ball morphs between the diamond, circle and square:
+the moving version of `figures/unit-balls.png` (left panel).
+
+**File.** `figures/distance-methods.mp4`: 720 × 900, 30 fps, 16 s, 0.7 MB, audio removed.
+- On X this is a video, not a GIF: X stores animated posts as MP4. It was fetched from X's public
+  embed metadata (`cdn.syndication.twimg.com/tweet-result?id=...`), which gave links to MP4s at
+  320 × 400 up to 1080 × 1350; this is the 720 × 900 one.
+- A GIF made from it at 480 px and 12 fps came to 3.7 MB, about five times larger and less sharp, so
+  it was dropped. To show it in the post:
+
+  ```html
+  <video src="figures/distance-methods.mp4" autoplay loop muted playsinline
+         width="360" aria-label="Animated grid of nine distance metrics..."></video>
+  ```
+
+  `muted` is needed for autoplay in most browsers, and `playsinline` for iPhones. Quarto's
+  `{{< video >}}` shortcode doesn't loop silently by default, so raw HTML is simpler.
+- It has an @mathemetica watermark. Credit and link the post in the caption; it's someone else's
+  work, used for comment.
+
+**The hook.** All nine answer "how far?", and **none of them asks "compared to what?"** No panel
+uses the covariance of the data. Every one measures distance in fixed units, as if the axes were
+uncorrelated and on the same scale. That's the opening for:
+
+- **Mahalanobis distance**, the tenth metric that the grid leaves out:
+  $d^2 = (\mathbf{x} - \mathbf{y})^\top \mathbf{S}^{-1} (\mathbf{x} - \mathbf{y})$. Its unit "ball" is
+  the data ellipse, so the shape depends on the data, not on a choice of *p*. Right panel of
+  `unit-balls.png`: two points at the same Euclidean distance, very different Mahalanobis
+  distances.
+- **The precept**: "First say *compared to what*, and *in what sense*." Minkowski's *p* is the
+  *in what sense* (which norm); **S** is the *compared to what* (which metric). The grid varies
+  only the first.
+- **Cosine** sets length aside and keeps the angle: a "set aside" step, as on the ladder (Fig. 1).
+  Correlation is the cosine of centered vectors.
+- Possible line for the post: "Nine ways to say how far apart A and B are, and not one asks how
+  far apart points usually are."
+
+Where it could go: at the start of "How big is a vector?", just before `unit-balls.png`, as the
+popular view to push against.
+
 ### 2a. How big is a covariance matrix: Determinant
 
 **Drafted** in `index.qmd` (2026-11-23) as "How big is a covariance matrix?", with
