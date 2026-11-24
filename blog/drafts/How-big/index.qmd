@@ -296,7 +296,7 @@ are illuminating.[^cover] Those are harder to draw, however.
 [^cover]: That was the idea that inspired the cover for my Vis-MLM book: Data ellipsoids
 for the penguin species, with their 2D shadows shown in different forms on the planes
 for pairs of variables. The general class of ellipsoids is explored in my experimental
-[`gellipsoid`](https://github.com/friendly/gellipsoid) package.
+[`gellipsoid`](https://friendly.github.io/gellipsoid/) package (source on [GitHub](https://github.com/friendly/gellipsoid)).
 
 Here's the example from our ellipses paper (Fig. 13 there), with contrived data on 20
 university people: an index of heart damage, predicted from their coffee consumption and
