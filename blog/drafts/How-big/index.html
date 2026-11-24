@@ -139,6 +139,7 @@ window.Quarto = {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#climbing-back-down" id="toc-climbing-back-down" class="nav-link" data-scroll-target="#climbing-back-down">Climbing back down</a></li>
   <li><a href="#how-big-is-a-vector" id="toc-how-big-is-a-vector" class="nav-link" data-scroll-target="#how-big-is-a-vector">How big is a vector?</a></li>
+  <li><a href="#how-big-is-a-covariance-matrix" id="toc-how-big-is-a-covariance-matrix" class="nav-link" data-scroll-target="#how-big-is-a-covariance-matrix">How big is a covariance matrix?</a></li>
   <li><a href="#ellipses-have-shadows" id="toc-ellipses-have-shadows" class="nav-link" data-scroll-target="#ellipses-have-shadows">Ellipses have shadows</a></li>
   <li><a href="#how-big-is-h-relative-to-e" id="toc-how-big-is-h-relative-to-e" class="nav-link" data-scroll-target="#how-big-is-h-relative-to-e">How big is H, relative to E?</a></li>
   <li><a href="#four-kinds-of-mean" id="toc-four-kinds-of-mean" class="nav-link" data-scroll-target="#four-kinds-of-mean">Four kinds of mean</a></li>
@@ -282,25 +283,71 @@ Figure&nbsp;1: Coming down the ladder for the Pottery MANOVA. Each step keeps fe
 <section id="how-big-is-a-vector" class="level2">
 <h2 class="anchored" data-anchor-id="how-big-is-a-vector">How big is a vector?</h2>
 <p>Start at the bottom, with a single vector. Its size is its <em>length</em>, and even that needs a choice.</p>
-<div id="fig-unit-balls" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00.">
+<div id="fig-unit-balls" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Arrow a runs from the origin to (0.6, 0.8) on the circle, with a dashed route along the x axis and up, its vertical leg shaded green; arrow b runs to (-0.5, -0.5) on the diamond. A table below gives a: L1 1.4, L2 1, L-infinity 0.8; b: L1 1, L2 0.71, L-infinity 0.5. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unit-balls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/unit-balls.png" class="img-fluid figure-img" style="width:90.0%" alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00.">
+<img src="images/unit-balls.png" class="img-fluid figure-img" style="width:90.0%" alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Arrow a runs from the origin to (0.6, 0.8) on the circle, with a dashed route along the x axis and up, its vertical leg shaded green; arrow b runs to (-0.5, -0.5) on the diamond. A table below gives a: L1 1.4, L2 1, L-infinity 0.8; b: L1 1, L2 0.71, L-infinity 0.5. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unit-balls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Left: three ways to measure length. The “unit circle”, the set of points of length 1, is a diamond for <span class="math inline">\(L_1\)</span>, a circle for <span class="math inline">\(L_2\)</span> and a square for <span class="math inline">\(L_\infty\)</span>. Right: changing the metric. With correlated variables, the Mahalanobis unit circle is an ellipse, and two points at the same Euclidean distance can be very different distances away.
+Figure&nbsp;2: Left: three ways to measure length. The “unit circle”, the set of points of length 1, is a diamond for <span class="math inline">\(L_1\)</span>, a circle for <span class="math inline">\(L_2\)</span> and a square for <span class="math inline">\(L_\infty\)</span>. Vector <span class="math inline">\(\mathbf{a}\)</span> has Euclidean length 1, but <span class="math inline">\(L_1\)</span> length 1.4 (the dashed city-block route) and <span class="math inline">\(L_\infty\)</span> length 0.8 (its longer leg, shaded). Right: changing the metric. With correlated variables, the Mahalanobis unit circle is an ellipse, and two points at the same Euclidean distance can be very different distances away.
 </figcaption>
 </figure>
 </div>
 <ul>
 <li>The familiar length is Euclidean, <span class="math inline">\(L_2\)</span>: <span class="math inline">\(\|\mathbf{y}\|^2 = \mathbf{y}^\top\mathbf{y}\)</span>. Centered, that’s the total sum of squares, and divided by its df, it’s the variance. <strong>A variance is a squared length.</strong></li>
 <li>Pythagoras splits it: <span class="math inline">\(SS_T = SS_H + SS_E\)</span>. The <span class="math inline">\(F\)</span> ratio compares two squared lengths, each per df. So even the univariate test is already asking “how big is H, relative to E?”</li>
-<li>Other lengths are useful too. <span class="math inline">\(L_1\)</span> adds absolute values (city-block distance), and <span class="math inline">\(L_\infty\)</span> takes the largest one. The corners of the <span class="math inline">\(L_1\)</span> diamond are why the lasso sets some coefficients exactly to zero, and ridge regression, with its round <span class="math inline">\(L_2\)</span> penalty, doesn’t.</li>
+<li>Other lengths are useful too. <span class="math inline">\(L_1\)</span> adds absolute values (city-block distance), and <span class="math inline">\(L_\infty\)</span> takes the largest one.</li>
+<li>The choice of length is also <strong>the difference between ridge regression and the lasso</strong>. Both shrink the least squares coefficients by limiting their size: ridge limits their <span class="math inline">\(L_2\)</span> length, the lasso their <span class="math inline">\(L_1\)</span> length. The estimate moves out from the origin until an RSS contour first touches the constraint region (<a href="#fig-ridge-lasso" class="quarto-xref">Figure&nbsp;3</a>). The <span class="math inline">\(L_2\)</span> disk is round, so that point almost never lies on an axis, and ridge shrinks every coefficient without setting any to zero. The <span class="math inline">\(L_1\)</span> diamond has corners on the axes, and the contours tend to meet it there, so the lasso sets some coefficients exactly to zero: it selects variables as it shrinks.</li>
 <li><em>Compared to what?</em> With correlated variables, Euclidean distance is the wrong ruler. The Mahalanobis distance, <span class="math inline">\(\mathbf{e}^\top \mathbf{S}^{-1} \mathbf{e}\)</span>, measures length in the metric of the data, and its unit circle is the data ellipse. In the right panel of <a href="#fig-unit-balls" class="quarto-xref">Figure&nbsp;2</a>, A and B are both 1 unit from the origin by Euclid, but B is more than twice as far as A in the metric of the ellipse.</li>
 </ul>
-<!-- Notes section 1. Section 2 (determinants, singular values: Frobenius and spectral
-     norms, generalized variance, PCA and biplots, condition number and ridge df) could
-     follow here as "How big is a matrix of data?", or be folded in briefly. -->
+<div id="fig-ridge-lasso" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels, Ridge and Lasso, with axes beta1 and beta2. In each, red elliptical contours tilted down to the right surround the OLS point (0.25, 0.85). Left: an orange disk of radius 0.5 at the origin; the outer red contour touches it at (0.23, 0.44), labeled Ridge, and a dashed curve runs from the OLS point to the origin through it. Right: a blue diamond with corners at plus and minus 0.5 on the axes; the outer contour touches its top corner at (0, 0.50), labeled Lasso, and a dashed path runs from the OLS point down to the beta2 axis and then along it to the origin.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ridge-lasso-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/ridge-lasso.png" class="img-fluid figure-img" style="width:85.0%" alt="Two panels, Ridge and Lasso, with axes beta1 and beta2. In each, red elliptical contours tilted down to the right surround the OLS point (0.25, 0.85). Left: an orange disk of radius 0.5 at the origin; the outer red contour touches it at (0.23, 0.44), labeled Ridge, and a dashed curve runs from the OLS point to the origin through it. Right: a blue diamond with corners at plus and minus 0.5 on the axes; the outer contour touches its top corner at (0, 0.50), labeled Lasso, and a dashed path runs from the OLS point down to the beta2 axis and then along it to the origin.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ridge-lasso-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Ridge regression and the lasso, for two correlated predictors. The red ellipses are contours of the residual sum of squares around the OLS estimate. Each method gives the first point where a contour touches its constraint region, here of the same size: the <span class="math inline">\(L_2\)</span> disk for ridge, the <span class="math inline">\(L_1\)</span> diamond for the lasso. The lasso lands on a corner, so <span class="math inline">\(\hat\beta_1 = 0\)</span>. Dashed curves trace each method’s solutions as the constraint shrinks.
+</figcaption>
+</figure>
+</div>
+<!-- Drawn by R/ridge-lasso.R. Inspired by a three-panel figure (ridge, lasso, elastic net)
+     noted at Reducing-dimensions-notes.md, ~line 103; source unknown, so not used as is.
+     The RSS contours are Mahalanobis ellipses in the metric of X'X: a link to the bullet
+     above, if wanted. -->
+</section>
+<section id="how-big-is-a-covariance-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="how-big-is-a-covariance-matrix">How big is a covariance matrix?</h2>
+<p>One rung up, a covariance matrix <span class="math inline">\(\mathbf{S}\)</span> for <span class="math inline">\(p\)</span> variables holds <span class="math inline">\(p(p+1)/2\)</span> different numbers: <span class="math inline">\(p\)</span> variances and <span class="math inline">\(p(p-1)/2\)</span> covariances. How big is that? There are two classic answers, each a single number.</p>
+<ul>
+<li>The <strong>trace</strong>, <span class="math inline">\(\operatorname{tr}(\mathbf{S})\)</span>, adds up the variances: the <em>total variance</em>. It’s easy to compute and to explain, but it ignores the covariances entirely.</li>
+<li>The <strong>determinant</strong>, <span class="math inline">\(|\mathbf{S}|\)</span>, is what <span class="citation" data-cites="Wilks:1932">Wilks (<a href="#ref-Wilks:1932" role="doc-biblioref">1932</a>)</span> called the <em>generalized variance</em>. It takes the correlations into account, and it has a lovely geometric meaning.</li>
+</ul>
+<p>For any <span class="math inline">\(2 \times 2\)</span> matrix, the determinant is the <strong>area</strong> of the parallelogram spanned by its rows (left panel of <a href="#fig-det-area" class="quarto-xref">Figure&nbsp;4</a>); for a <span class="math inline">\(3 \times 3\)</span> matrix it’s the volume of a parallelepiped, and so on up <span class="citation" data-cites="Hannah:1996 Locke:1994">(<a href="#ref-Hannah:1996" role="doc-biblioref">Hannah 1996</a>; <a href="#ref-Locke:1994" role="doc-biblioref">Locke 1994</a>)</span>. Area is the natural size of a flat thing, so it’s a natural candidate for the size of a matrix.</p>
+<p>For a covariance matrix, the better picture is the data ellipse, <span class="math inline">\(\mathbf{x}^\top \mathbf{S}^{-1} \mathbf{x} = 1\)</span>. Its semi-axes point along the eigenvectors of <span class="math inline">\(\mathbf{S}\)</span> and have lengths <span class="math inline">\(\sqrt{\lambda_1}, \sqrt{\lambda_2}, \dots\)</span>, the square roots of its eigenvalues. Then the two sizes are two ways of combining the same axes:</p>
+<p><span class="math display">\[
+\operatorname{tr}(\mathbf{S}) = \sum \lambda_i \quad \text{(sum of squared semi-axes)},
+\qquad
+|\mathbf{S}| = \prod \lambda_i \quad \text{(product of squared semi-axes)},
+\]</span></p>
+<p>and the area of the ellipse is <span class="math inline">\(\pi \sqrt{|\mathbf{S}|}\)</span> (in <span class="math inline">\(p\)</span> dimensions, its volume is proportional to <span class="math inline">\(\sqrt{|\mathbf{S}|}\)</span>).</p>
+<div id="fig-det-area" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. Left, titled det(A) is an area: arrows a1 from the origin to (3, 1) and a2 to (2, 4), with gray arrows completing an orange parallelogram to (5, 5), labeled area = 10. Right, titled det(S): same variances, less area: a gray unit circle, a shaded red ellipse tilted at 45 degrees, and a thinner blue ellipse along the same diagonal. Two black arrows from the origin mark the semi-axes of the red ellipse, labeled square root of lambda 1 (long, up and to the right) and square root of lambda 2 (short, up and to the left). A table reads: r 0.00, det 1.000, area 3.14; r 0.75, det 0.438, area 2.08; r 0.95, det 0.098, area 0.98.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-det-area-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/det-area.png" class="img-fluid figure-img" style="width:90.0%" alt="Two panels. Left, titled det(A) is an area: arrows a1 from the origin to (3, 1) and a2 to (2, 4), with gray arrows completing an orange parallelogram to (5, 5), labeled area = 10. Right, titled det(S): same variances, less area: a gray unit circle, a shaded red ellipse tilted at 45 degrees, and a thinner blue ellipse along the same diagonal. Two black arrows from the origin mark the semi-axes of the red ellipse, labeled square root of lambda 1 (long, up and to the right) and square root of lambda 2 (short, up and to the left). A table reads: r 0.00, det 1.000, area 3.14; r 0.75, det 0.438, area 2.08; r 0.95, det 0.098, area 0.98.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-det-area-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Left: the determinant of <span class="math inline">\(\mathbf{A}\)</span> is the area of the parallelogram spanned by its rows, <span class="math inline">\(\mathbf{a}_1\)</span> and <span class="math inline">\(\mathbf{a}_2\)</span>. Right: data ellipses for two variables with unit variances and correlation <span class="math inline">\(r\)</span> = 0, 0.75 and 0.95. All three have the same trace, 2, but <span class="math inline">\(|\mathbf{S}| = 1 - r^2\)</span> shrinks, and so does the area. Arrows show the semi-axes of the <span class="math inline">\(r = 0.75\)</span> ellipse, whose lengths are the square roots of the eigenvalues of <span class="math inline">\(\mathbf{S}\)</span>.
+</figcaption>
+</figure>
+</div>
+<!-- Drawn by R/det-area.R, with matlib::vectors(). The left panel follows step 8 of the
+     matlib vignette "Properties of determinants" (a1-det-ex1). -->
+<p>The right panel shows why the two answers differ. All three ellipses have the same variances, so the trace can’t tell them apart. But as the correlation grows, the ellipse is squeezed along its minor axis, and the generalized variance, <span class="math inline">\(1 - r^2\)</span> here, falls toward zero. Correlated variables carry less information than their variances suggest, and the determinant is the size that notices.</p>
+<p>At <span class="math inline">\(r = 1\)</span> the ellipse collapses to a line: no area, <span class="math inline">\(|\mathbf{S}| = 0\)</span>. The data have dropped into Lineland, and <span class="math inline">\(\mathbf{S}\)</span> has no inverse. That’s why the Mahalanobis distance in the last section needs <span class="math inline">\(|\mathbf{S}| \neq 0\)</span>. When it exists, the inverse has <span class="math inline">\(|\mathbf{S}^{-1}| = 1 / |\mathbf{S}|\)</span>, and its ellipse has the same axes with reciprocal lengths, so the long axis becomes the short one (<a href="https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/2451107#2451107">geometric diagrams</a>).</p>
+<p>The determinant will be back. Wilks’s <span class="math inline">\(\Lambda\)</span>, one of the four MANOVA tests below, is a ratio of two of them, <span class="math inline">\(|\mathbf{E}| / |\mathbf{H} + \mathbf{E}|\)</span>: the squared ratio of two areas.</p>
+<!-- Notes section 2b (singular values of Y or X: Frobenius and spectral norms, PCA and
+     biplots, condition number and ridge df) could follow here as "How big is a matrix of
+     data?", or be folded in briefly. -->
 </section>
 <section id="ellipses-have-shadows" class="level2">
 <h2 class="anchored" data-anchor-id="ellipses-have-shadows">Ellipses have shadows</h2>
@@ -328,7 +375,7 @@ Stress       1.199   0.726  1.673</code></pre>
 <img src="images/coffee-shadows.png" class="img-fluid figure-img" style="width:100.0%" alt="Two panels in the space of beta-Coffee (horizontal) and beta-Stress (vertical). In each, a long thin blue ellipse tilts down to the right, centered near (-0.4, 1.2). Left, Shadows on the axes: light orange strips run from the ellipse to both axes, ending in thick orange intervals. The interval for Coffee, on the horizontal axis, includes 0; the one for Stress, on the vertical axis, excludes 0. A larger grey ellipse surrounds the blue one, and its slightly longer grey shadows lie just outside the axes. Right, Shadows in other directions: one strip runs obliquely down to the right, landing on the horizontal axis near 1.1, labeled Coffee, ignoring Stress (the simple regression). Another runs down to the left onto a diagonal axis through the origin, labeled Stress minus Coffee, with tick marks from 0 to 2; that interval excludes 0.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-coffee-shadows-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: The confidence ellipse for <span class="math inline">\((\beta_\text{Coffee}, \beta_\text{Stress})\)</span> and some of its shadows. Left: shadows on the axes give the usual confidence intervals (orange), from the 95% CI ellipse, and the Scheffé intervals (grey), from the larger joint ellipse. Right: shadows in other directions give the slope for Coffee ignoring Stress, and the difference between the two slopes.
+Figure&nbsp;5: The confidence ellipse for <span class="math inline">\((\beta_\text{Coffee}, \beta_\text{Stress})\)</span> and some of its shadows. Left: shadows on the axes give the usual confidence intervals (orange), from the 95% CI ellipse, and the Scheffé intervals (grey), from the larger joint ellipse. Right: shadows in other directions give the slope for Coffee ignoring Stress, and the difference between the two slopes.
 </figcaption>
 </figure>
 </div>
@@ -397,6 +444,12 @@ Abbott, Edwin A. 1884. <em>Flatland: A Romance of Many Dimensions</em>. Buccanee
 <div id="ref-Friendly-etal:ellipses:2012" class="csl-entry" role="listitem">
 Friendly, Michael, Georges Monette, and John Fox. 2013. <span>“Elliptical Insights: Understanding Statistical Methods Through Elliptical Geometry.”</span> <em>Statistical Science</em> 28 (1): 1–39. <a href="https://doi.org/10.1214/12-STS402">https://doi.org/10.1214/12-STS402</a>.
 </div>
+<div id="ref-Hannah:1996" class="csl-entry" role="listitem">
+Hannah, John. 1996. <span>“A Geometric Approach to Determinants.”</span> <em>The American Mathematical Monthly</em> 103 (5): 401–9. <a href="https://doi.org/10.1080/00029890.1996.12004759">https://doi.org/10.1080/00029890.1996.12004759</a>.
+</div>
+<div id="ref-Locke:1994" class="csl-entry" role="listitem">
+Locke, Phil. 1994. <span>“The Geometry of Determinants.”</span> <em>PRIMUS</em> 4 (1): 1–8. <a href="https://doi.org/10.1080/10511979408965726">https://doi.org/10.1080/10511979408965726</a>.
+</div>
 <div id="ref-Monette:90" class="csl-entry" role="listitem">
 Monette, Georges. 1990. <span>“Geometry of Multiple Regression and Interactive 3-<span>D</span> Graphics.”</span> Chap. 5 in <em>Modern Methods of Data Analysis</em>, edited by J. Fox and S. Long. SAGE Publications.
 </div>
@@ -405,6 +458,9 @@ Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. 2023. <em><span>
 </div>
 <div id="ref-WickhamGrolemund:2017" class="csl-entry" role="listitem">
 Wickham, Hadley, and Garrett Grolemund. 2017. <em><span>R</span> for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. O’Reilly Media. <a href="https://r4ds.had.co.nz/">https://r4ds.had.co.nz/</a>.
+</div>
+<div id="ref-Wilks:1932" class="csl-entry" role="listitem">
+Wilks, S. S. 1932. <span>“Certain Generalizations in the Analysis of Variance.”</span> <em>Biometrika</em> 24 (3–4): 471–94. <a href="https://doi.org/10.1093/biomet/24.3-4.471">https://doi.org/10.1093/biomet/24.3-4.471</a>.
 </div>
 </div>
 </section>

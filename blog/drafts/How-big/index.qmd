@@ -152,9 +152,11 @@ Start at the bottom, with a single vector. Its size is its *length*, and even th
 choice.
 
 ![Left: three ways to measure length. The "unit circle", the set of points of length 1, is a
-diamond for $L_1$, a circle for $L_2$ and a square for $L_\infty$. Right: changing the metric.
+diamond for $L_1$, a circle for $L_2$ and a square for $L_\infty$. Vector $\mathbf{a}$ has
+Euclidean length 1, but $L_1$ length 1.4 (the dashed city-block route) and $L_\infty$ length
+0.8 (its longer leg, shaded). Right: changing the metric.
 With correlated variables, the Mahalanobis unit circle is an ellipse, and two points at the
-same Euclidean distance can be very different distances away.](images/unit-balls.png){#fig-unit-balls width="90%" fig-alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00."}
+same Euclidean distance can be very different distances away.](images/unit-balls.png){#fig-unit-balls width="90%" fig-alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Arrow a runs from the origin to (0.6, 0.8) on the circle, with a dashed route along the x axis and up, its vertical leg shaded green; arrow b runs to (-0.5, -0.5) on the diamond. A table below gives a: L1 1.4, L2 1, L-infinity 0.8; b: L1 1, L2 0.71, L-infinity 0.5. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00."}
 
 * The familiar length is Euclidean, $L_2$: $\|\mathbf{y}\|^2 = \mathbf{y}^\top\mathbf{y}$.
   Centered, that's the total sum of squares, and divided by its df, it's the variance. **A
@@ -162,18 +164,94 @@ same Euclidean distance can be very different distances away.](images/unit-balls
 * Pythagoras splits it: $SS_T = SS_H + SS_E$. The $F$ ratio compares two squared lengths, each
   per df. So even the univariate test is already asking "how big is H, relative to E?"
 * Other lengths are useful too. $L_1$ adds absolute values (city-block distance), and
-  $L_\infty$ takes the largest one. The corners of the $L_1$ diamond are why the lasso sets
-  some coefficients exactly to zero, and ridge regression, with its round $L_2$ penalty,
-  doesn't.
+  $L_\infty$ takes the largest one.
+* The choice of length is also **the difference between ridge regression and the lasso**.
+  Both shrink the least squares coefficients by limiting their size: ridge limits their
+  $L_2$ length, the lasso their $L_1$ length. The estimate moves out from the origin until an
+  RSS contour first touches the constraint region (@fig-ridge-lasso). The $L_2$ disk is
+  round, so that point almost never lies on an axis, and ridge shrinks every coefficient
+  without setting any to zero. The $L_1$ diamond has corners on the axes, and the contours
+  tend to meet it there, so the lasso sets some coefficients exactly to zero: it selects
+  variables as it shrinks.
 * *Compared to what?* With correlated variables, Euclidean distance is the wrong ruler. The
   Mahalanobis distance, $\mathbf{e}^\top \mathbf{S}^{-1} \mathbf{e}$, measures length in
   the metric of the data, and its unit circle is the data ellipse. In the right panel of
   @fig-unit-balls, A and B are both 1 unit from the origin by Euclid, but B is more than
   twice as far as A in the metric of the ellipse.
 
-<!-- Notes section 1. Section 2 (determinants, singular values: Frobenius and spectral
-     norms, generalized variance, PCA and biplots, condition number and ridge df) could
-     follow here as "How big is a matrix of data?", or be folded in briefly. -->
+![Ridge regression and the lasso, for two correlated predictors. The red ellipses are
+contours of the residual sum of squares around the OLS estimate. Each method gives the first
+point where a contour touches its constraint region, here of the same size: the $L_2$ disk
+for ridge, the $L_1$ diamond for the lasso. The lasso lands on a corner, so
+$\hat\beta_1 = 0$. Dashed curves trace each method's solutions as the constraint
+shrinks.](images/ridge-lasso.png){#fig-ridge-lasso width="85%" fig-alt="Two panels, Ridge and Lasso, with axes beta1 and beta2. In each, red elliptical contours tilted down to the right surround the OLS point (0.25, 0.85). Left: an orange disk of radius 0.5 at the origin; the outer red contour touches it at (0.23, 0.44), labeled Ridge, and a dashed curve runs from the OLS point to the origin through it. Right: a blue diamond with corners at plus and minus 0.5 on the axes; the outer contour touches its top corner at (0, 0.50), labeled Lasso, and a dashed path runs from the OLS point down to the beta2 axis and then along it to the origin."}
+
+<!-- Drawn by R/ridge-lasso.R. Inspired by a three-panel figure (ridge, lasso, elastic net)
+     noted at Reducing-dimensions-notes.md, ~line 103; source unknown, so not used as is.
+     The RSS contours are Mahalanobis ellipses in the metric of X'X: a link to the bullet
+     above, if wanted. -->
+
+## How big is a covariance matrix?
+
+One rung up, a covariance matrix $\mathbf{S}$ for $p$ variables holds $p(p+1)/2$ different
+numbers: $p$ variances and $p(p-1)/2$ covariances. How big is that? There are two classic
+answers, each a single number.
+
+* The **trace**, $\operatorname{tr}(\mathbf{S})$, adds up the variances: the *total
+  variance*. It's easy to compute and to explain, but it ignores the covariances entirely.
+* The **determinant**, $|\mathbf{S}|$, is what @Wilks:1932 called the *generalized
+  variance*. It takes the correlations into account, and it has a lovely geometric meaning.
+
+For any $2 \times 2$ matrix, the determinant is the **area** of the parallelogram spanned by
+its rows (left panel of @fig-det-area); for a $3 \times 3$ matrix it's the volume of a
+parallelepiped, and so on up [@Hannah:1996; @Locke:1994]. Area is the natural size of a
+flat thing, so it's a natural candidate for the size of a matrix.
+
+For a covariance matrix, the better picture is the data ellipse,
+$\mathbf{x}^\top \mathbf{S}^{-1} \mathbf{x} = 1$. Its semi-axes point along the
+eigenvectors of $\mathbf{S}$ and have lengths $\sqrt{\lambda_1}, \sqrt{\lambda_2}, \dots$,
+the square roots of its eigenvalues. Then the two sizes are two ways of combining the same
+axes:
+
+$$
+\operatorname{tr}(\mathbf{S}) = \sum \lambda_i \quad \text{(sum of squared semi-axes)},
+\qquad
+|\mathbf{S}| = \prod \lambda_i \quad \text{(product of squared semi-axes)},
+$$
+
+and the area of the ellipse is $\pi \sqrt{|\mathbf{S}|}$ (in $p$ dimensions, its volume is
+proportional to $\sqrt{|\mathbf{S}|}$).
+
+![Left: the determinant of $\mathbf{A}$ is the area of the parallelogram spanned by its
+rows, $\mathbf{a}_1$ and $\mathbf{a}_2$. Right: data ellipses for two variables with unit
+variances and correlation $r$ = 0, 0.75 and 0.95. All three have the same trace, 2, but
+$|\mathbf{S}| = 1 - r^2$ shrinks, and so does the area. Arrows show the semi-axes of the
+$r = 0.75$ ellipse, whose lengths are the square roots of the eigenvalues of
+$\mathbf{S}$.](images/det-area.png){#fig-det-area width="90%" fig-alt="Two panels. Left, titled det(A) is an area: arrows a1 from the origin to (3, 1) and a2 to (2, 4), with gray arrows completing an orange parallelogram to (5, 5), labeled area = 10. Right, titled det(S): same variances, less area: a gray unit circle, a shaded red ellipse tilted at 45 degrees, and a thinner blue ellipse along the same diagonal. Two black arrows from the origin mark the semi-axes of the red ellipse, labeled square root of lambda 1 (long, up and to the right) and square root of lambda 2 (short, up and to the left). A table reads: r 0.00, det 1.000, area 3.14; r 0.75, det 0.438, area 2.08; r 0.95, det 0.098, area 0.98."}
+
+<!-- Drawn by R/det-area.R, with matlib::vectors(). The left panel follows step 8 of the
+     matlib vignette "Properties of determinants" (a1-det-ex1). -->
+
+The right panel shows why the two answers differ. All three ellipses have the same
+variances, so the trace can't tell them apart. But as the correlation grows, the ellipse is
+squeezed along its minor axis, and the generalized variance, $1 - r^2$ here, falls toward
+zero. Correlated variables carry less information than their variances suggest, and the
+determinant is the size that notices.
+
+At $r = 1$ the ellipse collapses to a line: no area, $|\mathbf{S}| = 0$. The data have
+dropped into Lineland, and $\mathbf{S}$ has no inverse. That's why the Mahalanobis distance
+in the last section needs $|\mathbf{S}| \neq 0$. When it exists, the inverse has
+$|\mathbf{S}^{-1}| = 1 / |\mathbf{S}|$, and its ellipse has the same axes with reciprocal
+lengths, so the long axis becomes the short one
+([geometric diagrams](https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/2451107#2451107)).
+
+The determinant will be back. Wilks's $\Lambda$, one of the four MANOVA tests below, is a
+ratio of two of them, $|\mathbf{E}| / |\mathbf{H} + \mathbf{E}|$: the squared ratio of two
+areas.
+
+<!-- Notes section 2b (singular values of Y or X: Frobenius and spectral norms, PCA and
+     biplots, condition number and ridge df) could follow here as "How big is a matrix of
+     data?", or be folded in briefly. -->
 
 ## Ellipses have shadows
 

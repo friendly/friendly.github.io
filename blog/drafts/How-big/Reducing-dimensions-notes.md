@@ -100,11 +100,30 @@ need to measure it, and draw a picture of what's left.
 - Other senses of length: $L_1$ (Manhattan), $L_2$ (Euclidean), $L_\infty$ (largest element).
   Their unit "circles" are a diamond, a circle and a square. The corners of the diamond are
   why LASSO sets coefficients to zero and ridge doesn't.
+  See the image in: C:\Users\friendly\Dropbox\Documents\images\ridge-lasso-net.webp
+  **Redrawn** (2026-11-23) as `images/ridge-lasso.png`, from `R/ridge-lasso.R`: ridge and
+  lasso only, with computed solutions and paths, in the colours of `unit-balls.png`.
+  
 - Change the metric and the circle becomes an ellipse: $\mathbf{e}^\top\mathbf{S}^{-1}\mathbf{e}$,
   the Mahalanobis distance already used in robmlm and mvinfluence.
 
 ### 2a. How big is a covariance matrix: Determinant
 
+**Drafted** in `index.qmd` (2026-11-23) as "How big is a covariance matrix?", with
+`images/det-area.png` from `R/det-area.R` (matlib's step-8 parallelogram, plus data ellipses
+for r = 0, .75, .95). Hannah (1996), Locke (1994) and Wilks (1932) checked on Crossref and added
+to `references.bib`. The 3D math.SE diagrams are not used yet.
+
+
+In this post, I have geometric diagrams for A and A^{-1}
+https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/2451107#2451107
+
+and in 3D:
+https://math.stackexchange.com/questions/1948184/3d-geometric-interpretations-of-matrix-inverse
+
+Ah -- Use the first image in step 8, of https://friendly.github.io/matlib/articles/a1-det-ex1.html
+
+Other refs:
 cite: A Geometric Approach to Determinants
 Author(s): John Hannah
 Source:
@@ -112,7 +131,6 @@ The American Mathematical Monthly, Vol. 103, No. 5 (May, 1996), pp. 401-409
 Published by: Mathematical Association of America
 Stable URL: http://www.jstor.org/stable/2974931
 https://sites.cos.unt.edu/~tushar/project%20ideas/monthly%2096%20hannah%20geometric%20determinant.pdf
-
 
 Locke, P. (1994). THE GEOMETRY OF DETERMINANTS. PRIMUS, 4(1), 1–8. https://doi.org/10.1080/10511979408965726
 
@@ -388,6 +406,16 @@ MF: Do these in `images/` for now, where I have other things related to a new po
    **Note:** the oblique shadow (0.97, 1.25) is narrower than the simple-regression CI
    (0.88, 1.33). Only the centre is exact; the paper's blue line is the actual CI. Say so
    in the post, or show both.
+
+## Graphics notes
+
+You're using `ggplot2` here, but the `matlib` package has some utilities for drawing geometric diagrams in base R graphics. Take a look at what's there:
+  C:\Users\friendly\Dropbox\R\projects\matlib &     https://friendly.github.io/matlib/index.html
+
+Also, with ggplot: Use `ggarrow` for drawing fancy arrows in diagrams
+
+- `det-area.R` (2026-11-23) uses base graphics and `matlib::vectors()`. `ggarrow` not tried
+  yet; candidates are the arrows in `unit-balls.R`, `ridge-lasso.R` and `reducing-ladder.R`.
 
 ## Starter code
 
