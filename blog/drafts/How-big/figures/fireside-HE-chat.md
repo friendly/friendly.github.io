@@ -13,7 +13,7 @@ Banner for *How Big Is a Matrix?*, the follow-up to *On Extending lm() Methods t
 
 The joke is that Roy, fourth from the left, is pointing at the largest dimension of H relative to E, a nod to Roy’s largest root. The sketch serves as a visual joke about the largest generalized eigenvalue.
 
-The first prompt named D. N. Lawley in the fourth seat, and had Hotelling and Wilks in the opposite order. In V2, `fireside-HE-chat-V2.jpg`, the figures were redrawn from photographs, with the fourth as Roy. In the current version, `fireside-HE-chat-V3.jpg` (2026-11-24), the sixth seat is Georges Monette instead of Hadley Wickham; see `fireside-image-notes.md`. The portraits are loose illustrations.
+The first prompt named D. N. Lawley in the fourth seat, and had Hotelling and Wilks in the opposite order. In V2, `fireside-HE-chat-V2.jpg`, the figures were redrawn from photographs, with the fourth as Roy. In V3 (2026-11-24), the sixth seat is Georges Monette instead of Hadley Wickham. V4 put the Elemental Forces mugs (Algebra, Graphs, Geometry) on the table, and the current version, `fireside-HE-chat-V5.jpg`, adds Dempster's red *Elements of Continuous Multivariate Analysis* (1969). See `fireside-image-notes.md`. The portraits are loose illustrations.
 
 ## Initial image generation prompt
 

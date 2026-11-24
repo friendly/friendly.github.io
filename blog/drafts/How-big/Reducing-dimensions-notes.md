@@ -62,7 +62,7 @@ statistical test simpler, by considering what is important, aided by geometry.
 
 ### Banner
 
-In the draft: `figures/fireside-HE-chat-V3.jpg` (2026-11-24, Georges Monette in seat 6). Editing notes, reference photos and what's left to do:
+In the draft: `figures/fireside-HE-chat-V5.jpg` (2026-11-24: Georges Monette in seat 6, the Elemental Forces mugs and Dempster's book on the table). Editing notes, reference photos and what's left to do:
 [figures/fireside-image-notes.md](figures/fireside-image-notes.md).
 
 Also for section 3, on the four tests: the bar cartoon,

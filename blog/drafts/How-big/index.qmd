@@ -5,7 +5,7 @@ description: "Multivariate statistics climbs up a ladder of dimensions, from sca
 author: "Michael Friendly"
 date: last-modified
 draft: true
-image: "figures/fireside-HE-chat-V3.jpg"
+image: "figures/fireside-HE-chat-V5.jpg"
 categories: [Vis-MLM, multivariate linear models, graphics, HE plots, ellipses]
 bibliography: references.bib
 format:
@@ -65,7 +65,7 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 
 ![A fireside chat on how big **H** is, relative to **E**. Left to right: Wilks, Hotelling, Pillai
 (holding the HE plot), Roy (pointing to the largest dimension of **H**), me, and Georges
-Monette. (Lawley sends his regrets.)](figures/fireside-HE-chat-V3.jpg){fig-alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. On the right, a gray-bearded man with curly hair and a white-haired man in glasses look on and smile. Coffee cups and a blue book sit on the table."}
+Monette. (Lawley sends his regrets.)](figures/fireside-HE-chat-V5.jpg){fig-alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. On the right, a gray-bearded man with curly hair and a white-haired man in glasses look on and smile. On the table are three mugs, labeled Algebra (with a small matrix), Graphs and Geometry (with an ellipsoid), and a red book with a circle of arrows on its cover: Dempster's Elements of Continuous Multivariate Analysis."}
 
 <!-- Before publishing with Georges named in the caption, send him the picture
      (figures/fireside-image-notes.md). -->

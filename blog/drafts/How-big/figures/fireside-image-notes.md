@@ -1,12 +1,13 @@
 # Fireside HE chat: notes on editing the banner
 
 *2026-11-22.* For the banner of *How Big Is a Matrix?* *2026-11-24:* the banner is now
-`fireside-HE-chat-V3.jpg`, V2 with Georges Monette in seat 6 (prompt 5). The table and prompts 1–4
+`fireside-HE-chat-V5.jpg`: V2, with Georges Monette in seat 6 (V3, prompt 5), the Elemental Forces
+mugs on the table (V4) and Dempster's book (V5). The table and prompts 1–4
 below refer to the original, `fireside-HE-chat.png`. The cast and original prompts are in
 `fireside-HE-chat.md`. This folder was `images/` until 2026-11-24; it's now `figures/`, as in
 the other posts.
 
-![The current image, V3](fireside-HE-chat-V3.jpg)
+![The current image, V5](fireside-HE-chat-V5.jpg)
 
 ## In brief
 
@@ -108,6 +109,17 @@ cup faces. From left to right, the cups show **Algebra** (a diagonal matrix),
 
 ![V4 with the Elemental Forces coffee cups](fireside-HE-chat-V4.jpg)
 
+### 7. Dempster’s book
+
+V5 starts from `fireside-HE-chat-V4.jpg`. ImageGen used
+`refs/Dempster-1969-cover.jpg` to redraw the book as A. P. Dempster’s
+*Elements of Continuous Multivariate Analysis* (1969). The red front cover
+faces the viewer, with the spine on the left and the white ellipses and arrows
+from the reference. The new book was blended into the original tabletop crop
+to preserve the cup decals and the rest of the scene.
+
+![V5 with Dempster’s book on the table](fireside-HE-chat-V5.jpg)
+
 ## Reference images
 
 | | Person | File | Source |
@@ -142,7 +154,8 @@ references only, and don't copy them into a published post. The links above give
         now names Georges.
 - [ ] Send Georges the picture before the post is published with his name in the caption.
 - [x] Recheck that Roy's finger is still at the right-hand end of **H**.
-- [x] Make a 1400 px JPEG from the final version, for the post and its `image:` line: V3 is one
-      (1400 × 700, 429 KB). When the post is published, only that gets copied; V2 and the PNG
-      can stay behind in drafts.
-- [x] Write the `fig-alt` from the final image (2026-11-24, from V3).
+- [x] Make a 1400 px JPEG from the final version, for the post and its `image:` line: V5 is one
+      (1400 × 700, 427 KB), and the draft uses it (2026-11-24). When the post is published, only
+      V5 gets copied; V2–V4 and the PNG can stay behind in drafts.
+- [x] Write the `fig-alt` from the final image (2026-11-24, from V5: adds the three mugs and
+      Dempster's book).
