@@ -517,7 +517,9 @@ Figure&nbsp;6: How big is <strong>H</strong> relative to <strong>E</strong>, for
 </tr>
 </tbody>
 </table>
-<p>These four means are an old family, the power means of order 1, 0, −1 and <span class="math inline">\(-\infty\)</span>, and they always come in the same order: arithmetic <span class="math inline">\(\ge\)</span> geometric <span class="math inline">\(\ge\)</span> harmonic <span class="math inline">\(\ge\)</span> minimum. So for <em>any</em> data, <span class="math display">\[\eta^2_\text{Pillai} \le \eta^2_\text{Wilks} \le \eta^2_\text{HL} \le \eta^2_\text{Roy},\]</span> with equality only when all the <span class="math inline">\(\lambda_i\)</span> are equal, or when there’s just one of them, as in <code>mathscore</code>. For Pottery, the same three numbers give effect sizes from about half to almost all. None of them is wrong. They answer “how big?” in different senses.</p>
+<p>These four means are an old family, the power means of order 1, 0, −1 and <span class="math inline">\(-\infty\)</span>, and they always come in the same order: arithmetic <span class="math inline">\(\ge\)</span> geometric <span class="math inline">\(\ge\)</span> harmonic <span class="math inline">\(\ge\)</span> minimum. So for <em>any</em> data, <span class="math display">\[\eta^2_\text{Pillai} \le \eta^2_\text{Wilks} \le \eta^2_\text{HL} \le \eta^2_\text{Roy},\]</span> with equality only when all the <span class="math inline">\(\lambda_i\)</span> are equal, or when there’s just one of them, as in <code>mathscore</code>. <!-- Ordering checked 2026-11-24 (notes, To settle item 6): the power-mean inequality, no
+     violations in 1e5 random cases, matches heplots::etasq(). Nuance: it orders these eta^2
+     measures, not the F statistics or p-values. --> For Pottery, the same three numbers give effect sizes from about half to almost all. None of them is wrong. They answer “how big?” in different senses.</p>
 <p><strong>What counts as big.</strong> The difference shows most clearly with two effects that have the same Hotelling-Lawley trace:</p>
 <table class="caption-top table">
 <thead>
@@ -577,9 +579,75 @@ Figure&nbsp;8: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar. Asked �
 </section>
 <section id="four-rulers-for-one-ellipse" class="level2">
 <h2 class="anchored" data-anchor-id="four-rulers-for-one-ellipse">Four rulers for one ellipse</h2>
-<!-- STUB. Notes section 5: Fig. 19 of the ellipses paper; Roy = major axis, Wilks = area,
-     HL = diagonal, Pillai = perpendicular. Figure: figures/four-rulers.png. Link back to
-     the shadows: Roy is the longest shadow. -->
+<!-- DRAFT 2026-11-24. Notes section 5; a redraw of Fig. 19 of the ellipses paper.
+     Figure: R/four-rulers.R. NOTE colors: here H + E is orange and E grey (as in the ladder
+     figure); h-relative-e.png uses blue H and red E. Pick one. -->
+<p>The four means have a picture, and it’s the one we already have. Go back to panel C of <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;6</a>: measured in units of <strong>E</strong>, the error ellipse is the unit circle, and the effect sticks out beyond it. It’s easiest to read if you draw <strong>H</strong> + <strong>E</strong>, the total, rather than <strong>H</strong> alone. With <strong>E</strong> a circle and the axes turned to line up with the effect, <strong>H</strong> + <strong>E</strong> is an ellipse with semi-axes <span class="math display">\[a = \sqrt{1 + \lambda_1}, \qquad b = \sqrt{1 + \lambda_2} .\]</span> The more the ellipse sticks out beyond the circle, the bigger the effect. But “how much it sticks out” can be measured in more than one way, and each test uses a different ruler <span class="citation" data-cites="Friendly-etal:ellipses:2012">(<a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013, fig. 19</a>)</span>:</p>
+<div id="fig-four-rulers" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Four panels, each with the same picture: a grey unit circle labeled E inside a wider orange ellipse labeled H + E, centered at the origin, with semi-axes a = 2 horizontally and b = 1.41 vertically. Roy, R = a squared minus 1 = 3: a thick blue segment along the long semi-axis, labeled a. Wilks, Lambda = 1 over (ab) squared = 0.125: the ellipse shaded, both semi-axes drawn, labeled area = pi a b. Hotelling-Lawley, U = c squared minus 2 = 4: a blue chord c from the top of the ellipse to its right end, with a dotted box showing it as the diagonal of the a by b rectangle. Pillai, V = 2 minus 1 over d squared = 1.25: the same chord in grey, and a blue perpendicular d from the center to it, with a right-angle mark. A note at the bottom reads lambda = (3, 1): a = 2, b = 1.41, c = 2.45, d = 1.15.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-rulers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/four-rulers.png" class="img-fluid figure-img" style="width:85.0%" alt="Four panels, each with the same picture: a grey unit circle labeled E inside a wider orange ellipse labeled H + E, centered at the origin, with semi-axes a = 2 horizontally and b = 1.41 vertically. Roy, R = a squared minus 1 = 3: a thick blue segment along the long semi-axis, labeled a. Wilks, Lambda = 1 over (ab) squared = 0.125: the ellipse shaded, both semi-axes drawn, labeled area = pi a b. Hotelling-Lawley, U = c squared minus 2 = 4: a blue chord c from the top of the ellipse to its right end, with a dotted box showing it as the diagonal of the a by b rectangle. Pillai, V = 2 minus 1 over d squared = 1.25: the same chord in grey, and a blue perpendicular d from the center to it, with a right-angle mark. A note at the bottom reads lambda = (3, 1): a = 2, b = 1.41, c = 2.45, d = 1.15.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-rulers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Four rulers for one ellipse. In units of <strong>E</strong> (grey circle), <strong>H</strong> + <strong>E</strong> is the orange ellipse, here for <span class="math inline">\(\lambda = (3, 1)\)</span>. Each test measures it differently: Roy the longest semi-axis <span class="math inline">\(a\)</span>, Wilks the area, Hotelling-Lawley the diagonal <span class="math inline">\(c\)</span> from the end of one axis to the end of the other, and Pillai the perpendicular <span class="math inline">\(d\)</span> from the center to that diagonal.
+</figcaption>
+</figure>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Ruler</th>
+<th>Relation, for <span class="math inline">\(q = 2\)</span></th>
+<th>Which mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Roy</td>
+<td>the longest semi-axis, <span class="math inline">\(a\)</span></td>
+<td><span class="math inline">\(R = a^2 - 1\)</span></td>
+<td>minimum</td>
+</tr>
+<tr class="even">
+<td>Wilks</td>
+<td>the area, <span class="math inline">\(\pi a b\)</span></td>
+<td><span class="math inline">\(\Lambda = 1 / (ab)^2\)</span></td>
+<td>geometric</td>
+</tr>
+<tr class="odd">
+<td>Hotelling-Lawley</td>
+<td>the diagonal, <span class="math inline">\(c = \sqrt{a^2 + b^2}\)</span></td>
+<td><span class="math inline">\(U = c^2 - 2\)</span></td>
+<td>harmonic</td>
+</tr>
+<tr class="even">
+<td>Pillai</td>
+<td>the perpendicular to it, <span class="math inline">\(d = ab / c\)</span></td>
+<td><span class="math inline">\(V = 2 - 1/d^2\)</span></td>
+<td>arithmetic</td>
+</tr>
+</tbody>
+</table>
+<p>The rulers line up with the means of the previous section, because <span class="math inline">\(1/a^2\)</span> and <span class="math inline">\(1/b^2\)</span> are just the <span class="math inline">\(u_i\)</span>, the shares of error. Roy reads only the longest axis, so he takes the smallest <span class="math inline">\(u_i\)</span>. Wilks multiplies the two axes, so he takes their geometric mean. Hotelling-Lawley adds the squared axes, <span class="math inline">\(a^2 + b^2\)</span>, and Pillai adds their reciprocals, <span class="math inline">\(1/a^2 + 1/b^2 = 1/d^2\)</span>: sums of the <span class="math inline">\(\lambda\)</span>s and of the <span class="math inline">\(u_i\)</span>s.</p>
+<p>And here the shadows come back once more. Every shadow of the unit circle has the same length, 1, so the shadow of <strong>H</strong> + <strong>E</strong> in any direction measures the effect in that direction, relative to error. Shadows of this ellipse range from <span class="math inline">\(b\)</span> to <span class="math inline">\(a\)</span>:</p>
+<ul>
+<li><strong>Roy</strong> asks for the <strong>longest shadow</strong>, <span class="math inline">\(a\)</span>. That’s the direction of the largest root, and the best single combination of the responses, as with <code>mathscore</code>. It’s also why Roy’s test is the natural one for Scheffé-style protection over all combinations.</li>
+<li><strong>Hotelling-Lawley</strong> doesn’t care which way you look. Cast the ellipse’s shadows on <em>any</em> two perpendicular directions, and the squares of their lengths add up to the same <span class="math inline">\(a^2 + b^2\)</span>. No rotation needed: the total is the same however the axes are turned.</li>
+<li><strong>Pillai</strong> does the same with the reciprocals, which weight the <em>short</em> shadows most. A dimension where the effect is small pulls Pillai down more than it pulls the others.</li>
+<li><strong>Wilks</strong> measures the whole ellipse at once, as an area (a volume, for <span class="math inline">\(q &gt; 2\)</span>): a generalized variance, as in <a href="#how-big-is-a-covariance-matrix">the determinant section</a>.</li>
+</ul>
+<p>For the toy roots in <a href="#fig-four-rulers" class="quarto-xref">Figure&nbsp;9</a>, the four <span class="math inline">\(\eta^2\)</span>s are 0.625 (Pillai), 0.65 (Wilks), 0.67 (Hotelling-Lawley) and 0.75 (Roy), in the order the previous section promised. They are close here because the two roots, 3 and 1, are not very different. For Pottery, where they are (34.16, 1.25, 0.028), the four rulers give very different answers.</p>
+<!-- CHECK: the Roy/Scheffé link (the union-intersection principle: Roy's root is the
+     largest univariate F over all combinations, so its critical value protects them all).
+     Accurate, but say it carefully, or drop it. The Pillai sentence about short shadows is
+     an interpretation of 1/a^2 + 1/b^2; check it reads right. -->
 </section>
 <section id="all-roads-lead-to-f" class="level2">
 <h2 class="anchored" data-anchor-id="all-roads-lead-to-f">All roads lead to F</h2>

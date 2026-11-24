@@ -565,6 +565,20 @@ round(eta2, 3)
    
 5. **In the original note:** the covariance matrix is $\Sigma$, not $\Sigma^2$.
 
+6. **The ordering of the four $\eta^2$s** (MF unsure, 2026-11-24). *Checked:* it holds. It is
+   the power-mean inequality: for positive numbers, the power mean $M_p$ never decreases in
+   $p$, so $\min \le$ harmonic ($p=-1$) $\le$ geometric ($p=0$) $\le$ arithmetic ($p=1$),
+   with equality only when all the numbers are equal. Applied to $u_i = 1/(1+\lambda_i)$, it
+   gives $\eta^2_\text{Pillai} \le \eta^2_\text{Wilks} \le \eta^2_\text{HL} \le \eta^2_\text{Roy}$.
+   - Numerically: no violations in 100,000 random sets of $\lambda$s ($s$ = 2 to 6), and the
+     Pottery values (0.518, 0.769, 0.922, 0.972) match `heplots::etasq()` for each test.
+   - **Nuances to keep in the text:** (a) it's an ordering of these particular $\eta^2$
+     measures ($1 - V/s$... as heplots defines them), not of the test statistics on their own
+     scales, nor of the $F$s or $p$-values; (b) equality needs all nonzero $\lambda_i$ equal,
+     or $s = 1$; (c) it holds for any data, so it says nothing about which test is "right".
+   - A citation for the inequality, if wanted: Hardy, Littlewood & Pólya, *Inequalities*
+     (1934), ch. 2, or any text on means. Not in the bib files yet.
+
 ### Decisions for MF
 
 - **Title**, and whether this is "Part 2" or stands alone. [MF: It stands alone, with a link in the intro to the earler post]

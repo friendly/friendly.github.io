@@ -459,7 +459,10 @@ always come in the same order: arithmetic $\ge$ geometric $\ge$ harmonic $\ge$ m
 *any* data,
 $$\eta^2_\text{Pillai} \le \eta^2_\text{Wilks} \le \eta^2_\text{HL} \le \eta^2_\text{Roy},$$
 with equality only when all the $\lambda_i$ are equal, or when there's just one of them, as in
-`mathscore`. For Pottery, the same three numbers give effect sizes from about half to almost
+`mathscore`.
+<!-- Ordering checked 2026-11-24 (notes, To settle item 6): the power-mean inequality, no
+     violations in 1e5 random cases, matches heplots::etasq(). Nuance: it orders these eta^2
+     measures, not the F statistics or p-values. --> For Pottery, the same three numbers give effect sizes from about half to almost
 all. None of them is wrong. They answer "how big?" in different senses.
 
 **What counts as big.** The difference shows most clearly with two effects that have the same
@@ -505,9 +508,62 @@ Roy points at the largest one: "HIM!"](figures/four-tests-cartoon.jpg){#fig-four
 
 ## Four rulers for one ellipse
 
-<!-- STUB. Notes section 5: Fig. 19 of the ellipses paper; Roy = major axis, Wilks = area,
-     HL = diagonal, Pillai = perpendicular. Figure: figures/four-rulers.png. Link back to
-     the shadows: Roy is the longest shadow. -->
+<!-- DRAFT 2026-11-24. Notes section 5; a redraw of Fig. 19 of the ellipses paper.
+     Figure: R/four-rulers.R. NOTE colors: here H + E is orange and E grey (as in the ladder
+     figure); h-relative-e.png uses blue H and red E. Pick one. -->
+
+The four means have a picture, and it's the one we already have. Go back to panel C of
+@fig-h-relative-e: measured in units of **E**, the error ellipse is the unit circle, and the
+effect sticks out beyond it. It's easiest to read if you draw **H** + **E**, the total, rather
+than **H** alone. With **E** a circle and the axes turned to line up with the effect, **H** + **E**
+is an ellipse with semi-axes
+$$a = \sqrt{1 + \lambda_1}, \qquad b = \sqrt{1 + \lambda_2} .$$
+The more the ellipse sticks out beyond the circle, the bigger the effect. But "how much it
+sticks out" can be measured in more than one way, and each test uses a different ruler
+[@Friendly-etal:ellipses:2012, Fig. 19]:
+
+![Four rulers for one ellipse. In units of **E** (grey circle), **H** + **E** is the orange
+ellipse, here for $\lambda = (3, 1)$. Each test measures it differently: Roy the longest
+semi-axis $a$, Wilks the area, Hotelling-Lawley the diagonal $c$ from the end of one axis to the
+end of the other, and Pillai the perpendicular $d$ from the center to that diagonal.](figures/four-rulers.png){#fig-four-rulers width="85%" fig-alt="Four panels, each with the same picture: a grey unit circle labeled E inside a wider orange ellipse labeled H + E, centered at the origin, with semi-axes a = 2 horizontally and b = 1.41 vertically. Roy, R = a squared minus 1 = 3: a thick blue segment along the long semi-axis, labeled a. Wilks, Lambda = 1 over (ab) squared = 0.125: the ellipse shaded, both semi-axes drawn, labeled area = pi a b. Hotelling-Lawley, U = c squared minus 2 = 4: a blue chord c from the top of the ellipse to its right end, with a dotted box showing it as the diagonal of the a by b rectangle. Pillai, V = 2 minus 1 over d squared = 1.25: the same chord in grey, and a blue perpendicular d from the center to it, with a right-angle mark. A note at the bottom reads lambda = (3, 1): a = 2, b = 1.41, c = 2.45, d = 1.15."}
+
+| Test | Ruler | Relation, for $q = 2$ | Which mean |
+|---|---|---|---|
+| Roy | the longest semi-axis, $a$ | $R = a^2 - 1$ | minimum |
+| Wilks | the area, $\pi a b$ | $\Lambda = 1 / (ab)^2$ | geometric |
+| Hotelling-Lawley | the diagonal, $c = \sqrt{a^2 + b^2}$ | $U = c^2 - 2$ | harmonic |
+| Pillai | the perpendicular to it, $d = ab / c$ | $V = 2 - 1/d^2$ | arithmetic |
+
+The rulers line up with the means of the previous section, because $1/a^2$ and $1/b^2$ are
+just the $u_i$, the shares of error. Roy reads only the longest axis, so he takes the smallest
+$u_i$. Wilks multiplies the two axes, so he takes their geometric mean. Hotelling-Lawley adds the
+squared axes, $a^2 + b^2$, and Pillai adds their reciprocals, $1/a^2 + 1/b^2 = 1/d^2$: sums of
+the $\lambda$s and of the $u_i$s.
+
+And here the shadows come back once more. Every shadow of the unit circle has the same
+length, 1, so the shadow of **H** + **E** in any direction measures the effect in that direction,
+relative to error. Shadows of this ellipse range from $b$ to $a$:
+
+* **Roy** asks for the **longest shadow**, $a$. That's the direction of the largest root, and
+  the best single combination of the responses, as with `mathscore`. It's also why Roy's
+  test is the natural one for Scheffé-style protection over all combinations.
+* **Hotelling-Lawley** doesn't care which way you look. Cast the ellipse's shadows on *any* two
+  perpendicular directions, and the squares of their lengths add up to the same $a^2 + b^2$.
+  No rotation needed: the total is the same however the axes are turned.
+* **Pillai** does the same with the reciprocals, which weight the *short* shadows most. A
+  dimension where the effect is small pulls Pillai down more than it pulls the others.
+* **Wilks** measures the whole ellipse at once, as an area (a volume, for $q > 2$): a
+  generalized variance, as in [the determinant section](#how-big-is-a-covariance-matrix).
+
+For the toy roots in @fig-four-rulers, the four $\eta^2$s are 0.625 (Pillai), 0.65 (Wilks),
+0.67 (Hotelling-Lawley) and 0.75 (Roy), in the order the previous section promised. They are
+close here because the two roots, 3 and 1, are not very different. For Pottery, where they are
+(34.16, 1.25, 0.028), the four rulers give very different answers.
+
+<!-- CHECK: the Roy/Scheffé link (the union-intersection principle: Roy's root is the
+     largest univariate F over all combinations, so its critical value protects them all).
+     Accurate, but say it carefully, or drop it. The Pillai sentence about short shadows is
+     an interpretation of 1/a^2 + 1/b^2; check it reads right. -->
 
 ## All roads lead to F
 
