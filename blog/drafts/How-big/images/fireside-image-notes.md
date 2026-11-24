@@ -83,8 +83,9 @@ Leave out "no glasses" if you'd rather keep them.
 | ![](refs/Wickham.jpg){width=120} | Hadley Wickham | `refs/Wickham.jpg` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hadley-wickham2016-02-04.jpg), by Hadley Wickham, CC BY-SA 4.0 |
 | *none found* | D. N. Lawley (1915–2012) | | No MacTutor or English Wikipedia page. Try the Royal Society of Edinburgh or University of Edinburgh archives. |
 
-`refs/` is git-ignored, because several photos are non-free and this repo is public. Use them as
-references only. The links above will find them again on another machine.
+`refs/` was git-ignored at first, because several photos are non-free and this repo is public.
+*2026-11-23:* MF chose to commit them anyway, so they travel with the drafts. Use them as
+references only, and don't copy them into a published post. The links above give the sources.
 
 ## Before using the banner
 
