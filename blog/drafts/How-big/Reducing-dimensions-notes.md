@@ -368,6 +368,7 @@ multivariate answer and forget what was averaged to get it.
 
 MF: Do these in `images/` for now, where I have other things related to a new post
 
+
 1. The descending ladder, or a funnel, for Pottery (section 3). New, in the style of
    `R/dimension-ladder.R`; probably the key figure.
    **Draft:** `images/reducing-ladder.png`, from `R/reducing-ladder.R` (2026-11-22). Numbers are
@@ -408,6 +409,51 @@ MF: Do these in `images/` for now, where I have other things related to a new po
    in the post, or show both.
 
 ## Graphics notes
+
+I have a large collection of matrix-related images in C:\Users\friendly\Dropbox\Documents\images\MatrixAlgebra
+Most of these came from articles on Medium. Not to be used directly here, unless
+necessary & I can get permission.
+But useful as inspiration, if there is a way to re-draw them,
+
+**Reviewed 2026-11-23** (all stills, and sampled frames of the GIFs; not the MP4). All of the
+useful ones are simple geometry and could be redrawn from scratch in R. Not started.
+
+Best candidates:
+
+1. **A singular matrix flattens the plane**: `plot-2D-1D.gif`, `vectors-2D-1D.gif`.
+   A = [1 2; 2 4] maps a point cloud and four vectors onto one line ("column space"). Fits the
+   "r = 1, |S| = 0, dropped into Lineland" paragraph of the covariance-matrix section. A static
+   before/after pair in base R with `matlib::vectors()`.
+2. **"Turn the axes until the covariance disappears"**: `PCA-dagonalization.gif`. Rotating
+   axes on a scatterplot, with the covariance matrix in those axes beside it; the
+   off-diagonal goes 3.20 → ~0 at the eigenvector angle (~36°) → −3.20 at 90°. As 3–4 small
+   multiples, each with its matrix: rotation does the reducing (PCA, section 2b; and the
+   H* → λ_i step, section 3). A partner for the canonical HE plot.
+3. **Hidden structure in 10-D**: `PCA-word.gif`. 10-D points look like a blob along columns
+   1 and 2 ("variance visible: 10%"), but spell PCA along the top two eigenvectors (79%). For
+   section 2b or "Ellipses have shadows". Make by embedding letter-shaped 2-D points in 10-D
+   with noise and a random rotation; show a random view beside the top-PC view.
+
+Smaller extras:
+
+- **Cut-away proof that ad − bc is the area**: `determinant-area.webp`, `determinant-area2.webp`
+  (and the end of `determinant-area.gif`): the (a+b)(c+d) rectangle minus four triangles and
+  two rectangles. An inset or companion for the left panel of `det-area.png`.
+- **y = ŷ + r, projection onto Col(X)**: `3d-regression-vectors.webp`,
+  `vector-projection1.webp`, `vector-projection2.webp`. Would picture the Pythagoras bullet
+  ($SS_T = SS_H + SS_E$) in the vector section. `matlib::regvec3d()` draws this.
+- **Low-rank approximation by SVD**: `image-compression-SVD.webp`, `eigenfaces.webp`
+  (= `0_6aRV-1qtXw_vWmSQ.webp`, a duplicate). Eckart–Young for section 2b; redo with any image
+  as rank-k approximations.
+- Already covered: `det-covariance.webp` and `covariance.webp` make the point of the right
+  panel of `det-area.png` (maybe borrow: scatter points inside the ellipses);
+  `eigen.webp`, `eigenvectors.webp` are what `matlib::showEig()` does.
+
+Not useful here: the equation infographics (`cholesky-decomposition-3x3.png`, `SVD.webp`,
+`normal-equations.webp`, `covariance-matrix.webp`), better as LaTeX; and the off-topic or
+generic ones (`Ban-matrix-multiplication.jpeg`, `Del-nabla.jpeg`, `History-of-matrices.jpeg`,
+`I-love-math.webp`, `NeuralNetwork.webp`, `fibbonacci-eigenvalue.webp`, `factor-analysis.webp`,
+`regression-diagnostics.jpeg`, the overview posters, etc.).
 
 You're using `ggplot2` here, but the `matlib` package has some utilities for drawing geometric diagrams in base R graphics. Take a look at what's there:
   C:\Users\friendly\Dropbox\R\projects\matlib &     https://friendly.github.io/matlib/index.html
