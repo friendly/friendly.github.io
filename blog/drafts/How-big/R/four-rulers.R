@@ -1,6 +1,6 @@
 # Diagram: the four test statistics as four measurements of one ellipse (section 5;
 # a redraw of Figure 19 of the ellipses paper, one measurement per panel).
-# Draws images/four-rulers.png. Run from the post folder:
+# Draws figures/four-rulers.png. Run from the post folder:
 #   Rscript R/four-rulers.R
 # In the error metric, E is the unit circle and (H + E) is an ellipse with
 # semi-axes a = sqrt(1 + lambda1), b = sqrt(1 + lambda2). For q = 2:
@@ -82,6 +82,6 @@ p <- (p_roy + p_wilks) / (p_hl + p_pillai) +
                       lambda[1], lambda[2], a, b, c, d),
     theme = theme(plot.caption = element_text(hjust = 0.5, size = 11, colour = "grey30")))
 
-ragg::agg_png("images/four-rulers.png", width = 8.5, height = 6.6, units = "in", res = 200)
+ragg::agg_png("figures/four-rulers.png", width = 8.5, height = 6.6, units = "in", res = 200)
 print(p)
 invisible(dev.off())

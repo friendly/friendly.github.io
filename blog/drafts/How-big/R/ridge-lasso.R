@@ -1,5 +1,5 @@
 # Diagram: ridge regression vs. the lasso, as L2 vs. L1 length (section 1).
-# Draws images/ridge-lasso.png. Run from the post folder:
+# Draws figures/ridge-lasso.png. Run from the post folder:
 #   Rscript R/ridge-lasso.R
 # Two coefficients, correlated predictors. The red ellipses are contours of the residual
 # sum of squares around the OLS estimate; they are Mahalanobis ellipses in the metric of
@@ -89,6 +89,6 @@ p <- panel("Ridge", disk, b_ridge, path_ridge, "L2",
   panel("Lasso", diamond, b_lasso, path_lasso, "L1",
         sprintf("L₁:  |β₁| + |β₂| ≤ %g", t_size))
 
-ragg::agg_png("images/ridge-lasso.png", width = 10, height = 6.2, units = "in", res = 200)
+ragg::agg_png("figures/ridge-lasso.png", width = 10, height = 6.2, units = "in", res = 200)
 print(p)
 invisible(dev.off())

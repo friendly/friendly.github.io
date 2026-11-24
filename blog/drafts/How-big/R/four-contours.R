@@ -1,5 +1,5 @@
 # Diagram: what each test statistic counts as "big" (section 4).
-# Draws images/four-contours.png. Run from the post folder:
+# Draws figures/four-contours.png. Run from the post folder:
 #   Rscript R/four-contours.R
 # In the (lambda1, lambda2) plane, each curve is the contour of one statistic
 # through the concentrated effect lambda = (1, 0). All four agree there.
@@ -59,6 +59,6 @@ p <- ggplot() +
         plot.background = element_rect(fill = "white", colour = NA),
         plot.margin = margin(10, 20, 10, 10))
 
-ragg::agg_png("images/four-contours.png", width = 6.2, height = 6, units = "in", res = 200)
+ragg::agg_png("figures/four-contours.png", width = 6.2, height = 6, units = "in", res = 200)
 print(p)
 invisible(dev.off())

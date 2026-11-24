@@ -1,5 +1,5 @@
 # Diagram: "unit circles" for different senses of length (section 1).
-# Draws images/unit-balls.png. Run from the post folder:
+# Draws figures/unit-balls.png. Run from the post folder:
 #   Rscript R/unit-balls.R
 # Left: the points at distance 1 from the origin under L1, L2 and L-infinity, and two
 #   vectors measured all three ways. a = (0.6, 0.8) is on the circle (L2 = 1), outside
@@ -106,6 +106,6 @@ p2 <- ggplot() +
 
 p <- p1 + p2 + plot_layout(widths = c(4.7, 3.8))
 
-ragg::agg_png("images/unit-balls.png", width = 10.5, height = 4.8, units = "in", res = 200)
+ragg::agg_png("figures/unit-balls.png", width = 10.5, height = 4.8, units = "in", res = 200)
 print(p)
 invisible(dev.off())

@@ -1,5 +1,5 @@
 # Diagram: the determinant as area (section 2a, "How big is a covariance matrix?").
-# Draws images/det-area.png. Run from the post folder:
+# Draws figures/det-area.png. Run from the post folder:
 #   Rscript R/det-area.R
 # Left: det(A) is the area of the parallelogram spanned by the rows of A
 #   (after step 8 of the matlib vignette "Properties of determinants").
@@ -19,7 +19,7 @@ col <- c("grey45", "#E45756", "#4C78A8")
 th  <- seq(0, 2 * pi, length.out = 361)
 ell <- function(S) t(t(chol(S)) %*% rbind(cos(th), sin(th)))   # x' S^-1 x = 1
 
-ragg::agg_png("images/det-area.png", width = 10, height = 5, units = "in", res = 200)
+ragg::agg_png("figures/det-area.png", width = 10, height = 5, units = "in", res = 200)
 op <- par(mfrow = c(1, 2), mar = c(4, 4, 2.5, 1), cex = 1.1)
 
 # ---- left: parallelogram ----

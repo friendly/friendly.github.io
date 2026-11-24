@@ -62,8 +62,8 @@ statistical test simpler, by considering what is important, aided by geometry.
 
 ### Banner
 
-Candidate: `images/fireside-HE-chat-V2.jpg`. Editing notes, reference photos and what's left to do:
-[images/fireside-image-notes.md](images/fireside-image-notes.md).
+In the draft: `figures/fireside-HE-chat-V3.jpg` (2026-11-24, Georges Monette in seat 6). Editing notes, reference photos and what's left to do:
+[figures/fireside-image-notes.md](figures/fireside-image-notes.md).
 
 Also for section 3, on the four tests: the bar cartoon,
 `../VisMLM/jokes/images/four-tests-cartoon-v3.png` (Roy: "HIM!"), as the payoff to "their maximum
@@ -101,7 +101,7 @@ need to measure it, and draw a picture of what's left.
   Their unit "circles" are a diamond, a circle and a square. The corners of the diamond are
   why LASSO sets coefficients to zero and ridge doesn't.
   See the image in: C:\Users\friendly\Dropbox\Documents\images\ridge-lasso-net.webp
-  **Redrawn** (2026-11-23) as `images/ridge-lasso.png`, from `R/ridge-lasso.R`: ridge and
+  **Redrawn** (2026-11-23) as `figures/ridge-lasso.png`, from `R/ridge-lasso.R`: ridge and
   lasso only, with computed solutions and paths, in the colours of `unit-balls.png`.
   
 - Change the metric and the circle becomes an ellipse: $\mathbf{e}^\top\mathbf{S}^{-1}\mathbf{e}$,
@@ -110,7 +110,7 @@ need to measure it, and draw a picture of what's left.
 ### 2a. How big is a covariance matrix: Determinant
 
 **Drafted** in `index.qmd` (2026-11-23) as "How big is a covariance matrix?", with
-`images/det-area.png` from `R/det-area.R` (matlib's step-8 parallelogram, plus data ellipses
+`figures/det-area.png` from `R/det-area.R` (matlib's step-8 parallelogram, plus data ellipses
 for r = 0, .75, .95). Hannah (1996), Locke (1994) and Wilks (1932) checked on Crossref and added
 to `references.bib`. The 3D math.SE diagrams are not used yet.
 
@@ -366,29 +366,29 @@ multivariate answer and forget what was averaged to get it.
 
 ## Figures
 
-MF: Do these in `images/` for now, where I have other things related to a new post
+MF: Do these in `figures/`, where I have other things related to a new post
 
 
 1. The descending ladder, or a funnel, for Pottery (section 3). New, in the style of
    `R/dimension-ladder.R`; probably the key figure.
-   **Draft:** `images/reducing-ladder.png`, from `R/reducing-ladder.R` (2026-11-22). Numbers are
+   **Draft:** `figures/reducing-ladder.png`, from `R/reducing-ladder.R` (2026-11-22). Numbers are
    computed in the script, and match the table in section 3.
 2. Unit balls for $L_1$, $L_2$, $L_\infty$, and Mahalanobis (section 1). New, small.
-   **Draft:** `images/unit-balls.png`, from `R/unit-balls.R` (2026-11-22). Right panel: A and B
+   **Draft:** `figures/unit-balls.png`, from `R/unit-balls.R` (2026-11-22). Right panel: A and B
    are both at Euclidean distance 1, but at Mahalanobis distance 0.76 and 2.00 (rho = 0.75).
 3. Figure 19 in four panels, one measurement highlighted in each (section 5). Redraw.
-   **Draft:** `images/four-rulers.png`, from `R/four-rulers.R` (2026-11-22). Toy roots
+   **Draft:** `figures/four-rulers.png`, from `R/four-rulers.R` (2026-11-22). Toy roots
    lambda = (3, 1), so a = 2, b = sqrt(2); the script checks each formula against the usual
    definition of the statistic.
 4. Contours of the four statistics in the $(\lambda_1, \lambda_2)$ plane, with the concentrated
    and diffuse effects as points (section 4). New.
-   **Draft:** `images/four-contours.png`, from `R/four-contours.R` (2026-11-22). One contour per
+   **Draft:** `figures/four-contours.png`, from `R/four-contours.R` (2026-11-22). One contour per
    statistic, the one through the concentrated effect (1, 0). The diffuse effect lies on the HL
    line, outside the Pillai and Wilks curves, inside Roy's. On the diagonal the curves cross at
    1/3, sqrt(2) - 1, 1/2 and 1: the ordering of section 4. The shapes echo the unit balls: HL is
    an L1 diamond and Roy an L-infinity square.
 5. HE plot beside its canonical version, for Pottery (section 7). Adapt from `index.qmd`.
-   **Draft:** `images/he-vs-canonical.png`, from `R/he-vs-canonical.R` (2026-11-22). Left: Al
+   **Draft:** `figures/he-vs-canonical.png`, from `R/he-vs-canonical.R` (2026-11-22). Left: Al
    against Fe in data space, where E is a tilted ellipse. Right: canonical space, where E is a
    circle and H lies along Can1. The right panel rebuilds what `heplot.candisc()` does, because
    that function always labels the means and Isle Thorns and Ashley Rails overlap. Fe and Mg
@@ -398,12 +398,12 @@ MF: Do these in `images/` for now, where I have other things related to a new po
    `matlib::coffee`, in $\beta$ space: the $d = 1$ and $d = 2$ ellipses, their shadows on both
    axes, the oblique shadow onto $\beta_\text{Stress} = 0$, and the $\beta_\text{Stress} - \beta_\text{Coffee}$
    axis. `car::confidenceEllipse()` with `dfn = 1` and `dfn = 2` draws the two ellipses.
-   **Draft:** `images/coffee-shadows.png`, from `R/coffee-shadows.R` (2026-11-23). Two panels:
+   **Draft:** `figures/coffee-shadows.png`, from `R/coffee-shadows.R` (2026-11-23). Two panels:
    shadows on the axes (d = 1 CIs in orange; d = 2 Scheffé intervals in grey, just outside the
    axes), and shadows in other directions (oblique onto b_Stress = 0; orthogonal onto the
    Stress − Coffee axis). Shadows drawn as light strips with dashed rays. The script checks the
    axis shadows against `confint()` and the oblique centre against the simple-regression slope.
-   The original, for comparison: `images/refs/fig13-original.png` (git-ignored).
+   The original, for comparison: `figures/refs/fig13-original.png`.
    **Note:** the oblique shadow (0.97, 1.25) is narrower than the simple-regression CI
    (0.88, 1.33). Only the centre is exact; the paper's blue line is the actual CI. Say so
    in the post, or show both.

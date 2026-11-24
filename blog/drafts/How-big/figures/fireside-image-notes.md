@@ -1,10 +1,12 @@
 # Fireside HE chat: notes on editing the banner
 
-*2026-11-22.* For the banner of *How Big Is a Matrix?* The candidate is now
-`fireside-HE-chat-V2.jpg`, with the redraws done. The table and prompts below refer to the original,
-`fireside-HE-chat.png`. The cast and original prompts are in `fireside-HE-chat.md`.
+*2026-11-22.* For the banner of *How Big Is a Matrix?* *2026-11-24:* the banner is now
+`fireside-HE-chat-V3.jpg`, V2 with Georges Monette in seat 6 (prompt 5). The table and prompts 1–4
+below refer to the original, `fireside-HE-chat.png`. The cast and original prompts are in
+`fireside-HE-chat.md`. This folder was `images/` until 2026-11-24; it's now `figures/`, as in
+the other posts.
 
-![The current image, V2](fireside-HE-chat-V2.jpg)
+![The current image, V3](fireside-HE-chat-V3.jpg)
 
 ## In brief
 
@@ -17,7 +19,7 @@ Comparing the original drawing with photographs, more than Roy needed fixing.
 | 3 | Pillai | slim, thick wavy hair, glasses | bald, full face, no glasses | **Redraw** |
 | 4 | Roy | white-haired white man (generated as Lawley) | Indian, full face, dark graying hair | **Redraw first**: he is the joke |
 | 5 | Friendly | curly gray hair, beard, glasses | curly gray hair, shorter beard, no glasses | Optional touch-up |
-| 6 | Wickham | short hair, beard, bow tie | short hair, reddish beard | OK as is |
+| 6 | Wickham | short hair, beard, bow tie | short hair, reddish beard | **Redraw as Georges Monette** (2026-11-24) |
 
 ## What to keep
 
@@ -70,6 +72,32 @@ and the pointing finger haven't moved.
 
 Leave out "no glasses" if you'd rather keep them.
 
+### 5. Seat 6: Georges Monette (attach `refs/GeorgesMonette.png`)
+
+*2026-11-24.* Start from `fireside-HE-chat-V2.jpg`. Seat 6 becomes Georges Monette, who gets
+credit in the post for "ellipses have shadows". He must look clearly different from Friendly,
+next to him: Friendly has curly gray hair and a beard; Georges is clean-shaven, with straight
+hair and glasses.
+
+> Edit only the sixth seated man, at the far right, who now has a reddish beard and a bow tie.
+> Make him Georges Monette, using the attached photograph for his likeness: a man in his
+> seventies with thick, straight white-silver hair swept up and back, a broad round face,
+> clean-shaven, thin rectangular glasses, and a wide, warm smile. Replace the bow tie with a
+> plain dark tie, to match the others. Keep his profile, head angle, gaze toward the sheet,
+> gesturing hand, suit and seat exactly where they are, and draw him in the same illustration
+> style. He must be clearly a different person from the gray-bearded man next to him. Do not change the sheet, the ellipses, the letters, the cups, the book or anyone else.
+
+To keep his open-collared shirt from the photo instead, change the tie sentence to: "Replace
+the bow tie with an open-collared pale lavender shirt, no tie."
+
+Check afterwards: the two white-haired men in seats 5 and 6 should read as two different
+people even at thumbnail size, and the three right-hand figures should still look toward the sheet.
+
+**V3 edit, 2026-11-24.** Used ImageGen with `refs/GeorgesMonette.png` to redraw seat 6
+with swept-back silver hair, rectangular glasses, a clean-shaven smile, and a plain dark
+tie. Blended the new portrait and tie into V2 to preserve the surrounding illustration,
+including Roy's pointing hand and the original red E and blue H ellipses and labels.
+
 ## Reference images
 
 | | Person | File | Source |
@@ -80,7 +108,8 @@ Leave out "no glasses" if you'd rather keep them.
 | ![](refs/Hotelling-older.jpg){width=120} | Hotelling, older | `refs/Hotelling-older.jpg` | [Wikipedia](https://en.wikipedia.org/wiki/File:Harold_Hotelling.jpg), non-free |
 | ![](refs/Wilks.jpg){width=120} | S. S. Wilks (1906–1964) | `refs/Wilks.jpg` | [Wikipedia](https://en.wikipedia.org/wiki/File:Samuel_S_Wilks.jpg), non-free; a profile view at [MacTutor](https://mathshistory.st-andrews.ac.uk/Biographies/Wilks/) |
 | ![](refs/Friendly.png){width=120} | Michael Friendly | `refs/Friendly.png` | This site's avatar, `images/MF-face.png` |
-| ![](refs/Wickham.jpg){width=120} | Hadley Wickham | `refs/Wickham.jpg` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hadley-wickham2016-02-04.jpg), by Hadley Wickham, CC BY-SA 4.0 |
+| ![](refs/GeorgesMonette.png){width=120} | Georges Monette | `refs/GeorgesMonette.png` | Added by MF, 2026-11-24; replaces Wickham in seat 6 |
+| ![](refs/Wickham.jpg){width=120} | Hadley Wickham | `refs/Wickham.jpg` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hadley-wickham2016-02-04.jpg), by Hadley Wickham, CC BY-SA 4.0; no longer in the banner |
 | *none found* | D. N. Lawley (1915–2012) | | No MacTutor or English Wikipedia page. Try the Royal Society of Edinburgh or University of Edinburgh archives. |
 
 `refs/` was git-ignored at first, because several photos are non-free and this repo is public.
@@ -91,16 +120,19 @@ references only, and don't copy them into a published post. The links above give
 
 - [x] Redraw seats 4, 3 and 2 (done in V2, along with touch-ups to 1 and 5).
 - [x] Update the cast in `fireside-HE-chat.md`: Wilks, Hotelling, Pillai, Roy, Friendly,
-      Wickham, left to right.
+      Monette, left to right (Wickham until V3).
 - [ ] Account for Lawley, perhaps in the caption: "(Lawley sends his regrets.)" With no photo,
       don't add an invented likeness.
-- [ ] If the caption will name Hadley Wickham, send him the picture first.
-- [ ] *2026-11-23, MF considering:* replace Wickham (seat 6) with **Georges Monette**, who
-      gets credit for "ellipses have shadows" in the post. MF will do this edit in ChatGPT
-      separately. If so: add a reference photo to `refs/` (with permission, since Georges is
-      living), update the cast in `fireside-HE-chat.md`, and send Georges the picture
-      before the caption names him.
+- [x] *2026-11-24, done:* replace Wickham (seat 6) with **Georges Monette**, who gets
+      credit for "ellipses have shadows" in the post. Done in ChatGPT, with prompt 5 above.
+  - [x] Reference photo in `refs/GeorgesMonette.png`.
+  - [x] Save the result as `fireside-HE-chat-V3.jpg` (1400 × 700 px).
+  - [x] Point the post's banner and `image:` line at V3.
+  - [x] Update the cast in `fireside-HE-chat.md`, and the banner caption in `index.qmd`, which
+        now names Georges.
+- [ ] Send Georges the picture before the post is published with his name in the caption.
 - [x] Recheck that Roy's finger is still at the right-hand end of **H**.
-- [x] Make a 1400 px JPEG from the final version, for the post and its `image:` line: V2 is one
-      (252 KB). When the post is published, only that gets copied; the PNG can stay behind in drafts.
-- [ ] Write the `fig-alt` from the final image.
+- [x] Make a 1400 px JPEG from the final version, for the post and its `image:` line: V3 is one
+      (1400 × 700, 429 KB). When the post is published, only that gets copied; V2 and the PNG
+      can stay behind in drafts.
+- [x] Write the `fig-alt` from the final image (2026-11-24, from V3).

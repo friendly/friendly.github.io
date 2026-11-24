@@ -1,5 +1,5 @@
 # Diagram: an HE plot beside its canonical version, for Pottery (section 7).
-# Draws images/he-vs-canonical.png. Run from the post folder:
+# Draws figures/he-vs-canonical.png. Run from the post folder:
 #   Rscript R/he-vs-canonical.R
 # Left: data space, for the two oxides that Can1 mainly contrasts (Al against Fe).
 #   E is a tilted ellipse in the units of the data.
@@ -27,7 +27,7 @@ mark <- function(x, y, names, pos) {
   text(x, y, site[names], pos = pos[names], cex = 1, offset = 0.45)
 }
 
-ragg::agg_png("images/he-vs-canonical.png", width = 10, height = 5, units = "in", res = 200)
+ragg::agg_png("figures/he-vs-canonical.png", width = 10, height = 5, units = "in", res = 200)
 op <- par(mfrow = c(1, 2), mar = c(4.2, 4.2, 2.5, 1))
 
 heplot(pottery.mlm, variables = c("Al", "Fe"), fill = TRUE, fill.alpha = 0.1,

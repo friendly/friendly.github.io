@@ -5,7 +5,7 @@ description: "Multivariate statistics climbs up a ladder of dimensions, from sca
 author: "Michael Friendly"
 date: last-modified
 draft: true
-image: "images/fireside-HE-chat-V2.jpg"
+image: "figures/fireside-HE-chat-V3.jpg"
 categories: [Vis-MLM, multivariate linear models, graphics, HE plots, ellipses]
 bibliography: references.bib
 format:
@@ -53,12 +53,12 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 ```
 
 ![A fireside chat on how big **H** is, relative to **E**. Left to right: Wilks, Hotelling, Pillai
-(holding the HE plot), Roy (pointing to the largest dimension of **H**), me, and a younger R
-developer. (Lawley sends his regrets.)](images/fireside-HE-chat-V2.jpg){fig-alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. Coffee cups and a blue book sit on the table."}
+(holding the HE plot), Roy (pointing to the largest dimension of **H**), me, and Georges
+Monette. (Lawley sends his regrets.)](figures/fireside-HE-chat-V3.jpg){fig-alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. On the right, a gray-bearded man with curly hair and a white-haired man in glasses look on and smile. Coffee cups and a blue book sit on the table."}
 
-<!-- Before naming Hadley Wickham in the caption, send him the picture (fireside-image-notes.md).
-     MF may replace him with Georges Monette (see the same notes); then update the caption.
-     fig-alt: check against the final image. -->
+<!-- Before publishing with Georges named in the caption, send him the picture
+     (figures/fireside-image-notes.md). -->
+
 
 ## Introduction
 
@@ -103,7 +103,7 @@ chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British potter
 kiln sites. The question is whether the sites differ.
 
 ![Coming down the ladder for the Pottery MANOVA. Each step keeps fewer numbers. Each
-sets something aside, and concentrates the information in a better summary.](images/reducing-ladder.png){#fig-reducing-ladder width="100%" fig-alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside."}
+sets something aside, and concentrates the information in a better summary.](figures/reducing-ladder.png){#fig-reducing-ladder width="100%" fig-alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside."}
 
 Reading @fig-reducing-ladder from left to right:
 
@@ -156,7 +156,7 @@ diamond for $L_1$, a circle for $L_2$ and a square for $L_\infty$. Vector $\math
 Euclidean length 1, but $L_1$ length 1.4 (the dashed city-block route) and $L_\infty$ length
 0.8 (its longer leg, shaded). Right: changing the metric.
 With correlated variables, the Mahalanobis unit circle is an ellipse, and two points at the
-same Euclidean distance can be very different distances away.](images/unit-balls.png){#fig-unit-balls width="90%" fig-alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Arrow a runs from the origin to (0.6, 0.8) on the circle, with a dashed route along the x axis and up, its vertical leg shaded green; arrow b runs to (-0.5, -0.5) on the diamond. A table below gives a: L1 1.4, L2 1, L-infinity 0.8; b: L1 1, L2 0.71, L-infinity 0.5. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00."}
+same Euclidean distance can be very different distances away.](figures/unit-balls.png){#fig-unit-balls width="90%" fig-alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Arrow a runs from the origin to (0.6, 0.8) on the circle, with a dashed route along the x axis and up, its vertical leg shaded green; arrow b runs to (-0.5, -0.5) on the diamond. A table below gives a: L1 1.4, L2 1, L-infinity 0.8; b: L1 1, L2 0.71, L-infinity 0.5. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00."}
 
 * The familiar length is Euclidean, $L_2$: $\|\mathbf{y}\|^2 = \mathbf{y}^\top\mathbf{y}$.
   Centered, that's the total sum of squares, and divided by its df, it's the variance. **A
@@ -184,7 +184,7 @@ contours of the residual sum of squares around the OLS estimate. Each method giv
 point where a contour touches its constraint region, here of the same size: the $L_2$ disk
 for ridge, the $L_1$ diamond for the lasso. The lasso lands on a corner, so
 $\hat\beta_1 = 0$. Dashed curves trace each method's solutions as the constraint
-shrinks.](images/ridge-lasso.png){#fig-ridge-lasso width="85%" fig-alt="Two panels, Ridge and Lasso, with axes beta1 and beta2. In each, red elliptical contours tilted down to the right surround the OLS point (0.25, 0.85). Left: an orange disk of radius 0.5 at the origin; the outer red contour touches it at (0.23, 0.44), labeled Ridge, and a dashed curve runs from the OLS point to the origin through it. Right: a blue diamond with corners at plus and minus 0.5 on the axes; the outer contour touches its top corner at (0, 0.50), labeled Lasso, and a dashed path runs from the OLS point down to the beta2 axis and then along it to the origin."}
+shrinks.](figures/ridge-lasso.png){#fig-ridge-lasso width="85%" fig-alt="Two panels, Ridge and Lasso, with axes beta1 and beta2. In each, red elliptical contours tilted down to the right surround the OLS point (0.25, 0.85). Left: an orange disk of radius 0.5 at the origin; the outer red contour touches it at (0.23, 0.44), labeled Ridge, and a dashed curve runs from the OLS point to the origin through it. Right: a blue diamond with corners at plus and minus 0.5 on the axes; the outer contour touches its top corner at (0, 0.50), labeled Lasso, and a dashed path runs from the OLS point down to the beta2 axis and then along it to the origin."}
 
 <!-- Drawn by R/ridge-lasso.R. Inspired by a three-panel figure (ridge, lasso, elastic net)
      noted at Reducing-dimensions-notes.md, ~line 103; source unknown, so not used as is.
@@ -227,7 +227,7 @@ rows, $\mathbf{a}_1$ and $\mathbf{a}_2$. Right: data ellipses for two variables 
 variances and correlation $r$ = 0, 0.75 and 0.95. All three have the same trace, 2, but
 $|\mathbf{S}| = 1 - r^2$ shrinks, and so does the area. Arrows show the semi-axes of the
 $r = 0.75$ ellipse, whose lengths are the square roots of the eigenvalues of
-$\mathbf{S}$.](images/det-area.png){#fig-det-area width="90%" fig-alt="Two panels. Left, titled det(A) is an area: arrows a1 from the origin to (3, 1) and a2 to (2, 4), with gray arrows completing an orange parallelogram to (5, 5), labeled area = 10. Right, titled det(S): same variances, less area: a gray unit circle, a shaded red ellipse tilted at 45 degrees, and a thinner blue ellipse along the same diagonal. Two black arrows from the origin mark the semi-axes of the red ellipse, labeled square root of lambda 1 (long, up and to the right) and square root of lambda 2 (short, up and to the left). A table reads: r 0.00, det 1.000, area 3.14; r 0.75, det 0.438, area 2.08; r 0.95, det 0.098, area 0.98."}
+$\mathbf{S}$.](figures/det-area.png){#fig-det-area width="90%" fig-alt="Two panels. Left, titled det(A) is an area: arrows a1 from the origin to (3, 1) and a2 to (2, 4), with gray arrows completing an orange parallelogram to (5, 5), labeled area = 10. Right, titled det(S): same variances, less area: a gray unit circle, a shaded red ellipse tilted at 45 degrees, and a thinner blue ellipse along the same diagonal. Two black arrows from the origin mark the semi-axes of the red ellipse, labeled square root of lambda 1 (long, up and to the right) and square root of lambda 2 (short, up and to the left). A table reads: r 0.00, det 1.000, area 3.14; r 0.75, det 0.438, area 2.08; r 0.95, det 0.098, area 0.98."}
 
 <!-- Drawn by R/det-area.R, with matlib::vectors(). The left panel follows step 8 of the
      matlib vignette "Properties of determinants" (a1-det-ex1). -->
@@ -281,7 +281,7 @@ round(cbind(coef(coffee.mod), confint(coffee.mod)), 3)
 shadows. Left: shadows on the axes give the usual confidence intervals (orange), from the
 95% CI ellipse, and the Scheffé intervals (grey), from the larger joint ellipse. Right:
 shadows in other directions give the slope for Coffee ignoring Stress, and the difference
-between the two slopes.](images/coffee-shadows.png){#fig-coffee-shadows width="100%" fig-alt="Two panels in the space of beta-Coffee (horizontal) and beta-Stress (vertical). In each, a long thin blue ellipse tilts down to the right, centered near (-0.4, 1.2). Left, Shadows on the axes: light orange strips run from the ellipse to both axes, ending in thick orange intervals. The interval for Coffee, on the horizontal axis, includes 0; the one for Stress, on the vertical axis, excludes 0. A larger grey ellipse surrounds the blue one, and its slightly longer grey shadows lie just outside the axes. Right, Shadows in other directions: one strip runs obliquely down to the right, landing on the horizontal axis near 1.1, labeled Coffee, ignoring Stress (the simple regression). Another runs down to the left onto a diagonal axis through the origin, labeled Stress minus Coffee, with tick marks from 0 to 2; that interval excludes 0."}
+between the two slopes.](figures/coffee-shadows.png){#fig-coffee-shadows width="100%" fig-alt="Two panels in the space of beta-Coffee (horizontal) and beta-Stress (vertical). In each, a long thin blue ellipse tilts down to the right, centered near (-0.4, 1.2). Left, Shadows on the axes: light orange strips run from the ellipse to both axes, ending in thick orange intervals. The interval for Coffee, on the horizontal axis, includes 0; the one for Stress, on the vertical axis, excludes 0. A larger grey ellipse surrounds the blue one, and its slightly longer grey shadows lie just outside the axes. Right, Shadows in other directions: one strip runs obliquely down to the right, landing on the horizontal axis near 1.1, labeled Coffee, ignoring Stress (the simple regression). Another runs down to the left onto a diagonal axis through the origin, labeled Stress minus Coffee, with tick marks from 0 to 2; that interval excludes 0."}
 
 The shadows tell the whole story of this regression:
 
@@ -326,12 +326,12 @@ relative to **E**.
 <!-- STUB. Notes section 4: with u_i = 1/(1 + lambda_i), Pillai, Wilks, HL and Roy are the
      arithmetic, geometric, harmonic and minimum means of the same s numbers, so eta^2 is
      always ordered Pillai <= Wilks <= HL <= Roy. Concentrated vs. diffuse effects.
-     Figure: images/four-contours.png. The bar cartoon (Roy: "HIM!") could go here. -->
+     Figure: figures/four-contours.png. The bar cartoon (Roy: "HIM!") could go here. -->
 
 ## Four rulers for one ellipse
 
 <!-- STUB. Notes section 5: Fig. 19 of the ellipses paper; Roy = major axis, Wilks = area,
-     HL = diagonal, Pillai = perpendicular. Figure: images/four-rulers.png. Link back to
+     HL = diagonal, Pillai = perpendicular. Figure: figures/four-rulers.png. Link back to
      the shadows: Roy is the longest shadow. -->
 
 ## All roads lead to F
@@ -341,7 +341,7 @@ relative to **E**.
 ## Don't reduce too soon: HE plots
 
 <!-- STUB. Notes section 7: center, scale, rescale for significance; read what the scalar
-     lost; rotate with candisc. Figure: images/he-vs-canonical.png. A 2D HE plot is itself a
+     lost; rotate with candisc. Figure: figures/he-vs-canonical.png. A 2D HE plot is itself a
      shadow of the q-dimensional ellipsoids. -->
 
 ## Smaller R objects, too

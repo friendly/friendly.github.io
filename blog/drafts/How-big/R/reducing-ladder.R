@@ -1,7 +1,7 @@
 # Diagram: coming down the ladder for the Pottery MANOVA, Y -> H, E -> lambda -> V -> eta^2.
 # The last rung is an effect size, eta^2 = V / s (as in heplots::etasq()), not a p-value,
 # so every rung is still an answer to "how big?".
-# Draws images/reducing-ladder.png. Run from the post folder:
+# Draws figures/reducing-ladder.png. Run from the post folder:
 #   Rscript R/reducing-ladder.R
 # Companion to R/dimension-ladder.R (same palette): each step keeps fewer numbers,
 # and the grey text under each arrow says what that step sets aside (a long arrow along the
@@ -116,6 +116,6 @@ p <- ggplot() +
   theme(plot.background = element_rect(fill = "white", colour = NA),
         plot.margin = margin(10, 15, 10, 10))
 
-ragg::agg_png("images/reducing-ladder.png", width = 11.5, height = 4.7, units = "in", res = 200)
+ragg::agg_png("figures/reducing-ladder.png", width = 11.5, height = 4.7, units = "in", res = 200)
 print(p)
 invisible(dev.off())

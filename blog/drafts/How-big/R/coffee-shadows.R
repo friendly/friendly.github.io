@@ -1,5 +1,5 @@
 # Diagram: "Ellipses have shadows" (section 5a; a redraw of Figure 13 of the ellipses paper).
-# Draws images/coffee-shadows.png. Run from the post folder:
+# Draws figures/coffee-shadows.png. Run from the post folder:
 #   Rscript R/coffee-shadows.R
 # lm(Heart ~ Coffee + Stress), matlib::coffee. In beta space, the confidence ellipse
 #   E_r = { b + r * V^{1/2} z : |z| = 1 },  V = vcov of (b_Coffee, b_Stress)
@@ -139,6 +139,6 @@ pB <- ggplot() + base("Shadows in other directions") +
            angle = -45, label = "Stress − Coffee")
 
 p <- pA + pB
-ragg::agg_png("images/coffee-shadows.png", width = 11, height = 5.6, units = "in", res = 200)
+ragg::agg_png("figures/coffee-shadows.png", width = 11, height = 5.6, units = "in", res = 200)
 print(p)
 invisible(dev.off())
