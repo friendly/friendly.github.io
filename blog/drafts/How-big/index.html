@@ -651,7 +651,155 @@ Figure&nbsp;9: Four rulers for one ellipse. In units of <strong>E</strong> (grey
 </section>
 <section id="all-roads-lead-to-f" class="level2">
 <h2 class="anchored" data-anchor-id="all-roads-lead-to-f">All roads lead to F</h2>
-<!-- STUB. Notes section 6: exact vs. approximate F conversions; the simulation table. -->
+<!-- DRAFT 2026-11-24. Notes section 6. Simulation and figure: R/null-pvalues.R (1e5 reps per
+     row, about 90 s; it reproduces the table in the notes to within Monte Carlo error). -->
+<p>Four tests, four kinds of mean, four rulers: each statistic also has its own sampling distribution, which depends on <span class="math inline">\(s\)</span> and on the numbers of responses and degrees of freedom. When I learned this, testing a MANOVA meant looking up Wilks’ <span class="math inline">\(\Lambda\)</span> in special tables, or reading Roy’s largest root off Heck’s charts. Today nobody does, because each statistic can be converted to an <span class="math inline">\(F\)</span>, and <code>car::Anova()</code> reports them all that way. All roads lead to <span class="math inline">\(F\)</span>.</p>
+<p>The conversions are not all equally good:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Pillai</th>
+<th>Wilks</th>
+<th>Hotelling-Lawley</th>
+<th>Roy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s = 1\)</span></td>
+<td>exact</td>
+<td>exact</td>
+<td>exact</td>
+<td>exact</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s = 2\)</span></td>
+<td>approximate</td>
+<td><strong>exact</strong></td>
+<td>approximate</td>
+<td>upper bound</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(s \ge 3\)</span></td>
+<td>approximate</td>
+<td>approximate</td>
+<td>approximate</td>
+<td>upper bound</td>
+</tr>
+</tbody>
+</table>
+<p>With <span class="math inline">\(s = 1\)</span> there is only one <span class="math inline">\(\lambda\)</span>, so there is nothing to average, and the four tests are the same test. For <code>mathscore</code>, <code>car::Anova()</code> prints <span class="math inline">\(F = 28.88\)</span> on 2 and 9 df four times over. Hotelling’s <span class="math inline">\(T^2\)</span> is this case, and so is every 1-df term in a MANOVA or multivariate regression. For Wilks with <span class="math inline">\(s = 2\)</span> the <span class="math inline">\(F\)</span> is exact, by way of <span class="math inline">\(\sqrt{\Lambda}\)</span>; otherwise it is Rao’s approximation, which is very good. Pillai and Hotelling-Lawley use approximations too.</p>
+<p>Roy is the odd one out. His statistic is the largest root, and the <span class="math inline">\(F\)</span> that R reports treats it as if it were the only one. That gives an upper bound on the true <span class="math inline">\(F\)</span>, so the <span class="math inline">\(p\)</span>-value is too small whenever <span class="math inline">\(s &gt; 1\)</span>. How much too small? I simulated 100,000 data sets with <em>no</em> effect at all, in a design the size of Pottery: five responses, four groups, 26 cases. If a test is doing its job, its <span class="math inline">\(p\)</span>-values should then be spread evenly between 0 and 1, and about 5% should fall below .05 (<a href="#fig-null-pvalues" class="quarto-xref">Figure&nbsp;10</a>).</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(q\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(df_h\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(df_e\)</span></th>
+<th style="text-align: right;">s</th>
+<th style="text-align: right;">Pillai</th>
+<th style="text-align: right;">Wilks</th>
+<th style="text-align: right;">Hotelling-Lawley</th>
+<th style="text-align: right;">Roy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">0.051</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.043</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.054</td>
+<td style="text-align: right;">0.163</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.041</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.057</td>
+<td style="text-align: right;">0.181</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">0.049</td>
+<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">0.377</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="fig-null-pvalues" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Four histograms of p-values from 0 to 1, one per test, with a dashed line at density 1 marking the flat ideal. Pillai, blue: nearly flat, slightly low at both ends; p below .05 in 0.038 of cases. Wilks, green: flat; 0.049. Hotelling-Lawley, orange: nearly flat, slightly high at both ends; 0.061. Roy, red: a steep spike near 0, about 7.5 times the flat height, falling off quickly; p below .05 in 0.377 of cases.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-null-pvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/null-pvalues.png" class="img-fluid figure-img" style="width:100.0%" alt="Four histograms of p-values from 0 to 1, one per test, with a dashed line at density 1 marking the flat ideal. Pillai, blue: nearly flat, slightly low at both ends; p below .05 in 0.038 of cases. Wilks, green: flat; 0.049. Hotelling-Lawley, orange: nearly flat, slightly high at both ends; 0.061. Roy, red: a steep spike near 0, about 7.5 times the flat height, falling off quickly; p below .05 in 0.377 of cases.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-null-pvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: The distribution of <span class="math inline">\(p\)</span>-values for the four tests when there is no effect, in a design the size of Pottery (<span class="math inline">\(q = 5\)</span>, <span class="math inline">\(df_h = 3\)</span>, <span class="math inline">\(df_e = 22\)</span>, so <span class="math inline">\(s = 3\)</span>), from 100,000 simulated data sets. A test that keeps its promise has a flat histogram (dashed line), with 5% of <span class="math inline">\(p\)</span>-values below .05.
+</figcaption>
+</figure>
+</div>
+<p>Wilks is right on target. Pillai is a little conservative and Hotelling-Lawley a little liberal, neither by enough to matter much. Roy’s test, with nothing there at all, says “significant” 38% of the time. That’s what “upper bound” means in practice: when <span class="math inline">\(s &gt; 1\)</span>, treat Roy’s <span class="math inline">\(p\)</span>-value as a lower limit, not as a <span class="math inline">\(p\)</span>-value.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>There’s one more trap in the common currency. Because each road to <span class="math inline">\(F\)</span> starts somewhere different, <span class="math inline">\(F\)</span>s from different tests can’t be compared as sizes. For Pottery, the same three eigenvalues give</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th style="text-align: right;"><span class="math inline">\(F\)</span></th>
+<th>df</th>
+<th style="text-align: right;"><span class="math inline">\(p\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pillai</td>
+<td style="text-align: right;">4.30</td>
+<td>15, 60</td>
+<td style="text-align: right;"><span class="math inline">\(2.4 \times 10^{-5}\)</span></td>
+</tr>
+<tr class="even">
+<td>Wilks</td>
+<td style="text-align: right;">13.09</td>
+<td>15, 50.1</td>
+<td style="text-align: right;"><span class="math inline">\(1.8 \times 10^{-12}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Hotelling-Lawley</td>
+<td style="text-align: right;">39.38</td>
+<td>15, 50</td>
+<td style="text-align: right;"><span class="math inline">\(&lt; 2.2 \times 10^{-16}\)</span></td>
+</tr>
+<tr class="even">
+<td>Roy</td>
+<td style="text-align: right;">136.64</td>
+<td>5, 20</td>
+<td style="text-align: right;"><span class="math inline">\(9.4 \times 10^{-15}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>All four say the kiln sites differ, which is the question a test answers. But the <span class="math inline">\(F\)</span>s run from 4 to 137, and none of them is a measure of <em>how much</em>. For that, go back up a rung, to the <span class="math inline">\(\lambda\)</span>s and the four <span class="math inline">\(\eta^2\)</span>s.</p>
 </section>
 <section id="dont-reduce-too-soon-he-plots" class="level2">
 <h2 class="anchored" data-anchor-id="dont-reduce-too-soon-he-plots">Don’t reduce too soon: HE plots</h2>
@@ -714,6 +862,7 @@ Wilks, S. S. 1932. <span>“Certain Generalizations in the Analysis of Variance.
 
 <ol>
 <li id="fn1"><p>That was the idea that inspired the cover for my Vis-MLM book: Data ellipsoids for the penguin species, with their 2D shadows shown in different forms on the planes for pairs of variables. The general class of ellipsoids is explored in my experimental <a href="https://friendly.github.io/gellipsoid/"><code>gellipsoid</code></a> package (source on <a href="https://github.com/friendly/gellipsoid">GitHub</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This also matters for HE plots. Their default “significance” scaling uses Roy’s test, so that <strong>H</strong> sticks out beyond <strong>E</strong> in some direction if and only if Roy’s test is significant. With <span class="math inline">\(s &gt; 1\)</span>, that’s the bound, not an exact .05 test; see the footnote in the <a href="../../posts/2026-11-extending-lm/">first post</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

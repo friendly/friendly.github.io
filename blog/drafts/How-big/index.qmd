@@ -567,7 +567,73 @@ close here because the two roots, 3 and 1, are not very different. For Pottery, 
 
 ## All roads lead to F
 
-<!-- STUB. Notes section 6: exact vs. approximate F conversions; the simulation table. -->
+<!-- DRAFT 2026-11-24. Notes section 6. Simulation and figure: R/null-pvalues.R (1e5 reps per
+     row, about 90 s; it reproduces the table in the notes to within Monte Carlo error). -->
+
+Four tests, four kinds of mean, four rulers: each statistic also has its own sampling
+distribution, which depends on $s$ and on the numbers of responses and degrees of freedom.
+When I learned this, testing a MANOVA meant looking up Wilks' $\Lambda$ in special tables, or
+reading Roy's largest root off Heck's charts. Today nobody does, because each statistic can be
+converted to an $F$, and `car::Anova()` reports them all that way. All roads lead to $F$.
+
+The conversions are not all equally good:
+
+| | Pillai | Wilks | Hotelling-Lawley | Roy |
+|---|---|---|---|---|
+| $s = 1$ | exact | exact | exact | exact |
+| $s = 2$ | approximate | **exact** | approximate | upper bound |
+| $s \ge 3$ | approximate | approximate | approximate | upper bound |
+
+With $s = 1$ there is only one $\lambda$, so there is nothing to average, and the four tests are
+the same test. For `mathscore`, `car::Anova()` prints $F = 28.88$ on 2 and 9 df four times over.
+Hotelling's $T^2$ is this case, and so is every 1-df term in a MANOVA or multivariate regression.
+For Wilks with $s = 2$ the $F$ is exact, by way of $\sqrt{\Lambda}$; otherwise it is Rao's
+approximation, which is very good. Pillai and Hotelling-Lawley use approximations too.
+
+Roy is the odd one out. His statistic is the largest root, and the $F$ that R reports treats it
+as if it were the only one. That gives an upper bound on the true $F$, so the $p$-value is too
+small whenever $s > 1$. How much too small? I simulated 100,000 data sets with *no* effect at all,
+in a design the size of Pottery: five responses, four groups, 26 cases. If a test is doing its job,
+its $p$-values should then be spread evenly between 0 and 1, and about 5% should fall below .05
+(@fig-null-pvalues).
+
+```{r}
+#| label: null-table
+#| echo: false
+tab <- readRDS("R/null-pvalues-table.rds")
+names(tab)[1:3] <- c("$q$", "$df_h$", "$df_e$")
+knitr::kable(tab, digits = 3, align = "rrrrrrrr")
+```
+
+![The distribution of $p$-values for the four tests when there is no effect, in a design the
+size of Pottery ($q = 5$, $df_h = 3$, $df_e = 22$, so $s = 3$), from 100,000 simulated data sets.
+A test that keeps its promise has a flat histogram (dashed line), with 5% of $p$-values below
+.05.](figures/null-pvalues.png){#fig-null-pvalues width="100%" fig-alt="Four histograms of p-values from 0 to 1, one per test, with a dashed line at density 1 marking the flat ideal. Pillai, blue: nearly flat, slightly low at both ends; p below .05 in 0.038 of cases. Wilks, green: flat; 0.049. Hotelling-Lawley, orange: nearly flat, slightly high at both ends; 0.061. Roy, red: a steep spike near 0, about 7.5 times the flat height, falling off quickly; p below .05 in 0.377 of cases."}
+
+Wilks is right on target. Pillai is a little conservative and Hotelling-Lawley a little liberal,
+neither by enough to matter much. Roy's test, with nothing there at all, says "significant" 38% of
+the time. That's what "upper bound" means in practice: when $s > 1$, treat Roy's $p$-value as a
+lower limit, not as a $p$-value.[^roy-he]
+
+[^roy-he]: This also matters for HE plots. Their default "significance" scaling uses Roy's
+test, so that **H** sticks out beyond **E** in some direction if and only if Roy's test is
+significant. With $s > 1$, that's the bound, not an exact .05 test; see the footnote in the
+[first post](../../posts/2026-11-extending-lm/).
+
+There's one more trap in the common currency. Because each road to $F$ starts somewhere
+different, $F$s from different tests can't be compared as sizes. For Pottery, the same three
+eigenvalues give
+
+| Test | $F$ | df | $p$ |
+|---|--:|---|--:|
+| Pillai | 4.30 | 15, 60 | $2.4 \times 10^{-5}$ |
+| Wilks | 13.09 | 15, 50.1 | $1.8 \times 10^{-12}$ |
+| Hotelling-Lawley | 39.38 | 15, 50 | $< 2.2 \times 10^{-16}$ |
+| Roy | 136.64 | 5, 20 | $9.4 \times 10^{-15}$ |
+
+All four say the kiln sites differ, which is the question a test answers. But the $F$s run from 4
+to 137, and none of them is a measure of *how much*. For that, go back up a rung, to the
+$\lambda$s and the four $\eta^2$s.
 
 ## Don't reduce too soon: HE plots
 
