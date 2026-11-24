@@ -98,6 +98,16 @@ with swept-back silver hair, rectangular glasses, a clean-shaven smile, and a pl
 tie. Blended the new portrait and tie into V2 to preserve the surrounding illustration,
 including Roy's pointing hand and the original red E and blue H ellipses and labels.
 
+### 6. Elemental Forces on the coffee cups
+
+V4 starts from `fireside-HE-chat-V3.jpg`. ImageGen adapted the artwork from
+`elemental-forces-V2.jpg` into small decals, which were blended into the original
+cup faces. From left to right, the cups show **Algebra** (a diagonal matrix),
+**Graphs** for Michael Friendly (a scatterplot with an elliptical contour), and
+**Geometry** for Georges Monette (a blue ellipsoid and its shadow).
+
+![V4 with the Elemental Forces coffee cups](fireside-HE-chat-V4.jpg)
+
 ## Reference images
 
 | | Person | File | Source |

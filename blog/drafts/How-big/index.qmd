@@ -49,6 +49,17 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
   font-style: italic;
   color: #B85708;
 }
+/* A small figure floated to the right of the text; full width on narrow screens */
+.float-fig {
+  float: right;
+  width: 38%;
+  margin: 0.3em 0 0.8em 1.2em;
+}
+.float-fig figure, .float-fig p { margin: 0; }
+.float-fig img { width: 100%; height: auto; }
+@media (max-width: 600px) {
+  .float-fig { float: none; width: 80%; margin: 1em auto; }
+}
 </style>
 ```
 
@@ -84,15 +95,28 @@ First say *compared to what*, and *in what sense*.
 [Every summary is a shadow]{.precept-motto}
 :::
 
-*Compared to what* means choosing a metric: the identity, the error covariance, or the total.
-*In what sense* means choosing what counts as size: the total, the largest part, or the volume.
-Algebra tells you how few numbers you need to keep. Geometry shows you what those numbers
-measure, and what was thrown away to get them.
+::: {.float-fig}
+![](figures/elemental-forces-V2-800.jpg){fig-alt="Three cream cards on a wooden table, each titled in dark blue capitals. ALGEBRA shows the 2 by 2 matrix with rows 5, 0 and 0, 1. GEOMETRY shows a shaded blue ellipsoid with its two axes drawn, casting a shadow below it. GRAPHS, in front, shows a scatterplot of blue points rising to the right inside a red data ellipse."}
+:::
 
-<!-- Possible thesis line, from the notes: "to reduce dimensions well, decide what 'big'
-     means, keep what you need to measure it, and draw a picture of what's left." -->
+**Compared to what** means choosing a metric: the identity, the error covariance, or the total.
+**In what sense** means choosing what counts as size: the total, the largest part, or the volume:
 
-The title comes from the scene in the banner. Imagine the people who invented the classical
+* *Algebra* tells you how few numbers you need to keep to say "It's THIS big!" 
+* *Geometry* shows you what those numbers measure, and what was thrown away to get them. 
+* And *graphs or diagrams* show you what this means, and how to understand it all.
+
+It's the interplay among these three Elemental Forces of Statistical Understanding that intrigues me
+in my work on graphical methods for data analysis, often on Un-Vizzed problems. That's the subject
+of this article. The rubric that unites them is: To climb back down the ladder of dimensions
+of a problem, 
+
+* decide what 'big' means, 
+* keep what you need to measure it, and 
+* draw a picture of what's left.
+
+
+My title comes from the scene in the banner. Imagine the people who invented the classical
 multivariate tests sitting around a fire with an HE plot, arguing about how big **H** is
 compared to **E**. Each one had a different, and perfectly reasonable, answer.
 

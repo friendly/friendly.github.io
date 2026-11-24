@@ -227,6 +227,17 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
   font-style: italic;
   color: #B85708;
 }
+/* A small figure floated to the right of the text; full width on narrow screens */
+.float-fig {
+  float: right;
+  width: 38%;
+  margin: 0.3em 0 0.8em 1.2em;
+}
+.float-fig figure, .float-fig p { margin: 0; }
+.float-fig img { width: 100%; height: auto; }
+@media (max-width: 600px) {
+  .float-fig { float: none; width: 80%; margin: 1em auto; }
+}
 </style>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -244,10 +255,22 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 <div class="precept">
 <p><span class="precept-title">How big is my matrix?</span> First say <em>compared to what</em>, and <em>in what sense</em>. <span class="precept-motto">Every summary is a shadow</span></p>
 </div>
-<p><em>Compared to what</em> means choosing a metric: the identity, the error covariance, or the total. <em>In what sense</em> means choosing what counts as size: the total, the largest part, or the volume. Algebra tells you how few numbers you need to keep. Geometry shows you what those numbers measure, and what was thrown away to get them.</p>
-<!-- Possible thesis line, from the notes: "to reduce dimensions well, decide what 'big'
-     means, keep what you need to measure it, and draw a picture of what's left." -->
-<p>The title comes from the scene in the banner. Imagine the people who invented the classical multivariate tests sitting around a fire with an HE plot, arguing about how big <strong>H</strong> is compared to <strong>E</strong>. Each one had a different, and perfectly reasonable, answer.</p>
+<div class="float-fig">
+<p><img src="figures/elemental-forces-V2-800.jpg" class="img-fluid" alt="Three cream cards on a wooden table, each titled in dark blue capitals. ALGEBRA shows the 2 by 2 matrix with rows 5, 0 and 0, 1. GEOMETRY shows a shaded blue ellipsoid with its two axes drawn, casting a shadow below it. GRAPHS, in front, shows a scatterplot of blue points rising to the right inside a red data ellipse."></p>
+</div>
+<p><strong>Compared to what</strong> means choosing a metric: the identity, the error covariance, or the total. <strong>In what sense</strong> means choosing what counts as size: the total, the largest part, or the volume:</p>
+<ul>
+<li><em>Algebra</em> tells you how few numbers you need to keep to say “It’s THIS big!”</li>
+<li><em>Geometry</em> shows you what those numbers measure, and what was thrown away to get them.</li>
+<li>And <em>graphs or diagrams</em> show you what this means, and how to understand it all.</li>
+</ul>
+<p>It’s the interplay among these three Elemental Forces of Statistical Understanding that intrigues me in my work on graphical methods for data analysis, often on Un-Vizzed problems. That’s the subject of this article. The rubric that unites them is: To climb back down the ladder of dimensions of a problem,</p>
+<ul>
+<li>decide what ‘big’ means,</li>
+<li>keep what you need to measure it, and</li>
+<li>draw a picture of what’s left.</li>
+</ul>
+<p>My title comes from the scene in the banner. Imagine the people who invented the classical multivariate tests sitting around a fire with an HE plot, arguing about how big <strong>H</strong> is compared to <strong>E</strong>. Each one had a different, and perfectly reasonable, answer.</p>
 </section>
 <section id="climbing-back-down" class="level2">
 <h2 class="anchored" data-anchor-id="climbing-back-down">Climbing back down</h2>
