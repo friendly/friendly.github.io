@@ -432,10 +432,76 @@ and Roy all give the same $F$. The Pottery data have $s = 3$ eigenvalues, 34.16,
 
 ## Four kinds of mean
 
-<!-- STUB. Notes section 4: with u_i = 1/(1 + lambda_i), Pillai, Wilks, HL and Roy are the
-     arithmetic, geometric, harmonic and minimum means of the same s numbers, so eta^2 is
-     always ordered Pillai <= Wilks <= HL <= Roy. Concentrated vs. diffuse effects.
-     Figure: figures/four-contours.png. The bar cartoon (Roy: "HIM!") could go here. -->
+<!-- DRAFT 2026-11-24. Notes section 4. Figures: four-contours.png (R/four-contours.R) and
+     the bar cartoon, copied from drafts/VisMLM/jokes/images/four-tests-cartoon-v3.png. -->
+
+For the Pottery data there are three eigenvalues, $\lambda$ = 34.16, 1.25 and 0.028: one big
+dimension of difference among the kiln sites, one modest, and one that is essentially noise.
+To get to one number, you have to combine them somehow. The four classical tests are four
+ways to do it, and the cleanest way to see how they differ is to notice that each one is an
+**average**, of a different kind.
+
+Re-express each eigenvalue as the share of *error* in its dimension,
+$$u_i = \frac{1}{1 + \lambda_i} = 1 - r_i^2 ,$$
+where $r_i^2 = \lambda_i / (1 + \lambda_i)$ is the squared canonical correlation for that
+dimension. A big effect means a small $u_i$. Then each test statistic is a mean of the same
+$s$ numbers $u_1, \dots, u_s$, and one minus that mean is a multivariate $\eta^2$:
+
+| Test | Statistic | Mean of the $u_i$ | $\eta^2$ for Pottery |
+|---|---|---|--:|
+| Pillai | $V = \sum \lambda_i / (1 + \lambda_i)$ | arithmetic: $1 - V/s$ | 0.518 |
+| Wilks | $\Lambda = \prod 1 / (1 + \lambda_i)$ | geometric: $\Lambda^{1/s}$ | 0.769 |
+| Hotelling-Lawley | $U = \sum \lambda_i$ | harmonic: $s / (s + U)$ | 0.922 |
+| Roy | $R = \lambda_1$ | minimum: $1 / (1 + R)$ | 0.972 |
+
+These four means are an old family, the power means of order 1, 0, −1 and $-\infty$, and they
+always come in the same order: arithmetic $\ge$ geometric $\ge$ harmonic $\ge$ minimum. So for
+*any* data,
+$$\eta^2_\text{Pillai} \le \eta^2_\text{Wilks} \le \eta^2_\text{HL} \le \eta^2_\text{Roy},$$
+with equality only when all the $\lambda_i$ are equal, or when there's just one of them, as in
+`mathscore`. For Pottery, the same three numbers give effect sizes from about half to almost
+all. None of them is wrong. They answer "how big?" in different senses.
+
+**What counts as big.** The difference shows most clearly with two effects that have the same
+Hotelling-Lawley trace:
+
+| $\lambda$ | Pillai $V$ | Wilks $\Lambda$ | HL $U$ | Roy $R$ |
+|---|--:|--:|--:|--:|
+| (1, 0), concentrated | 0.50 | 0.50 | 1 | 1.0 |
+| (0.5, 0.5), diffuse | 0.67 | 0.44 | 1 | 0.5 |
+
+Pillai and Wilks say the diffuse effect is bigger (larger $V$, smaller $\Lambda$). Roy says
+the concentrated one is, because he looks only at the largest root. Hotelling-Lawley can't
+tell them apart. @fig-four-contours shows why: each curve is the set of effects that one
+test calls equally big.
+
+![What each test counts as "big", for $s = 2$. Each curve joins the pairs
+$(\lambda_1, \lambda_2)$ that one test rates the same as the concentrated effect (1, 0).
+Effects outside a curve are bigger by that test's lights. The diffuse effect (0.5, 0.5) is
+outside the Pillai and Wilks curves, on the Hotelling-Lawley line, and inside Roy's square.
+](figures/four-contours.png){#fig-four-contours width="65%" fig-alt="A square plot with lambda 1 on the horizontal axis and lambda 2 on the vertical, both from 0 to 1.25, with the dashed diagonal lambda 1 = lambda 2 and the region above it shaded. Four curves all pass through the concentrated effect at (1, 0) and its mirror image (0, 1). Pillai, in blue, bows furthest toward the origin, crossing the diagonal at 1/3. Wilks, in green, bows less, crossing at about 0.41. Hotelling-Lawley, in orange, is a straight line from (1, 0) to (0, 1), passing through the diffuse effect at (0.5, 0.5). Roy, in red, is a square corner: vertical from (1, 0) up to (1, 1), then across to (0, 1)."}
+
+The shapes should look familiar from @fig-unit-balls. The Hotelling-Lawley contour is a
+diamond, the unit ball of the $L_1$ norm: it simply adds up the $\lambda$s. Roy's is a square,
+the $L_\infty$ ball: only the largest counts. Pillai and Wilks bend in further than the diamond,
+so they give extra credit for spreading an effect over several dimensions. Choosing a test is
+choosing a norm.
+
+This is also why the tests differ in power. Roy's test is the most powerful when the group
+differences are concentrated in one dimension, and Pillai's when they are spread over several
+[@Schatzoff1966]. Pillai's is also the most robust to violations of the assumptions, which
+is why @Olson:1974 recommended it as the default, and why `car::Anova()` reports it first.
+
+<!-- TO WRITE: the tests can also disagree about significance, not just size. Find or
+     construct an example (s = 2, diffuse effect) where Roy is not significant but Pillai is,
+     or the reverse. MF: "hold off on the tests disagreeing for now, but that would be
+     something to mention." -->
+
+With Pottery's roots, one big and two small, Roy has the easiest call to make.
+
+![Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar. Asked "Is something going on
+here?", the first three, averaging over all the $\lambda$s on their napkin, say "Probably."
+Roy points at the largest one: "HIM!"](figures/four-tests-cartoon.jpg){#fig-four-tests-cartoon width="85%" fig-alt="A pen-and-ink cartoon in a pub. Three older men with name badges reading Wilks, Pillai and Hotelling-Lawley sit at the bar over a napkin listing lambda 1 to lambda 5, and together say Probably. The bartender, polishing a glass, asks: Is something going on here? A fourth man, badge Roy, leans away from the bar and points across the room, shouting HIM! at a startled man drinking alone at a table. The caption reads: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar."}
 
 ## Four rulers for one ellipse
 

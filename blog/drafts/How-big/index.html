@@ -471,10 +471,109 @@ Figure&nbsp;6: How big is <strong>H</strong> relative to <strong>E</strong>, for
 </section>
 <section id="four-kinds-of-mean" class="level2">
 <h2 class="anchored" data-anchor-id="four-kinds-of-mean">Four kinds of mean</h2>
-<!-- STUB. Notes section 4: with u_i = 1/(1 + lambda_i), Pillai, Wilks, HL and Roy are the
-     arithmetic, geometric, harmonic and minimum means of the same s numbers, so eta^2 is
-     always ordered Pillai <= Wilks <= HL <= Roy. Concentrated vs. diffuse effects.
-     Figure: figures/four-contours.png. The bar cartoon (Roy: "HIM!") could go here. -->
+<!-- DRAFT 2026-11-24. Notes section 4. Figures: four-contours.png (R/four-contours.R) and
+     the bar cartoon, copied from drafts/VisMLM/jokes/images/four-tests-cartoon-v3.png. -->
+<p>For the Pottery data there are three eigenvalues, <span class="math inline">\(\lambda\)</span> = 34.16, 1.25 and 0.028: one big dimension of difference among the kiln sites, one modest, and one that is essentially noise. To get to one number, you have to combine them somehow. The four classical tests are four ways to do it, and the cleanest way to see how they differ is to notice that each one is an <strong>average</strong>, of a different kind.</p>
+<p>Re-express each eigenvalue as the share of <em>error</em> in its dimension, <span class="math display">\[u_i = \frac{1}{1 + \lambda_i} = 1 - r_i^2 ,\]</span> where <span class="math inline">\(r_i^2 = \lambda_i / (1 + \lambda_i)\)</span> is the squared canonical correlation for that dimension. A big effect means a small <span class="math inline">\(u_i\)</span>. Then each test statistic is a mean of the same <span class="math inline">\(s\)</span> numbers <span class="math inline">\(u_1, \dots, u_s\)</span>, and one minus that mean is a multivariate <span class="math inline">\(\eta^2\)</span>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Statistic</th>
+<th>Mean of the <span class="math inline">\(u_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\eta^2\)</span> for Pottery</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pillai</td>
+<td><span class="math inline">\(V = \sum \lambda_i / (1 + \lambda_i)\)</span></td>
+<td>arithmetic: <span class="math inline">\(1 - V/s\)</span></td>
+<td style="text-align: right;">0.518</td>
+</tr>
+<tr class="even">
+<td>Wilks</td>
+<td><span class="math inline">\(\Lambda = \prod 1 / (1 + \lambda_i)\)</span></td>
+<td>geometric: <span class="math inline">\(\Lambda^{1/s}\)</span></td>
+<td style="text-align: right;">0.769</td>
+</tr>
+<tr class="odd">
+<td>Hotelling-Lawley</td>
+<td><span class="math inline">\(U = \sum \lambda_i\)</span></td>
+<td>harmonic: <span class="math inline">\(s / (s + U)\)</span></td>
+<td style="text-align: right;">0.922</td>
+</tr>
+<tr class="even">
+<td>Roy</td>
+<td><span class="math inline">\(R = \lambda_1\)</span></td>
+<td>minimum: <span class="math inline">\(1 / (1 + R)\)</span></td>
+<td style="text-align: right;">0.972</td>
+</tr>
+</tbody>
+</table>
+<p>These four means are an old family, the power means of order 1, 0, −1 and <span class="math inline">\(-\infty\)</span>, and they always come in the same order: arithmetic <span class="math inline">\(\ge\)</span> geometric <span class="math inline">\(\ge\)</span> harmonic <span class="math inline">\(\ge\)</span> minimum. So for <em>any</em> data, <span class="math display">\[\eta^2_\text{Pillai} \le \eta^2_\text{Wilks} \le \eta^2_\text{HL} \le \eta^2_\text{Roy},\]</span> with equality only when all the <span class="math inline">\(\lambda_i\)</span> are equal, or when there’s just one of them, as in <code>mathscore</code>. For Pottery, the same three numbers give effect sizes from about half to almost all. None of them is wrong. They answer “how big?” in different senses.</p>
+<p><strong>What counts as big.</strong> The difference shows most clearly with two effects that have the same Hotelling-Lawley trace:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><span class="math inline">\(\lambda\)</span></th>
+<th style="text-align: right;">Pillai <span class="math inline">\(V\)</span></th>
+<th style="text-align: right;">Wilks <span class="math inline">\(\Lambda\)</span></th>
+<th style="text-align: right;">HL <span class="math inline">\(U\)</span></th>
+<th style="text-align: right;">Roy <span class="math inline">\(R\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(1, 0), concentrated</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="even">
+<td>(0.5, 0.5), diffuse</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+</tr>
+</tbody>
+</table>
+<p>Pillai and Wilks say the diffuse effect is bigger (larger <span class="math inline">\(V\)</span>, smaller <span class="math inline">\(\Lambda\)</span>). Roy says the concentrated one is, because he looks only at the largest root. Hotelling-Lawley can’t tell them apart. <a href="#fig-four-contours" class="quarto-xref">Figure&nbsp;7</a> shows why: each curve is the set of effects that one test calls equally big.</p>
+<div id="fig-four-contours" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A square plot with lambda 1 on the horizontal axis and lambda 2 on the vertical, both from 0 to 1.25, with the dashed diagonal lambda 1 = lambda 2 and the region above it shaded. Four curves all pass through the concentrated effect at (1, 0) and its mirror image (0, 1). Pillai, in blue, bows furthest toward the origin, crossing the diagonal at 1/3. Wilks, in green, bows less, crossing at about 0.41. Hotelling-Lawley, in orange, is a straight line from (1, 0) to (0, 1), passing through the diffuse effect at (0.5, 0.5). Roy, in red, is a square corner: vertical from (1, 0) up to (1, 1), then across to (0, 1).">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-contours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/four-contours.png" class="img-fluid figure-img" style="width:65.0%" alt="A square plot with lambda 1 on the horizontal axis and lambda 2 on the vertical, both from 0 to 1.25, with the dashed diagonal lambda 1 = lambda 2 and the region above it shaded. Four curves all pass through the concentrated effect at (1, 0) and its mirror image (0, 1). Pillai, in blue, bows furthest toward the origin, crossing the diagonal at 1/3. Wilks, in green, bows less, crossing at about 0.41. Hotelling-Lawley, in orange, is a straight line from (1, 0) to (0, 1), passing through the diffuse effect at (0.5, 0.5). Roy, in red, is a square corner: vertical from (1, 0) up to (1, 1), then across to (0, 1).">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-contours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: What each test counts as “big”, for <span class="math inline">\(s = 2\)</span>. Each curve joins the pairs <span class="math inline">\((\lambda_1, \lambda_2)\)</span> that one test rates the same as the concentrated effect (1, 0). Effects outside a curve are bigger by that test’s lights. The diffuse effect (0.5, 0.5) is outside the Pillai and Wilks curves, on the Hotelling-Lawley line, and inside Roy’s square.
+</figcaption>
+</figure>
+</div>
+<p>The shapes should look familiar from <a href="#fig-unit-balls" class="quarto-xref">Figure&nbsp;2</a>. The Hotelling-Lawley contour is a diamond, the unit ball of the <span class="math inline">\(L_1\)</span> norm: it simply adds up the <span class="math inline">\(\lambda\)</span>s. Roy’s is a square, the <span class="math inline">\(L_\infty\)</span> ball: only the largest counts. Pillai and Wilks bend in further than the diamond, so they give extra credit for spreading an effect over several dimensions. Choosing a test is choosing a norm.</p>
+<p>This is also why the tests differ in power. Roy’s test is the most powerful when the group differences are concentrated in one dimension, and Pillai’s when they are spread over several <span class="citation" data-cites="Schatzoff1966">(<a href="#ref-Schatzoff1966" role="doc-biblioref">Schatzoff 1966</a>)</span>. Pillai’s is also the most robust to violations of the assumptions, which is why <span class="citation" data-cites="Olson:1974">Olson (<a href="#ref-Olson:1974" role="doc-biblioref">1974</a>)</span> recommended it as the default, and why <code>car::Anova()</code> reports it first.</p>
+<!-- TO WRITE: the tests can also disagree about significance, not just size. Find or
+     construct an example (s = 2, diffuse effect) where Roy is not significant but Pillai is,
+     or the reverse. MF: "hold off on the tests disagreeing for now, but that would be
+     something to mention." -->
+<p>With Pottery’s roots, one big and two small, Roy has the easiest call to make.</p>
+<div id="fig-four-tests-cartoon" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A pen-and-ink cartoon in a pub. Three older men with name badges reading Wilks, Pillai and Hotelling-Lawley sit at the bar over a napkin listing lambda 1 to lambda 5, and together say Probably. The bartender, polishing a glass, asks: Is something going on here? A fourth man, badge Roy, leans away from the bar and points across the room, shouting HIM! at a startled man drinking alone at a table. The caption reads: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-tests-cartoon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/four-tests-cartoon.jpg" class="img-fluid figure-img" style="width:85.0%" alt="A pen-and-ink cartoon in a pub. Three older men with name badges reading Wilks, Pillai and Hotelling-Lawley sit at the bar over a napkin listing lambda 1 to lambda 5, and together say Probably. The bartender, polishing a glass, asks: Is something going on here? A fourth man, badge Roy, leans away from the bar and points across the room, shouting HIM! at a startled man drinking alone at a table. The caption reads: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-tests-cartoon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar. Asked “Is something going on here?”, the first three, averaging over all the <span class="math inline">\(\lambda\)</span>s on their napkin, say “Probably.” Roy points at the largest one: “HIM!”
+</figcaption>
+</figure>
+</div>
 </section>
 <section id="four-rulers-for-one-ellipse" class="level2">
 <h2 class="anchored" data-anchor-id="four-rulers-for-one-ellipse">Four rulers for one ellipse</h2>
@@ -523,6 +622,12 @@ Locke, Phil. 1994. <span>“The Geometry of Determinants.”</span> <em>PRIMUS</
 </div>
 <div id="ref-Monette:90" class="csl-entry" role="listitem">
 Monette, Georges. 1990. <span>“Geometry of Multiple Regression and Interactive 3-<span>D</span> Graphics.”</span> Chap. 5 in <em>Modern Methods of Data Analysis</em>, edited by J. Fox and S. Long. SAGE Publications.
+</div>
+<div id="ref-Olson:1974" class="csl-entry" role="listitem">
+Olson, Chester L. 1974. <span>“Comparative Robustness of Six Tests in Multivariate Analysis of Variance.”</span> <em>Journal of the American Statistical Association</em> 69 (348): 894–908. <a href="https://doi.org/10.1080/01621459.1974.10480224">https://doi.org/10.1080/01621459.1974.10480224</a>.
+</div>
+<div id="ref-Schatzoff1966" class="csl-entry" role="listitem">
+Schatzoff, Martin. 1966. <span>“Sensitivity Comparisons Among Tests of the General Linear Hypothesis.”</span> <em>Journal of the American Statistical Association</em> 61 (314): 415–35. <a href="https://doi.org/10.1080/01621459.1966.10480878">https://doi.org/10.1080/01621459.1966.10480878</a>.
 </div>
 <div id="ref-Wickham-etal:2023:r4ds" class="csl-entry" role="listitem">
 Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. 2023. <em><span>R</span> for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. 2nd ed. O’Reilly Media. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.
