@@ -613,6 +613,30 @@ round(eta2, 3)
   dimension is half the story; the other half, for another post, is how to come back down
   without losing what matters."
 
+### Pottery: Site, and Region (added 2026-11-25)
+
+- The post, like the first one, uses `carData::Pottery`: 26 pots, 5 oxides, `Site` with **4**
+  levels (Ashley Rails, Caldicot, Isle Thorns, Llanedyrn). Source: @Tubb-etal:80, now in
+  `references.bib` (from `graphics.bib`).
+- `carData::Pottery` is exactly `heplots::Pottery2` without Gloucester, keeping the first five
+  oxides (checked in R, 2026-11-25). `Pottery2` has 48 pots, 9 oxides, and `Site` with **5**
+  levels (adds Gloucester, 22 pots), nested in `Region` with 3 levels: Gl (Gloucester), NF
+  (New Forest: Ashley Rails, Isle Thorns), Wales (Caldicot, Llanedyrn). `Kiln` is the same
+  5-level factor, with contrasts that split between-Region (2 df) from within-Region (2 df).
+- **Which one to use:** `carData::Pottery` with `Site`, as everywhere else: the first post,
+  the candisc and heplots examples (`heplot.candisc`, `heplot`, `robmlm`, `plot.robmlm`), the
+  heplots Robust vignette, and `Vis-MLM-book/R/pottery-infl.R`. The book chapters don't use
+  Pottery at all. MF's analyses have only ever used `Site` as the factor.
+- Spelling: carData has `Llanedyrn`, `Pottery2` has `Llanedryn` (the Cardiff district is spelled Llanedeyrn, I think; not checked).
+- `Vis-MLM-book/working-text/exercises-test-03.qmd` loads `data(Pottery, package = "heplots")`,
+  which doesn't exist: heplots has only `Pottery2`.
+- **Idea:** an analysis by `Region`, perhaps as an heplots example. The `Pottery2` help page
+  gets at it only through linear hypotheses on the `Kiln` contrasts (`"Region"` and
+  `"WithinBC"`), never with `Region` as a factor. Possibilities: `lm(... ~ Region)` and its
+  HE plot; Region vs. Site within Region as nested terms; how big **H** for Region is
+  relative to **H** for Site within Region (a natural "how big, compared to what?" example).
+  Note the sample sizes are very unequal (Caldicot has 2).
+
 ## References
 
 - In `references.bib`: `Friendly-etal:ellipses:2012` (Table 3, Fig. 19), `Friendly:07:manova`,

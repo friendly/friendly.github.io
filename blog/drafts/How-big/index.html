@@ -271,11 +271,12 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 <li>keep what you need to measure it, and</li>
 <li>draw a picture of what’s left.</li>
 </ul>
-<p>My title comes from the scene in the banner. Imagine the people who invented the classical multivariate tests sitting around a fire with an HE plot, arguing about how big <strong>H</strong> is compared to <strong>E</strong>. Each one had a different, and perfectly reasonable, answer.</p>
+<p>My title comes from the scene in the banner. Imagine the people who invented the classical multivariate tests sitting around a fire with an HE plot, arguing about how big <strong>H</strong> is compared to <strong>E</strong>. Each one had a different, and perfectly reasonable, answer. By indirection, this post is also about what I learned from the process of trying to develop graphical methods for multivariate models in R with the help and inspiration of the gentlemen around the table.</p>
 </section>
 <section id="climbing-back-down" class="level2">
 <h2 class="anchored" data-anchor-id="climbing-back-down">Climbing back down</h2>
-<p>Here’s the whole trip in one picture, for the Pottery data used in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>: the chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four kiln sites. The question is whether the sites differ.</p>
+<p>Here’s the whole trip in one picture, for the Pottery data used in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>: the chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four kiln sites.</p>
+<p>The first question is whether the sites differ. If they do, archaeologists like <span class="citation" data-cites="Tubb-etal:80">Tubb et al. (<a href="#ref-Tubb-etal:80" role="doc-biblioref">1980</a>)</span> would also want to know <em>how</em> they differ, and relate this to what they knew about the peoples who inhabited these sites.</p>
 <div id="fig-reducing-ladder" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-reducing-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1093,6 +1094,9 @@ Olson, Chester L. 1974. <span>“Comparative Robustness of Six Tests in Multivar
 </div>
 <div id="ref-Schatzoff1966" class="csl-entry" role="listitem">
 Schatzoff, Martin. 1966. <span>“Sensitivity Comparisons Among Tests of the General Linear Hypothesis.”</span> <em>Journal of the American Statistical Association</em> 61 (314): 415–35. <a href="https://doi.org/10.1080/01621459.1966.10480878">https://doi.org/10.1080/01621459.1966.10480878</a>.
+</div>
+<div id="ref-Tubb-etal:80" class="csl-entry" role="listitem">
+Tubb, A., A. J. Parker, and G. Nickless. 1980. <span>“The Analysis of <span>Romano-British</span> Pottery by Atomic Absorption Spectrophotometry.”</span> <em>Archaeometry</em> 22 (2): 153–71. <a href="https://doi.org/10.1111/j.1475-4754.1980.tb00939.x">https://doi.org/10.1111/j.1475-4754.1980.tb00939.x</a>.
 </div>
 <div id="ref-Wickham-etal:2023:r4ds" class="csl-entry" role="listitem">
 Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. 2023. <em><span>R</span> for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. 2nd ed. O’Reilly Media. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.

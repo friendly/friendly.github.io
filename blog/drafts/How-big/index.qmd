@@ -119,12 +119,17 @@ of a problem,
 My title comes from the scene in the banner. Imagine the people who invented the classical
 multivariate tests sitting around a fire with an HE plot, arguing about how big **H** is
 compared to **E**. Each one had a different, and perfectly reasonable, answer.
+By indirection, this post is also about what I learned from the process of trying to
+develop graphical methods for multivariate models in R with the help and inspiration of the gentlemen around
+the table.
 
 ## Climbing back down
 
 Here's the whole trip in one picture, for the Pottery data used in the [first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/): the
 chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four
-kiln sites. The question is whether the sites differ.
+kiln sites. 
+
+The first question is whether the sites differ. If they do, archaeologists like @Tubb-etal:80 would also want to know _how_ they differ, and relate this to what they knew about the peoples who inhabited these sites.
 
 ![Coming down the ladder for the Pottery MANOVA. Each step keeps fewer numbers. Each
 sets something aside, and concentrates the information in a better summary.](figures/reducing-ladder.png){#fig-reducing-ladder width="100%" fig-alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside."}
@@ -175,7 +180,7 @@ something you didn't think to ask. That's why I want to stop at each rung and lo
 Start at the bottom, with a single vector. Its size is its *length*, and even that needs a
 choice.
 
-Length and distance are the same question. The length of $\mathbf{y}$ is just its distance
+Length and distance are the same question from this perspective. The length of $\mathbf{y}$ is just its distance
 from $\mathbf{0}$, and how far apart $\mathbf{x}$ and $\mathbf{y}$ are is just how big
 $\mathbf{x} - \mathbf{y}$ is. (Center $\mathbf{y}$ first, and its length is its distance from
 the mean.) There's no shortage of answers. The animation in
@@ -210,7 +215,7 @@ left panel of @fig-unit-balls below. Cosine sets length aside and keeps only the
 the two vectors first, and it's their correlation. Hamming counts mismatches between bit
 strings, and the three left out are for sets and points on a globe.
 
-What's striking is the question none of the nine asks: *compared to what?* Every panel
+What's striking is the question none of these asks: *compared to what?* Every panel
 measures in fixed units, as if the axes were on the same scale and uncorrelated. Nine ways to
 say how far apart A and B are, and not one asks how far apart points *usually* are. Hold that
 thought for the last item below.
