@@ -296,7 +296,15 @@ Figure&nbsp;1: Coming down the ladder for the Pottery MANOVA. Each step keeps fe
 </ul>
 <p>Every rung is still an answer to “how big?”. A <span class="math inline">\(p\)</span>-value would be a different kind of answer: it sets aside the size itself and keeps only the evidence, so it doesn’t belong on this ladder.</p>
 <p>Each step is a choice, and each choice is a reasonable answer to “how big?”. The rest of this post is about those choices, and about the pictures that show what each one keeps.</p>
-<p>There’s a trade-off in coming down the ladder, and Hadley Wickham put it neatly. In a 2013 talk, as <a href="https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/">John D. Cook paraphrased it</a>, “Visualization can surprise you, but it doesn’t scale well. Modeling scales well, but it can’t surprise you.” In <em>R for Data Science</em> he and his co-authors give the reason <span class="citation" data-cites="Wickham-etal:2023:r4ds WickhamGrolemund:2017">(<a href="#ref-Wickham-etal:2023:r4ds" role="doc-biblioref">Wickham et al. 2023</a>; first edition <a href="#ref-WickhamGrolemund:2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>: “Visualizations can surprise you, but they don’t scale particularly well because they require a human to interpret them.” Models scale, but every model makes assumptions it can’t question, and so “a model cannot fundamentally surprise you.”</p>
+<p>There’s a trade-off in coming down the ladder, and Hadley Wickham put it neatly. In a 2013 talk, as <a href="https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/">John D. Cook paraphrased it</a>:</p>
+<blockquote class="blockquote">
+<p>Visualization can surprise you, but it doesn’t scale well. Modeling scales well, but it can’t surprise you.</p>
+</blockquote>
+<p>In <em>R for Data Science</em> Hadley and his co-authors give the reason <span class="citation" data-cites="Wickham-etal:2023:r4ds">(<a href="#ref-Wickham-etal:2023:r4ds" role="doc-biblioref">Wickham et al. 2023</a>)</span>:</p>
+<blockquote class="blockquote">
+<p>Visualizations can surprise you, but they don’t scale particularly well because they require a human to interpret them.</p>
+</blockquote>
+<p>Models scale, but every model makes assumptions it can’t question, and so “a model cannot fundamentally surprise you.” Visualization of data and models require shared cognitive and perceptual assumptions between the graph designer or developer and the human viewer, whose understanding of some problem or phenomenon a graph is supposed to increase.</p>
 <p>Every step down the ladder trades a little more surprise for a little more scale. A single number, like a <span class="math inline">\(p\)</span>-value, scales to any number of tests, but it will never show you something you didn’t think to ask. That’s why I want to stop at each rung and look.</p>
 <!-- Quotes: 2nd ed. (American spelling), Introduction, "What you will learn". Check against
      the book before publishing; the 1st ed. (2017) has the same passage in British spelling.
@@ -307,7 +315,7 @@ Figure&nbsp;1: Coming down the ladder for the Pottery MANOVA. Each step keeps fe
 <section id="how-big-is-a-vector" class="level2">
 <h2 class="anchored" data-anchor-id="how-big-is-a-vector">How big is a vector?</h2>
 <p>Start at the bottom, with a single vector. Its size is its <em>length</em>, and even that needs a choice.</p>
-<p>Length and distance are the same question. The length of <span class="math inline">\(\mathbf{y}\)</span> is just its distance from <span class="math inline">\(\mathbf{0}\)</span>, and how far apart <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> are is just how big <span class="math inline">\(\mathbf{x} - \mathbf{y}\)</span> is. (Center <span class="math inline">\(\mathbf{y}\)</span> first, and its length is its distance from the mean.) There’s no shortage of answers. The animation in <a href="#fig-distance-methods" class="quarto-xref">Figure&nbsp;2</a>, which went around social media recently, has nine; six of them are here.</p>
+<p>Length and distance are the same question from this perspective. The length of <span class="math inline">\(\mathbf{y}\)</span> is just its distance from <span class="math inline">\(\mathbf{0}\)</span>, and how far apart <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> are is just how big <span class="math inline">\(\mathbf{x} - \mathbf{y}\)</span> is. (Center <span class="math inline">\(\mathbf{y}\)</span> first, and its length is its distance from the mean.) There’s no shortage of answers. The animation in <a href="#fig-distance-methods" class="quarto-xref">Figure&nbsp;2</a>, which went around social media recently, has nine; six of them are here.</p>
 <!-- MF: the animation is @mathemetica's work, credited and linked as used for comment.
      Permission asked 2026-11-24 in a reply on X (the account takes no DMs):
      https://x.com/datavisFriendly/status/2125427011162120500. Awaiting an answer; if none,
@@ -324,7 +332,7 @@ Figure&nbsp;2: Six ways to measure how far apart A and B are. Animation by @math
 </figure>
 </div>
 <p>Most of these are lengths of <span class="math inline">\(\mathbf{x} - \mathbf{y}\)</span> in one sense or another. Euclidean, Manhattan and Chebyshev are three settings of a single dial, Minkowski’s exponent: watch its unit ball morph from a diamond, through a circle, toward a square, the three shapes in the left panel of <a href="#fig-unit-balls" class="quarto-xref">Figure&nbsp;3</a> below. Cosine sets length aside and keeps only the angle; center the two vectors first, and it’s their correlation. Hamming counts mismatches between bit strings, and the three left out are for sets and points on a globe.</p>
-<p>What’s striking is the question none of the nine asks: <em>compared to what?</em> Every panel measures in fixed units, as if the axes were on the same scale and uncorrelated. Nine ways to say how far apart A and B are, and not one asks how far apart points <em>usually</em> are. Hold that thought for the last item below.</p>
+<p>What’s striking is the question none of these asks: <em>compared to what?</em> Every panel measures in fixed units, as if the axes were on the same scale and uncorrelated. Nine ways to say how far apart A and B are, and not one asks how far apart points <em>usually</em> are. Hold that thought for the last item below.</p>
 <div id="fig-unit-balls" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Arrow a runs from the origin to (0.6, 0.8) on the circle, with a dashed route along the x axis and up, its vertical leg shaded green; arrow b runs to (-0.5, -0.5) on the diamond. A table below gives a: L1 1.4, L2 1, L-infinity 0.8; b: L1 1, L2 0.71, L-infinity 0.5. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unit-balls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1100,9 +1108,6 @@ Tubb, A., A. J. Parker, and G. Nickless. 1980. <span>“The Analysis of <span>Ro
 </div>
 <div id="ref-Wickham-etal:2023:r4ds" class="csl-entry" role="listitem">
 Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. 2023. <em><span>R</span> for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. 2nd ed. O’Reilly Media. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.
-</div>
-<div id="ref-WickhamGrolemund:2017" class="csl-entry" role="listitem">
-Wickham, Hadley, and Garrett Grolemund. 2017. <em><span>R</span> for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. O’Reilly Media. <a href="https://r4ds.had.co.nz/">https://r4ds.had.co.nz/</a>.
 </div>
 <div id="ref-Wilks:1932" class="csl-entry" role="listitem">
 Wilks, S. S. 1932. <span>“Certain Generalizations in the Analysis of Variance.”</span> <em>Biometrika</em> 24 (3–4): 471–94. <a href="https://doi.org/10.1093/biomet/24.3-4.471">https://doi.org/10.1093/biomet/24.3-4.471</a>.

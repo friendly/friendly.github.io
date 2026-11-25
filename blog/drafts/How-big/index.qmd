@@ -156,13 +156,21 @@ post is about those choices, and about the pictures that show what each one keep
 
 There's a trade-off in coming down the ladder, and Hadley Wickham put it neatly. In a 2013
 talk, as [John D. Cook paraphrased
-it](https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/),
-"Visualization can surprise you, but it doesn't scale well. Modeling scales well, but it can't
-surprise you." In *R for Data Science* he and his co-authors give the reason
-[@Wickham-etal:2023:r4ds; first edition @WickhamGrolemund:2017]: "Visualizations can surprise
-you, but they don't scale particularly well because they require a human to interpret them."
+it](https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/):
+
+> Visualization can surprise you, but it doesn't scale well. Modeling scales well, but it can't
+> surprise you.
+
+In *R for Data Science* Hadley and his co-authors give the reason
+[@Wickham-etal:2023:r4ds]:
+
+> Visualizations can surprise you, but they don't scale particularly well because they require
+> a human to interpret them.
+
 Models scale, but every model makes assumptions it can't question, and so "a model cannot
-fundamentally surprise you."
+fundamentally surprise you." Visualization of data and models require shared cognitive and perceptual assumptions
+between the graph designer or developer and the human viewer, whose understanding of some
+problem or phenomenon a graph is supposed to increase.
 
 Every step down the ladder trades a little more surprise for a little more scale. A single
 number, like a $p$-value, scales to any number of tests, but it will never show you
