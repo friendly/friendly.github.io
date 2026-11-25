@@ -316,7 +316,13 @@ round(cumsum(d^2) / sum(d^2), 3)     # proportion of total variance, first k
 After standardizing, the Frobenius size is just $(n-1)p$ = `r (nrow(Z) - 1) * ncol(Z)`,
 and tells us nothing: every standardized matrix of this shape has the same total variance.
 The information is in how that total is *spread* over the $d_i$, and that's where the
-other sizes come in.
+other sizes come in (@fig-spread-spectra).
+
+![Same total, different spread. The eigenvalues of three $5 \times 5$ correlation matrices
+(the $d_i^2 / (n-1)$ of standardized data) all add up to 5. The largest, the product and the
+condition number tell them apart, and each picks a different one as "biggest".
+Pottery has one big dimension; the made-up collinear data have four ordinary ones and one
+that is nearly missing.](figures/spread-spectra.png){#fig-spread-spectra width="100%" fig-alt="Three bar charts side by side, each with five bars for lambda 1 to lambda 5 and a dashed line at 1. Round: all five bars equal 1. Pottery oxides: a tall red first bar at 3.88, then 0.61, 0.24, 0.18, and a short blue last bar at 0.08. Nearly collinear: four bars near 1.2 to 1.3, the first in red, and a last bar of 0.01, almost invisible. Each panel lists four sizes. Round: total 5, largest 1, product 1, condition 1. Pottery: total 5, largest 3.88, product 0.009, condition 6.78. Nearly collinear: total 5, largest 1.30, product 0.024, condition 11.4."}
 
 * **Keep the big ones: PCA.** The first $k$ singular values and vectors give the best
   rank-$k$ approximation to $\mathbf{Y}$, in both the Frobenius and the spectral norm
@@ -689,9 +695,8 @@ neither by enough to matter much. Roy's test, with nothing there at all, says "s
 the time. That's what "upper bound" means in practice: when $s > 1$, treat Roy's $p$-value as a
 lower limit, not as a $p$-value.[^roy-he]
 
-[^roy-he]: This also matters for HE plots. Their default "significance" scaling uses Roy's
-test, so that **H** sticks out beyond **E** in some direction if and only if Roy's test is
-significant. With $s > 1$, that's the bound, not an exact .05 test; see the footnote in the
+[^roy-he]: This also matters for HE plots, whose default scaling uses Roy's test; see
+[below](#dont-reduce-too-soon-he-plots), and the footnote in the
 [first post](../../posts/2026-11-extending-lm/).
 
 There's one more trap in the common currency. Because each road to $F$ starts somewhere
@@ -711,9 +716,70 @@ $\lambda$s and the four $\eta^2$s.
 
 ## Don't reduce too soon: HE plots
 
-<!-- STUB. Notes section 7: center, scale, rescale for significance; read what the scalar
-     lost; rotate with candisc. Figure: figures/he-vs-canonical.png. A 2D HE plot is itself a
-     shadow of the q-dimensional ellipsoids. -->
+<!-- DRAFT 2026-11-24. Notes section 7. Figure: R/pottery-he.R, which replaces
+     he-vs-canonical.png (its right panel repeated fig-pottery-can in the first post). -->
+
+The last section ended on a complaint: four tests, four $F$s running from 4 to 137, and none of
+them says how much. Going back up a rung, to the $\lambda$s and the $\eta^2$s, gets *how much*
+back. Going up one more, to **H** and **E** themselves, gets back what the $\lambda$s set
+aside: the directions. That's what an HE plot shows. It answers the same question as a test,
+"how big is **H** relative to **E**?", but it stops in two dimensions instead of one, and
+leaves the last step of reading to you.
+
+The recipe uses only ideas from above:
+
+* **Center** both ellipsoids at the grand mean, so they share one frame, and the group means
+  can go in it too.
+* **Scale** both by $df_e$. **E** is then the covariance ellipse of the residuals, and **H**
+  is in the same units. This is *effect* scaling, and it answers "how big?".
+* **Or rescale H** for *significance* (evidence) scaling, which answers "big enough?". By
+  default, heplots scales **H** so that it sticks out beyond **E** in some direction exactly
+  when Roy's test is significant. With $s > 1$ that's the upper bound of the last section, so
+  when **H** barely pokes out, check Pillai or Wilks before believing it.
+
+@fig-pottery-he reads Pottery the way @fig-h-relative-e read `mathscore`.
+
+![Pottery, read the way @fig-h-relative-e read `mathscore`, with effect scaling (**H** and
+**E** divided by $df_e$). (A) Data space for Al and Fe: the shadows of the five-dimensional
+**E** (red) and **H** (blue) ellipsoids on that plane, with the cases (grey) and site means.
+(C) Canonical space, the first post's canonical plot in effect units: **E** is the unit circle,
+and **H** lies on the axes, with semi-axes $\sqrt{\lambda_1}$ and $\sqrt{\lambda_2}$. Grey
+arrows show the correlations of the oxides with Can1 and Can2.](figures/pottery-he.png){#fig-pottery-he width="100%" fig-alt="Two panels. A, In the units of the data: Fe against Al for the 26 pots as grey points. A small red ellipse, E, tilts slightly upward at the center. A long thin blue ellipse, H, runs steeply down to the right across it, from Llanedyrn and Caldicot at upper left (low Al, high Fe) to Isle Thorns and Ashley Rails at lower right (high Al, low Fe). C, Canonical space: Can2 against Can1. A red unit circle, E = I, at the origin, inside a long flat blue ellipse, H, reaching 5.84 along Can1, marked square root of lambda 1, and 1.12 along Can2, marked square root of lambda 2. Isle Thorns and Ashley Rails lie at the left, Llanedyrn at the right, and Caldicot at the lower right, near Can2 = -3.4. Grey arrows: Al points left; Fe and Mg right; Ca down and to the right; Na up and to the right. A note reads lambda = 34.16, 1.25, 0.028."}
+
+Panel A is an ordinary HE plot, for Al and Fe, the two oxides that matter most to the first
+canonical dimension. It's also a shadow: the two-dimensional projection of five-dimensional
+ellipsoids, and another pair of oxides would cast a different one. Even so, it shows something
+no test statistic can. **H** is long and thin, and it runs *across* **E**, not along it. The
+sites differ mostly in one direction, aluminum against iron, and that's a direction in which
+pots from the same site hardly vary.
+
+Panel C turns to the *best* shadow. It's the canonical plot from the
+[first post](../../posts/2026-11-extending-lm/), redrawn in effect units, and it's panel C of
+@fig-h-relative-e with real data: **E** is the unit circle, and **H** lies along the axes, with
+semi-axes $\sqrt{\lambda_1} = 5.84$ and $\sqrt{\lambda_2} = 1.12$. (The third, 0.17, is in a
+dimension we can't see here, well inside the circle.) Now the disagreements of the last
+two sections are out in the open:
+
+* **The effect is concentrated.** **H** sticks far out of the circle in one direction,
+  barely in a second, and hardly at all in a third. That's the concentrated point in
+  @fig-four-contours, which Roy's square corner counts as biggest and Pillai's bowed curve as
+  smallest, and it's why the $\eta^2$s run from .52 (Pillai) to .97 (Roy).
+* **Which way, and for whom.** The arrows give the directions back. Can1 is aluminum against
+  iron, magnesium and calcium, with Ashley Rails and Isle Thorns at one end and Llanedyrn and
+  Caldicot at the other. The small second dimension separates Caldicot from Llanedyrn:
+  a little more calcium, and a fifth of the sodium. None of the four statistics knows any of this.
+* **Not the biggest variance.** The canonical axes aren't the principal axes of the
+  [data matrix](#how-big-is-a-matrix-of-data). For the same five standardized oxides, the first
+  principal component holds 78% of the total variance; Can1 holds 96% of the *effect*.
+  PCA finds the biggest shadow of the data, and candisc the biggest shadow of **H** relative
+  to **E**. That's the sense in which the canonical plot is a biplot: of the effect, in the
+  metric of error.
+
+This is Wickham's trade-off again. The test scales: it handles any number of responses and
+returns one number, ready for a table. The plot doesn't scale as well, since it's a shadow in
+two dimensions and needs a person to read it. But it's where the surprises are: the shape of
+**H**, the direction it points, and which sites are doing the differing. Reduce, by all means,
+but not before you've looked.
 
 ## Smaller R objects, too
 

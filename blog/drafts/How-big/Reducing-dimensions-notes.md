@@ -457,6 +457,11 @@ MF: Do these in `figures/`, where I have other things related to a new post
    that function always labels the means and Isle Thorns and Ashley Rails overlap. Fe and Mg
    share an arrow label. Still crowded around the Al arrow; a candisc option to suppress or
    place mean labels would help.
+   **Replaced** (2026-11-24) by `figures/pottery-he.png`, from `R/pottery-he.R`, since the
+   right panel repeated `fig-pottery-can` in the first post. Panels A and C in the format of
+   `fig-h-relative-e`, with effect scaling: Al vs. Fe in data space, and canonical space with
+   E the unit circle and H's semi-axes sqrt(lambda) = 5.84, 1.12 marked. Section 7 drafted
+   around it; the `[^roy-he]` footnote now points there.
 6. Ellipses have shadows (section 5a). Redraw Fig. 13 of the ellipses paper from
    `matlib::coffee`, in $\beta$ space: the $d = 1$ and $d = 2$ ellipses, their shadows on both
    axes, the oblique shadow onto $\beta_\text{Stress} = 0$, and the $\beta_\text{Stress} - \beta_\text{Coffee}$
