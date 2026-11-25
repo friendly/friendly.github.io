@@ -65,7 +65,7 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 
 ![A fireside chat on how big **H** is, relative to **E**. Left to right: Wilks, Hotelling, Pillai
 (holding the HE plot), Roy (pointing to the largest dimension of **H**), me, and Georges
-Monette. (Lawley sends his regrets.)](figures/fireside-HE-chat-V5.jpg){fig-alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. On the right, a gray-bearded man with curly hair and a white-haired man in glasses look on and smile. On the table are three mugs, labeled Algebra (with a small matrix), Graphs and Geometry (with an ellipsoid), and a red book with a circle of arrows on its cover: Dempster's Elements of Continuous Multivariate Analysis."}
+Monette. A copy of @Dempster:69 sits on the table. Coffee mugs suggest the Elemental Forces of their approaches.](figures/fireside-HE-chat-V5.jpg){fig-alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. On the right, a gray-bearded man with curly hair and a white-haired man in glasses look on and smile. On the table are three mugs, labeled Algebra (with a small matrix), Graphs and Geometry (with an ellipsoid), and a red book with a circle of arrows on its cover: Dempster's Elements of Continuous Multivariate Analysis."}
 
 <!-- Before publishing with Georges named in the caption, send him the picture
      (figures/fireside-image-notes.md). -->
@@ -122,7 +122,7 @@ compared to **E**. Each one had a different, and perfectly reasonable, answer.
 
 ## Climbing back down
 
-Here's the whole trip in one picture, for the Pottery data used in the [first post](../../posts/2026-11-extending-lm/): the
+Here's the whole trip in one picture, for the Pottery data used in the [first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/): the
 chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four
 kiln sites. The question is whether the sites differ.
 
@@ -739,7 +739,7 @@ lower limit, not as a $p$-value.[^roy-he]
 
 [^roy-he]: This also matters for HE plots, whose default scaling uses Roy's test; see
 [below](#dont-reduce-too-soon-he-plots), and the footnote in the
-[first post](../../posts/2026-11-extending-lm/).
+[first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/).
 
 There's one more trap in the common currency. Because each road to $F$ starts somewhere
 different, $F$s from different tests can't be compared as sizes. For Pottery, the same three
@@ -796,7 +796,7 @@ sites differ mostly in one direction, aluminum against iron, and that's a direct
 pots from the same site hardly vary.
 
 Panel C turns to the *best* shadow. It's the canonical plot from the
-[first post](../../posts/2026-11-extending-lm/), redrawn in effect units, and it's panel C of
+[first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/), redrawn in effect units, and it's panel C of
 @fig-h-relative-e with real data: **E** is the unit circle, and **H** lies along the axes, with
 semi-axes $\sqrt{\lambda_1} = 5.84$ and $\sqrt{\lambda_2} = 1.12$. (The third, 0.17, is in a
 dimension we can't see here, well inside the circle.) Now the disagreements of the last
@@ -829,13 +829,13 @@ but not before you've looked.
      kronecker(estVar, (X'X)^{-1}); vcov() of an "mlmridge" object equals
      kronecker(Sigma, cov[[k]]) for each lambda (genridge 0.8.1). -->
 
-The ladder works for the objects R hands back, too. In the [first post](../../posts/2026-11-extending-lm/), going from `lm` to
+The ladder works for the objects R hands back, too. In the [first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/), going from `lm` to
 `mlm` gave every object an extra dimension. Some of that size is real, and some is just
 bookkeeping. Knowing the structure tells you which numbers you don't need to store.
 
 The plainest case is `vcov()`. For Pottery there are five responses and four coefficients
 for each, so the covariance matrix of the coefficients is $20 \times 20$: 400 numbers, 210 of
-them distinct. But the [first post](../../posts/2026-11-extending-lm/) gave its structure,
+them distinct. But the [first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/) gave its structure,
 $\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$,
 so all of it is made from two small matrices, with 15 and 10 distinct numbers:
 
@@ -849,7 +849,7 @@ XtXinv <- chol2inv(qr.R(pottery.mlm$qr))    # (X'X)^{-1}, 4 x 4
 all.equal(V, kronecker(S, XtXinv), check.attributes = FALSE)
 ```
 
-The same thing happens elsewhere in the [first post](../../posts/2026-11-extending-lm/):
+The same thing happens elsewhere in the [first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/):
 
 | Object | Stored in full | Enough to rebuild it |
 |---|---|---|
@@ -868,12 +868,12 @@ $15 \times 15$ matrices only on request.
 
 The last row is different in kind. Reducing an $m \times m$ matrix to its determinant or trace
 throws something away, and which one you choose is a choice of "how big?", just as in the
-sections above. That's why mvinfluence makes `FUN` an argument instead of deciding for you.
+sections above. That's why mvinfluence makes [`FUN` an argument](https://friendly.github.io/mvinfluence/reference/influencePlot.mlm.html#arg-fun) instead of deciding for you.
 
 So, a design rule: **store the factors, and let the methods expand or reduce them.**
 Expanding is just arithmetic. Reducing is a choice, so leave it to the user.
 
-This may also answer the question the [first post](../../posts/2026-11-extending-lm/) left open: what should `predict()` return
+This may also answer the question the [first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/) left open: what should `predict()` return
 for an `mlm`? Not an array of intervals, one response at a time, but the fitted values, a
 leverage $h_i$ for each case and one $\widehat{\boldsymbol{\Sigma}}$. The confidence ellipse
 for case $i$ is centered at $\widehat{\mathbf{y}}_i$ with shape $h_i \widehat{\boldsymbol{\Sigma}}$
@@ -887,9 +887,48 @@ ellipse for each site mean is $\widehat{\boldsymbol{\Sigma}}$ shrunk by its samp
 
 ## Conclusion
 
-<!-- STUB. Notes section 9: every summary is a projection, a shadow, and has things it
-     can't see. The first post warned about q univariate answers; the opposite mistake is
-     one multivariate answer that forgets what was averaged to get it. -->
+<!-- DRAFT 2026-11-25. Notes section 9. Calls back to the precept, Lineland, the banner, the
+     Elemental Forces and the three-point rubric in the Introduction. -->
+
+A. Square went up a dimension, and saw more: 3D objects whose visions suggested a wider view
+of what _Flatland_ society could become.
+This post has been about the trip the other
+way, from the 130 numbers in the Pottery data down to one, and about what each step leaves
+behind, when we focus on "How big?" a statistical object really is.
+
+The same question came up at every rung, and it never had just one answer. The size of a
+vector depends on the norm you choose. The size of a covariance matrix depends on whether you take its
+trace, its largest eigenvalue or its determinant. The size of **H** depends on whether you
+measure it against the identity or against **E**. And once **H** is measured in units of
+**E**, there are still four reasonable ways to turn its eigenvalues into one number. 
+
+Around
+the fire in the banner image, Wilks, Pillai, Hotelling-Lawley and Roy aren't arguing about
+arithmetic. They're giving different answers to the precept's two questions: *compared to
+what?*, and *in what sense?*. Nobody wins the argument, and that's as it should be.
+
+That's why the precept's motto is *every summary is a shadow*. A confidence interval is the
+shadow of an ellipse on one axis. Roy's largest root is the longest shadow of **H** in units
+of **E**. An HE plot is the shadow of two ellipsoids on a plane, and the canonical plot is
+the best such plane. A shadow is a fine thing to look at, as long as you remember where the
+light comes from and what it can't show.
+
+The first post warned about methods that quietly turn one multivariate question into $q$
+univariate answers. The opposite mistake is just as easy: to return one multivariate answer
+and forget what was averaged to get it. A Pillai trace of 1.55, or an $\eta^2$ of .52, is a
+good answer to "how big?". It's no answer at all to "in which direction?" or "which pottery sites differ, and how?".
+
+Back to the three Elemental Forces. *Algebra* told us how few numbers we need to keep: three
+eigenvalues, or a leverage and a $\boldsymbol{\Sigma}$ in place of an array. *Geometry*
+showed what those numbers measure: semi-axes, areas, shadows. And *graphs* showed what was
+set aside on the way down. So climb down the ladder one rung at a time, and at each one:
+
+* decide what 'big' means,
+* keep what you need to measure it, and
+* draw a picture of what's left.
+
+The King of Lineland knew only one kind of size. We have many, and choosing among them is
+the work.
 
 ## References {.unnumbered}
 

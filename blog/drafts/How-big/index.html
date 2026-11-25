@@ -243,7 +243,7 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figures/fireside-HE-chat-V5.jpg" class="img-fluid figure-img" alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. On the right, a gray-bearded man with curly hair and a white-haired man in glasses look on and smile. On the table are three mugs, labeled Algebra (with a small matrix), Graphs and Geometry (with an ellipsoid), and a red book with a circle of arrows on its cover: Dempster's Elements of Continuous Multivariate Analysis."></p>
-<figcaption>A fireside chat on how big <strong>H</strong> is, relative to <strong>E</strong>. Left to right: Wilks, Hotelling, Pillai (holding the HE plot), Roy (pointing to the largest dimension of <strong>H</strong>), me, and Georges Monette. (Lawley sends his regrets.)</figcaption>
+<figcaption>A fireside chat on how big <strong>H</strong> is, relative to <strong>E</strong>. Left to right: Wilks, Hotelling, Pillai (holding the HE plot), Roy (pointing to the largest dimension of <strong>H</strong>), me, and Georges Monette. A copy of <span class="citation" data-cites="Dempster:69">Dempster (<a href="#ref-Dempster:69" role="doc-biblioref">1969</a>)</span> sits on the table. Coffee mugs suggest the Elemental Forces of their approaches.</figcaption>
 </figure>
 </div>
 <!-- Before publishing with Georges named in the caption, send him the picture
@@ -275,7 +275,7 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 </section>
 <section id="climbing-back-down" class="level2">
 <h2 class="anchored" data-anchor-id="climbing-back-down">Climbing back down</h2>
-<p>Here’s the whole trip in one picture, for the Pottery data used in the <a href="../../posts/2026-11-extending-lm/">first post</a>: the chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four kiln sites. The question is whether the sites differ.</p>
+<p>Here’s the whole trip in one picture, for the Pottery data used in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>: the chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four kiln sites. The question is whether the sites differ.</p>
 <div id="fig-reducing-ladder" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-reducing-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -947,7 +947,7 @@ Figure&nbsp;13: Pottery, read the way <a href="#fig-h-relative-e" class="quarto-
 </figure>
 </div>
 <p>Panel A is an ordinary HE plot, for Al and Fe, the two oxides that matter most to the first canonical dimension. It’s also a shadow: the two-dimensional projection of five-dimensional ellipsoids, and another pair of oxides would cast a different one. Even so, it shows something no test statistic can. <strong>H</strong> is long and thin, and it runs <em>across</em> <strong>E</strong>, not along it. The sites differ mostly in one direction, aluminum against iron, and that’s a direction in which pots from the same site hardly vary.</p>
-<p>Panel C turns to the <em>best</em> shadow. It’s the canonical plot from the <a href="../../posts/2026-11-extending-lm/">first post</a>, redrawn in effect units, and it’s panel C of <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a> with real data: <strong>E</strong> is the unit circle, and <strong>H</strong> lies along the axes, with semi-axes <span class="math inline">\(\sqrt{\lambda_1} = 5.84\)</span> and <span class="math inline">\(\sqrt{\lambda_2} = 1.12\)</span>. (The third, 0.17, is in a dimension we can’t see here, well inside the circle.) Now the disagreements of the last two sections are out in the open:</p>
+<p>Panel C turns to the <em>best</em> shadow. It’s the canonical plot from the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>, redrawn in effect units, and it’s panel C of <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a> with real data: <strong>E</strong> is the unit circle, and <strong>H</strong> lies along the axes, with semi-axes <span class="math inline">\(\sqrt{\lambda_1} = 5.84\)</span> and <span class="math inline">\(\sqrt{\lambda_2} = 1.12\)</span>. (The third, 0.17, is in a dimension we can’t see here, well inside the circle.) Now the disagreements of the last two sections are out in the open:</p>
 <ul>
 <li><strong>The effect is concentrated.</strong> <strong>H</strong> sticks far out of the circle in one direction, barely in a second, and hardly at all in a third. That’s the concentrated point in <a href="#fig-four-contours" class="quarto-xref">Figure&nbsp;9</a>, which Roy’s square corner counts as biggest and Pillai’s bowed curve as smallest, and it’s why the <span class="math inline">\(\eta^2\)</span>s run from .52 (Pillai) to .97 (Roy).</li>
 <li><strong>Which way, and for whom.</strong> The arrows give the directions back. Can1 is aluminum against iron, magnesium and calcium, with Ashley Rails and Isle Thorns at one end and Llanedyrn and Caldicot at the other. The small second dimension separates Caldicot from Llanedyrn: a little more calcium, and a fifth of the sodium. None of the four statistics knows any of this.</li>
@@ -960,8 +960,8 @@ Figure&nbsp;13: Pottery, read the way <a href="#fig-h-relative-e" class="quarto-
 <!-- DRAFT 2026-11-25. Notes section 8. Numbers checked in R: vcov(pottery.mlm) equals
      kronecker(estVar, (X'X)^{-1}); vcov() of an "mlmridge" object equals
      kronecker(Sigma, cov[[k]]) for each lambda (genridge 0.8.1). -->
-<p>The ladder works for the objects R hands back, too. In the <a href="../../posts/2026-11-extending-lm/">first post</a>, going from <code>lm</code> to <code>mlm</code> gave every object an extra dimension. Some of that size is real, and some is just bookkeeping. Knowing the structure tells you which numbers you don’t need to store.</p>
-<p>The plainest case is <code>vcov()</code>. For Pottery there are five responses and four coefficients for each, so the covariance matrix of the coefficients is <span class="math inline">\(20 \times 20\)</span>: 400 numbers, 210 of them distinct. But the <a href="../../posts/2026-11-extending-lm/">first post</a> gave its structure, <span class="math inline">\(\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}\)</span>, so all of it is made from two small matrices, with 15 and 10 distinct numbers:</p>
+<p>The ladder works for the objects R hands back, too. In the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>, going from <code>lm</code> to <code>mlm</code> gave every object an extra dimension. Some of that size is real, and some is just bookkeeping. Knowing the structure tells you which numbers you don’t need to store.</p>
+<p>The plainest case is <code>vcov()</code>. For Pottery there are five responses and four coefficients for each, so the covariance matrix of the coefficients is <span class="math inline">\(20 \times 20\)</span>: 400 numbers, 210 of them distinct. But the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a> gave its structure, <span class="math inline">\(\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}\)</span>, so all of it is made from two small matrices, with 15 and 10 distinct numbers:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Show the code</summary>
@@ -982,7 +982,7 @@ Figure&nbsp;13: Pottery, read the way <a href="#fig-h-relative-e" class="quarto-
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
-<p>The same thing happens elsewhere in the <a href="../../posts/2026-11-extending-lm/">first post</a>:</p>
+<p>The same thing happens elsewhere in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>:</p>
 <div id="tbl-smaller" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-smaller-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1029,23 +1029,37 @@ Table&nbsp;2: What an <code>mlm</code> object needs to keep.
 </figure>
 </div>
 <p>The first three rows lose nothing. The full object is a Kronecker or scalar multiple of smaller ones, and a method can rebuild it whenever it’s asked for. genridge already works this way. An <code>"mlmridge"</code> object keeps one <span class="math inline">\(3 \times 3\)</span> <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> and a <span class="math inline">\(5 \times 5\)</span> <span class="math inline">\(\mathbf{V}_\lambda\)</span> for each <span class="math inline">\(\lambda\)</span>, and its <code>vcov()</code> method expands them into <span class="math inline">\(15 \times 15\)</span> matrices only on request.</p>
-<p>The last row is different in kind. Reducing an <span class="math inline">\(m \times m\)</span> matrix to its determinant or trace throws something away, and which one you choose is a choice of “how big?”, just as in the sections above. That’s why mvinfluence makes <code>FUN</code> an argument instead of deciding for you.</p>
+<p>The last row is different in kind. Reducing an <span class="math inline">\(m \times m\)</span> matrix to its determinant or trace throws something away, and which one you choose is a choice of “how big?”, just as in the sections above. That’s why mvinfluence makes <a href="https://friendly.github.io/mvinfluence/reference/influencePlot.mlm.html#arg-fun"><code>FUN</code> an argument</a> instead of deciding for you.</p>
 <p>So, a design rule: <strong>store the factors, and let the methods expand or reduce them.</strong> Expanding is just arithmetic. Reducing is a choice, so leave it to the user.</p>
-<p>This may also answer the question the <a href="../../posts/2026-11-extending-lm/">first post</a> left open: what should <code>predict()</code> return for an <code>mlm</code>? Not an array of intervals, one response at a time, but the fitted values, a leverage <span class="math inline">\(h_i\)</span> for each case and one <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span>. The confidence ellipse for case <span class="math inline">\(i\)</span> is centered at <span class="math inline">\(\widehat{\mathbf{y}}_i\)</span> with shape <span class="math inline">\(h_i \widehat{\boldsymbol{\Sigma}}\)</span> (for a prediction interval, <span class="math inline">\((1 + h_i)\widehat{\boldsymbol{\Sigma}}\)</span>), so a <code>plot()</code> method can draw any of them, and an <code>intervals</code> method can take their shadows on the axes. For Pottery, a one-way design, <span class="math inline">\(h_i\)</span> is just <span class="math inline">\(1/n_j\)</span> for the site a pot comes from, and the ellipse for each site mean is <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> shrunk by its sample size.</p>
+<p>This may also answer the question the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a> left open: what should <code>predict()</code> return for an <code>mlm</code>? Not an array of intervals, one response at a time, but the fitted values, a leverage <span class="math inline">\(h_i\)</span> for each case and one <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span>. The confidence ellipse for case <span class="math inline">\(i\)</span> is centered at <span class="math inline">\(\widehat{\mathbf{y}}_i\)</span> with shape <span class="math inline">\(h_i \widehat{\boldsymbol{\Sigma}}\)</span> (for a prediction interval, <span class="math inline">\((1 + h_i)\widehat{\boldsymbol{\Sigma}}\)</span>), so a <code>plot()</code> method can draw any of them, and an <code>intervals</code> method can take their shadows on the axes. For Pottery, a one-way design, <span class="math inline">\(h_i\)</span> is just <span class="math inline">\(1/n_j\)</span> for the site a pot comes from, and the ellipse for each site mean is <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> shrunk by its sample size.</p>
 <!-- heplots dev/pred.mlm.R currently keeps only diag(Sigma) (the "sigmas"), so its
      intervals are per response, not ellipses. -->
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<!-- STUB. Notes section 9: every summary is a projection, a shadow, and has things it
-     can't see. The first post warned about q univariate answers; the opposite mistake is
-     one multivariate answer that forgets what was averaged to get it. -->
+<!-- DRAFT 2026-11-25. Notes section 9. Calls back to the precept, Lineland, the banner, the
+     Elemental Forces and the three-point rubric in the Introduction. -->
+<p>A. Square went up a dimension, and saw more: 3D objects whose visions suggested a wider view of what <em>Flatland</em> society could become. This post has been about the trip the other way, from the 130 numbers in the Pottery data down to one, and about what each step leaves behind, when we focus on “How big?” a statistical object really is.</p>
+<p>The same question came up at every rung, and it never had just one answer. The size of a vector depends on the norm you choose. The size of a covariance matrix depends on whether you take its trace, its largest eigenvalue or its determinant. The size of <strong>H</strong> depends on whether you measure it against the identity or against <strong>E</strong>. And once <strong>H</strong> is measured in units of <strong>E</strong>, there are still four reasonable ways to turn its eigenvalues into one number.</p>
+<p>Around the fire in the banner image, Wilks, Pillai, Hotelling-Lawley and Roy aren’t arguing about arithmetic. They’re giving different answers to the precept’s two questions: <em>compared to what?</em>, and <em>in what sense?</em>. Nobody wins the argument, and that’s as it should be.</p>
+<p>That’s why the precept’s motto is <em>every summary is a shadow</em>. A confidence interval is the shadow of an ellipse on one axis. Roy’s largest root is the longest shadow of <strong>H</strong> in units of <strong>E</strong>. An HE plot is the shadow of two ellipsoids on a plane, and the canonical plot is the best such plane. A shadow is a fine thing to look at, as long as you remember where the light comes from and what it can’t show.</p>
+<p>The first post warned about methods that quietly turn one multivariate question into <span class="math inline">\(q\)</span> univariate answers. The opposite mistake is just as easy: to return one multivariate answer and forget what was averaged to get it. A Pillai trace of 1.55, or an <span class="math inline">\(\eta^2\)</span> of .52, is a good answer to “how big?”. It’s no answer at all to “in which direction?” or “which pottery sites differ, and how?”.</p>
+<p>Back to the three Elemental Forces. <em>Algebra</em> told us how few numbers we need to keep: three eigenvalues, or a leverage and a <span class="math inline">\(\boldsymbol{\Sigma}\)</span> in place of an array. <em>Geometry</em> showed what those numbers measure: semi-axes, areas, shadows. And <em>graphs</em> showed what was set aside on the way down. So climb down the ladder one rung at a time, and at each one:</p>
+<ul>
+<li>decide what ‘big’ means,</li>
+<li>keep what you need to measure it, and</li>
+<li>draw a picture of what’s left.</li>
+</ul>
+<p>The King of Lineland knew only one kind of size. We have many, and choosing among them is the work.</p>
 </section>
 <section id="references" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Abbott:1884" class="csl-entry" role="listitem">
 Abbott, Edwin A. 1884. <em>Flatland: A Romance of Many Dimensions</em>. Buccaneer Books.
+</div>
+<div id="ref-Dempster:69" class="csl-entry" role="listitem">
+Dempster, A. P. 1969. <em>Elements of Continuous Multivariate Analysis</em>. Addison-Wesley.
 </div>
 <div id="ref-EckartYoung:1936" class="csl-entry" role="listitem">
 Eckart, Carl, and Gale Young. 1936. <span>“The Approximation of One Matrix by Another of Lower Rank.”</span> <em>Psychometrika</em> 1 (3): 211–18. <a href="https://doi.org/10.1007/BF02288367">https://doi.org/10.1007/BF02288367</a>.
@@ -1097,7 +1111,7 @@ Wilks, S. S. 1932. <span>“Certain Generalizations in the Analysis of Variance.
 
 <ol>
 <li id="fn1"><p>That was the idea that inspired the cover for my Vis-MLM book: Data ellipsoids for the penguin species, with their 2D shadows shown in different forms on the planes for pairs of variables. The general class of ellipsoids is explored in my experimental <a href="https://friendly.github.io/gellipsoid/"><code>gellipsoid</code></a> package (source on <a href="https://github.com/friendly/gellipsoid">GitHub</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>This also matters for HE plots, whose default scaling uses Roy’s test; see <a href="#dont-reduce-too-soon-he-plots">below</a>, and the footnote in the <a href="../../posts/2026-11-extending-lm/">first post</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This also matters for HE plots, whose default scaling uses Roy’s test; see <a href="#dont-reduce-too-soon-he-plots">below</a>, and the footnote in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
