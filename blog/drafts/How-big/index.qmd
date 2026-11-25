@@ -122,7 +122,7 @@ compared to **E**. Each one had a different, and perfectly reasonable, answer.
 
 ## Climbing back down
 
-Here's the whole trip in one picture, for the Pottery data used in the first post: the
+Here's the whole trip in one picture, for the Pottery data used in the [first post](../../posts/2026-11-extending-lm/): the
 chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four
 kiln sites. The question is whether the sites differ.
 
@@ -779,7 +779,7 @@ The recipe uses only ideas from above:
   when Roy's test is significant. With $s > 1$ that's the upper bound of the last section, so
   when **H** barely pokes out, check Pillai or Wilks before believing it.
 
-@fig-pottery-he reads Pottery the way @fig-h-relative-e read `mathscore`.
+@fig-pottery-he is a reading of the Pottery data, the way @fig-h-relative-e reads `mathscore`.
 
 ![Pottery, read the way @fig-h-relative-e read `mathscore`, with effect scaling (**H** and
 **E** divided by $df_e$). (A) Data space for Al and Fe: the shadows of the five-dimensional
@@ -825,8 +825,65 @@ but not before you've looked.
 
 ## Smaller R objects, too
 
-<!-- STUB. Notes section 8: store the factors (Sigma, (X'X)^{-1}, leverages), and let
-     methods expand or reduce them. Maybe just a paragraph. -->
+<!-- DRAFT 2026-11-25. Notes section 8. Numbers checked in R: vcov(pottery.mlm) equals
+     kronecker(estVar, (X'X)^{-1}); vcov() of an "mlmridge" object equals
+     kronecker(Sigma, cov[[k]]) for each lambda (genridge 0.8.1). -->
+
+The ladder works for the objects R hands back, too. In the [first post](../../posts/2026-11-extending-lm/), going from `lm` to
+`mlm` gave every object an extra dimension. Some of that size is real, and some is just
+bookkeeping. Knowing the structure tells you which numbers you don't need to store.
+
+The plainest case is `vcov()`. For Pottery there are five responses and four coefficients
+for each, so the covariance matrix of the coefficients is $20 \times 20$: 400 numbers, 210 of
+them distinct. But the [first post](../../posts/2026-11-extending-lm/) gave its structure,
+$\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}$,
+so all of it is made from two small matrices, with 15 and 10 distinct numbers:
+
+```{r}
+#| label: pottery-vcov
+pottery.mlm <- lm(cbind(Al, Fe, Mg, Ca, Na) ~ Site, data = Pottery)
+V <- vcov(pottery.mlm)
+dim(V)
+S <- estVar(pottery.mlm)                    # Sigma-hat, 5 x 5
+XtXinv <- chol2inv(qr.R(pottery.mlm$qr))    # (X'X)^{-1}, 4 x 4
+all.equal(V, kronecker(S, XtXinv), check.attributes = FALSE)
+```
+
+The same thing happens elsewhere in the [first post](../../posts/2026-11-extending-lm/):
+
+| Object | Stored in full | Enough to rebuild it |
+|---|---|---|
+| `vcov()`, Pottery | $20 \times 20$: 210 distinct numbers | $\widehat{\boldsymbol{\Sigma}}$ and $(\mathbf{X}^\top\mathbf{X})^{-1}$: 15 + 10 |
+| covariances of the fitted values, $n$ cases | an $n \times q \times q$ array: $26 \times 5 \times 5$ | $n$ leverages $h_i$ and one $\widehat{\boldsymbol{\Sigma}}$: 26 + 15 |
+| ridge covariances, $L$ values of $\lambda$ | $L$ matrices, each $pq \times pq$ | one $\widehat{\boldsymbol{\Sigma}}$ and $L$ matrices $\mathbf{V}_\lambda$, each $p \times p$ |
+| influence of all subsets of $m$ cases | two $m \times m$ matrices for each subset | one number for each: their `det()` or `tr()` |
+
+: What an `mlm` object needs to keep. {#tbl-smaller}
+
+The first three rows lose nothing. The full object is a Kronecker or scalar multiple of
+smaller ones, and a method can rebuild it whenever it's asked for. genridge already works
+this way. An `"mlmridge"` object keeps one $3 \times 3$ $\widehat{\boldsymbol{\Sigma}}$ and a
+$5 \times 5$ $\mathbf{V}_\lambda$ for each $\lambda$, and its `vcov()` method expands them into
+$15 \times 15$ matrices only on request.
+
+The last row is different in kind. Reducing an $m \times m$ matrix to its determinant or trace
+throws something away, and which one you choose is a choice of "how big?", just as in the
+sections above. That's why mvinfluence makes `FUN` an argument instead of deciding for you.
+
+So, a design rule: **store the factors, and let the methods expand or reduce them.**
+Expanding is just arithmetic. Reducing is a choice, so leave it to the user.
+
+This may also answer the question the [first post](../../posts/2026-11-extending-lm/) left open: what should `predict()` return
+for an `mlm`? Not an array of intervals, one response at a time, but the fitted values, a
+leverage $h_i$ for each case and one $\widehat{\boldsymbol{\Sigma}}$. The confidence ellipse
+for case $i$ is centered at $\widehat{\mathbf{y}}_i$ with shape $h_i \widehat{\boldsymbol{\Sigma}}$
+(for a prediction interval, $(1 + h_i)\widehat{\boldsymbol{\Sigma}}$), so a `plot()` method
+can draw any of them, and an `intervals` method can take their shadows on the axes. For
+Pottery, a one-way design, $h_i$ is just $1/n_j$ for the site a pot comes from, and the
+ellipse for each site mean is $\widehat{\boldsymbol{\Sigma}}$ shrunk by its sample size.
+
+<!-- heplots dev/pred.mlm.R currently keeps only diag(Sigma) (the "sigmas"), so its
+     intervals are per response, not ellipses. -->
 
 ## Conclusion
 

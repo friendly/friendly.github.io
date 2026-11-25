@@ -275,7 +275,7 @@ shadows" are stubs, each pointing to its section of Reducing-dimensions-notes.md
 </section>
 <section id="climbing-back-down" class="level2">
 <h2 class="anchored" data-anchor-id="climbing-back-down">Climbing back down</h2>
-<p>Here’s the whole trip in one picture, for the Pottery data used in the first post: the chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four kiln sites. The question is whether the sites differ.</p>
+<p>Here’s the whole trip in one picture, for the Pottery data used in the <a href="../../posts/2026-11-extending-lm/">first post</a>: the chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four kiln sites. The question is whether the sites differ.</p>
 <div id="fig-reducing-ladder" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-reducing-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -935,7 +935,7 @@ Figure&nbsp;12: The distribution of <span class="math inline">\(p\)</span>-value
 <li><strong>Scale</strong> both by <span class="math inline">\(df_e\)</span>. <strong>E</strong> is then the covariance ellipse of the residuals, and <strong>H</strong> is in the same units. This is <em>effect</em> scaling, and it answers “how big?”.</li>
 <li><strong>Or rescale H</strong> for <em>significance</em> (evidence) scaling, which answers “big enough?”. By default, heplots scales <strong>H</strong> so that it sticks out beyond <strong>E</strong> in some direction exactly when Roy’s test is significant. With <span class="math inline">\(s &gt; 1\)</span> that’s the upper bound of the last section, so when <strong>H</strong> barely pokes out, check Pillai or Wilks before believing it.</li>
 </ul>
-<p><a href="#fig-pottery-he" class="quarto-xref">Figure&nbsp;13</a> reads Pottery the way <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a> read <code>mathscore</code>.</p>
+<p><a href="#fig-pottery-he" class="quarto-xref">Figure&nbsp;13</a> is a reading of the Pottery data, the way <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a> reads <code>mathscore</code>.</p>
 <div id="fig-pottery-he" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. A, In the units of the data: Fe against Al for the 26 pots as grey points. A small red ellipse, E, tilts slightly upward at the center. A long thin blue ellipse, H, runs steeply down to the right across it, from Llanedyrn and Caldicot at upper left (low Al, high Fe) to Isle Thorns and Ashley Rails at lower right (high Al, low Fe). C, Canonical space: Can2 against Can1. A red unit circle, E = I, at the origin, inside a long flat blue ellipse, H, reaching 5.84 along Can1, marked square root of lambda 1, and 1.12 along Can2, marked square root of lambda 2. Isle Thorns and Ashley Rails lie at the left, Llanedyrn at the right, and Caldicot at the lower right, near Can2 = -3.4. Grey arrows: Al points left; Fe and Mg right; Ca down and to the right; Na up and to the right. A note reads lambda = 34.16, 1.25, 0.028.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pottery-he-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -957,8 +957,83 @@ Figure&nbsp;13: Pottery, read the way <a href="#fig-h-relative-e" class="quarto-
 </section>
 <section id="smaller-r-objects-too" class="level2">
 <h2 class="anchored" data-anchor-id="smaller-r-objects-too">Smaller R objects, too</h2>
-<!-- STUB. Notes section 8: store the factors (Sigma, (X'X)^{-1}, leverages), and let
-     methods expand or reduce them. Maybe just a paragraph. -->
+<!-- DRAFT 2026-11-25. Notes section 8. Numbers checked in R: vcov(pottery.mlm) equals
+     kronecker(estVar, (X'X)^{-1}); vcov() of an "mlmridge" object equals
+     kronecker(Sigma, cov[[k]]) for each lambda (genridge 0.8.1). -->
+<p>The ladder works for the objects R hands back, too. In the <a href="../../posts/2026-11-extending-lm/">first post</a>, going from <code>lm</code> to <code>mlm</code> gave every object an extra dimension. Some of that size is real, and some is just bookkeeping. Knowing the structure tells you which numbers you don’t need to store.</p>
+<p>The plainest case is <code>vcov()</code>. For Pottery there are five responses and four coefficients for each, so the covariance matrix of the coefficients is <span class="math inline">\(20 \times 20\)</span>: 400 numbers, 210 of them distinct. But the <a href="../../posts/2026-11-extending-lm/">first post</a> gave its structure, <span class="math inline">\(\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}\)</span>, so all of it is made from two small matrices, with 15 and 10 distinct numbers:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pottery.mlm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(Al, Fe, Mg, Ca, Na) <span class="sc">~</span> Site, <span class="at">data =</span> Pottery)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">vcov</span>(pottery.mlm)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(V)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20 20</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">estVar</span>(pottery.mlm)                    <span class="co"># Sigma-hat, 5 x 5</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>XtXinv <span class="ot">&lt;-</span> <span class="fu">chol2inv</span>(<span class="fu">qr.R</span>(pottery.mlm<span class="sc">$</span>qr))    <span class="co"># (X'X)^{-1}, 4 x 4</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(V, <span class="fu">kronecker</span>(S, XtXinv), <span class="at">check.attributes =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>The same thing happens elsewhere in the <a href="../../posts/2026-11-extending-lm/">first post</a>:</p>
+<div id="tbl-smaller" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-smaller-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: What an <code>mlm</code> object needs to keep.
+</figcaption>
+<div aria-describedby="tbl-smaller-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Object</th>
+<th>Stored in full</th>
+<th>Enough to rebuild it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>vcov()</code>, Pottery</td>
+<td><span class="math inline">\(20 \times 20\)</span>: 210 distinct numbers</td>
+<td><span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> and <span class="math inline">\((\mathbf{X}^\top\mathbf{X})^{-1}\)</span>: 15 + 10</td>
+</tr>
+<tr class="even">
+<td>covariances of the fitted values, <span class="math inline">\(n\)</span> cases</td>
+<td>an <span class="math inline">\(n \times q \times q\)</span> array: <span class="math inline">\(26 \times 5 \times 5\)</span></td>
+<td><span class="math inline">\(n\)</span> leverages <span class="math inline">\(h_i\)</span> and one <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span>: 26 + 15</td>
+</tr>
+<tr class="odd">
+<td>ridge covariances, <span class="math inline">\(L\)</span> values of <span class="math inline">\(\lambda\)</span></td>
+<td><span class="math inline">\(L\)</span> matrices, each <span class="math inline">\(pq \times pq\)</span></td>
+<td>one <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> and <span class="math inline">\(L\)</span> matrices <span class="math inline">\(\mathbf{V}_\lambda\)</span>, each <span class="math inline">\(p \times p\)</span></td>
+</tr>
+<tr class="even">
+<td>influence of all subsets of <span class="math inline">\(m\)</span> cases</td>
+<td>two <span class="math inline">\(m \times m\)</span> matrices for each subset</td>
+<td>one number for each: their <code>det()</code> or <code>tr()</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The first three rows lose nothing. The full object is a Kronecker or scalar multiple of smaller ones, and a method can rebuild it whenever it’s asked for. genridge already works this way. An <code>"mlmridge"</code> object keeps one <span class="math inline">\(3 \times 3\)</span> <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> and a <span class="math inline">\(5 \times 5\)</span> <span class="math inline">\(\mathbf{V}_\lambda\)</span> for each <span class="math inline">\(\lambda\)</span>, and its <code>vcov()</code> method expands them into <span class="math inline">\(15 \times 15\)</span> matrices only on request.</p>
+<p>The last row is different in kind. Reducing an <span class="math inline">\(m \times m\)</span> matrix to its determinant or trace throws something away, and which one you choose is a choice of “how big?”, just as in the sections above. That’s why mvinfluence makes <code>FUN</code> an argument instead of deciding for you.</p>
+<p>So, a design rule: <strong>store the factors, and let the methods expand or reduce them.</strong> Expanding is just arithmetic. Reducing is a choice, so leave it to the user.</p>
+<p>This may also answer the question the <a href="../../posts/2026-11-extending-lm/">first post</a> left open: what should <code>predict()</code> return for an <code>mlm</code>? Not an array of intervals, one response at a time, but the fitted values, a leverage <span class="math inline">\(h_i\)</span> for each case and one <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span>. The confidence ellipse for case <span class="math inline">\(i\)</span> is centered at <span class="math inline">\(\widehat{\mathbf{y}}_i\)</span> with shape <span class="math inline">\(h_i \widehat{\boldsymbol{\Sigma}}\)</span> (for a prediction interval, <span class="math inline">\((1 + h_i)\widehat{\boldsymbol{\Sigma}}\)</span>), so a <code>plot()</code> method can draw any of them, and an <code>intervals</code> method can take their shadows on the axes. For Pottery, a one-way design, <span class="math inline">\(h_i\)</span> is just <span class="math inline">\(1/n_j\)</span> for the site a pot comes from, and the ellipse for each site mean is <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> shrunk by its sample size.</p>
+<!-- heplots dev/pred.mlm.R currently keeps only diag(Sigma) (the "sigmas"), so its
+     intervals are per response, not ellipses. -->
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
