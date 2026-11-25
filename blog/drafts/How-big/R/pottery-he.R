@@ -13,7 +13,8 @@
 library(ggplot2)
 library(patchwork)
 
-col_h <- "#4C78A8"; col_e <- "#D6604D"; col_pt <- "grey60"; col_v <- "grey45"
+col_h <- "#4C78A8"; col_e <- "#D6604D"; col_pt <- "grey60"; col_v <- "grey30"
+col_lab <- "#2A5783"   # darker blue for text labels, legible on white
 
 data(Pottery, package = "carData")
 ox  <- c("Al", "Fe", "Mg", "Ca", "Na")
@@ -56,7 +57,7 @@ ell <- function(M, centre = c(0, 0)) {
 theme_he <- function() list(theme_minimal(base_size = 13),
   theme(panel.grid.minor = element_blank(), panel.grid.major = element_line(colour = "grey93"),
         plot.title = element_text(face = "bold", size = 13),
-        plot.subtitle = element_text(colour = "grey35", size = 11)))
+        plot.subtitle = element_text(colour = "grey15", size = 11.5)))
 
 # ---- A: data space, Al and Fe ----
 j <- c("Al", "Fe")
@@ -67,7 +68,7 @@ pA <- ggplot() +
   geom_polygon(data = ell(E[j, j], ybar[j]), aes(x, y), fill = col_e, alpha = 0.15,
                colour = col_e, linewidth = 1) +
   geom_point(data = gm, aes(Al, Fe), colour = col_h, size = 3.2) +
-  geom_text(data = gm, aes(Al, Fe, label = label), colour = col_h, size = 3.6,
+  geom_text(data = gm, aes(Al, Fe, label = label), colour = col_lab, size = 3.9, fontface = "bold",
             hjust = nudge(c(Llanedyrn = 0, Caldicot = 1, IsleThorns = 0, AshleyRails = 1)),
             nudge_x = nudge(c(Llanedyrn = 0.35, Caldicot = -0.35, IsleThorns = 0.35, AshleyRails = -0.35)),
             nudge_y = nudge(c(Llanedyrn = 0.1, Caldicot = 0, IsleThorns = 0.2, AshleyRails = -0.3))) +
@@ -96,7 +97,7 @@ pC <- ggplot() +
                linewidth = 1) +
   geom_point(data = data.frame(x = Zm[, 1], y = Zm[, 2]), aes(x, y), colour = col_h, size = 3.2) +
   geom_text(data = data.frame(x = Zm[, 1], y = Zm[, 2], label = gm$label), aes(x, y, label = label),
-            colour = col_h, size = 3.6,
+            colour = col_lab, size = 3.9, fontface = "bold",
             hjust = nudge(c(Llanedyrn = 0.5, Caldicot = 0, IsleThorns = 0.5, AshleyRails = 0.5)),
             nudge_x = nudge(c(Llanedyrn = 0, Caldicot = 0.35, IsleThorns = 0, AshleyRails = 0)),
             nudge_y = nudge(c(Llanedyrn = -0.5, Caldicot = 0, IsleThorns = 0.55, AshleyRails = -0.55))) +

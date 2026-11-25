@@ -14,6 +14,7 @@ library(patchwork)
 col_h <- "#4C78A8"   # H, blue as in the banner and heplots
 col_e <- "#D6604D"   # E, red as in the banner and heplots
 col_pt <- "grey55"
+col_lab <- "#2A5783"   # darker blue for text labels, legible on white
 
 data(mathscore, package = "heplots")
 fit <- lm(cbind(BM, WP) ~ group, data = mathscore)
@@ -49,7 +50,7 @@ hline <- function(M, centre = c(0, 0)) {                 # a rank-1 "ellipse" is
 theme_he <- function() list(theme_minimal(base_size = 13),
   theme(panel.grid.minor = element_blank(), panel.grid.major = element_line(colour = "grey93"),
         plot.title = element_text(face = "bold", size = 13),
-        plot.subtitle = element_text(colour = "grey35", size = 11)))
+        plot.subtitle = element_text(colour = "grey15", size = 11.5)))
 
 # ---- A: data space ----
 pA <- ggplot() +
@@ -57,7 +58,7 @@ pA <- ggplot() +
   geom_polygon(data = ell(E, ybar), aes(x, y), fill = col_e, alpha = 0.12, colour = col_e, linewidth = 1) +
   geom_segment(data = hline(H, ybar), aes(x, y, xend = xend, yend = yend), colour = col_h, linewidth = 2) +
   geom_point(data = gm, aes(BM, WP), colour = col_h, size = 3.2) +
-  geom_text(data = gm, aes(BM, WP, label = paste("group", group)), colour = col_h, size = 3.6,
+  geom_text(data = gm, aes(BM, WP, label = paste("group", group)), colour = col_lab, size = 3.9, fontface = "bold",
             nudge_x = 4, nudge_y = c(-3, 3), hjust = 0) +
   annotate("text", x = ybar[1] + 22, y = ybar[2] + 24, label = "E", colour = col_e,
            size = 6, fontface = "bold.italic") +
