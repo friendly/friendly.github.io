@@ -175,8 +175,10 @@ something you didn't think to ask. That's why I want to stop at each rung and lo
 Start at the bottom, with a single vector. Its size is its *length*, and even that needs a
 choice.
 
-Length and distance are the same question: how far apart $\mathbf{x}$ and $\mathbf{y}$ are is
-just how big $\mathbf{x} - \mathbf{y}$ is. There's no shortage of answers. The animation in
+Length and distance are the same question. The length of $\mathbf{y}$ is just its distance
+from $\mathbf{0}$, and how far apart $\mathbf{x}$ and $\mathbf{y}$ are is just how big
+$\mathbf{x} - \mathbf{y}$ is. (Center $\mathbf{y}$ first, and its length is its distance from
+the mean.) There's no shortage of answers. The animation in
 @fig-distance-methods, which went around social media recently, has nine; six of them
 are here.
 
