@@ -172,3 +172,68 @@
   volume    = {61},
   doi       = {10.1080/01621459.1966.10480878},
 }
+@ARTICLE{Friendly:genridge:2013,
+  author = {Friendly, Michael},
+  title = {The Generalized Ridge Trace Plot: Visualizing Bias \emph{and} Precision},
+  journal = {Journal of Computational and Graphical Statistics},
+  year = {2013},
+  volume = {22},
+  pages = {50--68},
+  number = {1},
+  abstract = {In ridge regression and related shrinkage methods, the ridge trace
+	plot, a plot of estimated coefficients against a shrinkage parameter,
+	is a common graphical adjunct to help determine a favorable tradeoff
+	of bias against precision (inverse variance) of the estimates. However,
+	standard unidimensional versions of this plot are ill-suited for
+	this purpose because they show only bias directly and ignore the
+	multi-dimensional nature of the problem.
+	
+	We introduce a generalized version of the ridge trace plot, showing
+	covariance ellipsoids in parameter space, whose centers show bias
+	and whose size and shape show variance and covariance in relation
+	to the criteria for which these methods were developed. These provide
+	a direct visualization of \emph{both} bias and precision. Even 2D
+	bivariate versions of this plot show interesting features not revealed
+	in the standard univariate version. Low-rank versions of this plot,
+	based on an orthogonal transformation of predictor space extend these
+	ideas to larger numbers of predictor variables, by focusing on the
+	dimensions in the space of predictors that are likely to be most
+	informative about the nature of bias and precision. Two well-known
+	data sets are used to illustrate these graphical methods. The \texttt{genridge}
+	package for R implements computation and display.},
+  doi = {10.1080/10618600.2012.681237},
+  keywords = {biplot; model selection; multivariate bootstrap; regression shrinkage;
+	ridge regression; ridge trace plot; singular value decomposition;
+	variance-shrinkage tradeoff},
+  url = {https://friendly.github.io/papers/genridge.pdf}
+}
+
+@article{Gabriel:71,
+	Author = {K. R. Gabriel},
+	Journal = {Biometrika},
+	Number = {3},
+	Pages = {453--467},
+	Title = {The Biplot Graphic Display of Matrices with Application to Principal Components Analysis},
+	Volume = {58},
+	Year = {1971},
+	Doi = {10.1093/biomet/58.3.453}}
+
+@article{EckartYoung:1936,
+	Author = {Carl Eckart and Gale Young},
+	Journal = {Psychometrika},
+	Number = {3},
+	Pages = {211--218},
+	Title = {The Approximation of One Matrix by Another of Lower Rank},
+	Volume = {1},
+	Year = {1936},
+	Doi = {10.1007/BF02288367}}
+
+@article{HoerlKennard:1970,
+	Author = {Arthur E. Hoerl and Robert W. Kennard},
+	Journal = {Technometrics},
+	Number = {1},
+	Pages = {55--67},
+	Title = {Ridge Regression: Biased Estimation for Nonorthogonal Problems},
+	Volume = {12},
+	Year = {1970},
+	Doi = {10.1080/00401706.1970.10488634}}

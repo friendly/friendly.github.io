@@ -195,6 +195,11 @@ Locke, P. (1994). THE GEOMETRY OF DETERMINANTS. PRIMUS, 4(1), 1–8. https://doi
 
 ### 2b. How big is **Y**, or **X**? Singular values
 
+**Drafted** in `index.qmd` (2026-11-23) as "How big is a matrix of data?", with a Pottery SVD
+chunk (standardized oxides) and inline numbers. Eckart & Young (1936) and Hoerl & Kennard
+(1970) checked on Crossref; they, `Gabriel:71` and `Friendly:genridge:2013` added to
+`references.bib`. No figure yet; candidates are listed in a comment at the end of the section.
+
 For a centered matrix with singular values $d_1 \ge d_2 \ge \dots$, up to constants and df:
 
 | "Size" | Formula | For the data ellipsoid | Statistical name |

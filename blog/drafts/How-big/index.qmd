@@ -273,9 +273,83 @@ The determinant will be back. Wilks's $\Lambda$, one of the four MANOVA tests be
 ratio of two of them, $|\mathbf{E}| / |\mathbf{H} + \mathbf{E}|$: the squared ratio of two
 areas.
 
-<!-- Notes section 2b (singular values of Y or X: Frobenius and spectral norms, PCA and
-     biplots, condition number and ridge df) could follow here as "How big is a matrix of
-     data?", or be folded in briefly. -->
+## How big is a matrix of data?
+
+A covariance matrix is already a summary. Go back to the data themselves: an $n \times p$
+matrix $\mathbf{Y}$, centered at the column means. The tool for sizing up any rectangular
+matrix is its **singular value decomposition**,
+
+$$
+\mathbf{Y} = \mathbf{U} \mathbf{D} \mathbf{V}^\top ,
+\qquad \mathbf{D} = \operatorname{diag}(d_1 \ge d_2 \ge \dots \ge d_p \ge 0) .
+$$
+
+$\mathbf{V}$ and $\mathbf{U}$ are rotations, which don't change size at all, so everything
+about how big $\mathbf{Y}$ is lives in the singular values $d_i$. They are the semi-axes of
+the data ellipsoid, up to a constant: the eigenvalues of the covariance matrix are
+$\lambda_i = d_i^2 / (n-1)$. So the sizes of the last section come back, now as different
+ways of combining the $d_i$:
+
+| "Size" of $\mathbf{Y}$ | In singular values | For the data ellipsoid | Statistical name |
+|---|---|---|---|
+| Frobenius norm, squared | $\sum d_i^2$ | sum of squared semi-axes | total variance (trace) |
+| Spectral norm, squared | $d_1^2$ | longest semi-axis, squared | variance of the first PC |
+| Determinant of $\mathbf{Y}^\top\mathbf{Y}$ (not a norm) | $\prod d_i^2$ | volume, squared | generalized variance |
+
+: Three sizes of a data matrix, up to the factor $n - 1$. {#tbl-sizes}
+
+Here they are for the five oxides in the Pottery data. The oxides are measured in very
+different amounts (Al varies about a thousand times as much as Ca or Na), so I standardize
+them first. That is the *compared to what?* question again: in raw units, aluminum alone
+would decide how big the matrix is.
+
+```{r}
+#| label: pottery-svd
+data(Pottery, package = "carData")
+Z <- scale(Pottery[, -1])            # the five oxides, standardized
+d <- svd(Z)$d
+round(d, 3)
+c(Frobenius2 = sum(d^2), spectral2 = d[1]^2, det = prod(d^2))
+round(cumsum(d^2) / sum(d^2), 3)     # proportion of total variance, first k
+```
+
+After standardizing, the Frobenius size is just $(n-1)p$ = `r (nrow(Z) - 1) * ncol(Z)`,
+and tells us nothing: every standardized matrix of this shape has the same total variance.
+The information is in how that total is *spread* over the $d_i$, and that's where the
+other sizes come in.
+
+* **Keep the big ones: PCA.** The first $k$ singular values and vectors give the best
+  rank-$k$ approximation to $\mathbf{Y}$, in both the Frobenius and the spectral norm
+  [@EckartYoung:1936]. What's left over has squared Frobenius size
+  $\sum_{i > k} d_i^2$, so the proportion of variance kept is
+  $\sum_{i \le k} d_i^2 / \sum d_i^2$. For Pottery, two dimensions keep
+  `r round(100 * sum(d[1:2]^2) / sum(d^2), 1)`%. This is principal components analysis,
+  and the **biplot** draws the observations and the variables together in that
+  low-rank space [@Gabriel:71].
+* **Watch the small ones: collinearity.** For a matrix of *predictors* $\mathbf{X}$, the
+  small end of the spectrum is where the trouble is. A $d_i$ near zero means the ellipsoid
+  is nearly flat in some direction, so $|\mathbf{X}^\top\mathbf{X}|$ is nearly zero and
+  some coefficients are badly determined. The *condition number* $d_1 / d_p$ measures how
+  flat; for the standardized oxides it's `r round(d[1] / d[length(d)], 2)`, no cause for
+  alarm.
+* **Shrink the small ones: ridge regression.** Ridge regression [@HoerlKennard:1970]
+  shrinks the least squares fit along each principal axis of $\mathbf{X}$ by the factor
+  $d_i^2 / (d_i^2 + k)$, for ridge constant $k$. Big directions are hardly touched; the
+  small, poorly determined ones are shrunk the most. Adding up the factors,
+  $\sum d_i^2 / (d_i^2 + k)$, gives the *effective degrees of freedom* of the fit: a whole
+  matrix, reduced to one number that says how big the model is [@Friendly:genridge:2013].
+  Keep that form in mind. Pillai's trace, one of the four MANOVA tests below, is
+  $\sum \lambda_i / (1 + \lambda_i)$, the same kind of sum.
+
+<!-- Figure candidates for this section (see the reply / notes):
+     1. Spectrum of Pottery (scree-like bars of d_i^2), marking the three sizes:
+        the whole (Frobenius), the first bar (spectral), and k = 2 kept (Eckart-Young).
+     2. Ridge shrinkage factors d_i^2/(d_i^2 + k) against k, one curve per component,
+        with effective df on a second axis.
+     3. Pottery biplot (PCA) beside the canonical HE plot: biggest total variance vs.
+        biggest H relative to E. Sets up the next section.
+     4. Low-rank approximation of an image, k = 1, 2, 5, 20 (from the MatrixAlgebra
+        review). -->
 
 ## Ellipses have shadows
 
