@@ -165,6 +165,11 @@ uncorrelated and on the same scale. That's the opening for:
 Where it could go: at the start of "How big is a vector?", just before `unit-balls.png`, as the
 popular view to push against.
 
+**Drafted** (2026-11-24) there: three short paragraphs and the video as `@fig-distance-methods`
+(raw HTML `<video>` in a Quarto figure div, 360 px, credited and linked). The Mahalanobis
+bullet now calls it "the tenth metric". Permission from @mathemetica still to ask; the
+fallback is the link alone.
+
 ### 2a. How big is a covariance matrix: Determinant
 
 **Drafted** in `index.qmd` (2026-11-23) as "How big is a covariance matrix?", with

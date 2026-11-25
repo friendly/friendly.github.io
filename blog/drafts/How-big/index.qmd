@@ -175,6 +175,42 @@ something you didn't think to ask. That's why I want to stop at each rung and lo
 Start at the bottom, with a single vector. Its size is its *length*, and even that needs a
 choice.
 
+Length and distance are the same question: how far apart $\mathbf{x}$ and $\mathbf{y}$ are is
+just how big $\mathbf{x} - \mathbf{y}$ is. There's no shortage of answers. The animation in
+@fig-distance-methods, which went around social media recently, has nine; six of them
+are here.
+
+<!-- MF: the animation is @mathemetica's work, credited and linked as used for comment. Ask
+     for permission before publishing, or replace the video with just the link.
+     Notes section 1a. -->
+
+::: {#fig-distance-methods}
+
+```{=html}
+<video src="figures/distance-methods-6.mp4" autoplay loop muted playsinline width="400"
+       style="display:block; margin:auto; max-width:100%;"
+       aria-label="An animated 2 by 3 grid titled Distance metrics. Each panel shows points A and B and one way to measure the distance between them. Top row: Euclidean, a straight arrow; cosine, the angle between two vectors; Hamming, mismatched bits in two bit strings. Bottom row: Manhattan, a city-block route; Minkowski, a purple unit ball that morphs from a diamond through a circle toward a square as p changes; Chebyshev, the longer leg. A and B move, and the distances update."></video>
+```
+
+Six ways to measure how far apart A and B are. Animation by \@mathemetica
+([post on X](https://x.com/mathemetica/status/2125197661607514521), November 2026),
+cropped: its bottom row, for sets (Jaccard, Sørensen–Dice) and points on a globe (haversine),
+is left out.
+
+:::
+
+Most of these are lengths of $\mathbf{x} - \mathbf{y}$ in one sense or another. Euclidean,
+Manhattan and Chebyshev are three settings of a single dial, Minkowski's exponent: watch its
+unit ball morph from a diamond, through a circle, toward a square, the three shapes in the
+left panel of @fig-unit-balls below. Cosine sets length aside and keeps only the angle; center
+the two vectors first, and it's their correlation. Hamming counts mismatches between bit
+strings, and the three left out are for sets and points on a globe.
+
+What's striking is the question none of the nine asks: *compared to what?* Every panel
+measures in fixed units, as if the axes were on the same scale and uncorrelated. Nine ways to
+say how far apart A and B are, and not one asks how far apart points *usually* are. Hold that
+thought for the last item below.
+
 ![Left: three ways to measure length. The "unit circle", the set of points of length 1, is a
 diamond for $L_1$, a circle for $L_2$ and a square for $L_\infty$. Vector $\mathbf{a}$ has
 Euclidean length 1, but $L_1$ length 1.4 (the dashed city-block route) and $L_\infty$ length
@@ -199,7 +235,9 @@ same Euclidean distance can be very different distances away.](figures/unit-ball
   variables as it shrinks.
 * *Compared to what?* With correlated variables, Euclidean distance is the wrong ruler. The
   Mahalanobis distance, $\mathbf{e}^\top \mathbf{S}^{-1} \mathbf{e}$, measures length in
-  the metric of the data, and its unit circle is the data ellipse. In the right panel of
+  the metric of the data, and its unit circle is the data ellipse. It's the tenth metric
+  that @fig-distance-methods leaves out, and the only one whose unit ball comes from the data
+  rather than from a choice of exponent. In the right panel of
   @fig-unit-balls, A and B are both 1 unit from the origin by Euclid, but B is more than
   twice as far as A in the metric of the ellipse.
 
