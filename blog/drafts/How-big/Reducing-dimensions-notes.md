@@ -167,8 +167,12 @@ popular view to push against.
 
 **Drafted** (2026-11-24) there: three short paragraphs and the video as `@fig-distance-methods`
 (raw HTML `<video>` in a Quarto figure div, 360 px, credited and linked). The Mahalanobis
-bullet now calls it "the tenth metric". Permission from @mathemetica still to ask; the
-fallback is the link alone.
+bullet now calls it "the tenth metric". Cropped to the top two rows (six panels) as
+`figures/distance-methods-6.mp4`.
+
+**Permission:** asked 2026-11-24, in a public reply to the post
+(<https://x.com/datavisFriendly/status/2125427011162120500>), because @mathemetica doesn't accept
+DMs. Awaiting an answer. If none comes, or it's no, use the link alone.
 
 ### 2a. How big is a covariance matrix: Determinant
 

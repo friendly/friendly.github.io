@@ -180,8 +180,10 @@ just how big $\mathbf{x} - \mathbf{y}$ is. There's no shortage of answers. The a
 @fig-distance-methods, which went around social media recently, has nine; six of them
 are here.
 
-<!-- MF: the animation is @mathemetica's work, credited and linked as used for comment. Ask
-     for permission before publishing, or replace the video with just the link.
+<!-- MF: the animation is @mathemetica's work, credited and linked as used for comment.
+     Permission asked 2026-11-24 in a reply on X (the account takes no DMs):
+     https://x.com/datavisFriendly/status/2125427011162120500. Awaiting an answer; if none,
+     replace the video with just the link.
      Notes section 1a. -->
 
 ::: {#fig-distance-methods}
