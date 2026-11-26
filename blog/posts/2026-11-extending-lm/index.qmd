@@ -157,7 +157,7 @@ In short, the multivariate linear model is **easy to fit** yet **hard to see**.
   $\ln |\mathbf{S}|$ as a dot for each group and one for the pooled matrix, so you see *which*
   groups stand out, not just *whether* they differ [@FriendlySigal:2018:eqcov]. But why stop
   at the determinant, when there are other ways to ask "How big is a matrix?" Ah, but that's
-  another story, better left for another chat around my multivariate fireplace.
+  another story, better left for [another chat around my multivariate fireplace](https://friendly.github.io/blog/posts/2026-11-How-big/).
 
 <!-- MF: Somewhere, but perhaps just with a twinkle here, expanded later, use `heplots::plot.boxM()` as an expression of how multivariate thinking
 suggested various ways to visualize Box's M tests -->

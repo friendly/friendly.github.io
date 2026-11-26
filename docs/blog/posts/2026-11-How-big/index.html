@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Friendly">
+<meta name="dcterms.date" content="2026-11-26">
+<meta name="description" content="Multivariate statistics climbs up a ladder of dimensions, from scalars to matrices. This post climbs back down. Every step asks the same question, ‘how big is it?’, and answering it means deciding what to compare against and what ‘big’ means.">
+
+<title>How Big Is My Matrix? – Michael Friendly</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/MF-face.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b82a8e178c632e86601320a4062c3b24.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Michael Friendly</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> <i class="bi bi-house" role="img">
+</i> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> <i class="bi bi-person" role="img">
+</i> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../packages.html"> <i class="bi bi-box-seam" role="img">
+</i> 
+<span class="menu-text">R Packages</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-publications" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Publications</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-publications">    
+        <li>
+    <a class="dropdown-item" href="../../../books.html">
+ <span class="dropdown-text">Books</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://friendly.github.io/papers/">
+ <span class="dropdown-text">Papers</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../courses.html"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../software.html"> <i class="bi bi-code-slash" role="img">
+</i> 
+<span class="menu-text">Other Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> <i class="bi bi-pencil" role="img">
+</i> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/friendly"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bsky.app/profile/datavisfriendly.bsky.social"> 
+<span class="menu-text"><img src="../../../images/bluesky-logo.png" style="height:1.2em; vertical-align:middle;"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#climbing-back-down" id="toc-climbing-back-down" class="nav-link" data-scroll-target="#climbing-back-down">Climbing back down</a></li>
+  <li><a href="#how-big-is-a-vector" id="toc-how-big-is-a-vector" class="nav-link" data-scroll-target="#how-big-is-a-vector">How big is a vector?</a></li>
+  <li><a href="#how-big-is-a-covariance-matrix" id="toc-how-big-is-a-covariance-matrix" class="nav-link" data-scroll-target="#how-big-is-a-covariance-matrix">How big is a covariance matrix?</a></li>
+  <li><a href="#how-big-is-a-matrix-of-data" id="toc-how-big-is-a-matrix-of-data" class="nav-link" data-scroll-target="#how-big-is-a-matrix-of-data">How big is a matrix of data?</a></li>
+  <li><a href="#ellipses-have-shadows" id="toc-ellipses-have-shadows" class="nav-link" data-scroll-target="#ellipses-have-shadows">Ellipses have shadows</a></li>
+  <li><a href="#how-big-is-h-relative-to-e" id="toc-how-big-is-h-relative-to-e" class="nav-link" data-scroll-target="#how-big-is-h-relative-to-e">How big is H, relative to E?</a></li>
+  <li><a href="#four-kinds-of-mean" id="toc-four-kinds-of-mean" class="nav-link" data-scroll-target="#four-kinds-of-mean">Four kinds of mean</a></li>
+  <li><a href="#four-rulers-for-one-ellipse" id="toc-four-rulers-for-one-ellipse" class="nav-link" data-scroll-target="#four-rulers-for-one-ellipse">Four rulers for one ellipse</a></li>
+  <li><a href="#all-roads-lead-to-f" id="toc-all-roads-lead-to-f" class="nav-link" data-scroll-target="#all-roads-lead-to-f">All roads lead to F</a></li>
+  <li><a href="#dont-reduce-too-soon-he-plots" id="toc-dont-reduce-too-soon-he-plots" class="nav-link" data-scroll-target="#dont-reduce-too-soon-he-plots">Don’t reduce too soon: HE plots</a></li>
+  <li><a href="#smaller-r-objects-too" id="toc-smaller-r-objects-too" class="nav-link" data-scroll-target="#smaller-r-objects-too">Smaller R objects, too</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">How Big Is My Matrix?</h1>
+<p class="subtitle lead">Reducing dimensions in multivariate linear models and in graphical methods: Stories from a fireside chat</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Vis-MLM</div>
+    <div class="quarto-category">multivariate linear models</div>
+    <div class="quarto-category">graphics</div>
+    <div class="quarto-category">HE plots</div>
+    <div class="quarto-category">ellipses</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Multivariate statistics climbs up a ladder of dimensions, from scalars to matrices. This post climbs back down. Every step asks the same question, ‘how big is it?’, and answering it means deciding what to compare against and what ‘big’ means.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Michael Friendly </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 26, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- The precept box, as in the first post: orange for the question -->
+<style>
+.precept {
+  border-top: 3px solid #F58518;
+  border-bottom: 3px solid #F58518;
+  background: rgba(245, 133, 24, 0.08);
+  padding: 0.7em 1.25em;
+  margin: 1.5em 1em;
+  font-size: 1.15em;
+  text-align: center;
+}
+.precept p { margin: 0; }
+.precept .precept-title {
+  display: block;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  color: #B85708;
+  font-weight: bold;
+}
+.precept .precept-motto {
+  display: block;
+  margin-top: 0.4em;
+  font-style: italic;
+  color: #B85708;
+}
+/* A small figure floated to the right of the text; full width on narrow screens */
+.float-fig {
+  float: right;
+  width: 38%;
+  margin: 0.3em 0 0.8em 1.2em;
+}
+.float-fig figure, .float-fig p { margin: 0; }
+.float-fig img { width: 100%; height: auto; }
+@media (max-width: 600px) {
+  .float-fig { float: none; width: 80%; margin: 1em auto; }
+}
+</style>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fireside-HE-chat-V5.jpg" class="img-fluid figure-img" alt="An illustration in mid-century magazine style: six men in suits sit around a coffee table in front of a brick fireplace. The man in the middle holds up a sheet with two overlapping ellipses, a wide blue one marked H and a steep red one marked E. The man to his left points at the right-hand end of the blue ellipse. On the right, a gray-bearded man with curly hair and a white-haired man in glasses look on and smile. On the table are three mugs, labeled Algebra (with a small matrix), Graphs and Geometry (with an ellipsoid), and a red book with a circle of arrows on its cover: Dempster's Elements of Continuous Multivariate Analysis."></p>
+<figcaption>A fireside chat on how big <strong>H</strong> is, relative to <strong>E</strong>. Left to right: Wilks, Hotelling, Pillai (holding the HE plot), Roy (pointing to the largest dimension of <strong>H</strong>), me, and Georges Monette. A copy of <span class="citation" data-cites="Dempster:69">Dempster (<a href="#ref-Dempster:69" role="doc-biblioref">1969</a>)</span> sits on the table. Coffee mugs suggest the Elemental Forces of their approaches.</figcaption>
+</figure>
+</div>
+<!-- Before publishing with Georges named in the caption, send him the picture
+     (figures/fireside-image-notes.md). -->
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>When we left A. Square, in my last post, <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">On Extending <code>lm()</code> Methods to <code>"mlm"</code></a>, the Sphere had just shown him what one more dimension looks like <span class="citation" data-cites="Abbott:1884">(<a href="#ref-Abbott:1884" role="doc-biblioref">Abbott 1884</a>)</span>. Going from a univariate linear model to a multivariate one, every object the model produces gains a dimension: a residual becomes a vector, a coefficient vector a matrix, a variance a covariance matrix.</p>
+<p>But earlier in the story, A. Square dreams of a trip the other way, to Lineland, whose King can’t conceive of anything but length. I used to feel a little sorry for the King. Then I noticed how much of multivariate statistics consists of working out, very carefully, how to get to Lineland. You start with a matrix of 130 numbers. You’d like to finish with one, and be able to say “that’s big”. (Pointland, whose only inhabitant is entirely pleased with himself, is there for the <span class="math inline">\(p\)</span>-value.)</p>
+<p>This post is about the trip back down. Each step down answers the same question, and the question turns out to be harder than it looks:</p>
+<div class="precept">
+<p><span class="precept-title">How big is my matrix?</span> First say <em>compared to what</em>, and <em>in what sense</em>. <span class="precept-motto">Every summary is a shadow</span></p>
+</div>
+<div class="float-fig">
+<p><img src="figures/elemental-forces-V2-800.jpg" class="img-fluid" alt="Three cream cards on a wooden table, each titled in dark blue capitals. ALGEBRA shows the 2 by 2 matrix with rows 5, 0 and 0, 1. GEOMETRY shows a shaded blue ellipsoid with its two axes drawn, casting a shadow below it. GRAPHS, in front, shows a scatterplot of blue points rising to the right inside a red data ellipse."></p>
+</div>
+<p><strong>Compared to what</strong> means choosing a metric: the identity, the error covariance, or the total. <strong>In what sense</strong> means choosing what counts as size: the total, the largest part, or the volume:</p>
+<ul>
+<li><em>Algebra</em> tells you how few numbers you need to keep to say “It’s THIS big!”</li>
+<li><em>Geometry</em> shows you what those numbers measure, and what was thrown away to get them.</li>
+<li>And <em>graphs or diagrams</em> show you what this means, and how to understand it all.</li>
+</ul>
+<p>It’s the interplay among these three Elemental Forces of Statistical Understanding that intrigues me in my work on graphical methods for data analysis, often on Un-Vizzed problems. That’s the subject of this article. The rubric that unites them is: To climb back down the ladder of dimensions of a problem,</p>
+<ul>
+<li>decide what ‘big’ means,</li>
+<li>keep what you need to measure it, and</li>
+<li>draw a picture of what’s left.</li>
+</ul>
+<p>My title comes from the scene in the banner. Imagine the people who invented the classical multivariate tests sitting around a fire with an HE plot, arguing about how big <strong>H</strong> is compared to <strong>E</strong>. Each one had a different, and perfectly reasonable, answer. By indirection, this post is also about what I learned from the process of trying to develop graphical methods for multivariate models in R with the help and inspiration of the gentlemen around the table.</p>
+</section>
+<section id="climbing-back-down" class="level2">
+<h2 class="anchored" data-anchor-id="climbing-back-down">Climbing back down</h2>
+<p>Here’s the whole trip in one picture, for the Pottery data used in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>: the chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four kiln sites.</p>
+<p>The first question is whether the sites differ. If they do, archaeologists like <span class="citation" data-cites="Tubb-etal:80">Tubb et al. (<a href="#ref-Tubb-etal:80" role="doc-biblioref">1980</a>)</span> would also want to know <em>how</em> they differ, and relate this to what they knew about the peoples who inhabited these sites.</p>
+<div id="fig-reducing-ladder" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-reducing-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/reducing-ladder.png" class="img-fluid figure-img" style="width:100.0%" alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reducing-ladder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Coming down the ladder for the Pottery MANOVA. Each step keeps fewer numbers. Each sets something aside, and concentrates the information in a better summary.
+</figcaption>
+</figure>
+</div>
+<p>Reading <a href="#fig-reducing-ladder" class="quarto-xref">Figure&nbsp;1</a> from left to right:</p>
+<ul>
+<li>The 130 numbers in <strong>Y</strong> become two <span class="math inline">\(5 \times 5\)</span> matrices, <strong>H</strong> for the differences among the site means and <strong>E</strong> for the variation within sites. These keep 15 distinct numbers each, and set aside the individual cases and the grand means.</li>
+<li><strong>H</strong> and <strong>E</strong> become <span class="math inline">\(s = 3\)</span> eigenvalues, <span class="math inline">\(\lambda_i\)</span>, the nonzero roots of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>. These set aside the units of the responses and the directions of the effect.</li>
+<li>The eigenvalues become one number, here Pillai’s trace, <span class="math inline">\(V\)</span>. This sets aside how the size of the effect is spread over the dimensions.</li>
+<li><span class="math inline">\(V\)</span> becomes an effect size, <span class="math inline">\(\eta^2 = V / s = 0.52\)</span>, the proportion of the multivariate variation explained by the sites. Dividing by <span class="math inline">\(s\)</span> sets aside how many dimensions there are, and puts the answer on a 0 to 1 scale that any reader can compare.</li>
+</ul>
+<p>Every rung is still an answer to “how big?”. A <span class="math inline">\(p\)</span>-value would be a different kind of answer: it sets aside the size itself and keeps only the evidence, so it doesn’t belong on this ladder.</p>
+<p>Each step is a choice, and each choice is a reasonable answer to “how big?”. The rest of this post is about those choices, and about the pictures that show what each one keeps.</p>
+<p>There’s a trade-off in coming down the ladder, and Hadley Wickham put it neatly. In a 2013 talk, as <a href="https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/">John D. Cook paraphrased it</a>:</p>
+<blockquote class="blockquote">
+<p>Visualization can surprise you, but it doesn’t scale well. Modeling scales well, but it can’t surprise you.</p>
+</blockquote>
+<p>In <em>R for Data Science</em> Hadley and his co-authors give the reason <span class="citation" data-cites="Wickham-etal:2023:r4ds">(<a href="#ref-Wickham-etal:2023:r4ds" role="doc-biblioref">Wickham et al. 2023</a>)</span>:</p>
+<blockquote class="blockquote">
+<p>Visualizations can surprise you, but they don’t scale particularly well because they require a human to interpret them.</p>
+</blockquote>
+<p>Models scale, but every model makes assumptions it can’t question, and so “a model cannot fundamentally surprise you.” Visualization of data and models require shared cognitive and perceptual assumptions between the graph designer or developer and the human viewer, whose understanding of some problem or phenomenon a graph is supposed to increase.</p>
+<p>Every step down the ladder trades a little more surprise for a little more scale. A single number, like a <span class="math inline">\(p\)</span>-value, scales to any number of tests, but it will never show you something you didn’t think to ask. That’s why I want to stop at each rung and look.</p>
+<!-- Quotes: 2nd ed. (American spelling), Introduction, "What you will learn". Check against
+     the book before publishing; the 1st ed. (2017) has the same passage in British spelling.
+     Wickham's slides use the short form: "Surprises, but doesn't scale" (Visualise) and
+     "Scales, but doesn't (fundamentally) surprise" (Model), e.g. "Big data pipelines",
+     Fields Institute, Feb. 2015. -->
+</section>
+<section id="how-big-is-a-vector" class="level2">
+<h2 class="anchored" data-anchor-id="how-big-is-a-vector">How big is a vector?</h2>
+<p>Start at the bottom, with a single vector. Its size is its <em>length</em>, and even that needs a choice.</p>
+<p>Length and distance are the same question from this perspective. The length of <span class="math inline">\(\mathbf{y}\)</span> is just its distance from <span class="math inline">\(\mathbf{0}\)</span>, and how far apart <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> are is just how big <span class="math inline">\(\mathbf{x} - \mathbf{y}\)</span> is. (Center <span class="math inline">\(\mathbf{y}\)</span> first, and its length is its distance from the mean.) There’s no shortage of answers. The animation in <a href="#fig-distance-methods" class="quarto-xref">Figure&nbsp;2</a>, which went around social media recently, has nine; six of them are here.</p>
+<!-- MF: the animation is @mathemetica's work, credited and linked as used for comment.
+     Permission asked 2026-11-24 in a reply on X (the account takes no DMs):
+     https://x.com/datavisFriendly/status/2125427011162120500. Awaiting an answer; if none,
+     replace the video with just the link.
+     Notes section 1a. -->
+<div id="fig-distance-methods" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-distance-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<video src="figures/distance-methods-6.mp4" autoplay="" loop="" muted="" playsinline="" width="400" style="display:block; margin:auto; max-width:100%;" aria-label="An animated 2 by 3 grid titled Distance metrics. Each panel shows points A and B and one way to measure the distance between them. Top row: Euclidean, a straight arrow; cosine, the angle between two vectors; Hamming, mismatched bits in two bit strings. Bottom row: Manhattan, a city-block route; Minkowski, a purple unit ball that morphs from a diamond through a circle toward a square as p changes; Chebyshev, the longer leg. A and B move, and the distances update."></video>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-distance-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Six ways to measure how far apart A and B are. Animation by @mathemetica (<a href="https://x.com/mathemetica/status/2125197661607514521">post on X</a>, November 2026), cropped: its bottom row, for sets (Jaccard, Sørensen–Dice) and points on a globe (haversine), is left out.
+</figcaption>
+</figure>
+</div>
+<p>Most of these are lengths of <span class="math inline">\(\mathbf{x} - \mathbf{y}\)</span> in one sense or another. Euclidean, Manhattan and Chebyshev are three settings of a single dial, Minkowski’s exponent: watch its unit ball morph from a diamond, through a circle, toward a square, the three shapes in the left panel of <a href="#fig-unit-balls" class="quarto-xref">Figure&nbsp;3</a> below. Cosine sets length aside and keeps only the angle; center the two vectors first, and it’s their correlation. Hamming counts mismatches between bit strings, and the three left out are for sets and points on a globe.</p>
+<p>What’s striking is the question none of these asks: <em>compared to what?</em> Every panel measures in fixed units, as if the axes were on the same scale and uncorrelated. Nine ways to say how far apart A and B are, and not one asks how far apart points <em>usually</em> are. Hold that thought for the last item below.</p>
+<div id="fig-unit-balls" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Arrow a runs from the origin to (0.6, 0.8) on the circle, with a dashed route along the x axis and up, its vertical leg shaded green; arrow b runs to (-0.5, -0.5) on the diamond. A table below gives a: L1 1.4, L2 1, L-infinity 0.8; b: L1 1, L2 0.71, L-infinity 0.5. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unit-balls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/unit-balls.png" class="img-fluid figure-img" style="width:90.0%" alt="Two panels. Left, titled Three lengths: a blue diamond inside an orange circle inside a green square, all centered at the origin and touching at the axes, labeled L1, L2 and L-infinity. Arrow a runs from the origin to (0.6, 0.8) on the circle, with a dashed route along the x axis and up, its vertical leg shaded green; arrow b runs to (-0.5, -0.5) on the diamond. A table below gives a: L1 1.4, L2 1, L-infinity 0.8; b: L1 1, L2 0.71, L-infinity 0.5. Right, titled Change the metric, rho = 0.75: a dashed orange unit circle and a red ellipse tilted at 45 degrees. Points A and B both lie on the circle; A is inside the ellipse and B well outside it. A note reads: A, Euclid 1, Mahalanobis 0.76; B, Euclid 1, Mahalanobis 2.00.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unit-balls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Left: three ways to measure length. The “unit circle”, the set of points of length 1, is a diamond for <span class="math inline">\(L_1\)</span>, a circle for <span class="math inline">\(L_2\)</span> and a square for <span class="math inline">\(L_\infty\)</span>. Vector <span class="math inline">\(\mathbf{a}\)</span> has Euclidean length 1, but <span class="math inline">\(L_1\)</span> length 1.4 (the dashed city-block route) and <span class="math inline">\(L_\infty\)</span> length 0.8 (its longer leg, shaded). Right: changing the metric. With correlated variables, the Mahalanobis unit circle is an ellipse, and two points at the same Euclidean distance can be very different distances away.
+</figcaption>
+</figure>
+</div>
+<ul>
+<li>The familiar length is Euclidean, <span class="math inline">\(L_2\)</span>: <span class="math inline">\(\|\mathbf{y}\|^2 = \mathbf{y}^\top\mathbf{y}\)</span>. Centered, that’s the total sum of squares, and divided by its df, it’s the variance. <strong>A variance is a squared length.</strong></li>
+<li>Pythagoras splits it: <span class="math inline">\(SS_T = SS_H + SS_E\)</span>. The <span class="math inline">\(F\)</span> ratio compares two squared lengths, each per df. So even the univariate test is already asking “how big is H, relative to E?”</li>
+<li>Other lengths are useful too. <span class="math inline">\(L_1\)</span> adds absolute values (city-block distance), and <span class="math inline">\(L_\infty\)</span> takes the largest one.</li>
+<li>The choice of length is also <strong>the difference between ridge regression and the lasso</strong>. Both shrink the least squares coefficients by limiting their size: ridge limits their <span class="math inline">\(L_2\)</span> length, the lasso their <span class="math inline">\(L_1\)</span> length. The estimate moves out from the origin until an RSS contour first touches the constraint region (<a href="#fig-ridge-lasso" class="quarto-xref">Figure&nbsp;4</a>). The <span class="math inline">\(L_2\)</span> disk is round, so that point almost never lies on an axis, and ridge shrinks every coefficient without setting any to zero. The <span class="math inline">\(L_1\)</span> diamond has corners on the axes, and the contours tend to meet it there, so the lasso sets some coefficients exactly to zero: it selects variables as it shrinks.</li>
+<li><em>Compared to what?</em> With correlated variables, Euclidean distance is the wrong ruler. The Mahalanobis distance, <span class="math inline">\(\mathbf{e}^\top \mathbf{S}^{-1} \mathbf{e}\)</span>, measures length in the metric of the data, and its unit circle is the data ellipse. It’s the tenth metric that <a href="#fig-distance-methods" class="quarto-xref">Figure&nbsp;2</a> leaves out, and the only one whose unit ball comes from the data rather than from a choice of exponent. In the right panel of <a href="#fig-unit-balls" class="quarto-xref">Figure&nbsp;3</a>, A and B are both 1 unit from the origin by Euclid, but B is more than twice as far as A in the metric of the ellipse.</li>
+</ul>
+<div id="fig-ridge-lasso" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels, Ridge and Lasso, with axes beta1 and beta2. In each, red elliptical contours tilted down to the right surround the OLS point (0.25, 0.85). Left: an orange disk of radius 0.5 at the origin; the outer red contour touches it at (0.23, 0.44), labeled Ridge, and a dashed curve runs from the OLS point to the origin through it. Right: a blue diamond with corners at plus and minus 0.5 on the axes; the outer contour touches its top corner at (0, 0.50), labeled Lasso, and a dashed path runs from the OLS point down to the beta2 axis and then along it to the origin.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ridge-lasso-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/ridge-lasso.png" class="img-fluid figure-img" style="width:85.0%" alt="Two panels, Ridge and Lasso, with axes beta1 and beta2. In each, red elliptical contours tilted down to the right surround the OLS point (0.25, 0.85). Left: an orange disk of radius 0.5 at the origin; the outer red contour touches it at (0.23, 0.44), labeled Ridge, and a dashed curve runs from the OLS point to the origin through it. Right: a blue diamond with corners at plus and minus 0.5 on the axes; the outer contour touches its top corner at (0, 0.50), labeled Lasso, and a dashed path runs from the OLS point down to the beta2 axis and then along it to the origin.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ridge-lasso-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Ridge regression and the lasso, for two correlated predictors. The red ellipses are contours of the residual sum of squares around the OLS estimate. Each method gives the first point where a contour touches its constraint region, here of the same size: the <span class="math inline">\(L_2\)</span> disk for ridge, the <span class="math inline">\(L_1\)</span> diamond for the lasso. The lasso lands on a corner, so <span class="math inline">\(\hat\beta_1 = 0\)</span>. Dashed curves trace each method’s solutions as the constraint shrinks.
+</figcaption>
+</figure>
+</div>
+<!-- Drawn by R/ridge-lasso.R. Inspired by a three-panel figure (ridge, lasso, elastic net)
+     noted at Reducing-dimensions-notes.md, ~line 103; source unknown, so not used as is.
+     The RSS contours are Mahalanobis ellipses in the metric of X'X: a link to the bullet
+     above, if wanted. -->
+</section>
+<section id="how-big-is-a-covariance-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="how-big-is-a-covariance-matrix">How big is a covariance matrix?</h2>
+<p>One rung up, a covariance matrix <span class="math inline">\(\mathbf{S}\)</span> for <span class="math inline">\(p\)</span> variables holds <span class="math inline">\(p(p+1)/2\)</span> different numbers: <span class="math inline">\(p\)</span> variances and <span class="math inline">\(p(p-1)/2\)</span> covariances. How big is that? There are two classic answers, each a single number.</p>
+<ul>
+<li>The <strong>trace</strong>, <span class="math inline">\(\operatorname{tr}(\mathbf{S})\)</span>, adds up the variances: the <em>total variance</em>. It’s easy to compute and to explain, but it ignores the covariances entirely.</li>
+<li>The <strong>determinant</strong>, <span class="math inline">\(|\mathbf{S}|\)</span>, is what <span class="citation" data-cites="Wilks:1932">Wilks (<a href="#ref-Wilks:1932" role="doc-biblioref">1932</a>)</span> called the <em>generalized variance</em>. It takes the correlations into account, and it has a lovely geometric meaning.</li>
+</ul>
+<p>For any <span class="math inline">\(2 \times 2\)</span> matrix, the determinant is the <strong>area</strong> of the parallelogram spanned by its rows (left panel of <a href="#fig-det-area" class="quarto-xref">Figure&nbsp;5</a>); for a <span class="math inline">\(3 \times 3\)</span> matrix it’s the volume of a parallelepiped, and so on up <span class="citation" data-cites="Hannah:1996 Locke:1994">(<a href="#ref-Hannah:1996" role="doc-biblioref">Hannah 1996</a>; <a href="#ref-Locke:1994" role="doc-biblioref">Locke 1994</a>)</span>. Area is the natural size of a flat thing, so it’s a natural candidate for the size of a matrix.</p>
+<p>For a covariance matrix, the better picture is the data ellipse, <span class="math inline">\(\mathbf{x}^\top \mathbf{S}^{-1} \mathbf{x} = 1\)</span>. Its semi-axes point along the eigenvectors of <span class="math inline">\(\mathbf{S}\)</span> and have lengths <span class="math inline">\(\sqrt{\lambda_1}, \sqrt{\lambda_2}, \dots\)</span>, the square roots of its eigenvalues. Then the two sizes are two ways of combining the same axes:</p>
+<p><span class="math display">\[
+\operatorname{tr}(\mathbf{S}) = \sum \lambda_i \quad \text{(sum of squared semi-axes)},
+\qquad
+|\mathbf{S}| = \prod \lambda_i \quad \text{(product of squared semi-axes)},
+\]</span></p>
+<p>and the area of the ellipse is <span class="math inline">\(\pi \sqrt{|\mathbf{S}|}\)</span> (in <span class="math inline">\(p\)</span> dimensions, its volume is proportional to <span class="math inline">\(\sqrt{|\mathbf{S}|}\)</span>).</p>
+<div id="fig-det-area" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. Left, titled det(A) is an area: arrows a1 from the origin to (3, 1) and a2 to (2, 4), with gray arrows completing an orange parallelogram to (5, 5), labeled area = 10. Right, titled det(S): same variances, less area: a gray unit circle, a shaded red ellipse tilted at 45 degrees, and a thinner blue ellipse along the same diagonal. Two black arrows from the origin mark the semi-axes of the red ellipse, labeled square root of lambda 1 (long, up and to the right) and square root of lambda 2 (short, up and to the left). A table reads: r 0.00, det 1.000, area 3.14; r 0.75, det 0.438, area 2.08; r 0.95, det 0.098, area 0.98.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-det-area-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/det-area.png" class="img-fluid figure-img" style="width:90.0%" alt="Two panels. Left, titled det(A) is an area: arrows a1 from the origin to (3, 1) and a2 to (2, 4), with gray arrows completing an orange parallelogram to (5, 5), labeled area = 10. Right, titled det(S): same variances, less area: a gray unit circle, a shaded red ellipse tilted at 45 degrees, and a thinner blue ellipse along the same diagonal. Two black arrows from the origin mark the semi-axes of the red ellipse, labeled square root of lambda 1 (long, up and to the right) and square root of lambda 2 (short, up and to the left). A table reads: r 0.00, det 1.000, area 3.14; r 0.75, det 0.438, area 2.08; r 0.95, det 0.098, area 0.98.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-det-area-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Left: the determinant of <span class="math inline">\(\mathbf{A}\)</span> is the area of the parallelogram spanned by its rows, <span class="math inline">\(\mathbf{a}_1\)</span> and <span class="math inline">\(\mathbf{a}_2\)</span>. Right: data ellipses for two variables with unit variances and correlation <span class="math inline">\(r\)</span> = 0, 0.75 and 0.95. All three have the same trace, 2, but <span class="math inline">\(|\mathbf{S}| = 1 - r^2\)</span> shrinks, and so does the area. Arrows show the semi-axes of the <span class="math inline">\(r = 0.75\)</span> ellipse, whose lengths are the square roots of the eigenvalues of <span class="math inline">\(\mathbf{S}\)</span>.
+</figcaption>
+</figure>
+</div>
+<!-- Drawn by R/det-area.R, with matlib::vectors(). The left panel follows step 8 of the
+     matlib vignette "Properties of determinants" (a1-det-ex1). -->
+<p>The right panel shows why the two answers differ. All three ellipses have the same variances, so the trace can’t tell them apart. But as the correlation grows, the ellipse is squeezed along its minor axis, and the generalized variance, <span class="math inline">\(1 - r^2\)</span> here, falls toward zero. Correlated variables carry less information than their variances suggest, and the determinant is the size that notices.</p>
+<p>At <span class="math inline">\(r = 1\)</span> the ellipse collapses to a line: no area, <span class="math inline">\(|\mathbf{S}| = 0\)</span>. The data have dropped into Lineland, and <span class="math inline">\(\mathbf{S}\)</span> has no inverse. That’s why the Mahalanobis distance in the last section needs <span class="math inline">\(|\mathbf{S}| \neq 0\)</span>. When it exists, the inverse has <span class="math inline">\(|\mathbf{S}^{-1}| = 1 / |\mathbf{S}|\)</span>, and its ellipse has the same axes with reciprocal lengths, so the long axis becomes the short one (<a href="https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/2451107#2451107">geometric diagrams</a>).</p>
+<p>The determinant will be back. Wilks’s <span class="math inline">\(\Lambda\)</span>, one of the four MANOVA tests below, is a ratio of two of them, <span class="math inline">\(|\mathbf{E}| / |\mathbf{H} + \mathbf{E}|\)</span>: the squared ratio of two areas.</p>
+</section>
+<section id="how-big-is-a-matrix-of-data" class="level2">
+<h2 class="anchored" data-anchor-id="how-big-is-a-matrix-of-data">How big is a matrix of data?</h2>
+<p>A covariance matrix is already a summary. Go back to the data themselves: an <span class="math inline">\(n \times p\)</span> matrix <span class="math inline">\(\mathbf{Y}\)</span>, centered at the column means. The tool for sizing up any rectangular matrix is its <strong>singular value decomposition</strong>,</p>
+<p><span class="math display">\[
+\mathbf{Y} = \mathbf{U} \mathbf{D} \mathbf{V}^\top ,
+\qquad \mathbf{D} = \operatorname{diag}(d_1 \ge d_2 \ge \dots \ge d_p \ge 0) .
+\]</span></p>
+<p><span class="math inline">\(\mathbf{V}\)</span> and <span class="math inline">\(\mathbf{U}\)</span> are rotations, which don’t change size at all, so everything about how big <span class="math inline">\(\mathbf{Y}\)</span> is lives in the singular values <span class="math inline">\(d_i\)</span>. They are the semi-axes of the data ellipsoid, up to a constant: the eigenvalues of the covariance matrix are <span class="math inline">\(\lambda_i = d_i^2 / (n-1)\)</span>. So the sizes of the last section come back, now as different ways of combining the <span class="math inline">\(d_i\)</span>:</p>
+<div id="tbl-sizes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sizes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Three sizes of a data matrix, up to the factor <span class="math inline">\(n - 1\)</span>.
+</figcaption>
+<div aria-describedby="tbl-sizes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>“Size” of <span class="math inline">\(\mathbf{Y}\)</span></th>
+<th>In singular values</th>
+<th>For the data ellipsoid</th>
+<th>Statistical name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Frobenius norm, squared</td>
+<td><span class="math inline">\(\sum d_i^2\)</span></td>
+<td>sum of squared semi-axes</td>
+<td>total variance (trace)</td>
+</tr>
+<tr class="even">
+<td>Spectral norm, squared</td>
+<td><span class="math inline">\(d_1^2\)</span></td>
+<td>longest semi-axis, squared</td>
+<td>variance of the first PC</td>
+</tr>
+<tr class="odd">
+<td>Determinant of <span class="math inline">\(\mathbf{Y}^\top\mathbf{Y}\)</span> (not a norm)</td>
+<td><span class="math inline">\(\prod d_i^2\)</span></td>
+<td>volume, squared</td>
+<td>generalized variance</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Here they are for the five oxides in the Pottery data. The oxides are measured in very different amounts (Al varies about a thousand times as much as Ca or Na), so I standardize them first. That is the <em>compared to what?</em> question again: in raw units, aluminum alone would decide how big the matrix is.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Pottery, <span class="at">package =</span> <span class="st">"carData"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">scale</span>(Pottery[, <span class="sc">-</span><span class="dv">1</span>])            <span class="co"># the five oxides, standardized</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">svd</span>(Z)<span class="sc">$</span>d</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(d, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9.846 3.901 2.471 2.150 1.452</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">Frobenius2 =</span> <span class="fu">sum</span>(d<span class="sc">^</span><span class="dv">2</span>), <span class="at">spectral2 =</span> d[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">det =</span> <span class="fu">prod</span>(d<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> Frobenius2   spectral2         det 
+  125.00000    96.94492 87748.90008 </code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cumsum</span>(d<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(d<span class="sc">^</span><span class="dv">2</span>), <span class="dv">3</span>)     <span class="co"># proportion of total variance, first k</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.776 0.897 0.946 0.983 1.000</code></pre>
+</div>
+</div>
+<p>After standardizing, the Frobenius size is just <span class="math inline">\((n-1)p\)</span> = 125, and tells us nothing: every standardized matrix of this shape has the same total variance. The information is in how that total is <em>spread</em> over the <span class="math inline">\(d_i\)</span>, and that’s where the other sizes come in (<a href="#fig-spread-spectra" class="quarto-xref">Figure&nbsp;6</a>).</p>
+<div id="fig-spread-spectra" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Three bar charts side by side, each with five bars for lambda 1 to lambda 5 and a dashed line at 1. Round: all five bars equal 1. Pottery oxides: a tall red first bar at 3.88, then 0.61, 0.24, 0.18, and a short blue last bar at 0.08. Nearly collinear: four bars near 1.2 to 1.3, the first in red, and a last bar of 0.01, almost invisible. Each panel lists four sizes. Round: total 5, largest 1, product 1, condition 1. Pottery: total 5, largest 3.88, product 0.009, condition 6.78. Nearly collinear: total 5, largest 1.30, product 0.024, condition 11.4.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-spread-spectra-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/spread-spectra.png" class="img-fluid figure-img" style="width:100.0%" alt="Three bar charts side by side, each with five bars for lambda 1 to lambda 5 and a dashed line at 1. Round: all five bars equal 1. Pottery oxides: a tall red first bar at 3.88, then 0.61, 0.24, 0.18, and a short blue last bar at 0.08. Nearly collinear: four bars near 1.2 to 1.3, the first in red, and a last bar of 0.01, almost invisible. Each panel lists four sizes. Round: total 5, largest 1, product 1, condition 1. Pottery: total 5, largest 3.88, product 0.009, condition 6.78. Nearly collinear: total 5, largest 1.30, product 0.024, condition 11.4.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spread-spectra-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Same total, different spread. The eigenvalues of three <span class="math inline">\(5 \times 5\)</span> correlation matrices (the <span class="math inline">\(d_i^2 / (n-1)\)</span> of standardized data) all add up to 5. The largest, the product and the condition number tell them apart, and each picks a different one as “biggest”. Pottery has one big dimension; the made-up collinear data have four ordinary ones and one that is nearly missing.
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><strong>Keep the big ones: PCA.</strong> The first <span class="math inline">\(k\)</span> singular values and vectors give the best rank-<span class="math inline">\(k\)</span> approximation to <span class="math inline">\(\mathbf{Y}\)</span>, in both the Frobenius and the spectral norm <span class="citation" data-cites="EckartYoung:1936">(<a href="#ref-EckartYoung:1936" role="doc-biblioref">Eckart and Young 1936</a>)</span>. What’s left over has squared Frobenius size <span class="math inline">\(\sum_{i &gt; k} d_i^2\)</span>, so the proportion of variance kept is <span class="math inline">\(\sum_{i \le k} d_i^2 / \sum d_i^2\)</span>. For Pottery, two dimensions keep 89.7%. This is principal components analysis, and the <strong>biplot</strong> draws the observations and the variables together in that low-rank space <span class="citation" data-cites="Gabriel:71">(<a href="#ref-Gabriel:71" role="doc-biblioref">Gabriel 1971</a>)</span>.</li>
+<li><strong>Watch the small ones: collinearity.</strong> For a matrix of <em>predictors</em> <span class="math inline">\(\mathbf{X}\)</span>, the small end of the spectrum is where the trouble is. A <span class="math inline">\(d_i\)</span> near zero means the ellipsoid is nearly flat in some direction, so <span class="math inline">\(|\mathbf{X}^\top\mathbf{X}|\)</span> is nearly zero and some coefficients are badly determined. The <em>condition number</em> <span class="math inline">\(d_1 / d_p\)</span> measures how flat; for the standardized oxides it’s 6.78, no cause for alarm.</li>
+<li><strong>Shrink the small ones: ridge regression.</strong> Ridge regression <span class="citation" data-cites="HoerlKennard:1970">(<a href="#ref-HoerlKennard:1970" role="doc-biblioref">Hoerl and Kennard 1970</a>)</span> shrinks the least squares fit along each principal axis of <span class="math inline">\(\mathbf{X}\)</span> by the factor <span class="math inline">\(d_i^2 / (d_i^2 + k)\)</span>, for ridge constant <span class="math inline">\(k\)</span>. Big directions are hardly touched; the small, poorly determined ones are shrunk the most. Adding up the factors, <span class="math inline">\(\sum d_i^2 / (d_i^2 + k)\)</span>, gives the <em>effective degrees of freedom</em> of the fit: a whole matrix, reduced to one number that says how big the model is <span class="citation" data-cites="Friendly:genridge:2013">(<a href="#ref-Friendly:genridge:2013" role="doc-biblioref">Friendly 2013</a>)</span>. Keep that form in mind. Pillai’s trace, one of the four MANOVA tests below, is <span class="math inline">\(\sum \lambda_i / (1 + \lambda_i)\)</span>, the same kind of sum.</li>
+</ul>
+<!-- Figure candidates for this section (see the reply / notes):
+     1. Spectrum of Pottery (scree-like bars of d_i^2), marking the three sizes:
+        the whole (Frobenius), the first bar (spectral), and k = 2 kept (Eckart-Young).
+     2. Ridge shrinkage factors d_i^2/(d_i^2 + k) against k, one curve per component,
+        with effective df on a second axis.
+     3. Pottery biplot (PCA) beside the canonical HE plot: biggest total variance vs.
+        biggest H relative to E. Sets up the next section.
+     4. Low-rank approximation of an image, k = 1, 2, 5, 20 (from the MatrixAlgebra
+        review). -->
+</section>
+<section id="ellipses-have-shadows" class="level2">
+<h2 class="anchored" data-anchor-id="ellipses-have-shadows">Ellipses have shadows</h2>
+<!-- MF attributes the phrase to Georges Monette. Check whether it's in print anywhere, or
+     credit it as his way of saying it. -->
+<p>Georges Monette has a short way of putting one of the most useful ideas in this business: <strong>ellipses have shadows</strong>. Shine a light on an ellipse, and its shadow on a line is an interval. That is a step down from two dimensions to one, and the ellipse holds <em>every</em> such step at once: for any linear combination of the parameters, the confidence interval is the shadow of the confidence ellipse on that direction <span class="citation" data-cites="Monette:90 Friendly-etal:ellipses:2012">(<a href="#ref-Monette:90" role="doc-biblioref">Monette 1990</a>; <a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013</a>)</span>.</p>
+<p>This helps you to think constructively about univariate tests in relation to joint tests of parameters and ideas like Scheffé tests accounting for multiplicity. But it goes further, because 3D (and higher-D) ellipsoids also have their 2D shadows, whose properties are illuminating.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Those are harder to draw, however.</p>
+<p>Here’s the example from our ellipses paper (Fig. 13 there), with contrived data on 20 university people: an index of heart damage, predicted from their coffee consumption and their occupational stress. Coffee and stress are strongly correlated, so the confidence ellipse for the two slopes is long and thin.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(coffee, <span class="at">package =</span> <span class="st">"matlib"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>coffee.mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(Heart <span class="sc">~</span> Coffee <span class="sc">+</span> Stress, <span class="at">data =</span> coffee)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cbind</span>(<span class="fu">coef</span>(coffee.mod), <span class="fu">confint</span>(coffee.mod)), <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     2.5 % 97.5 %
+(Intercept) -7.794 -20.016  4.427
+Coffee      -0.409  -1.025  0.206
+Stress       1.199   0.726  1.673</code></pre>
+</div>
+</div>
+<div id="fig-coffee-shadows" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels in the space of beta-Coffee (horizontal) and beta-Stress (vertical). In each, a long thin blue ellipse tilts down to the right, centered near (-0.4, 1.2). Left, Shadows on the axes: light orange strips run from the ellipse to both axes, ending in thick orange intervals. The interval for Coffee, on the horizontal axis, includes 0; the one for Stress, on the vertical axis, excludes 0. A larger grey ellipse surrounds the blue one, and its slightly longer grey shadows lie just outside the axes. Right, Shadows in other directions: one strip runs obliquely down to the right, landing on the horizontal axis near 1.1, labeled Coffee, ignoring Stress (the simple regression). Another runs down to the left onto a diagonal axis through the origin, labeled Stress minus Coffee, with tick marks from 0 to 2; that interval excludes 0.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-coffee-shadows-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/coffee-shadows.png" class="img-fluid figure-img" style="width:100.0%" alt="Two panels in the space of beta-Coffee (horizontal) and beta-Stress (vertical). In each, a long thin blue ellipse tilts down to the right, centered near (-0.4, 1.2). Left, Shadows on the axes: light orange strips run from the ellipse to both axes, ending in thick orange intervals. The interval for Coffee, on the horizontal axis, includes 0; the one for Stress, on the vertical axis, excludes 0. A larger grey ellipse surrounds the blue one, and its slightly longer grey shadows lie just outside the axes. Right, Shadows in other directions: one strip runs obliquely down to the right, landing on the horizontal axis near 1.1, labeled Coffee, ignoring Stress (the simple regression). Another runs down to the left onto a diagonal axis through the origin, labeled Stress minus Coffee, with tick marks from 0 to 2; that interval excludes 0.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-coffee-shadows-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: The confidence ellipse for <span class="math inline">\((\beta_\text{Coffee}, \beta_\text{Stress})\)</span> and some of its shadows. Left: shadows on the axes give the usual confidence intervals (orange), from the 95% CI ellipse, and the Scheffé intervals (grey), from the larger joint ellipse. Right: shadows in other directions give the slope for Coffee ignoring Stress, and the difference between the two slopes.
+</figcaption>
+</figure>
+</div>
+<p>The shadows tell the whole story of this regression:</p>
+<ul>
+<li><strong>Straight down</strong>, on the <span class="math inline">\(\beta_\text{Coffee}\)</span> axis, the shadow is the 95% confidence interval for Coffee, controlling for Stress. It includes 0. <strong>Straight across</strong>, the interval for Stress excludes 0. Once you know a person’s stress, coffee adds nothing.</li>
+<li><strong>Along the tilt of the ellipse</strong>, onto the line <span class="math inline">\(\beta_\text{Stress} = 0\)</span>, the shadow lands on the slope for Coffee in the <em>simple</em> regression, ignoring Stress. That slope is positive and clearly not zero. The apparent paradox, that coffee “matters” in one model and not the other, is just two shadows of the same ellipse, cast from two directions.</li>
+<li><strong>On a diagonal axis</strong>, the shadow gives an interval for <span class="math inline">\(\beta_\text{Stress} - \beta_\text{Coffee}\)</span>, which excludes 0: the two slopes differ.</li>
+</ul>
+<!-- TO RESOLVE (see notes, Figures item 6): the oblique shadow's centre is exactly the
+     simple-regression slope (1.108), but its width (0.97, 1.25) is narrower than the
+     simple-regression CI (0.88, 1.33). Say so here, or show both in the figure. -->
+<p>The size of the ellipse depends on how many questions you want to ask of it. Scaled by <span class="math inline">\(t_{\nu}\)</span>, its shadows are ordinary 95% intervals, good for one question at a time. Scaled by <span class="math inline">\(\sqrt{2 F_{2,\nu}}\)</span>, it becomes the joint 95% confidence region, and its shadows are Scheffé intervals, which hold simultaneously for <em>every</em> direction you might look. That’s the price of going fishing, paid in advance.</p>
+<!-- Side note, not the main thread: each one-row linear hypothesis L beta = 0 asks about one
+     shadow; Scheffé protects all of them at once. A footnote pointing back to L B M = 0 in
+     the first post may be enough. -->
+<p>So an ellipse is a remarkably economical summary. It stores every one-dimensional answer, and you choose which one you want by choosing where the light comes from. That idea comes back below, as Roy’s largest root: the direction in which <strong>H</strong> casts its longest shadow relative to <strong>E</strong>.</p>
+</section>
+<section id="how-big-is-h-relative-to-e" class="level2">
+<h2 class="anchored" data-anchor-id="how-big-is-h-relative-to-e">How big is H, relative to E?</h2>
+<!-- DRAFT 2026-11-24. Example: heplots::mathscore, as in the book's Hotelling chapter.
+     Figure: R/h-relative-e.R. Notes section 3. -->
+<p>With one response, this question is easy, because <strong>H</strong> and <strong>E</strong> are just numbers: the sums of squares for the hypothesis and for error. “How big is <span class="math inline">\(SS_H\)</span> relative to <span class="math inline">\(SS_E\)</span>?” is answered by dividing, <span class="math display">\[\lambda = \frac{SS_H}{SS_E}, \qquad F = \lambda \cdot \frac{df_e}{df_h} .\]</span> The <span class="math inline">\(F\)</span> statistic is just this ratio, put on a scale where its distribution is known.</p>
+<p>Take the smallest multivariate example I know, the <code>mathscore</code> data from heplots, which I used to introduce Hotelling’s <span class="math inline">\(T^2\)</span> in the book <span class="citation" data-cites="Friendly:2024:VisMLM">(<a href="#ref-Friendly:2024:VisMLM" role="doc-biblioref">Friendly 2024</a>)</span>. Two groups of six students, taught by different instructors, have scores on basic math (BM) and word problems (WP). One response at a time:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Response</th>
+<th style="text-align: right;"><span class="math inline">\(SS_H / SS_E\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(F(1, 10)\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(p\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BM</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">4.24</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+<tr class="even">
+<td>WP</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: right;">10.45</td>
+<td style="text-align: right;">0.009</td>
+</tr>
+</tbody>
+</table>
+<p>So the groups differ on word problems, but not quite on basic math. Keep those two numbers in mind.</p>
+<p>With both responses, <strong>H</strong> and <strong>E</strong> are <span class="math inline">\(2 \times 2\)</span> matrices, and you can’t divide one matrix by another. The product <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span> exists, but its entries don’t mean much on their own. The way out is to <strong>change the units</strong> (<a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a>):</p>
+<div id="fig-h-relative-e" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Three panels. A, In the units of the data: the 12 students as grey points, with basic math on the horizontal axis and word problems on the vertical. A red ellipse, E, tilts up to the right. A thick blue line, H, runs down to the right between the two group means, group 2 at upper left and group 1 at lower right. B, Measure in units of E: the same picture transformed so that E is a unit circle; H* is a longer blue line through the center, running down to the right. C, Rotate to the axes of H*: the unit circle with the blue line now horizontal, reaching 2.53 from the center, labeled square root of lambda 1, against the circle's radius of 1. A note reads lambda 1 = 6.42, lambda 2 = 0.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-h-relative-e-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/h-relative-e.png" class="img-fluid figure-img" style="width:100.0%" alt="Three panels. A, In the units of the data: the 12 students as grey points, with basic math on the horizontal axis and word problems on the vertical. A red ellipse, E, tilts up to the right. A thick blue line, H, runs down to the right between the two group means, group 2 at upper left and group 1 at lower right. B, Measure in units of E: the same picture transformed so that E is a unit circle; H* is a longer blue line through the center, running down to the right. C, Rotate to the axes of H*: the unit circle with the blue line now horizontal, reaching 2.53 from the center, labeled square root of lambda 1, against the circle's radius of 1. A note reads lambda 1 = 6.42, lambda 2 = 0.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-h-relative-e-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: How big is <strong>H</strong> relative to <strong>E</strong>, for the <code>mathscore</code> data. (A) In the units of the data, <strong>E</strong> (red) is the within-group covariance ellipse, and <strong>H</strong> (blue) is a line, because two groups can differ in only one direction. (B) Re-expressed in units of <strong>E</strong>, the error ellipse becomes the unit circle, and <strong>H</strong> becomes <strong>H</strong>*. (C) Rotated to the axes of <strong>H</strong>*, all that’s left is how far <strong>H</strong>* sticks out beyond the circle: <span class="math inline">\(\sqrt{\lambda_1}\)</span>.
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><strong>Measure in units of E.</strong> Transform the responses so that the error ellipse becomes a circle of radius 1: <span class="math display">\[\mathbf{H}^\star = \mathbf{E}^{-1/2}\,\mathbf{H}\,\mathbf{E}^{-1/2}, \qquad \mathbf{E}^\star = \mathbf{I} .\]</span> Now every direction has the same error variance, and <strong>H</strong>* says how big the effect is in each direction, in units of error. This is the matrix version of dividing by <span class="math inline">\(SS_E\)</span>, and the same change of metric that turns Euclidean distance into Mahalanobis distance.</li>
+<li><strong>Rotate to the axes of H*.</strong> A circle looks the same after any rotation, so turn the picture until <strong>H</strong>* lines up with the axes. All that’s left are the lengths of its axes: the eigenvalues <span class="math inline">\(\lambda_1 \ge \lambda_2 \ge \dots\)</span> of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>. Only <span class="math inline">\(s = \min(q, df_h)\)</span> of them can be nonzero. Here there are two responses but only one degree of freedom between two groups, so <span class="math inline">\(s = 1\)</span>: <strong>H</strong> is a line, and <span class="math inline">\(\lambda_1 = 6.42\)</span>, <span class="math inline">\(\lambda_2 = 0\)</span>.</li>
+</ul>
+<p>Now compare. Basic math alone gave 0.42, and word problems alone 1.05. Both responses together give 6.42, six times the better of the two. The reason is in panel A: within groups, BM and WP go up together (the red ellipse tilts up), but the group means differ in opposite directions (the blue line tilts down). The groups are best told apart by a contrast, roughly BM minus WP, and along that direction the difference is huge relative to error.</p>
+<p>This is where <a href="#ellipses-have-shadows">shadows</a> come back, and they tie the matrix answer to the univariate one. Pick any weighted combination of the responses, <span class="math inline">\(y = a_1 \text{BM} + a_2 \text{WP}\)</span>. Its sums of squares are the squared shadows of the two ellipses in the direction <span class="math inline">\(\mathbf{a}\)</span>: <span class="math display">\[SS_H(y) = \mathbf{a}^\top \mathbf{H}\, \mathbf{a}, \qquad SS_E(y) = \mathbf{a}^\top \mathbf{E}\, \mathbf{a} .\]</span> So the ratio of the shadows, squared, is the ordinary univariate <span class="math inline">\(\lambda\)</span> for that one variable, a ratio of variances. Shine the light straight down the BM axis and you get 0.42; straight across, along WP, 1.05. Turn the light, and the ratio changes. Its largest value, over every direction you could choose, is <span class="math inline">\(\lambda_1 = 6.42\)</span>, and the direction that gives it is the best combination of the responses. So the multivariate answer is the univariate answer, for the best variable you could have measured. The axes, BM and WP, are just two of the directions, and here not good ones. As a test, <span class="math inline">\(F = 28.9\)</span> on 2 and 9 df, <span class="math inline">\(p = 0.0001\)</span>.</p>
+<p><strong>Why the eigenvalues are enough.</strong> A sensible answer to “how big?” shouldn’t depend on the units of the responses (points or percent), or on which combinations of them you choose to analyze (BM and WP, or their sum and difference). Any such change transforms <strong>H</strong> and <strong>E</strong> together, and leaves the <span class="math inline">\(\lambda\)</span>s unchanged. So any test that ignores these arbitrary choices can depend on the data only through the <span class="math inline">\(\lambda\)</span>s. That’s how a matrix question becomes a question about <span class="math inline">\(s\)</span> numbers: invariance does the reducing.</p>
+<p><strong>What’s set aside.</strong> The directions. The <span class="math inline">\(\lambda\)</span>s say how big, but not which way. Here the direction is the contrast between BM and WP, given by the eigenvector of <span class="math inline">\(\mathbf{E}^{-1}\mathbf{H}\)</span>, the weights of the linear discriminant function. Getting the directions back, and showing them, is the job of HE plots and canonical plots (<a href="#dont-reduce-too-soon-he-plots">below</a>).</p>
+<p>With <span class="math inline">\(s = 1\)</span> there’s one number, and nothing more to decide: Pillai, Wilks, Hotelling-Lawley and Roy all give the same <span class="math inline">\(F\)</span>. The Pottery data have <span class="math inline">\(s = 3\)</span> eigenvalues, 34.16, 1.25 and 0.028 (<a href="#fig-reducing-ladder" class="quarto-xref">Figure&nbsp;1</a>), and that’s where the four tests part company.</p>
+</section>
+<section id="four-kinds-of-mean" class="level2">
+<h2 class="anchored" data-anchor-id="four-kinds-of-mean">Four kinds of mean</h2>
+<!-- DRAFT 2026-11-24. Notes section 4. Figures: four-contours.png (R/four-contours.R) and
+     the bar cartoon, copied from drafts/VisMLM/jokes/images/four-tests-cartoon-v3.png. -->
+<p>For the Pottery data there are three eigenvalues, <span class="math inline">\(\lambda\)</span> = 34.16, 1.25 and 0.028: one big dimension of difference among the kiln sites, one modest, and one that is essentially noise. To get to one number, you have to combine them somehow. The four classical tests are four ways to do it, and the cleanest way to see how they differ is to notice that each one is an <strong>average</strong>, of a different kind.</p>
+<p>Re-express each eigenvalue as the share of <em>error</em> in its dimension, <span class="math display">\[u_i = \frac{1}{1 + \lambda_i} = 1 - r_i^2 ,\]</span> where <span class="math inline">\(r_i^2 = \lambda_i / (1 + \lambda_i)\)</span> is the squared canonical correlation for that dimension. A big effect means a small <span class="math inline">\(u_i\)</span>. Then each test statistic is a mean of the same <span class="math inline">\(s\)</span> numbers <span class="math inline">\(u_1, \dots, u_s\)</span>, and one minus that mean is a multivariate <span class="math inline">\(\eta^2\)</span>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Statistic</th>
+<th>Mean of the <span class="math inline">\(u_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\eta^2\)</span> for Pottery</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pillai</td>
+<td><span class="math inline">\(V = \sum \lambda_i / (1 + \lambda_i)\)</span></td>
+<td>arithmetic: <span class="math inline">\(1 - V/s\)</span></td>
+<td style="text-align: right;">0.518</td>
+</tr>
+<tr class="even">
+<td>Wilks</td>
+<td><span class="math inline">\(\Lambda = \prod 1 / (1 + \lambda_i)\)</span></td>
+<td>geometric: <span class="math inline">\(\Lambda^{1/s}\)</span></td>
+<td style="text-align: right;">0.769</td>
+</tr>
+<tr class="odd">
+<td>Hotelling-Lawley</td>
+<td><span class="math inline">\(U = \sum \lambda_i\)</span></td>
+<td>harmonic: <span class="math inline">\(s / (s + U)\)</span></td>
+<td style="text-align: right;">0.922</td>
+</tr>
+<tr class="even">
+<td>Roy</td>
+<td><span class="math inline">\(R = \lambda_1\)</span></td>
+<td>minimum: <span class="math inline">\(1 / (1 + R)\)</span></td>
+<td style="text-align: right;">0.972</td>
+</tr>
+</tbody>
+</table>
+<p>These four means are an old family, the power means of order 1, 0, −1 and <span class="math inline">\(-\infty\)</span>, and they always come in the same order: arithmetic <span class="math inline">\(\ge\)</span> geometric <span class="math inline">\(\ge\)</span> harmonic <span class="math inline">\(\ge\)</span> minimum. So for <em>any</em> data, <span class="math display">\[\eta^2_\text{Pillai} \le \eta^2_\text{Wilks} \le \eta^2_\text{HL} \le \eta^2_\text{Roy},\]</span> with equality only when all the <span class="math inline">\(\lambda_i\)</span> are equal, or when there’s just one of them, as in <code>mathscore</code>. <!-- Ordering checked 2026-11-24 (notes, To settle item 6): the power-mean inequality, no
+     violations in 1e5 random cases, matches heplots::etasq(). Nuance: it orders these eta^2
+     measures, not the F statistics or p-values. --> For Pottery, the same three numbers give effect sizes from about half to almost all. None of them is wrong. They answer “how big?” in different senses.</p>
+<p><strong>What counts as big.</strong> The difference shows most clearly with two effects that have the same Hotelling-Lawley trace:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><span class="math inline">\(\lambda\)</span></th>
+<th style="text-align: right;">Pillai <span class="math inline">\(V\)</span></th>
+<th style="text-align: right;">Wilks <span class="math inline">\(\Lambda\)</span></th>
+<th style="text-align: right;">HL <span class="math inline">\(U\)</span></th>
+<th style="text-align: right;">Roy <span class="math inline">\(R\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(1, 0), concentrated</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="even">
+<td>(0.5, 0.5), diffuse</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+</tr>
+</tbody>
+</table>
+<p>Pillai and Wilks say the diffuse effect is bigger (larger <span class="math inline">\(V\)</span>, smaller <span class="math inline">\(\Lambda\)</span>). Roy says the concentrated one is, because he looks only at the largest root. Hotelling-Lawley can’t tell them apart. <a href="#fig-four-contours" class="quarto-xref">Figure&nbsp;9</a> shows why: each curve is the set of effects that one test calls equally big.</p>
+<div id="fig-four-contours" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A square plot with lambda 1 on the horizontal axis and lambda 2 on the vertical, both from 0 to 1.25, with the dashed diagonal lambda 1 = lambda 2 and the region above it shaded. Four curves all pass through the concentrated effect at (1, 0) and its mirror image (0, 1). Pillai, in blue, bows furthest toward the origin, crossing the diagonal at 1/3. Wilks, in green, bows less, crossing at about 0.41. Hotelling-Lawley, in orange, is a straight line from (1, 0) to (0, 1), passing through the diffuse effect at (0.5, 0.5). Roy, in red, is a square corner: vertical from (1, 0) up to (1, 1), then across to (0, 1).">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-contours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/four-contours.png" class="img-fluid figure-img" style="width:65.0%" alt="A square plot with lambda 1 on the horizontal axis and lambda 2 on the vertical, both from 0 to 1.25, with the dashed diagonal lambda 1 = lambda 2 and the region above it shaded. Four curves all pass through the concentrated effect at (1, 0) and its mirror image (0, 1). Pillai, in blue, bows furthest toward the origin, crossing the diagonal at 1/3. Wilks, in green, bows less, crossing at about 0.41. Hotelling-Lawley, in orange, is a straight line from (1, 0) to (0, 1), passing through the diffuse effect at (0.5, 0.5). Roy, in red, is a square corner: vertical from (1, 0) up to (1, 1), then across to (0, 1).">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-contours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: What each test counts as “big”, for <span class="math inline">\(s = 2\)</span>. Each curve joins the pairs <span class="math inline">\((\lambda_1, \lambda_2)\)</span> that one test rates the same as the concentrated effect (1, 0). Effects outside a curve are bigger by that test’s lights. The diffuse effect (0.5, 0.5) is outside the Pillai and Wilks curves, on the Hotelling-Lawley line, and inside Roy’s square.
+</figcaption>
+</figure>
+</div>
+<p>The shapes should look familiar from <a href="#fig-unit-balls" class="quarto-xref">Figure&nbsp;3</a>. The Hotelling-Lawley contour is a diamond, the unit ball of the <span class="math inline">\(L_1\)</span> norm: it simply adds up the <span class="math inline">\(\lambda\)</span>s. Roy’s is a square, the <span class="math inline">\(L_\infty\)</span> ball: only the largest counts. Pillai and Wilks bend in further than the diamond, so they give extra credit for spreading an effect over several dimensions. Choosing a test is choosing a norm.</p>
+<p>This is also why the tests differ in power. Roy’s test is the most powerful when the group differences are concentrated in one dimension, and Pillai’s when they are spread over several <span class="citation" data-cites="Schatzoff1966">(<a href="#ref-Schatzoff1966" role="doc-biblioref">Schatzoff 1966</a>)</span>. Pillai’s is also the most robust to violations of the assumptions, which is why <span class="citation" data-cites="Olson:1974">Olson (<a href="#ref-Olson:1974" role="doc-biblioref">1974</a>)</span> recommended it as the default, and why <code>car::Anova()</code> reports it first.</p>
+<!-- TO WRITE: the tests can also disagree about significance, not just size. Find or
+     construct an example (s = 2, diffuse effect) where Roy is not significant but Pillai is,
+     or the reverse. MF: "hold off on the tests disagreeing for now, but that would be
+     something to mention." -->
+<p>With Pottery’s roots, one big and two small, Roy has the easiest call to make.</p>
+<div id="fig-four-tests-cartoon" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A pen-and-ink cartoon in a pub. Three older men with name badges reading Wilks, Pillai and Hotelling-Lawley sit at the bar over a napkin listing lambda 1 to lambda 5, and together say Probably. The bartender, polishing a glass, asks: Is something going on here? A fourth man, badge Roy, leans away from the bar and points across the room, shouting HIM! at a startled man drinking alone at a table. The caption reads: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-tests-cartoon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/four-tests-cartoon.jpg" class="img-fluid figure-img" style="width:85.0%" alt="A pen-and-ink cartoon in a pub. Three older men with name badges reading Wilks, Pillai and Hotelling-Lawley sit at the bar over a napkin listing lambda 1 to lambda 5, and together say Probably. The bartender, polishing a glass, asks: Is something going on here? A fourth man, badge Roy, leans away from the bar and points across the room, shouting HIM! at a startled man drinking alone at a table. The caption reads: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-tests-cartoon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar. Asked “Is something going on here?”, the first three, averaging over all the <span class="math inline">\(\lambda\)</span>s on their napkin, say “Probably.” Roy points at the largest one: “HIM!”
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="four-rulers-for-one-ellipse" class="level2">
+<h2 class="anchored" data-anchor-id="four-rulers-for-one-ellipse">Four rulers for one ellipse</h2>
+<!-- DRAFT 2026-11-24. Notes section 5; a redraw of Fig. 19 of the ellipses paper.
+     Figure: R/four-rulers.R. NOTE colors: here H + E is orange and E grey (as in the ladder
+     figure); h-relative-e.png uses blue H and red E. Pick one. -->
+<p>The four means have a picture, and it’s the one we already have. Go back to panel C of <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a>: measured in units of <strong>E</strong>, the error ellipse is the unit circle, and the effect sticks out beyond it. It’s easiest to read if you draw <strong>H</strong> + <strong>E</strong>, the total, rather than <strong>H</strong> alone. With <strong>E</strong> a circle and the axes turned to line up with the effect, <strong>H</strong> + <strong>E</strong> is an ellipse with semi-axes <span class="math display">\[a = \sqrt{1 + \lambda_1}, \qquad b = \sqrt{1 + \lambda_2} .\]</span> The more the ellipse sticks out beyond the circle, the bigger the effect. But “how much it sticks out” can be measured in more than one way, and each test uses a different ruler <span class="citation" data-cites="Friendly-etal:ellipses:2012">(<a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013, fig. 19</a>)</span>:</p>
+<div id="fig-four-rulers" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Four panels, each with the same picture: a grey unit circle labeled E inside a wider orange ellipse labeled H + E, centered at the origin, with semi-axes a = 2 horizontally and b = 1.41 vertically. Roy, R = a squared minus 1 = 3: a thick blue segment along the long semi-axis, labeled a. Wilks, Lambda = 1 over (ab) squared = 0.125: the ellipse shaded, both semi-axes drawn, labeled area = pi a b. Hotelling-Lawley, U = c squared minus 2 = 4: a blue chord c from the top of the ellipse to its right end, with a dotted box showing it as the diagonal of the a by b rectangle. Pillai, V = 2 minus 1 over d squared = 1.25: the same chord in grey, and a blue perpendicular d from the center to it, with a right-angle mark. A note at the bottom reads lambda = (3, 1): a = 2, b = 1.41, c = 2.45, d = 1.15.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-rulers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/four-rulers.png" class="img-fluid figure-img" style="width:85.0%" alt="Four panels, each with the same picture: a grey unit circle labeled E inside a wider orange ellipse labeled H + E, centered at the origin, with semi-axes a = 2 horizontally and b = 1.41 vertically. Roy, R = a squared minus 1 = 3: a thick blue segment along the long semi-axis, labeled a. Wilks, Lambda = 1 over (ab) squared = 0.125: the ellipse shaded, both semi-axes drawn, labeled area = pi a b. Hotelling-Lawley, U = c squared minus 2 = 4: a blue chord c from the top of the ellipse to its right end, with a dotted box showing it as the diagonal of the a by b rectangle. Pillai, V = 2 minus 1 over d squared = 1.25: the same chord in grey, and a blue perpendicular d from the center to it, with a right-angle mark. A note at the bottom reads lambda = (3, 1): a = 2, b = 1.41, c = 2.45, d = 1.15.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-rulers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Four rulers for one ellipse. In units of <strong>E</strong> (grey circle), <strong>H</strong> + <strong>E</strong> is the orange ellipse, here for <span class="math inline">\(\lambda = (3, 1)\)</span>. Each test measures it differently: Roy the longest semi-axis <span class="math inline">\(a\)</span>, Wilks the area, Hotelling-Lawley the diagonal <span class="math inline">\(c\)</span> from the end of one axis to the end of the other, and Pillai the perpendicular <span class="math inline">\(d\)</span> from the center to that diagonal.
+</figcaption>
+</figure>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Ruler</th>
+<th>Relation, for <span class="math inline">\(q = 2\)</span></th>
+<th>Which mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Roy</td>
+<td>the longest semi-axis, <span class="math inline">\(a\)</span></td>
+<td><span class="math inline">\(R = a^2 - 1\)</span></td>
+<td>minimum</td>
+</tr>
+<tr class="even">
+<td>Wilks</td>
+<td>the area, <span class="math inline">\(\pi a b\)</span></td>
+<td><span class="math inline">\(\Lambda = 1 / (ab)^2\)</span></td>
+<td>geometric</td>
+</tr>
+<tr class="odd">
+<td>Hotelling-Lawley</td>
+<td>the diagonal, <span class="math inline">\(c = \sqrt{a^2 + b^2}\)</span></td>
+<td><span class="math inline">\(U = c^2 - 2\)</span></td>
+<td>harmonic</td>
+</tr>
+<tr class="even">
+<td>Pillai</td>
+<td>the perpendicular to it, <span class="math inline">\(d = ab / c\)</span></td>
+<td><span class="math inline">\(V = 2 - 1/d^2\)</span></td>
+<td>arithmetic</td>
+</tr>
+</tbody>
+</table>
+<p>The rulers line up with the means of the previous section, because <span class="math inline">\(1/a^2\)</span> and <span class="math inline">\(1/b^2\)</span> are just the <span class="math inline">\(u_i\)</span>, the shares of error. Roy reads only the longest axis, so he takes the smallest <span class="math inline">\(u_i\)</span>. Wilks multiplies the two axes, so he takes their geometric mean. Hotelling-Lawley adds the squared axes, <span class="math inline">\(a^2 + b^2\)</span>, and Pillai adds their reciprocals, <span class="math inline">\(1/a^2 + 1/b^2 = 1/d^2\)</span>: sums of the <span class="math inline">\(\lambda\)</span>s and of the <span class="math inline">\(u_i\)</span>s.</p>
+<p>And here the shadows come back once more. Every shadow of the unit circle has the same length, 1, so the shadow of <strong>H</strong> + <strong>E</strong> in any direction measures the effect in that direction, relative to error. Shadows of this ellipse range from <span class="math inline">\(b\)</span> to <span class="math inline">\(a\)</span>:</p>
+<ul>
+<li><strong>Roy</strong> asks for the <strong>longest shadow</strong>, <span class="math inline">\(a\)</span>. That’s the direction of the largest root, and the best single combination of the responses, as with <code>mathscore</code>. It’s also why Roy’s test is the natural one for Scheffé-style protection over all combinations.</li>
+<li><strong>Hotelling-Lawley</strong> doesn’t care which way you look. Cast the ellipse’s shadows on <em>any</em> two perpendicular directions, and the squares of their lengths add up to the same <span class="math inline">\(a^2 + b^2\)</span>. No rotation needed: the total is the same however the axes are turned.</li>
+<li><strong>Pillai</strong> does the same with the reciprocals, which weight the <em>short</em> shadows most. A dimension where the effect is small pulls Pillai down more than it pulls the others.</li>
+<li><strong>Wilks</strong> measures the whole ellipse at once, as an area (a volume, for <span class="math inline">\(q &gt; 2\)</span>): a generalized variance, as in <a href="#how-big-is-a-covariance-matrix">the determinant section</a>.</li>
+</ul>
+<p>For the toy roots in <a href="#fig-four-rulers" class="quarto-xref">Figure&nbsp;11</a>, the four <span class="math inline">\(\eta^2\)</span>s are 0.625 (Pillai), 0.65 (Wilks), 0.67 (Hotelling-Lawley) and 0.75 (Roy), in the order the previous section promised. They are close here because the two roots, 3 and 1, are not very different. For Pottery, where they are (34.16, 1.25, 0.028), the four rulers give very different answers.</p>
+<!-- CHECK: the Roy/Scheffé link (the union-intersection principle: Roy's root is the
+     largest univariate F over all combinations, so its critical value protects them all).
+     Accurate, but say it carefully, or drop it. The Pillai sentence about short shadows is
+     an interpretation of 1/a^2 + 1/b^2; check it reads right. -->
+</section>
+<section id="all-roads-lead-to-f" class="level2">
+<h2 class="anchored" data-anchor-id="all-roads-lead-to-f">All roads lead to F</h2>
+<!-- DRAFT 2026-11-24. Notes section 6. Simulation and figure: R/null-pvalues.R (1e5 reps per
+     row, about 90 s; it reproduces the table in the notes to within Monte Carlo error). -->
+<p>Four tests, four kinds of mean, four rulers: each statistic also has its own sampling distribution, which depends on <span class="math inline">\(s\)</span> and on the numbers of responses and degrees of freedom. When I learned this, testing a MANOVA meant looking up Wilks’ <span class="math inline">\(\Lambda\)</span> in special tables, or reading Roy’s largest root off Heck’s charts. Today nobody does, because each statistic can be converted to an <span class="math inline">\(F\)</span>, and <code>car::Anova()</code> reports them all that way. All roads lead to <span class="math inline">\(F\)</span>.</p>
+<p>The conversions are not all equally good:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Pillai</th>
+<th>Wilks</th>
+<th>Hotelling-Lawley</th>
+<th>Roy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s = 1\)</span></td>
+<td>exact</td>
+<td>exact</td>
+<td>exact</td>
+<td>exact</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s = 2\)</span></td>
+<td>approximate</td>
+<td><strong>exact</strong></td>
+<td>approximate</td>
+<td>upper bound</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(s \ge 3\)</span></td>
+<td>approximate</td>
+<td>approximate</td>
+<td>approximate</td>
+<td>upper bound</td>
+</tr>
+</tbody>
+</table>
+<p>With <span class="math inline">\(s = 1\)</span> there is only one <span class="math inline">\(\lambda\)</span>, so there is nothing to average, and the four tests are the same test. For <code>mathscore</code>, <code>car::Anova()</code> prints <span class="math inline">\(F = 28.88\)</span> on 2 and 9 df four times over. Hotelling’s <span class="math inline">\(T^2\)</span> is this case, and so is every 1-df term in a MANOVA or multivariate regression. For Wilks with <span class="math inline">\(s = 2\)</span> the <span class="math inline">\(F\)</span> is exact, by way of <span class="math inline">\(\sqrt{\Lambda}\)</span>; otherwise it is Rao’s approximation, which is very good. Pillai and Hotelling-Lawley use approximations too.</p>
+<p>Roy is the odd one out. His statistic is the largest root, and the <span class="math inline">\(F\)</span> that R reports treats it as if it were the only one. That gives an upper bound on the true <span class="math inline">\(F\)</span>, so the <span class="math inline">\(p\)</span>-value is too small whenever <span class="math inline">\(s &gt; 1\)</span>. How much too small? I simulated 100,000 data sets with <em>no</em> effect at all, in a design the size of Pottery: five responses, four groups, 26 cases. If a test is doing its job, its <span class="math inline">\(p\)</span>-values should then be spread evenly between 0 and 1, and about 5% should fall below .05 (<a href="#fig-null-pvalues" class="quarto-xref">Figure&nbsp;12</a>).</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(q\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(df_h\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(df_e\)</span></th>
+<th style="text-align: right;">s</th>
+<th style="text-align: right;">Pillai</th>
+<th style="text-align: right;">Wilks</th>
+<th style="text-align: right;">Hotelling-Lawley</th>
+<th style="text-align: right;">Roy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">0.051</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.043</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.054</td>
+<td style="text-align: right;">0.163</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.041</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.057</td>
+<td style="text-align: right;">0.181</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">0.049</td>
+<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">0.377</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="fig-null-pvalues" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Four histograms of p-values from 0 to 1, one per test, with a dashed line at density 1 marking the flat ideal. Pillai, blue: nearly flat, slightly low at both ends; p below .05 in 0.038 of cases. Wilks, green: flat; 0.049. Hotelling-Lawley, orange: nearly flat, slightly high at both ends; 0.061. Roy, red: a steep spike near 0, about 7.5 times the flat height, falling off quickly; p below .05 in 0.377 of cases.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-null-pvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/null-pvalues.png" class="img-fluid figure-img" style="width:100.0%" alt="Four histograms of p-values from 0 to 1, one per test, with a dashed line at density 1 marking the flat ideal. Pillai, blue: nearly flat, slightly low at both ends; p below .05 in 0.038 of cases. Wilks, green: flat; 0.049. Hotelling-Lawley, orange: nearly flat, slightly high at both ends; 0.061. Roy, red: a steep spike near 0, about 7.5 times the flat height, falling off quickly; p below .05 in 0.377 of cases.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-null-pvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: The distribution of <span class="math inline">\(p\)</span>-values for the four tests when there is no effect, in a design the size of Pottery (<span class="math inline">\(q = 5\)</span>, <span class="math inline">\(df_h = 3\)</span>, <span class="math inline">\(df_e = 22\)</span>, so <span class="math inline">\(s = 3\)</span>), from 100,000 simulated data sets. A test that keeps its promise has a flat histogram (dashed line), with 5% of <span class="math inline">\(p\)</span>-values below .05.
+</figcaption>
+</figure>
+</div>
+<p>Wilks is right on target. Pillai is a little conservative and Hotelling-Lawley a little liberal, neither by enough to matter much. Roy’s test, with nothing there at all, says “significant” 38% of the time. That’s what “upper bound” means in practice: when <span class="math inline">\(s &gt; 1\)</span>, treat Roy’s <span class="math inline">\(p\)</span>-value as a lower limit, not as a <span class="math inline">\(p\)</span>-value.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>There’s one more trap in the common currency. Because each road to <span class="math inline">\(F\)</span> starts somewhere different, <span class="math inline">\(F\)</span>s from different tests can’t be compared as sizes. For Pottery, the same three eigenvalues give</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th style="text-align: right;"><span class="math inline">\(F\)</span></th>
+<th>df</th>
+<th style="text-align: right;"><span class="math inline">\(p\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pillai</td>
+<td style="text-align: right;">4.30</td>
+<td>15, 60</td>
+<td style="text-align: right;"><span class="math inline">\(2.4 \times 10^{-5}\)</span></td>
+</tr>
+<tr class="even">
+<td>Wilks</td>
+<td style="text-align: right;">13.09</td>
+<td>15, 50.1</td>
+<td style="text-align: right;"><span class="math inline">\(1.8 \times 10^{-12}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Hotelling-Lawley</td>
+<td style="text-align: right;">39.38</td>
+<td>15, 50</td>
+<td style="text-align: right;"><span class="math inline">\(&lt; 2.2 \times 10^{-16}\)</span></td>
+</tr>
+<tr class="even">
+<td>Roy</td>
+<td style="text-align: right;">136.64</td>
+<td>5, 20</td>
+<td style="text-align: right;"><span class="math inline">\(9.4 \times 10^{-15}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>All four say the kiln sites differ, which is the question a test answers. But the <span class="math inline">\(F\)</span>s run from 4 to 137, and none of them is a measure of <em>how much</em>. For that, go back up a rung, to the <span class="math inline">\(\lambda\)</span>s and the four <span class="math inline">\(\eta^2\)</span>s.</p>
+</section>
+<section id="dont-reduce-too-soon-he-plots" class="level2">
+<h2 class="anchored" data-anchor-id="dont-reduce-too-soon-he-plots">Don’t reduce too soon: HE plots</h2>
+<!-- DRAFT 2026-11-24. Notes section 7. Figure: R/pottery-he.R, which replaces
+     he-vs-canonical.png (its right panel repeated fig-pottery-can in the first post). -->
+<p>The last section ended on a complaint: four tests, four <span class="math inline">\(F\)</span>s running from 4 to 137, and none of them says how much. Going back up a rung, to the <span class="math inline">\(\lambda\)</span>s and the <span class="math inline">\(\eta^2\)</span>s, gets <em>how much</em> back. Going up one more, to <strong>H</strong> and <strong>E</strong> themselves, gets back what the <span class="math inline">\(\lambda\)</span>s set aside: the directions. That’s what an HE plot shows. It answers the same question as a test, “how big is <strong>H</strong> relative to <strong>E</strong>?”, but it stops in two dimensions instead of one, and leaves the last step of reading to you.</p>
+<p>The recipe uses only ideas from above:</p>
+<ul>
+<li><strong>Center</strong> both ellipsoids at the grand mean, so they share one frame, and the group means can go in it too.</li>
+<li><strong>Scale</strong> both by <span class="math inline">\(df_e\)</span>. <strong>E</strong> is then the covariance ellipse of the residuals, and <strong>H</strong> is in the same units. This is <em>effect</em> scaling, and it answers “how big?”.</li>
+<li><strong>Or rescale H</strong> for <em>significance</em> (evidence) scaling, which answers “big enough?”. By default, heplots scales <strong>H</strong> so that it sticks out beyond <strong>E</strong> in some direction exactly when Roy’s test is significant. With <span class="math inline">\(s &gt; 1\)</span> that’s the upper bound of the last section, so when <strong>H</strong> barely pokes out, check Pillai or Wilks before believing it.</li>
+</ul>
+<p><a href="#fig-pottery-he" class="quarto-xref">Figure&nbsp;13</a> is a reading of the Pottery data, the way <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a> reads <code>mathscore</code>.</p>
+<div id="fig-pottery-he" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two panels. A, In the units of the data: Fe against Al for the 26 pots as grey points. A small red ellipse, E, tilts slightly upward at the center. A long thin blue ellipse, H, runs steeply down to the right across it, from Llanedyrn and Caldicot at upper left (low Al, high Fe) to Isle Thorns and Ashley Rails at lower right (high Al, low Fe). C, Canonical space: Can2 against Can1. A red unit circle, E = I, at the origin, inside a long flat blue ellipse, H, reaching 5.84 along Can1, marked square root of lambda 1, and 1.12 along Can2, marked square root of lambda 2. Isle Thorns and Ashley Rails lie at the left, Llanedyrn at the right, and Caldicot at the lower right, near Can2 = -3.4. Grey arrows: Al points left; Fe and Mg right; Ca down and to the right; Na up and to the right. A note reads lambda = 34.16, 1.25, 0.028.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pottery-he-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/pottery-he.png" class="img-fluid figure-img" style="width:100.0%" alt="Two panels. A, In the units of the data: Fe against Al for the 26 pots as grey points. A small red ellipse, E, tilts slightly upward at the center. A long thin blue ellipse, H, runs steeply down to the right across it, from Llanedyrn and Caldicot at upper left (low Al, high Fe) to Isle Thorns and Ashley Rails at lower right (high Al, low Fe). C, Canonical space: Can2 against Can1. A red unit circle, E = I, at the origin, inside a long flat blue ellipse, H, reaching 5.84 along Can1, marked square root of lambda 1, and 1.12 along Can2, marked square root of lambda 2. Isle Thorns and Ashley Rails lie at the left, Llanedyrn at the right, and Caldicot at the lower right, near Can2 = -3.4. Grey arrows: Al points left; Fe and Mg right; Ca down and to the right; Na up and to the right. A note reads lambda = 34.16, 1.25, 0.028.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pottery-he-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Pottery, read the way <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a> read <code>mathscore</code>, with effect scaling (<strong>H</strong> and <strong>E</strong> divided by <span class="math inline">\(df_e\)</span>). (A) Data space for Al and Fe: the shadows of the five-dimensional <strong>E</strong> (red) and <strong>H</strong> (blue) ellipsoids on that plane, with the cases (grey) and site means. (C) Canonical space, the first post’s canonical plot in effect units: <strong>E</strong> is the unit circle, and <strong>H</strong> lies on the axes, with semi-axes <span class="math inline">\(\sqrt{\lambda_1}\)</span> and <span class="math inline">\(\sqrt{\lambda_2}\)</span>. Grey arrows show the correlations of the oxides with Can1 and Can2.
+</figcaption>
+</figure>
+</div>
+<p>Panel A is an ordinary HE plot, for Al and Fe, the two oxides that matter most to the first canonical dimension. It’s also a shadow: the two-dimensional projection of five-dimensional ellipsoids, and another pair of oxides would cast a different one. Even so, it shows something no test statistic can. <strong>H</strong> is long and thin, and it runs <em>across</em> <strong>E</strong>, not along it. The sites differ mostly in one direction, aluminum against iron, and that’s a direction in which pots from the same site hardly vary.</p>
+<p>Panel C turns to the <em>best</em> shadow. It’s the canonical plot from the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>, redrawn in effect units, and it’s panel C of <a href="#fig-h-relative-e" class="quarto-xref">Figure&nbsp;8</a> with real data: <strong>E</strong> is the unit circle, and <strong>H</strong> lies along the axes, with semi-axes <span class="math inline">\(\sqrt{\lambda_1} = 5.84\)</span> and <span class="math inline">\(\sqrt{\lambda_2} = 1.12\)</span>. (The third, 0.17, is in a dimension we can’t see here, well inside the circle.) Now the disagreements of the last two sections are out in the open:</p>
+<ul>
+<li><strong>The effect is concentrated.</strong> <strong>H</strong> sticks far out of the circle in one direction, barely in a second, and hardly at all in a third. That’s the concentrated point in <a href="#fig-four-contours" class="quarto-xref">Figure&nbsp;9</a>, which Roy’s square corner counts as biggest and Pillai’s bowed curve as smallest, and it’s why the <span class="math inline">\(\eta^2\)</span>s run from .52 (Pillai) to .97 (Roy).</li>
+<li><strong>Which way, and for whom.</strong> The arrows give the directions back. Can1 is aluminum against iron, magnesium and calcium, with Ashley Rails and Isle Thorns at one end and Llanedyrn and Caldicot at the other. The small second dimension separates Caldicot from Llanedyrn: a little more calcium, and a fifth of the sodium. None of the four statistics knows any of this.</li>
+<li><strong>Not the biggest variance.</strong> The canonical axes aren’t the principal axes of the <a href="#how-big-is-a-matrix-of-data">data matrix</a>. For the same five standardized oxides, the first principal component holds 78% of the total variance; Can1 holds 96% of the <em>effect</em>. PCA finds the biggest shadow of the data, and candisc the biggest shadow of <strong>H</strong> relative to <strong>E</strong>. That’s the sense in which the canonical plot is a biplot: of the effect, in the metric of error.</li>
+</ul>
+<p>This is Wickham’s trade-off again. The test scales: it handles any number of responses and returns one number, ready for a table. The plot doesn’t scale as well, since it’s a shadow in two dimensions and needs a person to read it. But it’s where the surprises are: the shape of <strong>H</strong>, the direction it points, and which sites are doing the differing. Reduce, by all means, but not before you’ve looked.</p>
+</section>
+<section id="smaller-r-objects-too" class="level2">
+<h2 class="anchored" data-anchor-id="smaller-r-objects-too">Smaller R objects, too</h2>
+<!-- DRAFT 2026-11-25. Notes section 8. Numbers checked in R: vcov(pottery.mlm) equals
+     kronecker(estVar, (X'X)^{-1}); vcov() of an "mlmridge" object equals
+     kronecker(Sigma, cov[[k]]) for each lambda (genridge 0.8.1). -->
+<p>The ladder works for the objects R hands back, too. In the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>, going from <code>lm</code> to <code>mlm</code> gave every object an extra dimension. Some of that size is real, and some is just bookkeeping. Knowing the structure tells you which numbers you don’t need to store.</p>
+<p>The plainest case is <code>vcov()</code>. For Pottery there are five responses and four coefficients for each, so the covariance matrix of the coefficients is <span class="math inline">\(20 \times 20\)</span>: 400 numbers, 210 of them distinct. But the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a> gave its structure, <span class="math inline">\(\textrm{Var}(\textrm{vec}\, \widehat{\mathbf{B}}) = \boldsymbol{\Sigma} \otimes (\mathbf{X}^\top \mathbf{X})^{-1}\)</span>, so all of it is made from two small matrices, with 15 and 10 distinct numbers:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pottery.mlm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(Al, Fe, Mg, Ca, Na) <span class="sc">~</span> Site, <span class="at">data =</span> Pottery)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">vcov</span>(pottery.mlm)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(V)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20 20</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">estVar</span>(pottery.mlm)                    <span class="co"># Sigma-hat, 5 x 5</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>XtXinv <span class="ot">&lt;-</span> <span class="fu">chol2inv</span>(<span class="fu">qr.R</span>(pottery.mlm<span class="sc">$</span>qr))    <span class="co"># (X'X)^{-1}, 4 x 4</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(V, <span class="fu">kronecker</span>(S, XtXinv), <span class="at">check.attributes =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>The same thing happens elsewhere in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>:</p>
+<div id="tbl-smaller" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-smaller-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: What an <code>mlm</code> object needs to keep.
+</figcaption>
+<div aria-describedby="tbl-smaller-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Object</th>
+<th>Stored in full</th>
+<th>Enough to rebuild it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>vcov()</code>, Pottery</td>
+<td><span class="math inline">\(20 \times 20\)</span>: 210 distinct numbers</td>
+<td><span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> and <span class="math inline">\((\mathbf{X}^\top\mathbf{X})^{-1}\)</span>: 15 + 10</td>
+</tr>
+<tr class="even">
+<td>covariances of the fitted values, <span class="math inline">\(n\)</span> cases</td>
+<td>an <span class="math inline">\(n \times q \times q\)</span> array: <span class="math inline">\(26 \times 5 \times 5\)</span></td>
+<td><span class="math inline">\(n\)</span> leverages <span class="math inline">\(h_i\)</span> and one <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span>: 26 + 15</td>
+</tr>
+<tr class="odd">
+<td>ridge covariances, <span class="math inline">\(L\)</span> values of <span class="math inline">\(\lambda\)</span></td>
+<td><span class="math inline">\(L\)</span> matrices, each <span class="math inline">\(pq \times pq\)</span></td>
+<td>one <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> and <span class="math inline">\(L\)</span> matrices <span class="math inline">\(\mathbf{V}_\lambda\)</span>, each <span class="math inline">\(p \times p\)</span></td>
+</tr>
+<tr class="even">
+<td>influence of all subsets of <span class="math inline">\(m\)</span> cases</td>
+<td>two <span class="math inline">\(m \times m\)</span> matrices for each subset</td>
+<td>one number for each: their <code>det()</code> or <code>tr()</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The first three rows lose nothing. The full object is a Kronecker or scalar multiple of smaller ones, and a method can rebuild it whenever it’s asked for. genridge already works this way. An <code>"mlmridge"</code> object keeps one <span class="math inline">\(3 \times 3\)</span> <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> and a <span class="math inline">\(5 \times 5\)</span> <span class="math inline">\(\mathbf{V}_\lambda\)</span> for each <span class="math inline">\(\lambda\)</span>, and its <code>vcov()</code> method expands them into <span class="math inline">\(15 \times 15\)</span> matrices only on request.</p>
+<p>The last row is different in kind. Reducing an <span class="math inline">\(m \times m\)</span> matrix to its determinant or trace throws something away, and which one you choose is a choice of “how big?”, just as in the sections above. That’s why mvinfluence makes <a href="https://friendly.github.io/mvinfluence/reference/influencePlot.mlm.html#arg-fun"><code>FUN</code> an argument</a> instead of deciding for you.</p>
+<p>So, a design rule: <strong>store the factors, and let the methods expand or reduce them.</strong> Expanding is just arithmetic. Reducing is a choice, so leave it to the user.</p>
+<p>This may also answer the question the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a> left open: what should <code>predict()</code> return for an <code>mlm</code>? Not an array of intervals, one response at a time, but the fitted values, a leverage <span class="math inline">\(h_i\)</span> for each case and one <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span>. The confidence ellipse for case <span class="math inline">\(i\)</span> is centered at <span class="math inline">\(\widehat{\mathbf{y}}_i\)</span> with shape <span class="math inline">\(h_i \widehat{\boldsymbol{\Sigma}}\)</span> (for a prediction interval, <span class="math inline">\((1 + h_i)\widehat{\boldsymbol{\Sigma}}\)</span>), so a <code>plot()</code> method can draw any of them, and an <code>intervals</code> method can take their shadows on the axes. For Pottery, a one-way design, <span class="math inline">\(h_i\)</span> is just <span class="math inline">\(1/n_j\)</span> for the site a pot comes from, and the ellipse for each site mean is <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}\)</span> shrunk by its sample size.</p>
+<!-- heplots dev/pred.mlm.R currently keeps only diag(Sigma) (the "sigmas"), so its
+     intervals are per response, not ellipses. -->
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<!-- DRAFT 2026-11-25. Notes section 9. Calls back to the precept, Lineland, the banner, the
+     Elemental Forces and the three-point rubric in the Introduction. -->
+<p>A. Square went up a dimension, and saw more: 3D objects whose visions suggested a wider view of what <em>Flatland</em> society could become. This post has been about the trip the other way, from the 130 numbers in the Pottery data down to one, and about what each step leaves behind, when we focus on “How big?” a statistical object really is.</p>
+<p>The same question came up at every rung, and it never had just one answer. The size of a vector depends on the norm you choose. The size of a covariance matrix depends on whether you take its trace, its largest eigenvalue or its determinant. The size of <strong>H</strong> depends on whether you measure it against the identity or against <strong>E</strong>. And once <strong>H</strong> is measured in units of <strong>E</strong>, there are still four reasonable ways to turn its eigenvalues into one number.</p>
+<p>Around the fire in the banner image, Wilks, Pillai, Hotelling-Lawley and Roy aren’t arguing about arithmetic. They’re giving different answers to the precept’s two questions: <em>compared to what?</em>, and <em>in what sense?</em>. Nobody wins the argument, and that’s as it should be.</p>
+<p>That’s why the precept’s motto is <em>every summary is a shadow</em>. A confidence interval is the shadow of an ellipse on one axis. Roy’s largest root is the longest shadow of <strong>H</strong> in units of <strong>E</strong>. An HE plot is the shadow of two ellipsoids on a plane, and the canonical plot is the best such plane. A shadow is a fine thing to look at, as long as you remember where the light comes from and what it can’t show.</p>
+<p>The first post warned about methods that quietly turn one multivariate question into <span class="math inline">\(q\)</span> univariate answers. The opposite mistake is just as easy: to return one multivariate answer and forget what was averaged to get it. A Pillai trace of 1.55, or an <span class="math inline">\(\eta^2\)</span> of .52, is a good answer to “how big?”. It’s no answer at all to “in which direction?” or “which pottery sites differ, and how?”.</p>
+<p>Back to the three Elemental Forces. <em>Algebra</em> told us how few numbers we need to keep: three eigenvalues, or a leverage and a <span class="math inline">\(\boldsymbol{\Sigma}\)</span> in place of an array. <em>Geometry</em> showed what those numbers measure: semi-axes, areas, shadows. And <em>graphs</em> showed what was set aside on the way down. So climb down the ladder one rung at a time, and at each one:</p>
+<ul>
+<li>decide what ‘big’ means,</li>
+<li>keep what you need to measure it, and</li>
+<li>draw a picture of what’s left.</li>
+</ul>
+<p>The King of Lineland knew only one kind of size. We have many, and choosing among them is the work.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>To cite this article
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Friendly, M. (2026, November). How Big Is My Matrix? Reducing dimensions in multivariate linear models and in graphical methods: Stories from a fireside chat. <em>Michael Friendly’s blog</em>. <a href="https://friendly.github.io/blog/posts/2026-11-How-big/" class="uri">https://friendly.github.io/blog/posts/2026-11-How-big/</a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bibtex code-with-copy"><code class="sourceCode bibtex"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">@Misc</span>{<span class="ot">Friendly:2026:HowBig</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>       = {Friendly, Michael},</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>        = {How Big Is My Matrix? Reducing dimensions in multivariate linear models</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                  and in graphical methods: Stories from a fireside chat},</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>         = {2026},</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">month</span>        = <span class="st">nov</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">howpublished</span> = {Blog post},</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">url</span>          = {https://friendly.github.io/blog/posts/2026-11-How-big/},</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Abbott:1884" class="csl-entry" role="listitem">
+Abbott, Edwin A. 1884. <em>Flatland: A Romance of Many Dimensions</em>. Buccaneer Books.
+</div>
+<div id="ref-Dempster:69" class="csl-entry" role="listitem">
+Dempster, A. P. 1969. <em>Elements of Continuous Multivariate Analysis</em>. Addison-Wesley.
+</div>
+<div id="ref-EckartYoung:1936" class="csl-entry" role="listitem">
+Eckart, Carl, and Gale Young. 1936. <span>“The Approximation of One Matrix by Another of Lower Rank.”</span> <em>Psychometrika</em> 1 (3): 211–18. <a href="https://doi.org/10.1007/BF02288367">https://doi.org/10.1007/BF02288367</a>.
+</div>
+<div id="ref-Friendly:genridge:2013" class="csl-entry" role="listitem">
+Friendly, Michael. 2013. <span>“The Generalized Ridge Trace Plot: Visualizing Bias <em>and</em> Precision.”</span> <em>Journal of Computational and Graphical Statistics</em> 22 (1): 50–68. <a href="https://doi.org/10.1080/10618600.2012.681237">https://doi.org/10.1080/10618600.2012.681237</a>.
+</div>
+<div id="ref-Friendly:2024:VisMLM" class="csl-entry" role="listitem">
+Friendly, Michael. 2024. <em>Visualizing Multivariate Data and Models in r</em>. Chapman &amp; Hall/CRC Press. <a href="https://friendly.github.io/Vis-MLM-book/">https://friendly.github.io/Vis-MLM-book/</a>.
+</div>
+<div id="ref-Friendly-etal:ellipses:2012" class="csl-entry" role="listitem">
+Friendly, Michael, Georges Monette, and John Fox. 2013. <span>“Elliptical Insights: Understanding Statistical Methods Through Elliptical Geometry.”</span> <em>Statistical Science</em> 28 (1): 1–39. <a href="https://doi.org/10.1214/12-STS402">https://doi.org/10.1214/12-STS402</a>.
+</div>
+<div id="ref-Gabriel:71" class="csl-entry" role="listitem">
+Gabriel, K. R. 1971. <span>“The Biplot Graphic Display of Matrices with Application to Principal Components Analysis.”</span> <em>Biometrika</em> 58 (3): 453–67. <a href="https://doi.org/10.1093/biomet/58.3.453">https://doi.org/10.1093/biomet/58.3.453</a>.
+</div>
+<div id="ref-Hannah:1996" class="csl-entry" role="listitem">
+Hannah, John. 1996. <span>“A Geometric Approach to Determinants.”</span> <em>The American Mathematical Monthly</em> 103 (5): 401–9. <a href="https://doi.org/10.1080/00029890.1996.12004759">https://doi.org/10.1080/00029890.1996.12004759</a>.
+</div>
+<div id="ref-HoerlKennard:1970" class="csl-entry" role="listitem">
+Hoerl, Arthur E., and Robert W. Kennard. 1970. <span>“Ridge Regression: Biased Estimation for Nonorthogonal Problems.”</span> <em>Technometrics</em> 12 (1): 55–67. <a href="https://doi.org/10.1080/00401706.1970.10488634">https://doi.org/10.1080/00401706.1970.10488634</a>.
+</div>
+<div id="ref-Locke:1994" class="csl-entry" role="listitem">
+Locke, Phil. 1994. <span>“The Geometry of Determinants.”</span> <em>PRIMUS</em> 4 (1): 1–8. <a href="https://doi.org/10.1080/10511979408965726">https://doi.org/10.1080/10511979408965726</a>.
+</div>
+<div id="ref-Monette:90" class="csl-entry" role="listitem">
+Monette, Georges. 1990. <span>“Geometry of Multiple Regression and Interactive 3-<span>D</span> Graphics.”</span> Chap. 5 in <em>Modern Methods of Data Analysis</em>, edited by J. Fox and S. Long. SAGE Publications.
+</div>
+<div id="ref-Olson:1974" class="csl-entry" role="listitem">
+Olson, Chester L. 1974. <span>“Comparative Robustness of Six Tests in Multivariate Analysis of Variance.”</span> <em>Journal of the American Statistical Association</em> 69 (348): 894–908. <a href="https://doi.org/10.1080/01621459.1974.10480224">https://doi.org/10.1080/01621459.1974.10480224</a>.
+</div>
+<div id="ref-Schatzoff1966" class="csl-entry" role="listitem">
+Schatzoff, Martin. 1966. <span>“Sensitivity Comparisons Among Tests of the General Linear Hypothesis.”</span> <em>Journal of the American Statistical Association</em> 61 (314): 415–35. <a href="https://doi.org/10.1080/01621459.1966.10480878">https://doi.org/10.1080/01621459.1966.10480878</a>.
+</div>
+<div id="ref-Tubb-etal:80" class="csl-entry" role="listitem">
+Tubb, A., A. J. Parker, and G. Nickless. 1980. <span>“The Analysis of <span>Romano-British</span> Pottery by Atomic Absorption Spectrophotometry.”</span> <em>Archaeometry</em> 22 (2): 153–71. <a href="https://doi.org/10.1111/j.1475-4754.1980.tb00939.x">https://doi.org/10.1111/j.1475-4754.1980.tb00939.x</a>.
+</div>
+<div id="ref-Wickham-etal:2023:r4ds" class="csl-entry" role="listitem">
+Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. 2023. <em><span>R</span> for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. 2nd ed. O’Reilly Media. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.
+</div>
+<div id="ref-Wilks:1932" class="csl-entry" role="listitem">
+Wilks, S. S. 1932. <span>“Certain Generalizations in the Analysis of Variance.”</span> <em>Biometrika</em> 24 (3–4): 471–94. <a href="https://doi.org/10.1093/biomet/24.3-4.471">https://doi.org/10.1093/biomet/24.3-4.471</a>.
+</div>
+</div>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>That was the idea that inspired the cover for my Vis-MLM book: Data ellipsoids for the penguin species, with their 2D shadows shown in different forms on the planes for pairs of variables. The general class of ellipsoids is explored in my experimental <a href="https://friendly.github.io/gellipsoid/"><code>gellipsoid</code></a> package (source on <a href="https://github.com/friendly/gellipsoid">GitHub</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This also matters for HE plots, whose default scaling uses Roy’s test; see <a href="#dont-reduce-too-soon-he-plots">below</a>, and the footnote in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/friendly\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Michael Friendly</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://friendly.github.io/">
+<p>friendly.github.io/</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
