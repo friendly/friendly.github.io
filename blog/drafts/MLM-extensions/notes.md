@@ -496,3 +496,9 @@ separate post when this one is done.*
     *Checked 2026-11-22:* none of the three is needed, so none cited.
     *Done 2026-11-22:* pointer added before the closing Flatland paragraph, to chapters 9 and 11–15
     (`21-discrim` is published as Chapter 15).
+
+## Addendum idea: Box-Cox for an mlm (2026-11-26)
+
+See `box-cox-addendum.md`: multivariate Box-Cox transformations as another worked example of
+"every object gains a dimension" (λ → vector, interval → region/ellipse), with the design
+decisions from the heplots prototypes (`heplots/dev/box-cox*.R`).
