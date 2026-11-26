@@ -109,3 +109,12 @@ case:
 - For the post: probably a short section, or a follow-up post, "Transforming an mlm", with
   one figure: the extended 2-D profile for (CK, Hpx), with (1, 1) far outside, and the
   Diabetes covariance ellipses before and after.
+
+## Later: zeros and negative values (MF, 2026-11-26)
+
+A separate story, to tack on: Box-Cox needs positive responses. Zeros (counts, times,
+concentrations below detection) and negative values need either a shift (`bcPower` with a
+start), car's `bcnPower` (Box-Cox with negatives, Hawkins & Weisberg 2017), or Yeo-Johnson
+(`yjPower`). For an mlm that means a shift or γ per response, another dimension again.
+The heplots functions (`bcProfile()` etc., now in `R/bcProfile.R`) support only `bcPower` for
+now.
