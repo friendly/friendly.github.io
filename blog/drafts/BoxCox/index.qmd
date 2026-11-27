@@ -45,7 +45,7 @@ data(Dystrophy, package = "heplots")
 data(Diabetes, package = "heplots")
 ```
 
-![Box & Cox come to multivariate town. Box takes aim at a two-parameter likelihood surface, while Cox presents it and a young statistician brings the news: there's more than one $\lambda$.](figures/box-cox-banner.jpg){fig-alt="A Western main street with a saloon, barber shop and grocer. George Box aims a toy revolver at an easel showing nested blue elliptical contours on lambda-1 and lambda-2 axes. David Cox gestures with an open hand, and a girl with pigtails runs toward them holding a sign reading lambda-1, lambda-2."}
+![G.E.P. Box & David Cox come to Multivariate Town. Box takes aim at a two-parameter likelihood surface, while Cox presents it and a young statistician brings the news: there's more than one $\lambda$.](figures/box-cox-banner.jpg){fig-alt="A Western main street with a saloon, barber shop and grocer. George Box aims a toy revolver at an easel showing nested blue elliptical contours on lambda-1 and lambda-2 axes. David Cox gestures with an open hand, and a girl with pigtails runs toward them holding a sign reading lambda-1, lambda-2."}
 
 ## Introduction
 
