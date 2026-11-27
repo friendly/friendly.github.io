@@ -4,6 +4,28 @@
 moved from prototypes into the package. For when this comes up again: a worked example of
 the post's thesis, with the design decisions that went into it.*
 
+## Next session (left 2026-11-27)
+
+The draft (`index.qmd`) is complete through "What I learned"; all three repos (friendly.github.io,
+heplots, mvinfluence) were pushed and clean. `git pull` in each before starting.
+
+- **Render with R 4.6.2** (heplots >= 1.8.7 needed for `bcProfile()`, `Dystrophy`). From a shell:
+  `QUARTO_R='C:/R/R-4.6.2/bin/x64/Rscript.exe' quarto render index.qmd`.
+- **Draft, to do:**
+  - MF editing pass over the whole post.
+  - Keep or drop the Diabetes `plot.boxM()` figure (`fig-diab-boxm-plot`); dropping it loses the
+    "pooled above every group means shape/orientation differ" point.
+  - Place ChatGPT's new image (`figures/box-cox-plot-poster*.png`) in "What other displays might
+    please Box & Cox?".
+  - Optional closing line from the banner (HTML comment at the end of "What I learned").
+  - Before publishing: move to `blog/posts/`, full site render (see CLAUDE.md).
+- **heplots** (`issues/TASKS.md`, top of TODOs): `plot.bcProfile()` legend overlaps the Box's M
+  contours; per-variable summary (prototype `bc_summary()` / `bc_dotplot()` in this draft);
+  profile-vs-slice wording in `?bcProfile`. The `boxM.lm()` fixes (commit `649c87e0`) need
+  `R CMD check` before 1.9.0 goes to CRAN.
+- **mvinfluence** (`dev/TASKS.md`): `influence(fit, m = 2)` partial matching; `cooks.distance.mlm()`
+  / `hatvalues.mlm()` case labels.
+
 Possible title: Box & Cox Come to Multivariate Town
 
 Banner image: A Western movies scene, wide angle, with rows of buildings-- saloon,
