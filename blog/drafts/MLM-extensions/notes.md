@@ -499,6 +499,6 @@ separate post when this one is done.*
 
 ## Addendum idea: Box-Cox for an mlm (2026-11-26)
 
-See `box-cox-addendum.md`: multivariate Box-Cox transformations as another worked example of
+Moved 2026-11-27 to its own draft, `blog/drafts/BoxCox/notes.md`: multivariate Box-Cox transformations as another worked example of
 "every object gains a dimension" (λ → vector, interval → region/ellipse), with the design
 decisions from the heplots prototypes (`heplots/dev/box-cox*.R`).

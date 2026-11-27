@@ -4,6 +4,17 @@
 moved from prototypes into the package. For when this comes up again: a worked example of
 the post's thesis, with the design decisions that went into it.*
 
+Possible title: Box & Cox Come to Multivariate Town
+
+Banner image: A Western movies scene, wide angle, with rows of buildings-- saloon,
+barber shop, grocer, ... on opposite sides of the main street. 
+Box & Cox (need reference images) are gunslingers, but rather than facing off
+against each other, are aiming at a target. The target has contours of the
+likelihood, as in what you get from `heplots::bcProfile()`.
+There's a young girl with pigtails running from near the target towards
+Box & Cox, holding a placard, with $\lambda_1, \lambda_2$ in large blue characters.
+Add a horse or carriage, if they can fit in the scene
+
 **Where things are in heplots (v1.8.7, in development):**
 
 - `R/bcProfile.R`: `bcProfile()` (methods for `"powerTransform"` and `"mlm"`), with `plot()`
