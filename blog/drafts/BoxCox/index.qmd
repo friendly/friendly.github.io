@@ -302,7 +302,8 @@ Three small decisions:
   the direction of an effect is preserved when $\lambda < 0$.
 * Transformed responses need names that are valid in R: `CK^-0.5` isn't, so `CK_m0.5`, `Hpx_2`,
   `logPK`. The powers are kept as an attribute.
-* The result is an ordinary mlm, so `Anova()`, `heplot()`, `cqplot()` and `boxM()` all just work.
+* The result is an ordinary mlm, so `Anova()`, `heplot()`, `cqplot()` and `boxM()` all just work
+  (`boxM()` given the grouping factor, when there are covariates; see [Catching bugs](#catching-bugs)).
   Return objects that work with the rest of the ecosystem.
 
 After the transformation, Pillai's trace for `group` rises from 0.35 to 0.47, and the residuals are
@@ -584,6 +585,47 @@ A `plot()` method for `powerTransform` objects arguably belongs in car, next to 
 itself, rather than in heplots. That is a question for John Fox. It is also a familiar one from
 the extending-lm post: when the multivariate extension of a method in one package is written in
 another, where should it live?
+
+## Catching bugs {#catching-bugs}
+
+Writing this up had a side effect I didn't plan for: it turned up bugs, in my own packages, that
+had been sitting there quietly. Not in the new code, but in old code that the new work happened to
+lean on in a new way.
+
+* **`boxM()` with covariates.** The Dystrophy model has two covariates, `age` and `month`. Given
+  that model, `boxM()` formed "groups" from every distinct combination of `group`, `age` and
+  `month`: 66 groups of one person each, all with singular covariance matrices, and a test
+  statistic of `NA`, with only a long warning to say why. The documentation said the predictors
+  "must all be factors", but nothing checked it. It now stops with a message that says what to do
+  instead: `boxM(Y, group)`.
+* **`boxM()` with crossed factors.** Testing that fix turned up a second bug, in the same three
+  lines: for a two-way design, `lm(cbind(...) ~ A * B)`, `boxM()` failed with "undefined columns
+  selected", because it looked up the interaction term `A:B` as if it were a column of the data.
+  Both bugs came from a rewrite a year earlier, which replaced a call to the (correct) formula
+  method with new code that handled only the simplest case: one factor, no covariates. That is
+  the case every example in the documentation used.
+* **A claim in my own notes.** I had written that a slice and a profile differ in 2-D for the
+  correlated pair (`glufast`, `glutest`). Drawing the figure showed they don't. The difference
+  shows in 1-D, as in @fig-diab-slice, and the rule is about the powers *held fixed*, not the ones
+  plotted. Not a bug in the code, but a bug in the explanation, which would have gone into the
+  help page.
+* **Earlier, in mvinfluence.** Writing the [extending-lm post](https://friendly.github.io/blog/posts/2026-11-extending-lm/)
+  turned up two more: `influence(fit, m = 2)` fails, because `m` partially matches the generic's
+  argument `model`; and `cooks.distance()` for an mlm names its result by case number rather
+  than by the row names of the data.
+
+None of these would show up in a univariate analysis, or in the examples on the help pages. They
+showed up because extending a method to an mlm sends ordinary objects down paths nobody had
+walked: a MANCOVA rather than a one-way MANOVA, a two-way design, a model with several responses
+and a subset size. That is what *should* happen when you bring a univariate method to
+Multivariate Town. The extra dimension is a test as well as a feature: every object that gains a
+dimension is a new chance for code to be wrong, and a worked example that actually uses it is
+the cheapest way to find out.
+
+A practical lesson: when a bug turns up in the middle of writing, write it down where it will be
+fixed, not where it was found. Each of these went into the package's own task list, with the
+error, a reproduction and a suggested fix, and the `boxM()` bugs were fixed (in heplots 1.9.0,
+in development) before this post was finished.
 
 ## What I learned
 

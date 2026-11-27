@@ -164,6 +164,7 @@ window.Quarto = {
   <li><a href="#zeros-and-negative-values" id="toc-zeros-and-negative-values" class="nav-link" data-scroll-target="#zeros-and-negative-values">Zeros and negative values</a></li>
   <li><a href="#whose-method-is-it" id="toc-whose-method-is-it" class="nav-link" data-scroll-target="#whose-method-is-it">Whose method is it?</a></li>
   </ul></li>
+  <li><a href="#catching-bugs" id="toc-catching-bugs" class="nav-link" data-scroll-target="#catching-bugs">Catching bugs</a></li>
   <li><a href="#what-i-learned" id="toc-what-i-learned" class="nav-link" data-scroll-target="#what-i-learned">What I learned</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -574,7 +575,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <ul>
 <li>It keeps the <strong>Box-Cox scaling</strong> <span class="math inline">\((y^\lambda - 1)/\lambda\)</span>, not the simple power <span class="math inline">\(y^\lambda\)</span>, so the direction of an effect is preserved when <span class="math inline">\(\lambda &lt; 0\)</span>.</li>
 <li>Transformed responses need names that are valid in R: <code>CK^-0.5</code> isn’t, so <code>CK_m0.5</code>, <code>Hpx_2</code>, <code>logPK</code>. The powers are kept as an attribute.</li>
-<li>The result is an ordinary mlm, so <code>Anova()</code>, <code>heplot()</code>, <code>cqplot()</code> and <code>boxM()</code> all just work. Return objects that work with the rest of the ecosystem.</li>
+<li>The result is an ordinary mlm, so <code>Anova()</code>, <code>heplot()</code>, <code>cqplot()</code> and <code>boxM()</code> all just work (<code>boxM()</code> given the grouping factor, when there are covariates; see <a href="#catching-bugs">Catching bugs</a>). Return objects that work with the rest of the ecosystem.</li>
 </ul>
 <p>After the transformation, Pillai’s trace for <code>group</code> rises from 0.35 to 0.47, and the residuals are much closer to multivariate normal:</p>
 <div class="cell">
@@ -866,6 +867,18 @@ Figure&nbsp;9: A prototype per-variable display for the Dystrophy (left) and Dia
 <h3 class="anchored" data-anchor-id="whose-method-is-it">Whose method is it?</h3>
 <p>A <code>plot()</code> method for <code>powerTransform</code> objects arguably belongs in car, next to <code>powerTransform()</code> itself, rather than in heplots. That is a question for John Fox. It is also a familiar one from the extending-lm post: when the multivariate extension of a method in one package is written in another, where should it live?</p>
 </section>
+</section>
+<section id="catching-bugs" class="level2">
+<h2 class="anchored" data-anchor-id="catching-bugs">Catching bugs</h2>
+<p>Writing this up had a side effect I didn’t plan for: it turned up bugs, in my own packages, that had been sitting there quietly. Not in the new code, but in old code that the new work happened to lean on in a new way.</p>
+<ul>
+<li><strong><code>boxM()</code> with covariates.</strong> The Dystrophy model has two covariates, <code>age</code> and <code>month</code>. Given that model, <code>boxM()</code> formed “groups” from every distinct combination of <code>group</code>, <code>age</code> and <code>month</code>: 66 groups of one person each, all with singular covariance matrices, and a test statistic of <code>NA</code>, with only a long warning to say why. The documentation said the predictors “must all be factors”, but nothing checked it. It now stops with a message that says what to do instead: <code>boxM(Y, group)</code>.</li>
+<li><strong><code>boxM()</code> with crossed factors.</strong> Testing that fix turned up a second bug, in the same three lines: for a two-way design, <code>lm(cbind(...) ~ A * B)</code>, <code>boxM()</code> failed with “undefined columns selected”, because it looked up the interaction term <code>A:B</code> as if it were a column of the data. Both bugs came from a rewrite a year earlier, which replaced a call to the (correct) formula method with new code that handled only the simplest case: one factor, no covariates. That is the case every example in the documentation used.</li>
+<li><strong>A claim in my own notes.</strong> I had written that a slice and a profile differ in 2-D for the correlated pair (<code>glufast</code>, <code>glutest</code>). Drawing the figure showed they don’t. The difference shows in 1-D, as in <a href="#fig-diab-slice" class="quarto-xref">Figure&nbsp;4</a>, and the rule is about the powers <em>held fixed</em>, not the ones plotted. Not a bug in the code, but a bug in the explanation, which would have gone into the help page.</li>
+<li><strong>Earlier, in mvinfluence.</strong> Writing the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">extending-lm post</a> turned up two more: <code>influence(fit, m = 2)</code> fails, because <code>m</code> partially matches the generic’s argument <code>model</code>; and <code>cooks.distance()</code> for an mlm names its result by case number rather than by the row names of the data.</li>
+</ul>
+<p>None of these would show up in a univariate analysis, or in the examples on the help pages. They showed up because extending a method to an mlm sends ordinary objects down paths nobody had walked: a MANCOVA rather than a one-way MANOVA, a two-way design, a model with several responses and a subset size. That is what <em>should</em> happen when you bring a univariate method to Multivariate Town. The extra dimension is a test as well as a feature: every object that gains a dimension is a new chance for code to be wrong, and a worked example that actually uses it is the cheapest way to find out.</p>
+<p>A practical lesson: when a bug turns up in the middle of writing, write it down where it will be fixed, not where it was found. Each of these went into the package’s own task list, with the error, a reproduction and a suggested fix, and the <code>boxM()</code> bugs were fixed (in heplots 1.9.0, in development) before this post was finished.</p>
 </section>
 <section id="what-i-learned" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-learned">What I learned</h2>
