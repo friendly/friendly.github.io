@@ -769,6 +769,11 @@ Figure&nbsp;8: Log determinants of the group and pooled covariance matrices for 
 <section id="what-other-displays-might-please-box-cox" class="level2">
 <h2 class="anchored" data-anchor-id="what-other-displays-might-please-box-cox">What other displays might please Box &amp; Cox?</h2>
 <p><code>bcProfile()</code> answers questions about one power or one pair. With four or five responses, the next question is how to see all of them at once. This part isn’t done, and it is where the design questions get interesting.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/box-cox-plot-poster-v2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="David Cox looks toward George Box while pointing at the likelihood contours on an easel poster. The other panels show a likelihood profile, covariance ellipses, and dot-and-interval estimates." width="520"></p>
+</figure>
+</div>
 <section id="a-pairs-method-and-what-to-leave-out" class="level3">
 <h3 class="anchored" data-anchor-id="a-pairs-method-and-what-to-leave-out">A <code>pairs()</code> method, and what to leave out</h3>
 <p>The obvious next step is a <code>pairs()</code> method: 1-D profiles on the diagonal, 2-D profiles off it, as <code>pairs.mlm()</code> does for HE plots. But a pairs plot multiplies the clutter of one panel by <span class="math inline">\(q^2\)</span>. A pairs method has to decide what to show and what to exclude to show something useful. The questions:</p>
@@ -882,9 +887,15 @@ Figure&nbsp;9: A prototype per-variable display for the Dystrophy (left) and Dia
 </section>
 <section id="what-i-learned" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-learned">What I learned</h2>
-<!-- TODO: tie back to the extending-lm thesis; the hard part was again the software design, not the
-statistics; and the bonus of a multivariate criterion (Box's M) that has no univariate counterpart
-beyond the spread-level plot. Pointer to Vis-MLM [@Friendly:2024:VisMLM]. -->
+<p><strong>The thesis held a second time, on a problem I didn’t choose for it.</strong> I didn’t pick Box-Cox to illustrate the extending-lm post; it came from re-reading Rencher &amp; Christensen. Yet every row of <a href="#tbl-dimension" class="quarto-xref">Table&nbsp;1</a> appeared on its own: the power became a vector, the interval became a region, the test of “no transformation” moved to <span class="math inline">\(q\)</span> degrees of freedom, and once again the way to see it was an ellipse, the Wald ellipse beside the likelihood region. An example that wasn’t chosen to fit the thesis is better evidence for it than one that was.</p>
+<p><strong>The statistics were done; what was missing was graphics and workflow.</strong> The multivariate likelihood goes back to <span class="citation" data-cites="AndrewsGnanadesikanWarner:71">Andrews et al. (<a href="#ref-AndrewsGnanadesikanWarner:71" role="doc-biblioref">1971</a>)</span>, and <code>car::powerTransform()</code> had long since implemented it for an mlm. What wasn’t there was a way to <em>see</em> the likelihood, to refit with the chosen powers, and to compare the model before and after. That is the same finding as in the extending-lm post, and it suggests a working rule: before extending a method, check whether the computation already exists, and look for the missing display.</p>
+<p><strong>The multivariate version asks questions the univariate one can’t.</strong> Should the powers be chosen jointly or one at a time (they disagree, for the correlated Diabetes measures)? Should the responses be made normal, or the residuals? Is a cheap slice good enough, or is a profile needed (only when the estimates are correlated)? Are the covariance matrices equal, not just the variances? None of these arises with one response. They, more than the extra computation, are where the extension earns its keep.</p>
+<p><strong>A second criterion is a bonus, but show it; don’t just optimize it.</strong> Box’s <span class="math inline">\(\mathcal{M}\)</span> gave a truly multivariate reason to choose a transformation, and the transformation chosen for normality often pleased it as well: in Dystrophy, the test of equal covariance matrices went from overwhelming to unremarkable. But minimizing <span class="math inline">\(\mathcal{M}\)</span> directly sent <code>relwt</code> to a power of 6, along a direction where <span class="math inline">\(\mathcal{M}\)</span> was flat. When a criterion is flat, an optimizer reports noise as an answer, and a plot shows the flatness. Hence the green curves and contours in the <code>bcProfile()</code> plots, and the warning on <code>bcBoxM()</code>.</p>
+<p><strong>Knowing what to leave out is the next design problem.</strong> With one or two powers, the question was how to draw a likelihood. With five, it is what not to draw. The <code>pairs()</code> questions and the one-row-per-response prototype say the same thing: more dimensions call for more selection, not more panels. That is where this work stops for now, and it is a display problem, not a statistical one.</p>
+<p>And, as in <a href="#catching-bugs">Catching bugs</a>: bringing a method to Multivariate Town is also a test of the code it leans on. Every object that gains a dimension is a new place for something to be wrong.</p>
+<p>For more on these methods and the ideas behind them, see <em>Visualizing Multivariate Data and Models in R</em> <span class="citation" data-cites="Friendly:2024:VisMLM">(<a href="#ref-Friendly:2024:VisMLM" role="doc-biblioref">Friendly 2024</a>)</span>.</p>
+<!-- Possible closing image callback: Box & Cox aimed at one target; in Multivariate Town the target
+became a likelihood surface, with lambda_1, lambda_2 on the placard. -->
 </section>
 <section id="references" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
@@ -903,6 +914,9 @@ Box, G. E. P., and D. R. Cox. 1964. <span>“An Analysis of Transformations (wit
 </div>
 <div id="ref-Friendly:07:manova" class="csl-entry" role="listitem">
 Friendly, M. 2007. <span>“<span>HE</span> Plots for Multivariate Linear Models.”</span> <em>Journal of Computational and Graphical Statistics</em> 16 (2): 421–44. <a href="https://doi.org/10.1198/106186007X208407">https://doi.org/10.1198/106186007X208407</a>.
+</div>
+<div id="ref-Friendly:2024:VisMLM" class="csl-entry" role="listitem">
+Friendly, Michael. 2024. <em>Visualizing Multivariate Data and Models in r</em>. Chapman &amp; Hall/CRC Press. <a href="https://friendly.github.io/Vis-MLM-book/">https://friendly.github.io/Vis-MLM-book/</a>.
 </div>
 <div id="ref-HawkinsWeisberg:2017" class="csl-entry" role="listitem">
 Hawkins, D. M., and S. Weisberg. 2017. <span>“Combining the <span>Box-Cox</span> Power and Generalised Log Transformations to Accommodate Nonpositive Responses in Linear and Mixed-Effects Linear Models.”</span> <em>South African Statistical Journal</em> 51 (2): 317–28.

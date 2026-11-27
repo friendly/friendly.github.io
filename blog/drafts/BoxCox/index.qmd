@@ -469,6 +469,8 @@ In designing `heplots` functions for this, there are few more that decide whethe
 next question is how to see all of them at once. This part isn't done, and it is where the design
 questions get interesting.
 
+![](figures/box-cox-plot-poster-v2.png){width="520px" fig-align="center" fig-alt="David Cox looks toward George Box while pointing at the likelihood contours on an easel poster. The other panels show a likelihood profile, covariance ellipses, and dot-and-interval estimates."}
+
 ### A `pairs()` method, and what to leave out
 
 The obvious next step is a `pairs()` method: 1-D profiles on the diagonal, 2-D profiles off it, as
@@ -629,9 +631,50 @@ in development) before this post was finished.
 
 ## What I learned
 
-<!-- TODO: tie back to the extending-lm thesis; the hard part was again the software design, not the
-statistics; and the bonus of a multivariate criterion (Box's M) that has no univariate counterpart
-beyond the spread-level plot. Pointer to Vis-MLM [@Friendly:2024:VisMLM]. -->
+**The thesis held a second time, on a problem I didn't choose for it.** I didn't pick Box-Cox to
+illustrate the extending-lm post; it came from re-reading Rencher & Christensen. Yet every row of
+@tbl-dimension appeared on its own: the power became a vector, the interval became a region, the
+test of "no transformation" moved to $q$ degrees of freedom, and once again the way to see it was
+an ellipse, the Wald ellipse beside the likelihood region. An example that wasn't chosen to fit
+the thesis is better evidence for it than one that was.
+
+**The statistics were done; what was missing was graphics and workflow.** The multivariate
+likelihood goes back to @AndrewsGnanadesikanWarner:71, and `car::powerTransform()` had long since
+implemented it for an mlm. What wasn't there was a way to *see* the likelihood, to refit with the
+chosen powers, and to compare the model before and after. That is the same finding as in the
+extending-lm post, and it suggests a working rule: before extending a method, check whether the
+computation already exists, and look for the missing display.
+
+**The multivariate version asks questions the univariate one can't.** Should the powers be chosen
+jointly or one at a time (they disagree, for the correlated Diabetes measures)? Should the
+responses be made normal, or the residuals? Is a cheap slice good enough, or is a profile needed
+(only when the estimates are correlated)? Are the covariance matrices equal, not just the
+variances? None of these arises with one response. They, more than the extra computation, are
+where the extension earns its keep.
+
+**A second criterion is a bonus, but show it; don't just optimize it.** Box's $\mathcal{M}$ gave a
+truly multivariate reason to choose a transformation, and the transformation chosen for normality
+often pleased it as well: in Dystrophy, the test of equal covariance matrices went from
+overwhelming to unremarkable. But minimizing $\mathcal{M}$ directly sent `relwt` to a power of 6,
+along a direction where $\mathcal{M}$ was flat. When a criterion is flat, an optimizer reports
+noise as an answer, and a plot shows the flatness. Hence the green curves and contours in the
+`bcProfile()` plots, and the warning on `bcBoxM()`.
+
+**Knowing what to leave out is the next design problem.** With one or two powers, the question
+was how to draw a likelihood. With five, it is what not to draw. The `pairs()` questions and the
+one-row-per-response prototype say the same thing: more dimensions call for more selection, not
+more panels. That is where this work stops for now, and it is a display problem, not a
+statistical one.
+
+And, as in [Catching bugs](#catching-bugs): bringing a method to Multivariate Town is also a test
+of the code it leans on. Every object that gains a dimension is a new place for something to be
+wrong.
+
+For more on these methods and the ideas behind them, see *Visualizing Multivariate Data and
+Models in R* [@Friendly:2024:VisMLM].
+
+<!-- Possible closing image callback: Box & Cox aimed at one target; in Multivariate Town the target
+became a likelihood surface, with lambda_1, lambda_2 on the placard. -->
 
 ## References {.unnumbered}
 
