@@ -1,6 +1,6 @@
 # A Year of Living Quirkily
 
-Overarching theme/title for the blog series as a whole.
+Overarching theme/title for the blog series as a whole. But maybe a book of essays!
 
 ## The premise
 
