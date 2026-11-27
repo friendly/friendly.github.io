@@ -139,7 +139,7 @@ bartlettTests(Y, Dystrophy$group)
 boxCox(dmd.mod)
 ```
 
-This is another row for the "hook table" in the extending-lm post: a method that works for `lm`
+This is another row for the "hook table" in the [extending-lm post](https://friendly.github.io/blog/posts/2026-11-extending-lm/): a method that works for `lm`
 and refuses an mlm.
 
 ## The statistics already existed
@@ -174,7 +174,7 @@ So the gap was not the statistics, but the **graphics and the workflow**: there 
 method for a `powerTransform` object, no easy way to refit with the chosen powers, and no
 before/after comparison. As the `?bcProfile` help page now says, the work "stemmed from reading
 Rencher & Christensen's description of the problem, and the recognition that
-`car::powerTransform()` had already done the heavy lifting". That is the extending-lm story almost
+`car::powerTransform()` had already done the heavy lifting". That is the [extending-lm](https://friendly.github.io/blog/posts/2026-11-extending-lm/) story almost
 exactly: the hard part is the software design.
 
 ### Every object gains a dimension
@@ -585,7 +585,7 @@ only the `bcPower` family, and its help page points to the others.
 
 A `plot()` method for `powerTransform` objects arguably belongs in car, next to `powerTransform()`
 itself, rather than in heplots. That is a question for John Fox. It is also a familiar one from
-the extending-lm post: when the multivariate extension of a method in one package is written in
+the [extending-lm post](https://friendly.github.io/blog/posts/2026-11-extending-lm/): when the multivariate extension of a method in one package is written in
 another, where should it live?
 
 ## Catching bugs {#catching-bugs}
@@ -632,7 +632,7 @@ in development) before this post was finished.
 ## What I learned
 
 **The thesis held a second time, on a problem I didn't choose for it.** I didn't pick Box-Cox to
-illustrate the extending-lm post; it came from re-reading Rencher & Christensen. Yet every row of
+illustrate the [extending-lm post](https://friendly.github.io/blog/posts/2026-11-extending-lm/); it came from re-reading Rencher & Christensen. Yet every row of
 @tbl-dimension appeared on its own: the power became a vector, the interval became a region, the
 test of "no transformation" moved to $q$ degrees of freedom, and once again the way to see it was
 an ellipse, the Wald ellipse beside the likelihood region. An example that wasn't chosen to fit
@@ -642,7 +642,7 @@ the thesis is better evidence for it than one that was.
 likelihood goes back to @AndrewsGnanadesikanWarner:71, and `car::powerTransform()` had long since
 implemented it for an mlm. What wasn't there was a way to *see* the likelihood, to refit with the
 chosen powers, and to compare the model before and after. That is the same finding as in the
-extending-lm post, and it suggests a working rule: before extending a method, check whether the
+[extending-lm post](https://friendly.github.io/blog/posts/2026-11-extending-lm/), and it suggests a working rule: before extending a method, check whether the
 computation already exists, and look for the missing display.
 
 **The multivariate version asks questions the univariate one can't.** Should the powers be chosen
