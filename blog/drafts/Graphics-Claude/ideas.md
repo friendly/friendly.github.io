@@ -94,7 +94,35 @@ Arc of the day, roughly in order. Each step is a candidate vignette for the post
     an explicit OK. It proposed the `gh` command and waited instead of just doing it. That's the
     right default, and worth a sentence.
 
+12. **Detour 4, live.** At the very end, pushing these notes to the website repo was *rejected*.
+    GitHub had 10 newer commits from my other blog work that same day (the BoxCox draft, drop-cap
+    styles, the How-big post), made in other sessions. Claude fetched and *looked at what those
+    commits were* before doing anything. The notes only added a new folder, so it replayed the one
+    commit on top and pushed. It was harmless this time, but it's exactly the "several crews, no
+    coordination" sign from *tired-horses*, happening while I was writing about it.
+
 ## Themes to develop
+
+- **Rabbit holes: depth-first or breadth-first?** This session is a good example of going down a
+  rabbit hole *with* Claude, while other projects were also running in my head (and in other
+  windows).
+  - *Depth-first, within ggsprings.* I asked for "a survey and a TASKS.md" and the day went
+    survey → site → redesign → waves → README → gapminder → regression animation → PCA
+    animation → blog notes. Each next step was easy, so there was always a reason to go one level
+    deeper. With an AI, going deep costs little; the cost is what you *aren't* doing meanwhile.
+  - *Breadth-first, across projects.* At the same time, other sessions were working on BoxCox,
+    How-big and extending-lm. Each AI session holds its own context; I'm the only one holding all
+    of them, and I'm the scheduler. The rejected push (item 12) is where the breadth showed up.
+  - *Good vs. bad rabbit holes.* The productive descent was the animations: each step turned a
+    statistical idea into a picture. The unproductive one would have been polishing spring shapes,
+    which I cut off twice ("don't get stuck in a perfection rabbit hole"; "leave that to later").
+    It wasn't the depth itself that made the difference. It was whether each level paid off.
+  - *Iterative deepening* (the search strategy from CS: go deep to a bounded depth, come back up,
+    widen) may be the right model. "Try it; if relatively easy, do it" is a depth budget.
+    TASKS.md and the "Later" lists are where you leave markers so you can come back up.
+  - Even this blog note is a spin-off: a package session produced a post idea, which then
+    produced a repo conflict, which produced this paragraph. Which window does a thought belong
+    in? (→ *tired-horses*, Detour 4.)
 
 - **Division of labour.** Human: meaning, taste, priorities, "good enough", and the domain
   knowledge (what a spring diagram is *for*). AI: enumerating options, rendering and comparing,
