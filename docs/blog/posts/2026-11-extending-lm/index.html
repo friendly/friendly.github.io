@@ -547,8 +547,8 @@ window.Quarto = {
 <figcaption>Going from univariate to multivariate models always involves increasing the dimensions of statistical and graphical objects.</figcaption>
 </figure>
 </div>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="introduction" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="introduction">Introduction</h2>
 <p>R makes it remarkably easy to fit a multivariate linear model. You don’t need a special function. You just give <code>lm()</code> a matrix of responses instead of a single one:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">cbind</span>(mpg, qsec) <span class="sc">~</span> hp <span class="sc">+</span> wt, <span class="at">data =</span> mtcars)</span>
@@ -639,8 +639,8 @@ Could be generated live with tryCatch so it stays true as packages change.
 MF 2026-11-21: not used; the intro bullets already make this point.
 -->
 </section>
-<section id="one-more-dimension" class="level2">
-<h2 class="anchored" data-anchor-id="one-more-dimension">One more dimension</h2>
+<section id="one-more-dimension" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="one-more-dimension">One more dimension</h2>
 <p>Why should this be so hard? The statistics of the multivariate linear model have been settled for more than half a century. The trouble is more mundane, and I think it’s worth naming, because it explains nearly every problem I’ve run into in developing these ideas.</p>
 <p>It calls to mind the cognitive problems “A. Square” encountered in Edwin Abbott’s <em>Flatland</em> <span class="citation" data-cites="Abbott:1884">(<a href="#ref-Abbott:1884" role="doc-biblioref">Abbott 1884</a>)</span>, when a Sphere entered the story and taught him how to think in one more dimension. I’ve told that story in my <a href="https://friendly.github.io/Vis-MLM-book/"><em>Visualizing Multivariate Data and Models in R</em></a> book <span class="citation" data-cites="Friendly:2024:VisMLM">(<a href="#ref-Friendly:2024:VisMLM" role="doc-biblioref">Friendly 2024</a>)</span>.</p>
 <div class="precept">
@@ -700,7 +700,7 @@ array). Mention here briefly, or save it for "What's still missing"? I'd keep a
 one-sentence pointer here and the details at the end.
 -->
 <p>So here’s the argument of this post, in a nutshell:</p>
-<div class="thesis">
+<div class="featured-quote">
 <blockquote class="blockquote">
 <p>A good multivariate extension isn’t just “run the univariate method <span class="math inline">\(q\)</span> times”. It has to decide what to do with the extra dimension: find the matrix that plays the role of the scalar, and then find a way to see it. Most often, as it turns out, that way is an ellipse.</p>
 </blockquote>
@@ -711,8 +711,8 @@ That's the thesis line. Alternative endings for that last sentence:
   - tie to Elliptical Insights (Friendly, Monette & Fox, 2013) here or later.
 -->
 </section>
-<section id="filling-in-the-gaps" class="level2">
-<h2 class="anchored" data-anchor-id="filling-in-the-gaps">Filling in the gaps</h2>
+<section id="filling-in-the-gaps" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="filling-in-the-gaps">Filling in the gaps</h2>
 <p>Over the past twenty years or so I’ve been filling these gaps, one package at a time, often with John Fox and Georges Monette, who have been my inspirations in most of this work. Importantly here, they also helped fill in gaps in my understanding of software design in R, and of thinking multivariately with geometry and graphs <span class="citation" data-cites="FoxFriendlyMonette:09:compstat Friendly-etal:ellipses:2012 FoxFriendlyWeisberg:13:rjournal">(e.g., <a href="#ref-FoxFriendlyMonette:09:compstat" role="doc-biblioref">Fox et al. 2009</a>; <a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013</a>; <a href="#ref-FoxFriendlyWeisberg:13:rjournal" role="doc-biblioref">Fox et al. 2013</a>)</span>.</p>
 <!-- CHECK: co-authors per package, and approximate start dates (from NEWS/DESCRIPTION).
      Is a personal-history thread wanted here, or keep it impersonal? 
@@ -738,8 +738,8 @@ That's the thesis line. Alternative endings for that last sentence:
 </ul>
 </section>
 </section>
-<section id="seeing-the-tests-he-plots" class="level2">
-<h2 class="anchored" data-anchor-id="seeing-the-tests-he-plots">Seeing the tests: HE plots</h2>
+<section id="seeing-the-tests-he-plots" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="seeing-the-tests-he-plots">Seeing the tests: HE plots</h2>
 <p>In a univariate linear model, every <span class="math inline">\(F\)</span> test compares two sums of squares: <span class="math inline">\(SS_H\)</span> for the hypothesis and <span class="math inline">\(SS_E\)</span> for error. In the multivariate model, each of these becomes a <span class="math inline">\(q \times q\)</span> matrix of sums of squares and products: <span class="math inline">\(\mathbf{H}\)</span> for each term in the model, and one <span class="math inline">\(\mathbf{E}\)</span> for error. <span class="math inline">\(\mathbf{E} = \widehat{\mathbf{U}}^\top \widehat{\mathbf{U}}\)</span> is the sums of squares and products of the residuals, <span class="math inline">\(\widehat{\mathbf{U}} = \mathbf{Y} - \mathbf{X}\widehat{\mathbf{B}}\)</span>. All four multivariate test statistics are functions of the eigenvalues of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>, the matrix analog of <span class="math inline">\(SS_H / SS_E\)</span>.</p>
 <p>That’s the matrix (<span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span>) that plays the role of the scalar (<span class="math inline">\(F\)</span>). The way to see it is the <strong>HE plot</strong> <span class="citation" data-cites="Friendly:07:manova FoxFriendlyMonette:09:compstat">(<a href="#ref-Friendly:07:manova" role="doc-biblioref">Friendly 2007</a>; <a href="#ref-FoxFriendlyMonette:09:compstat" role="doc-biblioref">Fox et al. 2009</a>)</span>: draw <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{E}\)</span> as ellipses in the space of two responses. The <span class="math inline">\(\mathbf{E}\)</span> ellipse shows the size and shape of the residual variation. The <span class="math inline">\(\mathbf{H}\)</span> ellipse for a term shows the variation of the fitted values due to that term. With the default “evidence” scaling, <span class="math inline">\(\mathbf{H}\)</span> protrudes outside <span class="math inline">\(\mathbf{E}\)</span> somewhere in the full response space if and only if the term is significant by Roy’s test, using its usual <span class="math inline">\(F\)</span> approximation.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> (In a two-dimensional view, the rule works only one way: outside means significant by that test, but inside doesn’t mean “not significant”.)</p>
 <p>Here’s an example, from Rohwer’s study of how well paired-associate (PA) learning tasks predict three aptitude and achievement tests in kindergarten children of high and low socioeconomic status (SES). The model is a multivariate analysis of covariance: SES is a factor, and the five PA tasks are covariates.</p>
@@ -843,8 +843,8 @@ H_0 : \mathbf{L} \mathbf{B} \mathbf{M} = \mathbf{0} .
 <p>Hierarchical, or multilevel, models solve the same problem in a different, but also elegant way: they model the repeated measures directly, adding random effects for subjects <span class="citation" data-cites="PinheiroBates:2000">(<a href="#ref-PinheiroBates:2000" role="doc-biblioref">Pinheiro and Bates 2000</a>)</span>. That approach burdened us with spaghetti plots, one line per subject, but it also taught important lessons about <em>pooling</em>, how the estimates for individuals borrow strength from the group <span class="citation" data-cites="EfronMorris:1977 GelmanHill:07">(<a href="#ref-EfronMorris:1977" role="doc-biblioref">Efron and Morris 1977</a>; <a href="#ref-GelmanHill:07" role="doc-biblioref">Gelman and Hill 2007</a>)</span>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 </section>
 </section>
-<section id="seeing-it-in-fewer-dimensions-candisc" class="level2">
-<h2 class="anchored" data-anchor-id="seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</h2>
+<section id="seeing-it-in-fewer-dimensions-candisc" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="seeing-it-in-fewer-dimensions-candisc">Seeing it in fewer dimensions: candisc</h2>
 <p>An HE plot shows two responses at a time. To see more of them, <code>pairs()</code> on an <code>"mlm"</code> dispatches to <code>heplots::pairs.mlm()</code>, which draws the HE plot for every pair of responses, laid out as a scatterplot matrix. That came essentially for free, from base R graphics and S3 dispatch.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 <p>But in an MLM there’s something more: the effect of a term doesn’t have to line up with any pair of responses. The <span class="math inline">\(\mathbf{H}\)</span> ellipsoid for a term lives in <span class="math inline">\(s = \min(q, df_h)\)</span> dimensions, in directions that are combinations of all the responses.</p>
 <p>The eigenvectors of <span class="math inline">\(\mathbf{H}\mathbf{E}^{-1}\)</span> point in those directions. They define the <em>canonical variates</em>: linear combinations of the responses that are uncorrelated within groups, ordered by how much of the effect they capture. Their eigenvalues are the same ones that go into the multivariate test statistics. So the canonical space is the low-dimensional view in which the test is easiest to see.</p>
@@ -910,8 +910,8 @@ Figure&nbsp;4: HE plot of the Pottery data in canonical space. In this view, the
 <li><code>varOrder()</code> uses the angles of the structure arrows to order the responses in other displays, like <code>pairs()</code>, so that related variables sit together.</li>
 </ul>
 </section>
-<section id="influence-mvinfluence" class="level2">
-<h2 class="anchored" data-anchor-id="influence-mvinfluence">Influence: mvinfluence</h2>
+<section id="influence-mvinfluence" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="influence-mvinfluence">Influence: mvinfluence</h2>
 <p>In the introduction, <code>cooks.distance(fit)</code> quietly gave two univariate answers, one column per response. Load mvinfluence, and the same call gives one answer per case:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mvinfluence)</span>
@@ -1013,8 +1013,8 @@ Figure&nbsp;5: Multivariate influence plots for the toy example. Left: squared s
 <p>In the LR plot, case 9 lies several contours beyond every other case, and its position shows why: it’s extreme in <em>both</em> leverage and residual. The same plot works for univariate models too, as <code>lrPlot()</code>.</p>
 </section>
 </section>
-<section id="robustness-robmlm" class="level2">
-<h2 class="anchored" data-anchor-id="robustness-robmlm">Robustness: robmlm()</h2>
+<section id="robustness-robmlm" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="robustness-robmlm">Robustness: robmlm()</h2>
 <p>For a univariate model, <code>MASS::rlm()</code> gives a robust fit, downweighting cases with large residuals. Give it a matrix response, and it stops with “incompatible dimensions”.</p>
 <p>The algorithm for a multivariate version, <code>heplots::robmlm()</code>, is short. It’s iteratively reweighted least squares, with one change, which is the ladder again. In <code>rlm()</code>, a case’s weight depends on the size of its residual, <span class="math inline">\(|e_i| / s\)</span>, a scalar. Here the residual is a vector, so its size becomes a squared Mahalanobis distance, <span class="math inline">\(\mathbf{e}_i^\top
 \mathbf{S}^{-1} \mathbf{e}_i\)</span>, using a robust estimate of the residual covariance matrix <span class="math inline">\(\mathbf{S}\)</span> from <code>MASS::cov.trob()</code>. Bisquare weights are computed from these distances, with a cutoff from the <span class="math inline">\(\chi^2_q\)</span> distribution, and the model is refit by weighted least squares until the coefficients stop changing.</p>
@@ -1059,8 +1059,8 @@ Figure&nbsp;6: Robust MANOVA for the Pottery data. Left: final case weights from
 <p>Four cases (1, 7, 11 and 25) get weights near zero, and two more (9 and 10) about one half. Three of the four are from Llanedyrn; the fourth is from Ashley Rails. The robust <span class="math inline">\(\mathbf{H}\)</span> ellipse for <code>Site</code> is nearly the same as the classical one, but the <span class="math inline">\(\mathbf{E}\)</span> ellipse shrinks. Downweighting a few unusual pots makes the differences among sites stand out more: the <span class="math inline">\(F\)</span> for Pillai’s test rises from 4.3 to 6.6. That isn’t quite like for like. The weights of 3 cases are exactly zero, so the robust fit drops them, and its error df falls from 22 to 19 (the denominator df of <span class="math inline">\(F\)</span>, from 60 to 51). The <a href="https://friendly.github.io/heplots/articles/Robust.html">Robust vignette</a> has the details, and a second example with a multivariate regression.</p>
 </section>
 </section>
-<section id="now-multivariate-ridge-regression-in-genridge" class="level2">
-<h2 class="anchored" data-anchor-id="now-multivariate-ridge-regression-in-genridge">Now: multivariate ridge regression in genridge</h2>
+<section id="now-multivariate-ridge-regression-in-genridge" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="now-multivariate-ridge-regression-in-genridge">Now: multivariate ridge regression in genridge</h2>
 <!-- MF: genridge 0.8.1 was submitted to CRAN 2026-11-20. Update the wording once it's accepted. -->
 <p>The newest member of the family is in genridge, my package for visualizing ridge regression <span class="citation" data-cites="Friendly:genridge:2013">(<a href="#ref-Friendly:genridge:2013" role="doc-biblioref">Friendly 2013</a>)</span>. In version 0.8.1, now on <a href="https://CRAN.R-project.org/package=genridge">CRAN</a>, <code>ridge()</code> accepts a matrix response, either in a formula or as an existing <code>mlm</code> fit, and returns an object of class <code>"mlmridge"</code>. The implementation was adapted from <code>lm_multiv_ridge()</code> in the <strong>VARshrink</strong> package <span class="citation" data-cites="R-VARshrink">(<a href="#ref-R-VARshrink" role="doc-biblioref">Lee and Kim 2026</a>)</span>. It’s marked experimental, and I’d welcome comments.</p>
 <p>The question was how to carry the graphical methods I had developed for a single <span class="math inline">\(\mathbf{y}\)</span>, where the effects of many predictors on shrinkage are seen jointly, one dimension up, to <span class="math inline">\(\mathbf{Y}\)</span> with <span class="math inline">\(q &gt; 1\)</span> responses.</p>
@@ -1280,8 +1280,8 @@ or as a callout box.
 -->
 </section>
 </section>
-<section id="conclusion-what-i-learned" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion-what-i-learned">Conclusion: what I learned</h2>
+<section id="conclusion-what-i-learned" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="conclusion-what-i-learned">Conclusion: what I learned</h2>
 <!-- MF: a first draft, in your voice. Rework freely. -->
 <p>Why write all this down? Partly because these packages grew up one at a time, over twenty years, and it was only when I lined them up for this post that I saw they were all solving the same problem. Each time, the response went from <span class="math inline">\(\mathbf{y}\)</span> to <span class="math inline">\(\mathbf{Y}\)</span>, and each time I had to decide what to do with the extra dimension. That pattern was invisible to me while I was in the middle of it, as I suspect it is for others writing methods for multivariate models now.</p>
 <p>Looking back, a few lessons stand out.</p>
