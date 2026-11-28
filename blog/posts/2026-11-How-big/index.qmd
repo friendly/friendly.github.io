@@ -67,7 +67,7 @@ Monette. A copy of @Dempster:69 sits on the table. Coffee mugs suggest the Eleme
      (figures/fireside-image-notes.md). -->
 
 
-## Introduction
+## Introduction {.dropcap}
 
 When we left A. Square, in my last post, [On Extending `lm()` Methods to
 `"mlm"`](https://friendly.github.io/blog/posts/2026-11-extending-lm/), the Sphere had just
@@ -119,7 +119,7 @@ By indirection, this post is also about what I learned from the process of tryin
 develop graphical methods for multivariate models in R with the help and inspiration of the gentlemen around
 the table.
 
-## Climbing back down
+## Climbing back down {.dropcap}
 
 Here's the whole trip in one picture, for the Pottery data used in the [first post](https://friendly.github.io/blog/posts/2026-11-extending-lm/): the
 chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four
@@ -154,8 +154,10 @@ There's a trade-off in coming down the ladder, and Hadley Wickham put it neatly.
 talk, as [John D. Cook paraphrased
 it](https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/):
 
+::: {.featured-quote}
 > Visualization can surprise you, but it doesn't scale well. Modeling scales well, but it can't
 > surprise you.
+:::
 
 In *R for Data Science* Hadley and his co-authors give the reason
 [@Wickham-etal:2023:r4ds]:
@@ -179,7 +181,7 @@ something you didn't think to ask. That's why I want to stop at each rung and lo
      Fields Institute, Feb. 2015. -->
 
 
-## How big is a vector?
+## How big is a vector? {.dropcap}
 
 Start at the bottom, with a single vector. Its size is its *length*, and even that needs a
 choice.
@@ -266,7 +268,7 @@ shrinks.](figures/ridge-lasso.png){#fig-ridge-lasso width="85%" fig-alt="Two pan
      The RSS contours are Mahalanobis ellipses in the metric of X'X: a link to the bullet
      above, if wanted. -->
 
-## How big is a covariance matrix?
+## How big is a covariance matrix? {.dropcap}
 
 One rung up, a covariance matrix $\mathbf{S}$ for $p$ variables holds $p(p+1)/2$ different
 numbers: $p$ variances and $p(p-1)/2$ covariances. How big is that? There are two classic
@@ -324,7 +326,7 @@ The determinant will be back. Wilks's $\Lambda$, one of the four MANOVA tests be
 ratio of two of them, $|\mathbf{E}| / |\mathbf{H} + \mathbf{E}|$: the squared ratio of two
 areas.
 
-## How big is a matrix of data?
+## How big is a matrix of data? {.dropcap}
 
 A covariance matrix is already a summary. Go back to the data themselves: an $n \times p$
 matrix $\mathbf{Y}$, centered at the column means. The tool for sizing up any rectangular
@@ -408,7 +410,7 @@ that is nearly missing.](figures/spread-spectra.png){#fig-spread-spectra width="
      4. Low-rank approximation of an image, k = 1, 2, 5, 20 (from the MatrixAlgebra
         review). -->
 
-## Ellipses have shadows
+## Ellipses have shadows {.dropcap}
 
 <!-- MF attributes the phrase to Georges Monette. Check whether it's in print anywhere, or
      credit it as his way of saying it. -->
@@ -479,7 +481,7 @@ and you choose which one you want by choosing where the light comes from. That i
 back below, as Roy's largest root: the direction in which **H** casts its longest shadow
 relative to **E**.
 
-## How big is H, relative to E?
+## How big is H, relative to E? {.dropcap}
 
 <!-- DRAFT 2026-11-24. Example: heplots::mathscore, as in the book's Hotelling chapter.
      Figure: R/h-relative-e.R. Notes section 3. -->
@@ -561,7 +563,7 @@ With $s = 1$ there's one number, and nothing more to decide: Pillai, Wilks, Hote
 and Roy all give the same $F$. The Pottery data have $s = 3$ eigenvalues, 34.16, 1.25 and
 0.028 (@fig-reducing-ladder), and that's where the four tests part company.
 
-## Four kinds of mean
+## Four kinds of mean {.dropcap}
 
 <!-- DRAFT 2026-11-24. Notes section 4. Figures: four-contours.png (R/four-contours.R) and
      the bar cartoon, copied from drafts/VisMLM/jokes/images/four-tests-cartoon-v3.png. -->
@@ -637,7 +639,7 @@ With Pottery's roots, one big and two small, Roy has the easiest call to make.
 here?", the first three, averaging over all the $\lambda$s on their napkin, say "Probably."
 Roy points at the largest one: "HIM!"](figures/four-tests-cartoon.jpg){#fig-four-tests-cartoon width="85%" fig-alt="A pen-and-ink cartoon in a pub. Three older men with name badges reading Wilks, Pillai and Hotelling-Lawley sit at the bar over a napkin listing lambda 1 to lambda 5, and together say Probably. The bartender, polishing a glass, asks: Is something going on here? A fourth man, badge Roy, leans away from the bar and points across the room, shouting HIM! at a startled man drinking alone at a table. The caption reads: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar."}
 
-## Four rulers for one ellipse
+## Four rulers for one ellipse {.dropcap}
 
 <!-- DRAFT 2026-11-24. Notes section 5; a redraw of Fig. 19 of the ellipses paper.
      Figure: R/four-rulers.R. NOTE colors: here H + E is orange and E grey (as in the ladder
@@ -696,7 +698,7 @@ close here because the two roots, 3 and 1, are not very different. For Pottery, 
      Accurate, but say it carefully, or drop it. The Pillai sentence about short shadows is
      an interpretation of 1/a^2 + 1/b^2; check it reads right. -->
 
-## All roads lead to F
+## All roads lead to F {.dropcap}
 
 <!-- DRAFT 2026-11-24. Notes section 6. Simulation and figure: R/null-pvalues.R (1e5 reps per
      row, about 90 s; it reproduces the table in the notes to within Monte Carlo error). -->
@@ -765,7 +767,7 @@ All four say the kiln sites differ, which is the question a test answers. But th
 to 137, and none of them is a measure of *how much*. For that, go back up a rung, to the
 $\lambda$s and the four $\eta^2$s.
 
-## Don't reduce too soon: HE plots
+## Don't reduce too soon: HE plots {.dropcap}
 
 <!-- DRAFT 2026-11-24. Notes section 7. Figure: R/pottery-he.R, which replaces
      he-vs-canonical.png (its right panel repeated fig-pottery-can in the first post). -->
@@ -832,7 +834,7 @@ two dimensions and needs a person to read it. But it's where the surprises are: 
 **H**, the direction it points, and which sites are doing the differing. Reduce, by all means,
 but not before you've looked.
 
-## Smaller R objects, too
+## Smaller R objects, too {.dropcap}
 
 <!-- DRAFT 2026-11-25. Notes section 8. Numbers checked in R: vcov(pottery.mlm) equals
      kronecker(estVar, (X'X)^{-1}); vcov() of an "mlmridge" object equals
@@ -894,7 +896,7 @@ ellipse for each site mean is $\widehat{\boldsymbol{\Sigma}}$ shrunk by its samp
 <!-- heplots dev/pred.mlm.R currently keeps only diag(Sigma) (the "sigmas"), so its
      intervals are per response, not ellipses. -->
 
-## Conclusion
+## Conclusion {.dropcap}
 
 <!-- DRAFT 2026-11-25. Notes section 9. Calls back to the precept, Lineland, the banner, the
      Elemental Forces and the three-point rubric in the Introduction. -->

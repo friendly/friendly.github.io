@@ -90,10 +90,14 @@ div.csl-indent {
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="index_files/libs/quarto-html/anchor.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-67270d1595a62d14f123c043d4fb2f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-dark-7b2b20282c8da1075b52e56187ace71c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="index_files/libs/bootstrap/bootstrap-67270d1595a62d14f123c043d4fb2f18.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <meta name="quarto:status" content="draft">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -126,9 +130,172 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
-<body class="quarto-light"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+<body class="quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -171,6 +338,7 @@ window.Quarto = {
 </nav>
 </div>
 <main class="content" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -238,10 +406,10 @@ figures/banner-notes.md); likeness references in figures/refs/. -->
 <figcaption>G.E.P. Box &amp; David Cox come to Multivariate Town. Box takes aim at a two-parameter likelihood surface, while Cox presents it and a young statistician brings the news: there’s more than one <span class="math inline">\(\lambda\)</span>.</figcaption>
 </figure>
 </div>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="introduction" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="introduction">Introduction</h2>
 <p>In a recent post, <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">On Extending <code>lm()</code> Methods to <code>"mlm"</code></a>, I argued that R fits a multivariate linear model with the same <code>lm()</code> call as a univariate one, but that many of the methods built around <code>lm</code> objects stop working, or quietly do something univariate. The underlying issue is that <strong>every object gains a dimension</strong>: a scalar becomes a vector, a variance becomes a covariance matrix, an interval becomes an ellipse. The thesis was:</p>
-<div class="thesis">
+<div class="featured-quote">
 <blockquote class="blockquote">
 <p>A good multivariate extension isn’t just “run the univariate method <span class="math inline">\(q\)</span> times”. It has to decide what to do with the extra dimension: find the matrix that plays the role of the scalar, and then find a way to see it. Most often, as it turns out, that way is an ellipse.</p>
 </blockquote>
@@ -249,8 +417,8 @@ figures/banner-notes.md); likeness references in figures/refs/. -->
 <p>I ran into the same tensions again soon after. A re-reading of <span class="citation" data-cites="RencherChristensen:2012">Rencher and Christensen (<a href="#ref-RencherChristensen:2012" role="doc-biblioref">2012</a>)</span> on transformations of multivariate data <span class="citation" data-cites="AndrewsGnanadesikanWarner:71">(<a href="#ref-AndrewsGnanadesikanWarner:71" role="doc-biblioref">Andrews et al. 1971</a>)</span> suggested a new graphical method for choosing Box-Cox powers <span class="citation" data-cites="BoxCox:64">(<a href="#ref-BoxCox:64" role="doc-biblioref">Box and Cox 1964</a>)</span> for the responses in an mlm. It turned out to have a bonus: a transformation chosen for multivariate normality can also please Box’s <span class="math inline">\(\mathcal{M}\)</span> <span class="citation" data-cites="Box:1949">(<a href="#ref-Box:1949" role="doc-biblioref">Box 1949</a>)</span>, the test of equal covariance matrices that MANOVA relies on.</p>
 <p>This post follows that work: what the univariate tools give you, what they miss, and the design decisions behind three new functions in heplots (version 1.8.7): <code>bcProfile()</code>, to see the likelihood for one or two powers; <code>bcRefit()</code>, to refit the model with the chosen powers; and <code>bcBoxM()</code>, to choose powers that make the covariance matrices alike. They are all documented on one help page, <code>?bcProfile</code>.</p>
 </section>
-<section id="one-response-at-a-time" class="level2">
-<h2 class="anchored" data-anchor-id="one-response-at-a-time">One response at a time</h2>
+<section id="one-response-at-a-time" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="one-response-at-a-time">One response at a time</h2>
 <p>The running example is <code>heplots::Dystrophy</code> <span class="citation" data-cites="AndrewsHerzberg:85">(Rencher &amp; Christensen, Table 5.7, from <a href="#ref-AndrewsHerzberg:85" role="doc-biblioref">Andrews and Herzberg 1985</a>)</span>. Four serum enzymes, creatine kinase (<code>CK</code>), hemopexin (<code>Hpx</code>), pyruvate kinase (<code>PK</code>) and lactate dehydrogenase (<code>LD</code>), were measured in 73 women, to see whether they can detect carriers of Duchenne muscular dystrophy. Age and the month of the blood sample are covariates.</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -342,8 +510,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>This is another row for the “hook table” in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">extending-lm post</a>: a method that works for <code>lm</code> and refuses an mlm.</p>
 </section>
 </section>
-<section id="the-statistics-already-existed" class="level2">
-<h2 class="anchored" data-anchor-id="the-statistics-already-existed">The statistics already existed</h2>
+<section id="the-statistics-already-existed" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="the-statistics-already-existed">The statistics already existed</h2>
 <p>The surprise was that the estimation was already done. <code>car::powerTransform()</code> accepts an mlm and maximizes the multivariate likelihood of <span class="citation" data-cites="AndrewsGnanadesikanWarner:71 RencherChristensen:2012">Andrews et al. (<a href="#ref-AndrewsGnanadesikanWarner:71" role="doc-biblioref">1971</a>; <a href="#ref-RencherChristensen:2012" role="doc-biblioref">Rencher and Christensen 2012</a>, eq. 4.43)</span>, over all <span class="math inline">\(q\)</span> powers at once. (I checked that it matches a direct <code>optim()</code> of eq. 4.43.) It also gives the two joint tests that the univariate plots lack:</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -544,8 +712,8 @@ Figure&nbsp;4: Profile and slice of the log-likelihood for <span class="math inl
 <p>The profile interval is <span class="math inline">\((-1.08, -0.47)\)</span>, the slice <span class="math inline">\((-1.04, -0.50)\)</span>: a modest difference here, but in the direction that matters, overstating the precision. Conversely, a 2-D plot of (<code>glufast</code>, <code>glutest</code>) shows almost no difference between profile and slice, because what is held fixed is then the powers that <em>aren’t</em> correlated with them. So the cheap version is safe only when the powers held fixed are nearly uncorrelated with those plotted, and the default is <code>type = "profile"</code>. An instance of knowing when the multivariate version adds nothing, and when it does.</p>
 </section>
 </section>
-<section id="refitting-bcrefit" class="level2">
-<h2 class="anchored" data-anchor-id="refitting-bcrefit">Refitting: <code>bcRefit()</code></h2>
+<section id="refitting-bcrefit" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="refitting-bcrefit">Refitting: <code>bcRefit()</code></h2>
 <p>Once the powers are chosen, the model has to be refit with the transformed responses. <code>bcRefit(mod, lambda)</code> does this; <code>lambda</code> may be a vector of powers or the <code>powerTransform</code> object itself, whose rounded powers are used.</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -600,8 +768,8 @@ Figure&nbsp;5: Chi-square QQ plots of the squared Mahalanobis distances of the r
 </div>
 </div>
 </section>
-<section id="pleasing-boxs-mathcalm" class="level2">
-<h2 class="anchored" data-anchor-id="pleasing-boxs-mathcalm">Pleasing Box’s <span class="math inline">\(\mathcal{M}\)</span></h2>
+<section id="pleasing-boxs-mathcalm" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="pleasing-boxs-mathcalm">Pleasing Box’s <span class="math inline">\(\mathcal{M}\)</span></h2>
 <p>Box-Cox targets normality. But for MANOVA, equality of the group covariance matrices often matters more <span class="citation" data-cites="Friendly:07:manova">(<a href="#ref-Friendly:07:manova" role="doc-biblioref">Friendly 2007</a>)</span>, and the Dystrophy groups are far from equal. The transformation chosen for normality also fixes this:</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -756,8 +924,8 @@ Figure&nbsp;8: Log determinants of the group and pooled covariance matrices for 
 <p>But the pooled matrix now sits above every group. Because <span class="math inline">\(\log |\mathbf{S}|\)</span> is concave, the log determinant of the pooled matrix is always at least the (weighted) average of the groups’. If the groups differed only in size (<span class="math inline">\(\mathbf{S}_i = c_i \mathbf{S}\)</span>), it could not exceed the largest of them. When it does, the matrices must differ in shape or orientation. So this plot says where the remaining <span class="math inline">\(\mathcal{M} = 145\)</span> comes from: not from size, which the transformation fixed, but from the shape and orientation differences visible in the ellipses for <code>glufast</code> and <code>glutest</code>.</p>
 </section>
 </section>
-<section id="smaller-design-decisions" class="level2">
-<h2 class="anchored" data-anchor-id="smaller-design-decisions">Smaller design decisions</h2>
+<section id="smaller-design-decisions" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="smaller-design-decisions">Smaller design decisions</h2>
 <p>In designing <code>heplots</code> functions for this, there are few more that decide whether a plot can be read easily and whether users can find these methods helpful:</p>
 <ul>
 <li><p><strong>Colours are arguments, and the defaults depend on the plot.</strong> The “<span class="math inline">\(\lambda = 1\)</span>” highlight is bold red in a 1-D plot, but dark orange in the busier 2-D plot, where red competes with everything else. To keep that unambiguous, the rounded powers are purple and Box’s <span class="math inline">\(\mathcal{M}\)</span> dark green.</p></li>
@@ -873,8 +1041,8 @@ Figure&nbsp;9: A prototype per-variable display for the Dystrophy (left) and Dia
 <p>A <code>plot()</code> method for <code>powerTransform</code> objects arguably belongs in car, next to <code>powerTransform()</code> itself, rather than in heplots. That is a question for John Fox. It is also a familiar one from the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">extending-lm post</a>: when the multivariate extension of a method in one package is written in another, where should it live?</p>
 </section>
 </section>
-<section id="catching-bugs" class="level2">
-<h2 class="anchored" data-anchor-id="catching-bugs">Catching bugs</h2>
+<section id="catching-bugs" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="catching-bugs">Catching bugs</h2>
 <p>Writing this up had a side effect I didn’t plan for: it turned up bugs, in my own packages, that had been sitting there quietly. Not in the new code, but in old code that the new work happened to lean on in a new way.</p>
 <ul>
 <li><strong><code>boxM()</code> with covariates.</strong> The Dystrophy model has two covariates, <code>age</code> and <code>month</code>. Given that model, <code>boxM()</code> formed “groups” from every distinct combination of <code>group</code>, <code>age</code> and <code>month</code>: 66 groups of one person each, all with singular covariance matrices, and a test statistic of <code>NA</code>, with only a long warning to say why. The documentation said the predictors “must all be factors”, but nothing checked it. It now stops with a message that says what to do instead: <code>boxM(Y, group)</code>.</li>
@@ -885,8 +1053,8 @@ Figure&nbsp;9: A prototype per-variable display for the Dystrophy (left) and Dia
 <p>None of these would show up in a univariate analysis, or in the examples on the help pages. They showed up because extending a method to an mlm sends ordinary objects down paths nobody had walked: a MANCOVA rather than a one-way MANOVA, a two-way design, a model with several responses and a subset size. That is what <em>should</em> happen when you bring a univariate method to Multivariate Town. The extra dimension is a test as well as a feature: every object that gains a dimension is a new chance for code to be wrong, and a worked example that actually uses it is the cheapest way to find out.</p>
 <p>A practical lesson: when a bug turns up in the middle of writing, write it down where it will be fixed, not where it was found. Each of these went into the package’s own task list, with the error, a reproduction and a suggested fix, and the <code>boxM()</code> bugs were fixed (in heplots 1.9.0, in development) before this post was finished.</p>
 </section>
-<section id="what-i-learned" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-learned">What I learned</h2>
+<section id="what-i-learned" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="what-i-learned">What I learned</h2>
 <p><strong>The thesis held a second time, on a problem I didn’t choose for it.</strong> I didn’t pick Box-Cox to illustrate the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">extending-lm post</a>; it came from re-reading Rencher &amp; Christensen. Yet every row of <a href="#tbl-dimension" class="quarto-xref">Table&nbsp;1</a> appeared on its own: the power became a vector, the interval became a region, the test of “no transformation” moved to <span class="math inline">\(q\)</span> degrees of freedom, and once again the way to see it was an ellipse, the Wald ellipse beside the likelihood region. An example that wasn’t chosen to fit the thesis is better evidence for it than one that was.</p>
 <p><strong>The statistics were done; what was missing was graphics and workflow.</strong> The multivariate likelihood goes back to <span class="citation" data-cites="AndrewsGnanadesikanWarner:71">Andrews et al. (<a href="#ref-AndrewsGnanadesikanWarner:71" role="doc-biblioref">1971</a>)</span>, and <code>car::powerTransform()</code> had long since implemented it for an mlm. What wasn’t there was a way to <em>see</em> the likelihood, to refit with the chosen powers, and to compare the model before and after. That is the same finding as in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">extending-lm post</a>, and it suggests a working rule: before extending a method, check whether the computation already exists, and look for the missing display.</p>
 <p><strong>The multivariate version asks questions the univariate one can’t.</strong> Should the powers be chosen jointly or one at a time (they disagree, for the correlated Diabetes measures)? Should the responses be made normal, or the residuals? Is a cheap slice good enough, or is a profile needed (only when the estimates are correlated)? Are the covariance matrices equal, not just the variances? None of these arises with one response. They, more than the extra computation, are where the extension earns its keep.</p>
@@ -937,6 +1105,19 @@ Yeo, In-Kwon, and Richard A. Johnson. 2000. <span>“A New Family of Power Trans
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {

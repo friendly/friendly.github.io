@@ -525,8 +525,8 @@ window.Quarto = {
 </div>
 <!-- Before publishing with Georges named in the caption, send him the picture
      (figures/fireside-image-notes.md). -->
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="introduction" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="introduction">Introduction</h2>
 <p>When we left A. Square, in my last post, <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">On Extending <code>lm()</code> Methods to <code>"mlm"</code></a>, the Sphere had just shown him what one more dimension looks like <span class="citation" data-cites="Abbott:1884">(<a href="#ref-Abbott:1884" role="doc-biblioref">Abbott 1884</a>)</span>. Going from a univariate linear model to a multivariate one, every object the model produces gains a dimension: a residual becomes a vector, a coefficient vector a matrix, a variance a covariance matrix.</p>
 <p>But earlier in the story, A. Square dreams of a trip the other way, to Lineland, whose King can’t conceive of anything but length. I used to feel a little sorry for the King. Then I noticed how much of multivariate statistics consists of working out, very carefully, how to get to Lineland. You start with a matrix of 130 numbers. You’d like to finish with one, and be able to say “that’s big”. (Pointland, whose only inhabitant is entirely pleased with himself, is there for the <span class="math inline">\(p\)</span>-value.)</p>
 <p>This post is about the trip back down. Each step down answers the same question, and the question turns out to be harder than it looks:</p>
@@ -550,8 +550,8 @@ window.Quarto = {
 </ul>
 <p>My title comes from the scene in the banner. Imagine the people who invented the classical multivariate tests sitting around a fire with an HE plot, arguing about how big <strong>H</strong> is compared to <strong>E</strong>. Each one had a different, and perfectly reasonable, answer. By indirection, this post is also about what I learned from the process of trying to develop graphical methods for multivariate models in R with the help and inspiration of the gentlemen around the table.</p>
 </section>
-<section id="climbing-back-down" class="level2">
-<h2 class="anchored" data-anchor-id="climbing-back-down">Climbing back down</h2>
+<section id="climbing-back-down" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="climbing-back-down">Climbing back down</h2>
 <p>Here’s the whole trip in one picture, for the Pottery data used in the <a href="https://friendly.github.io/blog/posts/2026-11-extending-lm/">first post</a>: the chemical composition (Al, Fe, Mg, Ca, Na) of 26 samples of Romano-British pottery from four kiln sites.</p>
 <p>The first question is whether the sites differ. If they do, archaeologists like <span class="citation" data-cites="Tubb-etal:80">Tubb et al. (<a href="#ref-Tubb-etal:80" role="doc-biblioref">1980</a>)</span> would also want to know <em>how</em> they differ, and relate this to what they knew about the peoples who inhabited these sites.</p>
 <div id="fig-reducing-ladder" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A funnel narrowing from left to right. Left: the data matrix Y, 26 by 5, drawn as 130 small blue cells. Then the 5 by 5 matrices H, in orange, and E, in grey, with their 15 distinct elements shaded. Then a column of three green cells, the eigenvalues 34.16, 1.25 and 0.028. Then one green cell, Pillai's V = 1.554, and finally one more, the effect size eta-squared = V / s = 0.52, on a 0 to 1 scale. Under each arrow is what that step sets aside: cases and grand means; units and directions; how the size is spread over dimensions; how many dimensions. A long arrow along the bottom is labeled set aside.">
@@ -574,9 +574,11 @@ Figure&nbsp;1: Coming down the ladder for the Pottery MANOVA. Each step keeps fe
 <p>Every rung is still an answer to “how big?”. A <span class="math inline">\(p\)</span>-value would be a different kind of answer: it sets aside the size itself and keeps only the evidence, so it doesn’t belong on this ladder.</p>
 <p>Each step is a choice, and each choice is a reasonable answer to “how big?”. The rest of this post is about those choices, and about the pictures that show what each one keeps.</p>
 <p>There’s a trade-off in coming down the ladder, and Hadley Wickham put it neatly. In a 2013 talk, as <a href="https://www.johndcook.com/blog/2013/02/07/visualization-modeling-and-surprises/">John D. Cook paraphrased it</a>:</p>
+<div class="featured-quote">
 <blockquote class="blockquote">
 <p>Visualization can surprise you, but it doesn’t scale well. Modeling scales well, but it can’t surprise you.</p>
 </blockquote>
+</div>
 <p>In <em>R for Data Science</em> Hadley and his co-authors give the reason <span class="citation" data-cites="Wickham-etal:2023:r4ds">(<a href="#ref-Wickham-etal:2023:r4ds" role="doc-biblioref">Wickham et al. 2023</a>)</span>:</p>
 <blockquote class="blockquote">
 <p>Visualizations can surprise you, but they don’t scale particularly well because they require a human to interpret them.</p>
@@ -589,8 +591,8 @@ Figure&nbsp;1: Coming down the ladder for the Pottery MANOVA. Each step keeps fe
      "Scales, but doesn't (fundamentally) surprise" (Model), e.g. "Big data pipelines",
      Fields Institute, Feb. 2015. -->
 </section>
-<section id="how-big-is-a-vector" class="level2">
-<h2 class="anchored" data-anchor-id="how-big-is-a-vector">How big is a vector?</h2>
+<section id="how-big-is-a-vector" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="how-big-is-a-vector">How big is a vector?</h2>
 <p>Start at the bottom, with a single vector. Its size is its <em>length</em>, and even that needs a choice.</p>
 <p>Length and distance are the same question from this perspective. The length of <span class="math inline">\(\mathbf{y}\)</span> is just its distance from <span class="math inline">\(\mathbf{0}\)</span>, and how far apart <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> are is just how big <span class="math inline">\(\mathbf{x} - \mathbf{y}\)</span> is. (Center <span class="math inline">\(\mathbf{y}\)</span> first, and its length is its distance from the mean.) There’s no shortage of answers. The animation in <a href="#fig-distance-methods" class="quarto-xref">Figure&nbsp;2</a>, which went around social media recently, has nine; six of them are here.</p>
 <!-- MF: the animation is @mathemetica's work, credited and linked as used for comment.
@@ -642,8 +644,8 @@ Figure&nbsp;4: Ridge regression and the lasso, for two correlated predictors. Th
      The RSS contours are Mahalanobis ellipses in the metric of X'X: a link to the bullet
      above, if wanted. -->
 </section>
-<section id="how-big-is-a-covariance-matrix" class="level2">
-<h2 class="anchored" data-anchor-id="how-big-is-a-covariance-matrix">How big is a covariance matrix?</h2>
+<section id="how-big-is-a-covariance-matrix" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="how-big-is-a-covariance-matrix">How big is a covariance matrix?</h2>
 <p>One rung up, a covariance matrix <span class="math inline">\(\mathbf{S}\)</span> for <span class="math inline">\(p\)</span> variables holds <span class="math inline">\(p(p+1)/2\)</span> different numbers: <span class="math inline">\(p\)</span> variances and <span class="math inline">\(p(p-1)/2\)</span> covariances. How big is that? There are two classic answers, each a single number.</p>
 <ul>
 <li>The <strong>trace</strong>, <span class="math inline">\(\operatorname{tr}(\mathbf{S})\)</span>, adds up the variances: the <em>total variance</em>. It’s easy to compute and to explain, but it ignores the covariances entirely.</li>
@@ -673,8 +675,8 @@ Figure&nbsp;5: Left: the determinant of <span class="math inline">\(\mathbf{A}\)
 <p>At <span class="math inline">\(r = 1\)</span> the ellipse collapses to a line: no area, <span class="math inline">\(|\mathbf{S}| = 0\)</span>. The data have dropped into Lineland, and <span class="math inline">\(\mathbf{S}\)</span> has no inverse. That’s why the Mahalanobis distance in the last section needs <span class="math inline">\(|\mathbf{S}| \neq 0\)</span>. When it exists, the inverse has <span class="math inline">\(|\mathbf{S}^{-1}| = 1 / |\mathbf{S}|\)</span>, and its ellipse has the same axes with reciprocal lengths, so the long axis becomes the short one (<a href="https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/2451107#2451107">geometric diagrams</a>).</p>
 <p>The determinant will be back. Wilks’s <span class="math inline">\(\Lambda\)</span>, one of the four MANOVA tests below, is a ratio of two of them, <span class="math inline">\(|\mathbf{E}| / |\mathbf{H} + \mathbf{E}|\)</span>: the squared ratio of two areas.</p>
 </section>
-<section id="how-big-is-a-matrix-of-data" class="level2">
-<h2 class="anchored" data-anchor-id="how-big-is-a-matrix-of-data">How big is a matrix of data?</h2>
+<section id="how-big-is-a-matrix-of-data" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="how-big-is-a-matrix-of-data">How big is a matrix of data?</h2>
 <p>A covariance matrix is already a summary. Go back to the data themselves: an <span class="math inline">\(n \times p\)</span> matrix <span class="math inline">\(\mathbf{Y}\)</span>, centered at the column means. The tool for sizing up any rectangular matrix is its <strong>singular value decomposition</strong>,</p>
 <p><span class="math display">\[
 \mathbf{Y} = \mathbf{U} \mathbf{D} \mathbf{V}^\top ,
@@ -780,8 +782,8 @@ Figure&nbsp;6: Same total, different spread. The eigenvalues of three <span clas
      4. Low-rank approximation of an image, k = 1, 2, 5, 20 (from the MatrixAlgebra
         review). -->
 </section>
-<section id="ellipses-have-shadows" class="level2">
-<h2 class="anchored" data-anchor-id="ellipses-have-shadows">Ellipses have shadows</h2>
+<section id="ellipses-have-shadows" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="ellipses-have-shadows">Ellipses have shadows</h2>
 <!-- MF attributes the phrase to Georges Monette. Check whether it's in print anywhere, or
      credit it as his way of saying it. -->
 <p>Georges Monette has a short way of putting one of the most useful ideas in this business: <strong>ellipses have shadows</strong>. Shine a light on an ellipse, and its shadow on a line is an interval. That is a step down from two dimensions to one, and the ellipse holds <em>every</em> such step at once: for any linear combination of the parameters, the confidence interval is the shadow of the confidence ellipse on that direction <span class="citation" data-cites="Monette:90 Friendly-etal:ellipses:2012">(<a href="#ref-Monette:90" role="doc-biblioref">Monette 1990</a>; <a href="#ref-Friendly-etal:ellipses:2012" role="doc-biblioref">Friendly et al. 2013</a>)</span>.</p>
@@ -826,8 +828,8 @@ Figure&nbsp;7: The confidence ellipse for <span class="math inline">\((\beta_\te
      the first post may be enough. -->
 <p>So an ellipse is a remarkably economical summary. It stores every one-dimensional answer, and you choose which one you want by choosing where the light comes from. That idea comes back below, as Roy’s largest root: the direction in which <strong>H</strong> casts its longest shadow relative to <strong>E</strong>.</p>
 </section>
-<section id="how-big-is-h-relative-to-e" class="level2">
-<h2 class="anchored" data-anchor-id="how-big-is-h-relative-to-e">How big is H, relative to E?</h2>
+<section id="how-big-is-h-relative-to-e" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="how-big-is-h-relative-to-e">How big is H, relative to E?</h2>
 <!-- DRAFT 2026-11-24. Example: heplots::mathscore, as in the book's Hotelling chapter.
      Figure: R/h-relative-e.R. Notes section 3. -->
 <p>With one response, this question is easy, because <strong>H</strong> and <strong>E</strong> are just numbers: the sums of squares for the hypothesis and for error. “How big is <span class="math inline">\(SS_H\)</span> relative to <span class="math inline">\(SS_E\)</span>?” is answered by dividing, <span class="math display">\[\lambda = \frac{SS_H}{SS_E}, \qquad F = \lambda \cdot \frac{df_e}{df_h} .\]</span> The <span class="math inline">\(F\)</span> statistic is just this ratio, put on a scale where its distribution is known.</p>
@@ -878,8 +880,8 @@ Figure&nbsp;8: How big is <strong>H</strong> relative to <strong>E</strong>, for
 <p><strong>What’s set aside.</strong> The directions. The <span class="math inline">\(\lambda\)</span>s say how big, but not which way. Here the direction is the contrast between BM and WP, given by the eigenvector of <span class="math inline">\(\mathbf{E}^{-1}\mathbf{H}\)</span>, the weights of the linear discriminant function. Getting the directions back, and showing them, is the job of HE plots and canonical plots (<a href="#dont-reduce-too-soon-he-plots">below</a>).</p>
 <p>With <span class="math inline">\(s = 1\)</span> there’s one number, and nothing more to decide: Pillai, Wilks, Hotelling-Lawley and Roy all give the same <span class="math inline">\(F\)</span>. The Pottery data have <span class="math inline">\(s = 3\)</span> eigenvalues, 34.16, 1.25 and 0.028 (<a href="#fig-reducing-ladder" class="quarto-xref">Figure&nbsp;1</a>), and that’s where the four tests part company.</p>
 </section>
-<section id="four-kinds-of-mean" class="level2">
-<h2 class="anchored" data-anchor-id="four-kinds-of-mean">Four kinds of mean</h2>
+<section id="four-kinds-of-mean" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="four-kinds-of-mean">Four kinds of mean</h2>
 <!-- DRAFT 2026-11-24. Notes section 4. Figures: four-contours.png (R/four-contours.R) and
      the bar cartoon, copied from drafts/VisMLM/jokes/images/four-tests-cartoon-v3.png. -->
 <p>For the Pottery data there are three eigenvalues, <span class="math inline">\(\lambda\)</span> = 34.16, 1.25 and 0.028: one big dimension of difference among the kiln sites, one modest, and one that is essentially noise. To get to one number, you have to combine them somehow. The four classical tests are four ways to do it, and the cleanest way to see how they differ is to notice that each one is an <strong>average</strong>, of a different kind.</p>
@@ -986,8 +988,8 @@ Figure&nbsp;10: Wilks, Pillai, Hotelling-Lawley and Roy walk into a bar. Asked �
 </figure>
 </div>
 </section>
-<section id="four-rulers-for-one-ellipse" class="level2">
-<h2 class="anchored" data-anchor-id="four-rulers-for-one-ellipse">Four rulers for one ellipse</h2>
+<section id="four-rulers-for-one-ellipse" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="four-rulers-for-one-ellipse">Four rulers for one ellipse</h2>
 <!-- DRAFT 2026-11-24. Notes section 5; a redraw of Fig. 19 of the ellipses paper.
      Figure: R/four-rulers.R. NOTE colors: here H + E is orange and E grey (as in the ladder
      figure); h-relative-e.png uses blue H and red E. Pick one. -->
@@ -1058,8 +1060,8 @@ Figure&nbsp;11: Four rulers for one ellipse. In units of <strong>E</strong> (gre
      Accurate, but say it carefully, or drop it. The Pillai sentence about short shadows is
      an interpretation of 1/a^2 + 1/b^2; check it reads right. -->
 </section>
-<section id="all-roads-lead-to-f" class="level2">
-<h2 class="anchored" data-anchor-id="all-roads-lead-to-f">All roads lead to F</h2>
+<section id="all-roads-lead-to-f" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="all-roads-lead-to-f">All roads lead to F</h2>
 <!-- DRAFT 2026-11-24. Notes section 6. Simulation and figure: R/null-pvalues.R (1e5 reps per
      row, about 90 s; it reproduces the table in the notes to within Monte Carlo error). -->
 <p>Four tests, four kinds of mean, four rulers: each statistic also has its own sampling distribution, which depends on <span class="math inline">\(s\)</span> and on the numbers of responses and degrees of freedom. When I learned this, testing a MANOVA meant looking up Wilks’ <span class="math inline">\(\Lambda\)</span> in special tables, or reading Roy’s largest root off Heck’s charts. Today nobody does, because each statistic can be converted to an <span class="math inline">\(F\)</span>, and <code>car::Anova()</code> reports them all that way. All roads lead to <span class="math inline">\(F\)</span>.</p>
@@ -1210,8 +1212,8 @@ Figure&nbsp;12: The distribution of <span class="math inline">\(p\)</span>-value
 </table>
 <p>All four say the kiln sites differ, which is the question a test answers. But the <span class="math inline">\(F\)</span>s run from 4 to 137, and none of them is a measure of <em>how much</em>. For that, go back up a rung, to the <span class="math inline">\(\lambda\)</span>s and the four <span class="math inline">\(\eta^2\)</span>s.</p>
 </section>
-<section id="dont-reduce-too-soon-he-plots" class="level2">
-<h2 class="anchored" data-anchor-id="dont-reduce-too-soon-he-plots">Don’t reduce too soon: HE plots</h2>
+<section id="dont-reduce-too-soon-he-plots" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="dont-reduce-too-soon-he-plots">Don’t reduce too soon: HE plots</h2>
 <!-- DRAFT 2026-11-24. Notes section 7. Figure: R/pottery-he.R, which replaces
      he-vs-canonical.png (its right panel repeated fig-pottery-can in the first post). -->
 <p>The last section ended on a complaint: four tests, four <span class="math inline">\(F\)</span>s running from 4 to 137, and none of them says how much. Going back up a rung, to the <span class="math inline">\(\lambda\)</span>s and the <span class="math inline">\(\eta^2\)</span>s, gets <em>how much</em> back. Going up one more, to <strong>H</strong> and <strong>E</strong> themselves, gets back what the <span class="math inline">\(\lambda\)</span>s set aside: the directions. That’s what an HE plot shows. It answers the same question as a test, “how big is <strong>H</strong> relative to <strong>E</strong>?”, but it stops in two dimensions instead of one, and leaves the last step of reading to you.</p>
@@ -1241,8 +1243,8 @@ Figure&nbsp;13: Pottery, read the way <a href="#fig-h-relative-e" class="quarto-
 </ul>
 <p>This is Wickham’s trade-off again. The test scales: it handles any number of responses and returns one number, ready for a table. The plot doesn’t scale as well, since it’s a shadow in two dimensions and needs a person to read it. But it’s where the surprises are: the shape of <strong>H</strong>, the direction it points, and which sites are doing the differing. Reduce, by all means, but not before you’ve looked.</p>
 </section>
-<section id="smaller-r-objects-too" class="level2">
-<h2 class="anchored" data-anchor-id="smaller-r-objects-too">Smaller R objects, too</h2>
+<section id="smaller-r-objects-too" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="smaller-r-objects-too">Smaller R objects, too</h2>
 <!-- DRAFT 2026-11-25. Notes section 8. Numbers checked in R: vcov(pottery.mlm) equals
      kronecker(estVar, (X'X)^{-1}); vcov() of an "mlmridge" object equals
      kronecker(Sigma, cov[[k]]) for each lambda (genridge 0.8.1). -->
@@ -1321,8 +1323,8 @@ Table&nbsp;2: What an <code>mlm</code> object needs to keep.
 <!-- heplots dev/pred.mlm.R currently keeps only diag(Sigma) (the "sigmas"), so its
      intervals are per response, not ellipses. -->
 </section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<section id="conclusion" class="level2 dropcap">
+<h2 class="dropcap anchored" data-anchor-id="conclusion">Conclusion</h2>
 <!-- DRAFT 2026-11-25. Notes section 9. Calls back to the precept, Lineland, the banner, the
      Elemental Forces and the three-point rubric in the Introduction. -->
 <p>A. Square went up a dimension, and saw more: 3D objects whose visions suggested a wider view of what <em>Flatland</em> society could become. This post has been about the trip the other way, from the 130 numbers in the Pottery data down to one, and about what each step leaves behind, when we focus on “How big?” a statistical object really is.</p>

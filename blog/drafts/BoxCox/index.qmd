@@ -9,6 +9,12 @@ categories: [Vis-MLM, multivariate linear models, R packages, graphics, heplots,
 bibliography: references.bib
 format:
   html:
+    # Drafts render outside the site project, so name the site theme and CSS here
+    # (same relative path from blog/drafts/X and blog/posts/X)
+    theme:
+      light: cosmo
+      dark: darkly
+    css: ../../../styles.css
     toc: true
     code-fold: show
     code-summary: "Show the code"
@@ -47,7 +53,7 @@ data(Diabetes, package = "heplots")
 
 ![G.E.P. Box & David Cox come to Multivariate Town. Box takes aim at a two-parameter likelihood surface, while Cox presents it and a young statistician brings the news: there's more than one $\lambda$.](figures/box-cox-banner.jpg){fig-alt="A Western main street with a saloon, barber shop and grocer. George Box aims a toy revolver at an easel showing nested blue elliptical contours on lambda-1 and lambda-2 axes. David Cox gestures with an open hand, and a girl with pigtails runs toward them holding a sign reading lambda-1, lambda-2."}
 
-## Introduction
+## Introduction {.dropcap}
 
 In a recent post, [On Extending `lm()` Methods to `"mlm"`](https://friendly.github.io/blog/posts/2026-11-extending-lm/),
 I argued that R fits a multivariate linear model with the same `lm()` call as a univariate one,
@@ -55,7 +61,7 @@ but that many of the methods built around `lm` objects stop working, or quietly 
 univariate. The underlying issue is that **every object gains a dimension**: a scalar becomes a
 vector, a variance becomes a covariance matrix, an interval becomes an ellipse. The thesis was:
 
-::: {.thesis}
+::: {.featured-quote}
 > A good multivariate extension isn't just "run the univariate method $q$ times". It has to
 > decide what to do with the extra dimension: find the matrix that plays the role of the
 > scalar, and then find a way to see it. Most often, as it turns out, that way is an ellipse.
@@ -73,7 +79,7 @@ the likelihood for one or two powers; `bcRefit()`, to refit the model with the c
 and `bcBoxM()`, to choose powers that make the covariance matrices alike. They are all
 documented on one help page, `?bcProfile`.
 
-## One response at a time
+## One response at a time {.dropcap}
 
 The running example is `heplots::Dystrophy` [Rencher & Christensen, Table 5.7, from
 @AndrewsHerzberg:85]. Four serum enzymes, creatine kinase (`CK`), hemopexin (`Hpx`), pyruvate
@@ -142,7 +148,7 @@ boxCox(dmd.mod)
 This is another row for the "hook table" in the [extending-lm post](https://friendly.github.io/blog/posts/2026-11-extending-lm/): a method that works for `lm`
 and refuses an mlm.
 
-## The statistics already existed
+## The statistics already existed {.dropcap}
 
 The surprise was that the estimation was already done. `car::powerTransform()` accepts an mlm and
 maximizes the multivariate likelihood of @AndrewsGnanadesikanWarner:71
@@ -284,7 +290,7 @@ the powers held fixed are nearly uncorrelated with those plotted, and the defaul
 `type = "profile"`. An instance of knowing when the multivariate version adds nothing, and when it
 does.
 
-## Refitting: `bcRefit()`
+## Refitting: `bcRefit()` {.dropcap}
 
 Once the powers are chosen, the model has to be refit with the transformed responses.
 `bcRefit(mod, lambda)` does this; `lambda` may be a vector of powers or the `powerTransform`
@@ -319,7 +325,7 @@ cqplot(dmd.bc, main = "Box-Cox")
 par(op)
 ```
 
-## Pleasing Box's $\mathcal{M}$
+## Pleasing Box's $\mathcal{M}$ {.dropcap}
 
 Box-Cox targets normality. But for MANOVA, equality of the group covariance matrices often matters
 more [@Friendly:07:manova], and the Dystrophy groups are far from equal. The transformation chosen
@@ -438,7 +444,7 @@ them. When it does, the matrices must differ in shape or orientation. So this pl
 remaining $\mathcal{M} = 145$ comes from: not from size, which the transformation fixed, but from
 the shape and orientation differences visible in the ellipses for `glufast` and `glutest`.
 
-## Smaller design decisions
+## Smaller design decisions {.dropcap}
 
 In designing `heplots` functions for this, there are few more that decide whether a plot can be read easily and whether users can find these methods helpful:
 
@@ -588,7 +594,7 @@ itself, rather than in heplots. That is a question for John Fox. It is also a fa
 the [extending-lm post](https://friendly.github.io/blog/posts/2026-11-extending-lm/): when the multivariate extension of a method in one package is written in
 another, where should it live?
 
-## Catching bugs {#catching-bugs}
+## Catching bugs {#catching-bugs .dropcap}
 
 Writing this up had a side effect I didn't plan for: it turned up bugs, in my own packages, that
 had been sitting there quietly. Not in the new code, but in old code that the new work happened to
@@ -629,7 +635,7 @@ fixed, not where it was found. Each of these went into the package's own task li
 error, a reproduction and a suggested fix, and the `boxM()` bugs were fixed (in heplots 1.9.0,
 in development) before this post was finished.
 
-## What I learned
+## What I learned {.dropcap}
 
 **The thesis held a second time, on a problem I didn't choose for it.** I didn't pick Box-Cox to
 illustrate the [extending-lm post](https://friendly.github.io/blog/posts/2026-11-extending-lm/); it came from re-reading Rencher & Christensen. Yet every row of
